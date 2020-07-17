@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('d2l-labs-engagement-dashboard', () => {
+describe('d2l-insights-engagement-dashboard', () => {
 
 	const visualDiff = new VisualDiff('engagement-dashboard', __dirname);
 

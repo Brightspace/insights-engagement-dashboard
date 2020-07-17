@@ -20,7 +20,7 @@ class EngagementDashboard extends LocalizeMixin(LitElement) {
 			:host([hidden]) {
 				display: none;
 			}
-			
+
 			/* NB: this layout css doesn't quite work; do not ship */
 			.summary-container {
 				margin-top: 10px;
@@ -78,8 +78,9 @@ class EngagementDashboard extends LocalizeMixin(LitElement) {
 				<div class="summary-container">
 					${Object.values(this._data.filters).map(f => html`<d2l-labs-summary-card id="${f.id}" .data="${f}"></d2l-labs-summary-card>`)}
 					<d2l-labs-histogram-card id="${this.histogram.id}" .data="${this.histogram}"></d2l-labs-histogram-card>
-				</div>				
+				</div>
 		`;
 	}
 }
-customElements.define('d2l-labs-engagement-dashboard', EngagementDashboard);
+// d2l-insights-engagement-dashboard
+customElements.define('d2l-insights-engagement-dashboard', EngagementDashboard);

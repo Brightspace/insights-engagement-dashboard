@@ -1,4 +1,4 @@
-# d2l-labs-engagement-dashboard
+# d2l-insights-engagement-dashboard
 
 [![NPM version](https://img.shields.io/npm/v/@brightspace-ui-labs/engagement-dashboard.svg)](https://www.npmjs.org/package/@brightspace-ui-labs/engagement-dashboard)
 [![Dependabot badge](https://flat.badgen.net/dependabot/BrightspaceUILabs/engagement-dashboard?icon=dependabot)](https://app.dependabot.com/)
@@ -34,7 +34,7 @@ npm install @brightspace/d2l-engagement-dashboard
 <script type="module">
     import '@brightspace/d2l-engagement-dashboard/engagement-dashboard.js';
 </script>
-<d2l-labs-engagement-dashboard>My element</d2l-labs-engagement-dashboard>
+<d2l-insights-engagement-dashboard>My element</d2l-insights-engagement-dashboard>
 ```
 
 **Properties:**
@@ -45,7 +45,7 @@ npm install @brightspace/d2l-engagement-dashboard
 
 **Accessibility:**
 
-To make your usage of `d2l-labs-engagement-dashboard` accessible, use the following properties when applicable:
+To make your usage of `d2l-insights-engagement-dashboard` accessible, use the following properties when applicable:
 
 | Attribute | Description |
 |--|--|
