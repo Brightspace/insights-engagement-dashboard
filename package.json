@@ -22,7 +22,7 @@
   "devDependencies": {
     "@brightspace-ui/visual-diff": "^1.4.1",
     "@open-wc/testing": "^2",
-    "@open-wc/testing-karma": "^3.4.5",
+    "@open-wc/testing-karma": "^4.0.0",
     "babel-eslint": "^10",
     "deepmerge": "^4",
     "es-dev-server": "^1.55.1",
