@@ -9,7 +9,7 @@
     "lint:eslint": "eslint . --ext .js,.html",
     "lint:lit": "lit-analyzer engagement-dashboard.js demo test components",
     "start": "es-dev-server --app-index demo/index.html --node-resolve --dedupe --open --watch",
-    "test": "npm run lint && npm run test:headless && npm run test:diff",
+    "test": "npm run lint && npm run test:headless",
     "test:diff": "mocha ./**/*.visual-diff.js -t 40000",
     "test:diff:golden": "mocha ./**/*.visual-diff.js -t 40000 --golden",
     "test:diff:golden:commit": "commit-goldens",
