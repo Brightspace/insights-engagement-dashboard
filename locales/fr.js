@@ -32,7 +32,7 @@ export default {
 	"components.dropdown-filter.opener-text-multiple": "{filterName}: {selectedCount} sélectionné(s)",
 	"components.dropdown-filter.opener-text-single": '{filterName} : {selectedItemName}',
 
-	"components.insights-users-table.title": "Information détaillée sur l\'utilisateur",
+	"components.insights-users-table.title": "Information détaillée sur l'utilisateur",
 	"components.insights-users-table.lastFirstName": "Nom de famille, prénom",
 	"components.insights-users-table.totalUsers": "Total des utilisateurs : {num}",
 	"components.insights-engagement-dashboard.resultsReturned": "Utilisateurs trouvés dans les résultats.",
