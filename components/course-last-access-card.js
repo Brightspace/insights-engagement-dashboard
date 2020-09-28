@@ -130,25 +130,25 @@ class CourseLastAccessCard extends Localizer(MobxLitElement) {
 		return this.data.lastAccessCategory;
 	}
 
-	_colorNonSelectedPointsInMica(data) {
-		data.forEach(point => {
+	_colorNonSelectedPointsInMica(seriesData) {
+		seriesData.forEach(point => {
 			if (this.category !== point.category) {
 				point.update({ color: 'var(--d2l-color-mica)' });
 			}
 		});
 	}
 
-	_colorNonSelectedPointsInMicaAfterRender(data) {
-		data.forEach(data => {
-			if (data.category !== this.category) {
-				data.update({ color: 'var(--d2l-color-mica)' }, false);
+	_colorNonSelectedPointsInMicaAfterRender(seriesData) {
+		seriesData.forEach(point => {
+			if (point.category !== this.category) {
+				point.update({ color: 'var(--d2l-color-mica)' }, false);
 			}
 		});
 	}
 
-	_colorAllPointsInCelestineAfterRender(data) {
-		data.forEach(data => {
-			data.update({ color: 'var(--d2l-color-celestine)' }, false);
+	_colorAllPointsInCelestineAfterRender(seriesData) {
+		seriesData.forEach(point => {
+			point.update({ color: 'var(--d2l-color-celestine)' }, false);
 		});
 	}
 
@@ -170,12 +170,14 @@ class CourseLastAccessCard extends Localizer(MobxLitElement) {
 				height: '250px',
 				events: {
 					render: function() {
+						//after redrawing the chart as a result of updating (for example, when the user disable any of the filters),
+						// we need to keep the color of the selected/nonselected bars
 						if (that.isApplied) {
 							that._colorNonSelectedPointsInMicaAfterRender(this.series[0].data);
-							this.render();
+							this.render(false);
 						} else {
 							that._colorAllPointsInCelestineAfterRender(this.series[0].data);
-							this.render();
+							this.render(false);
 						}
 					}
 				}
