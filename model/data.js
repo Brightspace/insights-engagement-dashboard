@@ -30,6 +30,7 @@ function countUnique(records, field) {
 }
 const TiCVsGradesFilterId = 'd2l-insights-time-in-content-vs-grade-card';
 const OverdueAssignmentsFilterId = 'd2l-insights-overdue-assignments-card';
+const CourseLastAccessFilterId = 'd2l-insights-course-last-access-card';
 
 export class Data {
 	constructor({ recordProvider, cardFilters }) {
@@ -38,6 +39,7 @@ export class Data {
 		this._userDictionary = null;
 
 		// @observables
+		this.lastAccessCategory = 'Never';
 		this.tiCVsGradesQuadrant = 'leftBottom';
 		this.avgTimeInContent = 0;
 		this.avgGrades = 0;
@@ -180,7 +182,7 @@ export class Data {
 	get courseLastAccessDates() {
 		// return an array of size 6, each element mapping to a category on the course last access bar chart
 		const dateBucketCounts = [0, 0, 0, 0, 0, 0];
-		const lastAccessDatesArray = this.getRecordsInView().map(record => [record[RECORD.COURSE_LAST_ACCESS] === null ? -1 : (Date.now() - record[RECORD.COURSE_LAST_ACCESS])]);
+		const lastAccessDatesArray = this.getRecordsInView(CourseLastAccessFilterId).map(record => [record[RECORD.COURSE_LAST_ACCESS] === null ? -1 : (Date.now() - record[RECORD.COURSE_LAST_ACCESS])]);
 		lastAccessDatesArray.forEach(record => dateBucketCounts[ this._bucketCourseLastAccessDates(record) ]++);
 		return dateBucketCounts;
 	}
@@ -208,6 +210,10 @@ export class Data {
 		if (courseLastAccessDateRange <= fourteenDayMillis) {
 			return 2;
 		}
+	}
+
+	setLastAccessCategory(category) {
+		this.lastAccessCategory = category;
 	}
 
 	get tiCVsGrades() {
@@ -301,6 +307,7 @@ decorate(Data, {
 	cardFilters: observable,
 	isLoading: observable,
 	tiCVsGradesQuadrant: observable,
+	lastAccessCategory: observable,
 	onServerDataReload: action,
 	setApplied: action
 });

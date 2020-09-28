@@ -12,6 +12,7 @@ import './components/aria-loading-progress';
 import './components/course-last-access-card.js';
 
 import { css, html } from 'lit-element/lit-element.js';
+import { CourseLastAccessCardFilter } from './components/course-last-access-card';
 import { Data } from './model/data.js';
 import { fetchData } from './model/lms.js';
 import { fetchData as fetchDemoData } from './model/fake-lms.js';
@@ -128,7 +129,8 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		if (!this.__data) {
 			const cardFilters = [
 				OverdueAssignmentsCardFilter,
-				TimeInContentVsGradeCardFilter
+				TimeInContentVsGradeCardFilter,
+				CourseLastAccessCardFilter
 			].map(filter => ({ ...filter, title: this.localize(filter.title) }));
 
 			this.__data = new Data({

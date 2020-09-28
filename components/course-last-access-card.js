@@ -2,6 +2,34 @@ import { css, html } from 'lit-element/lit-element.js';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
+import { RECORD } from '../model/data';
+
+export const CourseLastAccessCardFilter  = {
+	id: 'd2l-insights-course-last-access-card',
+	title: 'components.insights-course-last-access-card.courseAccess',
+	filter: (record, data) => {
+		const fourteenDayMillis = 1209600000;
+		const sevenDayMillis = 604800000;
+		const fiveDayMillis = 432000000;
+		const oneDayMillis = 86400000;
+		let result;
+		const date = record[RECORD.COURSE_LAST_ACCESS] === null ? -1 : (Date.now() - record[RECORD.COURSE_LAST_ACCESS]);
+		if (data.lastAccessCategory === 'Never') {
+			result = date === -1;
+		} else if (data.lastAccessCategory === '> 14 days ago') {
+			result = date >= fourteenDayMillis;
+		} else if (data.lastAccessCategory === '7-14 days ago') {
+			result = date >= sevenDayMillis && date < fourteenDayMillis;
+		} else if (data.lastAccessCategory === '5-7 days ago') {
+			result = date >= fiveDayMillis && date < sevenDayMillis;
+		} else if (data.lastAccessCategory === '1-5 days ago') {
+			result = date >= oneDayMillis && date < fiveDayMillis;
+		} else if (data.lastAccessCategory === '< 1 day ago') {
+			result = date < oneDayMillis;
+		} else (result = false);
+		return result;
+	}
+};
 
 class CourseLastAccessCard extends Localizer(MobxLitElement) {
 
@@ -86,6 +114,45 @@ class CourseLastAccessCard extends Localizer(MobxLitElement) {
 		];
 	}
 
+	_valueClickHandler() {
+		this.data.setApplied('d2l-insights-course-last-access-card', true);
+	}
+
+	get isApplied() {
+		return this.data.cardFilters['d2l-insights-course-last-access-card'].isApplied;
+	}
+
+	setCategory(category) {
+		this.data.setLastAccessCategory(category);
+	}
+
+	get category() {
+		return this.data.lastAccessCategory;
+	}
+
+	_colorNonSelectedPointsInMica(data) {
+		data.forEach(point => {
+			if (this.category !== point.category) {
+				point.update({ color: 'var(--d2l-color-mica)' });
+			}
+		});
+	}
+
+	_colorNonSelectedPointsInMicaAfterRender(data) {
+		data.forEach(data => {
+			if (data.category !== this.category) {
+				data.update({ color: 'var(--d2l-color-mica)' }, false);
+			}
+		});
+	}
+
+	_colorAllPointsInCelestineAfterRender(data) {
+		console.log('data', data);
+		data.forEach(data => {
+			data.update({ color: 'var(--d2l-color-celestine)' }, false);
+		});
+	}
+
 	render() {
 		// NB: relying on mobx rather than lit-element properties to handle update detection: it will trigger a redraw for
 		// any change to a relevant observed property of the Data object
@@ -97,10 +164,22 @@ class CourseLastAccessCard extends Localizer(MobxLitElement) {
 
 	get chartOptions() {
 		const that = this;
+
 		return {
 			chart: {
 				type: 'bar',
 				height: '250px',
+				events: {
+					render: function() {
+						if (that.isApplied) {
+							that._colorNonSelectedPointsInMicaAfterRender(this.series[0].data);
+							this.render();
+						} else {
+							that._colorAllPointsInCelestineAfterRender(this.series[0].data);
+							this.render();
+						}
+					}
+				}
 			},
 			animation: false,
 			tooltip: { enabled: false },
@@ -167,8 +246,24 @@ class CourseLastAccessCard extends Localizer(MobxLitElement) {
 							}
 							return `${that._cardCategoriesText[point.x]}, ${that._horizontalLabel}, ${val}.`;
 						}
+					},
+					allowPointSelect: true,
+					color: 'var(--d2l-color-celestine)',
+					states: {
+						select: {
+							color: 'var(--d2l-color-celestine)'
+						}
+					},
+					point: {
+						events: {
+							select: function() {
+								that._valueClickHandler();
+								that.setCategory(this.category);
+								that._colorNonSelectedPointsInMica(this.series.data);
+							}
+						}
 					}
-				},
+				}
 			},
 			accessibility: {
 				screenReaderSection: {
@@ -176,8 +271,7 @@ class CourseLastAccessCard extends Localizer(MobxLitElement) {
 				}
 			},
 			series: [{
-				data: this._preparedBarChartData,
-				color: 'var(--d2l-color-celestine)',
+				data: this._preparedBarChartData
 			}]
 		};
 	}
