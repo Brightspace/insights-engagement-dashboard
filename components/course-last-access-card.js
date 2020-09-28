@@ -146,7 +146,7 @@ class CourseLastAccessCard extends Localizer(MobxLitElement) {
 		});
 	}
 
-	_colorAllPointsInCelestineAfterRender(data) {		
+	_colorAllPointsInCelestineAfterRender(data) {
 		data.forEach(data => {
 			data.update({ color: 'var(--d2l-color-celestine)' }, false);
 		});
