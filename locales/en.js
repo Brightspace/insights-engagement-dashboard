@@ -45,8 +45,6 @@ export default {
 	"components.insights-current-final-grade-card.numberOfStudents": "Number of Students",
 	"components.insights-current-final-grade-card.textLabel": "This chart displays the current final grade for each user per course",
 	"components.insights-current-final-grade-card.emptyMessage": "There are no results available that match your filters.",
-	"components.insights-current-final-grade-card.gradeBetween": "{numberOfUsers} users have a current grade between {range}%",
-	"components.insights-current-final-grade-card.gradeBetweenSingleUser": "1 user has a current grade between {range}%",
 
 	"components.insights-course-last-access-card.courseAccess": "Course Access",
 	"components.insights-course-last-access-card.numberOfUsers": "Number of Users",
@@ -59,18 +57,6 @@ export default {
 	"components.insights-course-last-access-card.oneToFiveDaysAgo": "1-5 days ago",
 	"components.insights-course-last-access-card.lessThanOneDayAgo": "< 1 day ago",
 	"components.insights-course-last-access-card.accessibilityLessThanOne": "Less than 1 day ago",
-	"components.insights-course-last-access-card.tooltipNeverAccessed": "{numberOfUsers} users have never accessed the course",
-	"components.insights-course-last-access-card.tooltipMoreThanFourteenDays": "{numberOfUsers} users last accessed the course more than 14 days ago",
-	"components.insights-course-last-access-card.toolTipSevenToFourteenDays": "{numberOfUsers} users last accessed the course 7 to 14 days ago",
-	"components.insights-course-last-access-card.toolTipFiveToSevenDays": "{numberOfUsers} users last accessed the course 5 to 7 days ago",
-	"components.insights-course-last-access-card.toolTipOneToFiveDays": "{numberOfUsers} users last accessed the course 1 to 5 days ago",
-	"components.insights-course-last-access-card.toolTipLessThanOneDay": "{numberOfUsers} users last accessed the course less than 1 day ago",
-	"components.insights-course-last-access-card.tooltipNeverAccessedSingleUser": "1 user has never accessed the course",
-	"components.insights-course-last-access-card.tooltipMoreThanFourteenDaysSingleUser": "1 user last accessed the course more than 14 days ago",
-	"components.insights-course-last-access-card.toolTipSevenToFourteenDaysSingleUser": "1 user last accessed the course 7 to 14 days ago",
-	"components.insights-course-last-access-card.toolTipFiveToSevenDaysSingleUser": "1 user last accessed the course 5 to 7 days ago",
-	"components.insights-course-last-access-card.toolTipOneToFiveDaysSingleUser": "1 user last accessed the course 1 to 5 days ago",
-	"components.insights-course-last-access-card.toolTipLessThanOneDaySingleUser": "1 user last accessed the course less than 1 day ago",
 
 	"components.insights-engagement-dashboard.overdueAssignments": "Users currently have one or more overdue assignments.",
 
