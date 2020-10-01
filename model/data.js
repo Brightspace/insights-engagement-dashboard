@@ -39,7 +39,7 @@ export class Data {
 		this._userDictionary = null;
 
 		// @observables
-		this.lastAccessCategory = 'Never';
+		this.selectedLastAccessCategory = new Set();
 		this.tiCVsGradesQuadrant = 'leftBottom';
 		this.avgTimeInContent = 0;
 		this.avgGrades = 0;
@@ -212,8 +212,12 @@ export class Data {
 		}
 	}
 
-	setLastAccessCategory(category) {
-		this.lastAccessCategory = category;
+	addToLastAccessCategory(category) {
+		this.selectedLastAccessCategory.add(category);
+	}
+
+	setLastAccessCategoryEmpty() {
+		this.selectedLastAccessCategory = new Set();
 	}
 
 	get tiCVsGrades() {
@@ -283,14 +287,14 @@ export class Data {
 	_persist() {
 		localStorage.setItem('d2l-insights-engagement-dashboard.state', JSON.stringify(
 			Object.keys(this.cardFilters)
-				.map(f => ({ id: f, applied: this.cardFilters[f].isApplied }))
+				.map(f => ({ id: f }))
 		));
 	}
 
 	_restore() {
 		// this might be better handled by url-rewriting
 		const state = JSON.parse(localStorage.getItem('d2l-insights-engagement-dashboard.state') || '[]');
-		state.forEach(filterState => this.setApplied(filterState.id, filterState.applied));
+		state.forEach(filterState => this.setApplied(filterState.id));
 	}
 }
 
@@ -307,7 +311,9 @@ decorate(Data, {
 	cardFilters: observable,
 	isLoading: observable,
 	tiCVsGradesQuadrant: observable,
-	lastAccessCategory: observable,
+	selectedLastAccessCategory: observable,
 	onServerDataReload: action,
-	setApplied: action
+	setApplied: action,
+	addToLastAccessCategory: action,
+	setLastAccessCategoryEmpty: action
 });
