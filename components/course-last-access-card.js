@@ -84,17 +84,6 @@ class CourseLastAccessCard extends Localizer(MobxLitElement) {
 		return this.localize('components.insights-course-last-access-card.accessibilityLessThanOne');
 	}
 
-	get _cardCategoriesText() {
-		return [
-			this.localize('components.insights-course-last-access-card.never'),
-			this.localize('components.insights-course-last-access-card.moreThanFourteenDaysAgo'),
-			this.localize('components.insights-course-last-access-card.sevenToFourteenDaysAgo'),
-			this.localize('components.insights-course-last-access-card.fiveToSevenDaysAgo'),
-			this.localize('components.insights-course-last-access-card.oneToFiveDaysAgo'),
-			this.localize('components.insights-course-last-access-card.lessThanOneDayAgo')
-		];
-	}
-
 	_valueClickHandler() {
 		this.data.setApplied('d2l-insights-course-last-access-card', true);
 	}
@@ -137,6 +126,39 @@ class CourseLastAccessCard extends Localizer(MobxLitElement) {
 		});
 	}
 
+	get _cardCategoriesText() {
+		return [
+			this.localize('components.insights-course-last-access-card.never'),
+			this.localize('components.insights-course-last-access-card.moreThanFourteenDaysAgo'),
+			this.localize('components.insights-course-last-access-card.sevenToFourteenDaysAgo'),
+			this.localize('components.insights-course-last-access-card.fiveToSevenDaysAgo'),
+			this.localize('components.insights-course-last-access-card.oneToFiveDaysAgo'),
+			this.localize('components.insights-course-last-access-card.lessThanOneDayAgo')
+		];
+	}
+
+	_cardTooltipText(numberOfUsers) {
+		return [
+			this.localize('components.insights-course-last-access-card.tooltipNeverAccessed', { numberOfUsers }),
+			this.localize('components.insights-course-last-access-card.tooltipMoreThanFourteenDays', { numberOfUsers }),
+			this.localize('components.insights-course-last-access-card.toolTipSevenToFourteenDays', { numberOfUsers }),
+			this.localize('components.insights-course-last-access-card.toolTipFiveToSevenDays', { numberOfUsers }),
+			this.localize('components.insights-course-last-access-card.toolTipOneToFiveDays', { numberOfUsers }),
+			this.localize('components.insights-course-last-access-card.toolTipLessThanOneDay', { numberOfUsers })
+		];
+	}
+
+	get _cardTooltipTextSingleUser() {
+		return [
+			this.localize('components.insights-course-last-access-card.tooltipNeverAccessedSingleUser'),
+			this.localize('components.insights-course-last-access-card.tooltipMoreThanFourteenDaysSingleUser'),
+			this.localize('components.insights-course-last-access-card.toolTipSevenToFourteenDaysSingleUser'),
+			this.localize('components.insights-course-last-access-card.toolTipFiveToSevenDaysSingleUser'),
+			this.localize('components.insights-course-last-access-card.toolTipOneToFiveDaysSingleUser'),
+			this.localize('components.insights-course-last-access-card.toolTipLessThanOneDaySingleUser')
+		];
+	}
+
 	render() {
 		// NB: relying on mobx rather than lit-element properties to handle update detection: it will trigger a redraw for
 		// any change to a relevant observed property of the Data object
@@ -171,7 +193,20 @@ class CourseLastAccessCard extends Localizer(MobxLitElement) {
 				}
 			},
 			animation: false,
-			tooltip: { enabled: false },
+			tooltip: {
+				formatter: function() {
+					if (this.point.y === 1) {
+						return `${that._cardTooltipTextSingleUser[this.point.x]}`;
+					}
+					return `${that._cardTooltipText(this.point.y)[this.point.x]}`;
+				},
+				backgroundColor: 'var(--d2l-color-ferrite)',
+				borderColor: 'var(--d2l-color-ferrite)',
+				borderRadius: 12,
+				style: {
+					color: 'white',
+				}
+			},
 			title: {
 				text: this._cardTitle,
 				style: {

@@ -63,6 +63,14 @@ class CurrentFinalGradeCard extends Localizer(MobxLitElement) {
 		return this.data.currentFinalGrades;
 	}
 
+	_gradeBetweenText(numberOfUsers, range) {
+		return this.localize('components.insights-current-final-grade-card.gradeBetween', { numberOfUsers, range });
+	}
+
+	_gradeBetweenTextSingleUser(range) {
+		return this.localize('components.insights-current-final-grade-card.gradeBetweenSingleUser', { range });
+	}
+
 	render() {
 		// NB: relying on mobx rather than lit-element properties to handle update detection: it will trigger a redraw for
 		// any change to a relevant observed property of the Data object
@@ -85,12 +93,28 @@ class CurrentFinalGradeCard extends Localizer(MobxLitElement) {
 	}
 
 	get chartOptions() {
+		const that = this;
 		return {
 			chart: {
 				height: 230
 			},
 			animation: false,
-			tooltip: { enabled: false },
+			tooltip: {
+				formatter: function() {
+					const yCeil = Math.ceil(this.y);
+					const xCeil = Math.ceil(this.x);
+					if (yCeil === 1) {
+						return `${that._gradeBetweenTextSingleUser(`${xCeil}-${xCeil + 10}`)}`;
+					}
+					return `${that._gradeBetweenText(`${yCeil}`, `${xCeil}-${xCeil + 10}`)}`;
+				},
+				backgroundColor: 'var(--d2l-color-ferrite)',
+				borderColor: 'var(--d2l-color-ferrite)',
+				borderRadius: 12,
+				style: {
+					color: 'white',
+				}
+			},
 			title: {
 				text: this._cardTitle, // override default title
 				style: {
@@ -165,7 +189,7 @@ class CurrentFinalGradeCard extends Localizer(MobxLitElement) {
 			},
 			{
 				data: this._preparedHistogramData,
-				visible: false
+				visible: false,
 			}],
 		};
 	}
