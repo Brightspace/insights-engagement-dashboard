@@ -186,6 +186,9 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 							that._colorAllPoints(this.series[0].data, 'var(--d2l-color-celestine)');
 						}
 						this.render(false);
+					},
+					load: function() {
+						this.series[0].data[6].graphic.hide();
 					}
 				}
 			},
@@ -195,7 +198,9 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 					if (this.point.y === 1) {
 						return `${that._cardTooltipTextSingleUser[this.point.x]}`;
 					}
+					if (this.point.x !== 6) { 
 					return `${that._cardTooltipText(this.point.y)[this.point.x]}`;
+					} else return false;
 				},
 				backgroundColor: 'var(--d2l-color-ferrite)',
 				borderColor: 'var(--d2l-color-ferrite)',
@@ -230,7 +235,8 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 					}
 				},
 				width: '108%',
-				categories: this._cardCategoriesText
+				categories: this._cardCategoriesText,
+				showLastLabel: false
 			},
 			yAxis: {
 				tickAmount: 5,

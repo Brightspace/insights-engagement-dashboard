@@ -220,7 +220,7 @@ export class Data {
 
 	get courseLastAccessDates() {
 		// return an array of size 6, each element mapping to a category on the course last access bar chart
-		const dateBucketCounts = [0, 0, 0, 0, 0, 0];
+		const dateBucketCounts = [0, 0, 0, 0, 0, 0, 0];
 		const lastAccessDatesArray = this.getRecordsInView(CourseLastAccessFilterId).map(record => [record[RECORD.COURSE_LAST_ACCESS] === null ? -1 : (Date.now() - record[RECORD.COURSE_LAST_ACCESS])]);
 		lastAccessDatesArray.forEach(record => dateBucketCounts[ this._bucketCourseLastAccessDates(record) ]++);
 		return dateBucketCounts;
