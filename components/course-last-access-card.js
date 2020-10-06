@@ -198,8 +198,8 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 					if (this.point.y === 1) {
 						return `${that._cardTooltipTextSingleUser[this.point.x]}`;
 					}
-					if (this.point.x !== 6) { 
-					return `${that._cardTooltipText(this.point.y)[this.point.x]}`;
+					if (this.point.x !== 6) {
+						return `${that._cardTooltipText(this.point.y)[this.point.x]}`;
 					} else return false;
 				},
 				backgroundColor: 'var(--d2l-color-ferrite)',
