@@ -419,7 +419,7 @@ describe('Data', () => {
 
 	describe('courseLastAccess', () => {
 		it('should return the correct current final grade bucket counts', async() => {
-			const expected = [39, 7, 0, 0, 1, 1];
+			const expected = [39, 7, 0, 0, 1, 1, 0];
 			expect(sut.courseLastAccessDates.toString()).to.deep.equal(expected.toString());
 		});
 	});
