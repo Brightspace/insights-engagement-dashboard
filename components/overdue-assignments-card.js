@@ -6,7 +6,7 @@ import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton
 
 export const OverdueAssignmentsCardFilter = {
 	id: 'd2l-insights-overdue-assignments-card',
-	title: 'components.insights-engagement-dashboard.overdueAssignmentsHeading',
+	title: 'components:insights-engagement-dashboard:overdueAssignmentsHeading',
 	filter: (record) => record[RECORD.OVERDUE] > 0
 };
 
@@ -24,11 +24,11 @@ class OverdueAssignmentsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _cardMessage() {
-		return this.localize('components.insights-engagement-dashboard.overdueAssignments');
+		return this.localize('components:insights-engagement-dashboard:overdueAssignments');
 	}
 
 	get _cardTitle() {
-		return this.localize('components.insights-engagement-dashboard.overdueAssignmentsHeading');
+		return this.localize('components:insights-engagement-dashboard:overdueAssignmentsHeading');
 	}
 
 	get _cardValue() {

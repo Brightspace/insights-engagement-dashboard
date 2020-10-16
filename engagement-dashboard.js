@@ -91,7 +91,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		return html`
 				<d2l-insights-aria-loading-progress .data="${this._data}"></d2l-insights-aria-loading-progress>
 
-				<h1 class="d2l-heading-1">${this.localize('components.insights-engagement-dashboard.title')}</h1>
+				<h1 class="d2l-heading-1">${this.localize('components:insights-engagement-dashboard:title')}</h1>
 
 				<div class="view-filters-container">
 					<d2l-insights-ou-filter
@@ -110,7 +110,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 					></d2l-insights-role-filter>
 				</div>
 
-				<h2 class="d2l-heading-3">${this.localize('components.insights-engagement-dashboard.summaryHeading')}</h2>
+				<h2 class="d2l-heading-3">${this.localize('components:insights-engagement-dashboard:summaryHeading')}</h2>
 				<div class="d2l-insights-summary-container-applied-filters">
 					<d2l-insights-applied-filters .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-applied-filters>
 				</div>
@@ -123,7 +123,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 					<div><d2l-insights-time-in-content-vs-grade-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-time-in-content-vs-grade-card></div>
 					<div><d2l-insights-course-last-access-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-course-last-access-card></div>
 				</div>
-				<h2 class="d2l-heading-3">${this.localize('components.insights-engagement-dashboard.resultsHeading')}</h2>
+				<h2 class="d2l-heading-3">${this.localize('components:insights-engagement-dashboard:resultsHeading')}</h2>
 				<d2l-insights-users-table .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-users-table>
 
 				<d2l-insights-default-view-popup

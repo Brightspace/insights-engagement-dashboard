@@ -119,7 +119,7 @@ class TreeSelectorNode extends Localizer(RtlMixin(LitElement)) {
 
 	_renderNode() {
 		const label = this.parentName ?
-			this.localize('components.tree-selector.node.aria-label', { name: this.name, parentName: this.parentName }) :
+			this.localize('components:tree-selector:node-aria-label', { name: this.name, parentName: this.parentName }) :
 			this.name;
 
 		return html`
@@ -170,8 +170,8 @@ class TreeSelectorNode extends Localizer(RtlMixin(LitElement)) {
 	get _arrowLabel() {
 		return this.localize(
 			this.isOpen ?
-				'components.tree-selector.arrow-label.open' :
-				'components.tree-selector.arrow-label.closed',
+				'components:tree-selector:arrow-label-open' :
+				'components:tree-selector:arrow-label-closed',
 			{ name: this.name, level: this.indentLevel, parentName: this.parentName }
 		);
 	}

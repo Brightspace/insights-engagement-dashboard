@@ -38,7 +38,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		filters.push({
 			id: clearAllOptionId,
-			title: this.localize('components.insights-applied-filters.clear-all'),
+			title: this.localize('components:insights-applied-filters:clear-all'),
 			isApplied: true
 		});
 

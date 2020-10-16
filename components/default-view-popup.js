@@ -37,7 +37,7 @@ class DefaultViewPopup extends Localizer(LitElement) {
 
 	get _displayData() {
 		return this.data.map((item) => {
-			return this.localize('components.tree-filter.node-name', { orgUnitName: item.name, id: item.id });
+			return this.localize('components:tree-filter:node-name', { orgUnitName: item.name, id: item.id });
 		});
 	}
 
@@ -46,20 +46,20 @@ class DefaultViewPopup extends Localizer(LitElement) {
 		return html`
 			<d2l-dialog
 				?opened="${this.opened}"
-				title-text="${this.localize('components.insights-default-view-popup.title')}"
+				title-text="${this.localize('components:insights-default-view-popup:title')}"
 					width="615"
 					@d2l-dialog-close="${this._closeDialog}">
 
 				<p class="d2l-insights-default-view-popup-description">
-					${this.localize('components.insights-default-view-popup.defaultViewDescription1', { numDefaultCourses: displayData.length })}
+					${this.localize('components:insights-default-view-popup:defaultViewDescription1', { numDefaultCourses: displayData.length })}
 				</p>
 				<p class="d2l-insights-default-view-popup-description">
-					${this.localize('components.insights-default-view-popup.defaultViewDescription2')}
+					${this.localize('components:insights-default-view-popup:defaultViewDescription2')}
 				</p>
 
 				<d2l-insights-expander-with-control
-					control-expanded-text="${this.localize('components.insights-default-view-popup.collapseDefaultCourseList')}"
-					control-collapsed-text="${this.localize('components.insights-default-view-popup.expandDefaultCourseList')}"
+					control-expanded-text="${this.localize('components:insights-default-view-popup:collapseDefaultCourseList')}"
+					control-collapsed-text="${this.localize('components:insights-default-view-popup:expandDefaultCourseList')}"
 					@d2l-insights-expander-with-control-expanded="${this._resize}"
 					@d2l-insights-expander-with-control-collapsed="${this._resize}">
 
@@ -72,7 +72,7 @@ class DefaultViewPopup extends Localizer(LitElement) {
 				</d2l-insights-expander-with-control>
 
 				<d2l-button primary slot="footer" @click="${this._closeDialog}">
-					${this.localize('components.insights-default-view-popup.buttonOk')}
+					${this.localize('components:insights-default-view-popup:buttonOk')}
 				</d2l-button>
 			</d2l-dialog>
 		`;

@@ -71,12 +71,12 @@ class DropdownFilter extends Localizer(LitElement) {
 		let openerSelectedText;
 		if (selectedCount === 1) {
 			// use name instead of displayName here to avoid showing semester ids in the main selector text
-			openerSelectedText = this.localize('components.dropdown-filter.opener-text-single', {
+			openerSelectedText = this.localize('components:dropdown-filter:opener-text-single', {
 				filterName: this.name,
 				selectedItemName: this._selectedData[0].name
 			});
 		} else {
-			openerSelectedText = this.localize('components.dropdown-filter.opener-text-multiple', {
+			openerSelectedText = this.localize('components:dropdown-filter:opener-text-multiple', {
 				filterName: this.name,
 				selectedCount: selectedCount
 			});
@@ -85,7 +85,7 @@ class DropdownFilter extends Localizer(LitElement) {
 		return html`
 			<d2l-filter-dropdown
 				total-selected-option-count="${selectedCount}"
-				opener-text="${this.localize('components.dropdown-filter.opener-text-all', { filterName: this.name })}"
+				opener-text="${this.localize('components:dropdown-filter:opener-text-all', { filterName: this.name })}"
 				opener-text-single="${openerSelectedText}"
 				opener-text-multiple="${openerSelectedText}"
 				header-text=""

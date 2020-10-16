@@ -8,7 +8,7 @@ import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton
 
 export const CourseLastAccessCardFilter  = {
 	id: 'd2l-insights-course-last-access-card',
-	title: 'components.insights-course-last-access-card.courseAccess',
+	title: 'components:insights-course-last-access-card:courseAccess',
 	filter: (record, data) => data.selectedLastAccessCategory.has(
 		data._bucketCourseLastAccessDates(record[RECORD.COURSE_LAST_ACCESS] === null ? -1 : (Date.now() - record[RECORD.COURSE_LAST_ACCESS]))
 	)
@@ -58,23 +58,23 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _cardTitle() {
-		return this.localize('components.insights-course-last-access-card.courseAccess');
+		return this.localize('components:insights-course-last-access-card:courseAccess');
 	}
 
 	get _numberOfUsersText() {
-		return this.localize('components.insights-course-last-access-card.numberOfUsers');
+		return this.localize('components:insights-course-last-access-card:numberOfUsers');
 	}
 
 	get _chartDescriptionTextLabel() {
-		return this.localize('components.insights-course-last-access-card.textLabel');
+		return this.localize('components:insights-course-last-access-card:textLabel');
 	}
 
 	get _horizontalLabel() {
-		return this.localize('components.insights-course-last-access-card.numberOfUsers');
+		return this.localize('components:insights-course-last-access-card:numberOfUsers');
 	}
 
 	get _verticalLabel() {
-		return this.localize('components.insights-course-last-access-card.lastDateSinceAccess');
+		return this.localize('components:insights-course-last-access-card:lastDateSinceAccess');
 	}
 
 	get _preparedBarChartData() {
@@ -82,39 +82,39 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _accessibilityLessThanOneLabel() {
-		return this.localize('components.insights-course-last-access-card.accessibilityLessThanOne');
+		return this.localize('components:insights-course-last-access-card:accessibilityLessThanOne');
 	}
 
 	get _cardCategoriesText() {
 		return [
-			this.localize('components.insights-course-last-access-card.never'),
-			this.localize('components.insights-course-last-access-card.moreThanFourteenDaysAgo'),
-			this.localize('components.insights-course-last-access-card.sevenToFourteenDaysAgo'),
-			this.localize('components.insights-course-last-access-card.fiveToSevenDaysAgo'),
-			this.localize('components.insights-course-last-access-card.oneToFiveDaysAgo'),
-			this.localize('components.insights-course-last-access-card.lessThanOneDayAgo')
+			this.localize('components:insights-course-last-access-card:never'),
+			this.localize('components:insights-course-last-access-card:moreThanFourteenDaysAgo'),
+			this.localize('components:insights-course-last-access-card:sevenToFourteenDaysAgo'),
+			this.localize('components:insights-course-last-access-card:fiveToSevenDaysAgo'),
+			this.localize('components:insights-course-last-access-card:oneToFiveDaysAgo'),
+			this.localize('components:insights-course-last-access-card:lessThanOneDayAgo')
 		];
 	}
 
 	_cardTooltipText(numberOfUsers) {
 		return [
-			this.localize('components.insights-course-last-access-card.tooltipNeverAccessed', { numberOfUsers }),
-			this.localize('components.insights-course-last-access-card.tooltipMoreThanFourteenDays', { numberOfUsers }),
-			this.localize('components.insights-course-last-access-card.toolTipSevenToFourteenDays', { numberOfUsers }),
-			this.localize('components.insights-course-last-access-card.toolTipFiveToSevenDays', { numberOfUsers }),
-			this.localize('components.insights-course-last-access-card.toolTipOneToFiveDays', { numberOfUsers }),
-			this.localize('components.insights-course-last-access-card.toolTipLessThanOneDay', { numberOfUsers })
+			this.localize('components:insights-course-last-access-card:tooltipNeverAccessed', { numberOfUsers }),
+			this.localize('components:insights-course-last-access-card:tooltipMoreThanFourteenDays', { numberOfUsers }),
+			this.localize('components:insights-course-last-access-card:toolTipSevenToFourteenDays', { numberOfUsers }),
+			this.localize('components:insights-course-last-access-card:toolTipFiveToSevenDays', { numberOfUsers }),
+			this.localize('components:insights-course-last-access-card:toolTipOneToFiveDays', { numberOfUsers }),
+			this.localize('components:insights-course-last-access-card:toolTipLessThanOneDay', { numberOfUsers })
 		];
 	}
 
 	get _cardTooltipTextSingleUser() {
 		return [
-			this.localize('components.insights-course-last-access-card.tooltipNeverAccessedSingleUser'),
-			this.localize('components.insights-course-last-access-card.tooltipMoreThanFourteenDaysSingleUser'),
-			this.localize('components.insights-course-last-access-card.toolTipSevenToFourteenDaysSingleUser'),
-			this.localize('components.insights-course-last-access-card.toolTipFiveToSevenDaysSingleUser'),
-			this.localize('components.insights-course-last-access-card.toolTipOneToFiveDaysSingleUser'),
-			this.localize('components.insights-course-last-access-card.toolTipLessThanOneDaySingleUser')
+			this.localize('components:insights-course-last-access-card:tooltipNeverAccessedSingleUser'),
+			this.localize('components:insights-course-last-access-card:tooltipMoreThanFourteenDaysSingleUser'),
+			this.localize('components:insights-course-last-access-card:toolTipSevenToFourteenDaysSingleUser'),
+			this.localize('components:insights-course-last-access-card:toolTipFiveToSevenDaysSingleUser'),
+			this.localize('components:insights-course-last-access-card:toolTipOneToFiveDaysSingleUser'),
+			this.localize('components:insights-course-last-access-card:toolTipLessThanOneDaySingleUser')
 		];
 	}
 

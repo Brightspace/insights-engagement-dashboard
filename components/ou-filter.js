@@ -31,8 +31,8 @@ class OuFilter extends Localizer(MobxLitElement) {
 		return html`<div class="ou-filter" ?loading="${this.data.isLoading}">
 			<d2l-insights-tree-filter
 				.tree="${this.data.orgUnitTree}"
-				opener-text="${this.localize('components.org-unit-filter.name-all-selected')}"
-				opener-text-selected="${this.localize('components.org-unit-filter.name-some-selected')}"
+				opener-text="${this.localize('components:org-unit-filter:name-all-selected')}"
+				opener-text-selected="${this.localize('components:org-unit-filter:name-some-selected')}"
 				@d2l-insights-tree-filter-select="${this._onChange}"
 				@d2l-insights-tree-filter-request-children="${this._onRequestChildren}"
 				@d2l-insights-tree-filter-search="${this._onSearch}"

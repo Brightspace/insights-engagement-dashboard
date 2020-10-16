@@ -77,8 +77,8 @@ class TreeSelector extends Localizer(LitElement) {
 					<d2l-dropdown-content align="start" no-auto-fit>
 						<div class="d2l-insights-tree-selector-search" slot="header">
 							<d2l-input-search
-								label="${this.localize('components.tree-selector.search-label')}"
-								placeholder="${this.localize('components.tree-selector.search-placeholder')}"
+								label="${this.localize('components:tree-selector:search-label')}"
+								placeholder="${this.localize('components:tree-selector:search-placeholder')}"
 								@d2l-input-search-searched="${this._onSearch}"
 							></d2l-input-search>
 						</div>

@@ -78,7 +78,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	// the number of skeleton rows we're displaying, but the Total Users count should still be 0
 	get _displayData() {
 		if (this.skeleton) {
-			const loadingPlaceholderText = this.localize('components.insights-users-table.loadingPlaceholder');
+			const loadingPlaceholderText = this.localize('components:insights-users-table:loadingPlaceholder');
 
 			// a DEFAULT_PAGE_SIZE x columnInfoLength 2D array filled with a generic string
 			return Array(DEFAULT_PAGE_SIZE).fill(Array(this.columnInfo.length).fill(loadingPlaceholderText));
@@ -97,19 +97,19 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get columnInfo() {
 		return [
 			{
-				headerText: this.localize('components.insights-users-table.lastFirstName'),
+				headerText: this.localize('components:insights-users-table:lastFirstName'),
 				columnType: COLUMN_TYPES.TEXT_SUB_TEXT
 			},
 			{
-				headerText: this.localize('components.insights-users-table.courses'),
+				headerText: this.localize('components:insights-users-table:courses'),
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			},
 			{
-				headerText: this.localize('components.insights-users-table.avgGrade'),
+				headerText: this.localize('components:insights-users-table:avgGrade'),
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			},
 			{
-				headerText: this.localize('components.insights-users-table.avgTimeInContent'),
+				headerText: this.localize('components:insights-users-table:avgTimeInContent'),
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			}
 		];
@@ -118,7 +118,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	render() {
 		return html`
 			<d2l-insights-table
-				title="${this.localize('components.insights-users-table.title')}"
+				title="${this.localize('components:insights-users-table:title')}"
 				.columnInfo=${this.columnInfo}
 				.data="${this._displayData}"
 				?skeleton="${this.skeleton}"></d2l-insights-table>
@@ -142,7 +142,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		return html`
 			<div class="d2l-insights-users-table-total-users">
-				${this.localize('components.insights-users-table.totalUsers', { num: itemCounts })}
+				${this.localize('components:insights-users-table:totalUsers', { num: itemCounts })}
 			</div>
 		`;
 	}

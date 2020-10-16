@@ -8,7 +8,7 @@ import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton
 
 export const CurrentFinalGradeCardFilter  = {
 	id: 'd2l-insights-current-final-grade-card',
-	title: 'components.insights-current-final-grade-card.currentGrade',
+	title: 'components:insights-current-final-grade-card:currentGrade',
 	filter: (record, data) => data.selectedGradesCategories.has(data.gradeCategory(record[RECORD.CURRENT_FINAL_GRADE]))
 };
 
@@ -57,11 +57,11 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _cardTitle() {
-		return this.localize('components.insights-current-final-grade-card.currentGrade');
+		return this.localize('components:insights-current-final-grade-card:currentGrade');
 	}
 
 	get _chartDescriptionTextLabel() {
-		return this.localize('components.insights-current-final-grade-card.textLabel');
+		return this.localize('components:insights-current-final-grade-card:textLabel');
 	}
 
 	get _preparedHistogramData() {
@@ -69,11 +69,11 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _xAxisLabel() {
-		return this.localize('components.insights-current-final-grade-card.xAxisLabel');
+		return this.localize('components:insights-current-final-grade-card:xAxisLabel');
 	}
 
 	get _yAxisLabel() {
-		return this.localize('components.insights-current-final-grade-card.numberOfStudents');
+		return this.localize('components:insights-current-final-grade-card:numberOfStudents');
 	}
 
 	setCategoryEmpty() {
@@ -117,11 +117,11 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_gradeBetweenText(numberOfUsers, range) {
-		return this.localize('components.insights-current-final-grade-card.gradeBetween', { numberOfUsers, range });
+		return this.localize('components:insights-current-final-grade-card:gradeBetween', { numberOfUsers, range });
 	}
 
 	_gradeBetweenTextSingleUser(range) {
-		return this.localize('components.insights-current-final-grade-card.gradeBetweenSingleUser', { range });
+		return this.localize('components:insights-current-final-grade-card:gradeBetweenSingleUser', { range });
 
 	}
 
@@ -134,7 +134,7 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				<div class="d2l-insights-current-final-grade-title">${this._cardTitle}</div>
 				<div class="d2l-insights-summary-card-body">
 					<span class="d2l-insights-empty-chart-message">
-						${this.localize('components.insights-current-final-grade-card.emptyMessage')}
+						${this.localize('components:insights-current-final-grade-card:emptyMessage')}
 					</span>
 				</div>
 			</div>`;

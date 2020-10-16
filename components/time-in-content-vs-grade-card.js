@@ -9,7 +9,7 @@ import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton
 
 export const TimeInContentVsGradeCardFilter  = {
 	id: 'd2l-insights-time-in-content-vs-grade-card',
-	title: 'components.insights-time-in-content-vs-grade-card.timeInContentVsGrade',
+	title: 'components:insights-time-in-content-vs-grade-card:timeInContentVsGrade',
 	filter: (record, data) => {
 		let result;
 		if (data.tiCVsGradesQuadrant === 'leftBottom') {
@@ -71,15 +71,15 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 	}
 
 	get _cardTitle() {
-		return this.localize('components.insights-time-in-content-vs-grade-card.timeInContentVsGrade');
+		return this.localize('components:insights-time-in-content-vs-grade-card:timeInContentVsGrade');
 	}
 
 	get _currentGradeText() {
-		return this.localize('components.insights-time-in-content-vs-grade-card.currentGrade');
+		return this.localize('components:insights-time-in-content-vs-grade-card:currentGrade');
 	}
 
 	get _timeInContentText() {
-		return this.localize('components.insights-time-in-content-vs-grade-card.timeInContent');
+		return this.localize('components:insights-time-in-content-vs-grade-card:timeInContent');
 	}
 
 	get _preparedPlotData() {
@@ -170,7 +170,7 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 	}
 
 	_toolTipTextByQuadrant(quadrant, numberOfUsers) {
-		const quadrantTerm = `components.insights-time-in-content-vs-grade-card.${quadrant}`;
+		const quadrantTerm = `components:insights-time-in-content-vs-grade-card:${quadrant}`;
 		return this.localize(quadrantTerm, { numberOfUsers });
 	}
 

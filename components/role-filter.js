@@ -59,7 +59,7 @@ class RoleFilter extends Localizer(LitElement) {
 	render() {
 		return html`
 			<d2l-insights-dropdown-filter
-				name="${this.localize('components.insights-role-filter.name')}"
+				name="${this.localize('components:insights-role-filter:name')}"
 				.data="${this._filterData}"
 
 				@d2l-insights-dropdown-filter-selected="${this._updateFilterSelections}"
