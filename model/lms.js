@@ -32,15 +32,15 @@ export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [
 export async function fetchRoles() {
 
 	const response = await fetch(rolesEndpoint);
-	const responseData = await response.json();
+	let responseData = await response.json();
 
-	const filterOutD2lMonitor = async () => {
+	const filterOutD2lMonitor = async() => {
 		// this could take a while depending on the number of roles.
-		return new Promise( (res, _) => {
-			responseData = responseData.filter( role => role.DisplayName !== "D2LMonitor" );
+		return new Promise((res) => {
+			responseData = responseData.filter((role) => role.DisplayName !== 'D2LMonitor');
 			res(responseData);
 		});
-	}
+	};
 
 	/**
 	 * Expected data format from Roles API
