@@ -378,6 +378,7 @@ decorate(Data, {
 	usersCountsWithOverdueAssignments: computed,
 	courseLastAccessDates: computed,
 	tiCVsGrades: computed,
+	tiCVsGradesAvgValues: computed,
 	currentFinalGrades: computed,
 	cardFilters: observable,
 	isLoading: observable,
