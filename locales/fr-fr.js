@@ -118,7 +118,7 @@ export default {
 	"components.insights-aria-loading-progress.loading-finish": "Chargement terminé.",
 
 	"components.insights-default-view-popup.title": "Vue par défaut du tableau de bord d’engagement",
-	"components.insights-default-view-popup.defaultViewDescription1": "Ce tableau de bord est conçu pour examiner certaines parties de l’engagement de votre organisation. Les résultats affichés proviennent de {numDefaultcourses} cours récemment consultés pour vous aider.",
+	"components.insights-default-view-popup.defaultViewDescription1": "Ce tableau de bord est conçu pour examiner certaines parties de l’engagement de votre organisation. Les résultats affichés proviennent de {numDefaultCourses} cours récemment consultés pour vous aider.",
 	"components.insights-default-view-popup.defaultViewDescription2": "Utilisez les filtres du tableau de bord pour modifier les résultats affichés.",
 	"components.insights-default-view-popup.expandDefaultCourseList": "Développer pour afficher les cours inclus dans votre vue par défaut",
 	"components.insights-default-view-popup.collapseDefaultCourseList": "Réduire la liste des cours inclus dans votre vue par défaut",
