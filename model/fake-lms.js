@@ -140,3 +140,6 @@ export async function fetchSemesters(pageSize, bookmark, search) {
 	return new Promise(resolve =>	setTimeout(() => resolve(response), 100));
 }
 
+export function canSendEmailToSelectedUsers() {
+	return true;
+}

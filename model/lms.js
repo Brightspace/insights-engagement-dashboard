@@ -1,6 +1,7 @@
 const rolesEndpoint = '/d2l/api/ap/unstable/insights/data/roles';
 const semestersEndpoint = '/d2l/api/ap/unstable/insights/data/semesters';
 const dataEndpoint = '/d2l/api/ap/unstable/insights/data/engagement';
+const canSendEmailEndpoint = '/d2l/api/ap/unstable/insights/data/canSendEmail';
 const relevantChildrenEndpoint = orgUnitId => `/d2l/api/ap/unstable/insights/data/orgunits/${orgUnitId}/children`;
 const ouSearchEndpoint = '/d2l/api/ap/unstable/insights/data/orgunits';
 
@@ -124,4 +125,15 @@ export function fetchLastSearch(selectedSemesterIds) {
 	}
 
 	return null;
+}
+
+export async function canSendEmailToSelectedUsers(selectedUserIds) {
+	const url = new URL(canSendEmailEndpoint, window.location.origin);
+	const response = await fetch(url.toString(), {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(selectedUserIds)
+	});
+
+	return response.status === 200;
 }

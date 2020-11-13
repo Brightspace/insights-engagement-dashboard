@@ -17,6 +17,8 @@ import './components/discussion-activity-card.js';
 import './components/message-container.js';
 import './components/default-view-popup.js';
 
+import { canSendEmailToSelectedUsers, fetchData } from './model/lms.js';
+import { canSendEmailToSelectedUsers as canSendEmailToSelectedUsersDemo, fetchData as fetchDemoData } from './model/fake-lms.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { getPerformanceLoadPageMeasures, TelemetryHelper } from './model/telemetry-helper';
 import { CourseLastAccessFilter } from './components/course-last-access-card';
@@ -25,8 +27,6 @@ import { CurrentFinalGradesFilter } from './components/current-final-grade-card'
 import { Data } from './model/data.js';
 import { DiscussionActivityFilter } from './components/discussion-activity-card';
 import { ExportData } from './model/exportData';
-import { fetchData } from './model/lms.js';
-import { fetchData as fetchDemoData } from './model/fake-lms.js';
 import { FilteredData } from './model/filteredData';
 import { heading3Styles } from '@brightspace-ui/core/components/typography/styles';
 import { LastAccessFilter } from './components/last-access-card';
@@ -233,6 +233,14 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 						${this.localize('components.insights-default-view-popup.buttonOk')}
 					</d2l-button>
 				</d2l-dialog-confirm>
+
+				<d2l-dialog-confirm
+					id="additional-permissions-are-required-to-send-emails-to-users"
+					text="${this.localize('components.insights-engagement-dashboard.additionalPermissionsAreRequiredToSendEmailsToUsersDialogText')}">
+					<d2l-button slot="footer" primary data-dialog-action>
+						${this.localize('components.insights-default-view-popup.buttonOk')}
+					</d2l-button>
+				</d2l-dialog-confirm>
 		`;
 	}
 
@@ -313,17 +321,31 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		this._serverData.selectedSemesterIds = event.target.selected;
 	}
 
-	_handleEmailButtonPress() {
+	async _handleEmailButtonPress() {
 		const usersTable = this.shadowRoot.querySelector('d2l-insights-users-table');
-		const selectedUserIds = usersTable.selectedUserIds;
+		const selectedUserIds = toJS(usersTable.selectedUserIds);
 
 		if (!selectedUserIds.length) {
-			const noUsersSelectedDialog = this.shadowRoot.querySelector('#no-users-selected-dialog');
-			noUsersSelectedDialog.opened = true;
-		} else {
-			// we use the root OU id because that's where we expect users to have email permissions
-			createComposeEmailPopup(toJS(selectedUserIds), this._serverData.orgUnitTree.rootId);
+			this._openDialog('#no-users-selected-dialog');
+			return;
 		}
+
+		if (!await this._canSendEmailToSelectedUsers(selectedUserIds)) {
+			this._openDialog('#additional-permissions-are-required-to-send-emails-to-users');
+			return;
+		}
+
+		// we use the root OU id because that's where we expect users to have email permissions
+		createComposeEmailPopup(selectedUserIds, this._serverData.orgUnitTree.rootId);
+	}
+
+	async _canSendEmailToSelectedUsers(selectedUserIds) {
+		return this.isDemo ? await canSendEmailToSelectedUsersDemo(selectedUserIds) : await canSendEmailToSelectedUsers(selectedUserIds);
+	}
+
+	_openDialog(dialogId) {
+		const dialog = this.shadowRoot.querySelector(dialogId);
+		dialog.opened = true;
 	}
 
 	_handlePageLoad() {

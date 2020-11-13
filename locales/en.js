@@ -14,6 +14,7 @@ export default {
 	"components.insights-engagement-dashboard.exportToCsv": "Export to CSV",
 	"components.insights-engagement-dashboard.emailButton": "Email",
 	"components.insights-engagement-dashboard.noUsersSelectedDialogText": "Please select one or more users to email.",
+	"components.insights-engagement-dashboard.additionalPermissionsAreRequiredToSendEmailsToUsersDialogText": "Additional permissions are required to be able to send emails to these users. Please contact your system administrator for access.",
 	"components.insights-engagement-dashboard.noResultsAvailable": "There are no results available that match your filters.",
 
 	"components.insights-role-filter.name": "Role",
