@@ -141,6 +141,7 @@ class ExpandCollapseContent extends LitElement {
 	}
 
 	_onTransitionEnd() {
+		console.log(`transitionend in state ${this._state}`);
 		if (this._state === states.EXPANDING) {
 			this._state = states.EXPANDED;
 			this._height = 'auto';
