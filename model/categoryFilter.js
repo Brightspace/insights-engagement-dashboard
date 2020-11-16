@@ -1,6 +1,7 @@
 import { action, computed, decorate, observable } from 'mobx';
 
 export class CategoryFilter {
+
 	constructor(filterId, title, filter) {
 		this.id = filterId;
 		this.title = title;

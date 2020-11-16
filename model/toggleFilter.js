@@ -20,10 +20,14 @@ export class ToggleFilter {
 	}
 
 	setIsApplied(newState) {
-		if (this.history) {
-			this.history.save(this.isApplied, (oldState) => this.isApplied = oldState);
+		if (this._history) {
+			this._history.save(this.isApplied, (oldState) => this.isApplied = oldState);
 		}
 		this.isApplied = newState;
+	}
+
+	set history(history) {
+		this._history = history;
 	}
 }
 
