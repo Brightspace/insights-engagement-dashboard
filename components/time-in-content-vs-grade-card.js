@@ -79,6 +79,9 @@ export class TimeInContentVsGradeFilter {
 	}
 
 	toggleQuadrant(quadrant) {
+		if (this.history) {
+			this.history.save(this.quadrant, (oldQuadrant) => this.toggleQuadrant(oldQuadrant));
+		}
 		if (this.quadrant === quadrant) {
 			this.quadrant = null;
 		} else {

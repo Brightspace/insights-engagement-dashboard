@@ -1,28 +1,25 @@
-import { computed, decorate, observable } from 'mobx';
+import { computed, decorate } from 'mobx';
 import { html } from 'lit-element';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { RECORD } from '../consts';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
+import { ToggleFilter } from '../model/toggleFilter';
 
 const filterId = 'd2l-insights-overdue-assignments-card';
 
-export class OverdueAssignmentsFilter {
+export class OverdueAssignmentsFilter extends ToggleFilter {
 	constructor() {
-		this.isApplied = false;
-	}
-
-	get id() { return filterId; }
-
-	get title() { return 'components.insights-engagement-dashboard.overdueAssignmentsHeading'; }
-
-	filter(record) {
-		return record[RECORD.OVERDUE] > 0;
+		super(
+			false,
+			filterId,
+			'components.insights-engagement-dashboard.overdueAssignmentsHeading',
+			(record) => {
+				return record[RECORD.OVERDUE] > 0;
+			}
+		);
 	}
 }
-decorate(OverdueAssignmentsFilter, {
-	isApplied: observable
-});
 
 class OverdueAssignmentsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
@@ -74,7 +71,7 @@ class OverdueAssignmentsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_valueClickHandler() {
-		this.filter.isApplied = !this.filter.isApplied;
+		this.filter.setIsApplied(!this.filter.isApplied);
 	}
 }
 decorate(OverdueAssignmentsCard, {

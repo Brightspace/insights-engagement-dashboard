@@ -37,7 +37,8 @@ export class Tree {
 		ancestorIds,
 		oldTree,
 		isDynamic = false,
-		extraChildren
+		extraChildren,
+		history
 	}) {
 		this.leafTypes = leafTypes;
 		this.invisibleTypes = invisibleTypes;
@@ -55,6 +56,9 @@ export class Tree {
 		this._loading = new Set();
 		this._hasMore = new Set();
 		this._bookmarks = new Map();
+
+		// to undo filtering
+		this._history = history;
 
 		// fill in children (parents are provided by the caller, and ancestors will be generated on demand)
 		this._updateChildren(this.ids);
@@ -319,6 +323,7 @@ export class Tree {
 	}
 
 	setSelected(id, isSelected) {
+		this._history.save({ id, isSelected }, (oldSelection) => this.setSelected(oldSelection.id, !oldSelection.isSelected));
 		// clicking on a node either fully selects or fully deselects its entire subtree
 		this._setSubtreeSelected(id, isSelected);
 

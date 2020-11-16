@@ -25,11 +25,20 @@ export class CategoryFilter {
 	}
 
 	toggleCategory(category) {
+
+		if (this._history) {
+			this._history.save({}, () => this.toggleCategory(category));
+		}
+
 		if (this.selectedCategories.has(category)) {
 			this.clearCategory(category);
 		} else {
 			this.selectCategory(category);
 		}
+	}
+
+	set history(history) {
+		this._history = history;
 	}
 }
 decorate(CategoryFilter, {

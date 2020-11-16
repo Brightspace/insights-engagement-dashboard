@@ -1,3 +1,4 @@
+import 'd2l-button';
 import { computed, decorate } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
 import { Localizer } from '../locales/localizer';
@@ -70,12 +71,17 @@ class MessageContainer extends Localizer(MobxLitElement) {
 		return this.localize('components.insights-engagement-dashboard.noResultsAvailable');
 	}
 
+	_handleUndo() {
+		this.dispatchEvent(new Event('d2l-insights-undo-last-filter'));
+	}
+
 	render() {
 		// conditinally render message text and body
 		if (this.isNoDataReturned) { //overwrite too many results case
 			return html`
 				<div class="d2l-insights-message-container-body-noResultsAvailable">
 					<span class="d2l-insights-message-container-value">${this._messageContainerTextNoResultsAvailable}</span>
+					<d2l-button primary slot="footer" @click="${this._handleUndo}">Undo Last Filter</d2l-button-subtle>
 				</div>
 			`;
 		} else if (this._isRecordsTruncated) {

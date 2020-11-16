@@ -18,6 +18,8 @@ export class FilteredData {
 	constructor(data, filters = []) {
 		this._data = data;
 		this.filters = filters;
+		// Side Effect: make all the filters aware of the state history
+		this.filters.forEach(filter => filter.history = data._history);
 	}
 
 	/**

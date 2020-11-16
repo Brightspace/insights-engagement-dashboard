@@ -39,6 +39,18 @@ class RoleFilter extends Localizer(LitElement) {
 			.map(roleId => Number(roleId));
 	}
 
+	// because the role controls it's own data the history can't update the selected state.
+	// We need to plug into the drop down and overwrite the selections with whatever the
+	// history gives us.
+	set selected(selections) {
+		this._filterData = this.shadowRoot.querySelector('d2l-insights-dropdown-filter').data.map(role => {
+			return {
+				...role,
+				selected: selections.includes(Number(role.id))
+			};
+		});
+	}
+
 	_setRoleData(roleData) {
 		roleData.sort((role1, role2) => {
 			// NB: it seems that localeCompare is pretty slow, but that's ok in this case, since there

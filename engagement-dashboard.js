@@ -148,6 +148,37 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		];
 	}
 
+	renderVisualization(isNotShow) {
+		if (!isNotShow) {
+			return html`
+				<div class="d2l-insights-summary-chart-layout">
+					<div class="d2l-insights-summary-container">
+						<d2l-insights-results-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-results-card>
+						<d2l-insights-overdue-assignments-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-overdue-assignments-card>
+						<d2l-insights-discussion-activity-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-discussion-activity-card>
+						<d2l-insights-last-access-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-last-access-card>
+					</div>
+					<div><d2l-insights-current-final-grade-card	.data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-current-final-grade-card></div>
+					<div><d2l-insights-time-in-content-vs-grade-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-time-in-content-vs-grade-card></div>
+					<div><d2l-insights-course-last-access-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-course-last-access-card></div>
+				</div>
+				<h2 class="d2l-heading-3">${this.localize('components.insights-engagement-dashboard.resultsHeading')}</h2>
+				<d2l-action-button-group class="d2l-table-action-button-group" min-to-show="0" max-to-show="2" opener-type="more">
+					<d2l-button-subtle
+						icon="d2l-tier1:email"
+						text="${this.localize('components.insights-engagement-dashboard.emailButton')}"
+						@click="${this._handleEmailButtonPress}">
+					</d2l-button-subtle>
+				</d2l-action-button-group>
+
+				<d2l-insights-users-table
+					.data="${this._data}"
+					?skeleton="${this._isLoading}"
+				></d2l-insights-users-table>
+			`;
+		}
+	}
+
 	render() {
 		return html`
 
@@ -190,37 +221,16 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 						?demo="${this.isDemo}"
 					></d2l-insights-role-filter>
 				</div>
-				<d2l-insights-message-container .data="${this._data}" .isNoDataReturned="${this._isNoUserResults}"></d2l-insights-message-container>
+				<d2l-insights-message-container
+					.data="${this._data}"
+					.isNoDataReturned="${this._isNoUserResults}"
+					@d2l-insights-undo-last-filter="${this._handleUndoLastFilter}"
+				></d2l-insights-message-container>
 				<h2 class="d2l-heading-3">${this.localize('components.insights-engagement-dashboard.summaryHeading')}</h2>
 				<div class="d2l-insights-summary-container-applied-filters">
 					<d2l-insights-applied-filters .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-applied-filters>
 				</div>
-				<div class="d2l-insights-summary-chart-layout">
-					<div class="d2l-insights-summary-container">
-						<d2l-insights-results-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-results-card>
-						<d2l-insights-overdue-assignments-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-overdue-assignments-card>
-						<d2l-insights-discussion-activity-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-discussion-activity-card>
-						<d2l-insights-last-access-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-last-access-card>
-					</div>
-					<div><d2l-insights-current-final-grade-card	.data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-current-final-grade-card></div>
-					<div><d2l-insights-time-in-content-vs-grade-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-time-in-content-vs-grade-card></div>
-					<div><d2l-insights-course-last-access-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-course-last-access-card></div>
-				</div>
-				<h2 class="d2l-heading-3">${this.localize('components.insights-engagement-dashboard.resultsHeading')}</h2>
-				<d2l-action-button-group class="d2l-table-action-button-group" min-to-show="0" max-to-show="2" opener-type="more">
-					<d2l-button-subtle
-						icon="d2l-tier1:email"
-						text="${this.localize('components.insights-engagement-dashboard.emailButton')}"
-						@click="${this._handleEmailButtonPress}">
-					</d2l-button-subtle>
-				</d2l-action-button-group>
-
-				<d2l-insights-users-table
-					.data="${this._data}"
-					?skeleton="${this._isLoading}"
-				></d2l-insights-users-table>
-
-
+				${ this.renderVisualization(this._isNoUserResults) }
 				<d2l-insights-default-view-popup
 					?opened=${Boolean(this._serverData.isDefaultView)}
 					.data="${this._serverData}">
@@ -266,10 +276,10 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	}
 
 	get _isNoUserResults() {
-		if (!this.isDemo) {
-			return this._data.records.length === 0 && !this._data.isLoading;
-		}
-		return false;
+		//if (!this.isDemo) {
+		return this._data.records.length === 0 && !this._data.isLoading;
+		//}
+		//return false;
 	}
 
 	get _serverData() {
@@ -300,6 +310,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 	_roleFilterChange(event) {
 		event.stopPropagation();
+		this._serverData.saveSelectedRoleIds(event.target);
 		this._serverData.selectedRoleIds = event.target.selected;
 	}
 
@@ -352,6 +363,10 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			measures: [event.detail.value],
 			action: 'PageLoad'
 		});
+	}
+
+	_handleUndoLastFilter() {
+		this._serverData._history.undo();
 	}
 
 	connectedCallback() {

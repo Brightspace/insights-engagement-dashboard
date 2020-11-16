@@ -2,15 +2,19 @@ import { action, computed, decorate, observable } from 'mobx';
 import { COURSE_OFFERING, USER } from '../consts';
 import { fetchCachedChildren, fetchLastSearch } from './lms.js';
 import { OrgUnitSelectorFilter, RoleSelectorFilter, SemesterSelectorFilter } from './selectorFilters.js';
+import StateHistory from './stateHistory';
 import { Tree } from '../components/tree-filter';
 
 /**
  * Data from the server, along with filter settings that are passed in server calls.
  */
+
 export class Data {
 	constructor({ recordProvider }) {
+
+		this._history = new StateHistory();
 		this.recordProvider = recordProvider;
-		this.orgUnitTree = new Tree({});
+		this.orgUnitTree = new Tree({ history: this._history });
 		this.userDictionary = null;
 
 		// @observables
@@ -39,6 +43,12 @@ export class Data {
 			semester: new SemesterSelectorFilter(this.serverData, this.orgUnitTree),
 			orgUnit: new OrgUnitSelectorFilter(this.serverData, this.orgUnitTree)
 		};
+
+		window.addEventListener('keydown', (e) => {
+			if (e.key === 'z' && e.ctrlKey) {
+				this._history.undo();
+			}
+		});
 
 		this.loadData({ defaultView: true });
 	}
@@ -71,7 +81,8 @@ export class Data {
 			// tree blink out and then come back as they are loaded again
 			extraChildren: newServerData.isOrgUnitsTruncated ?
 				fetchCachedChildren(newServerData.selectedSemestersIds) || new Map() :
-				null
+				null,
+			history: this._history
 		});
 
 		this.userDictionary = new Map(newServerData.users.map(user => [user[USER.ID], user]));
@@ -82,6 +93,20 @@ export class Data {
 			role: new RoleSelectorFilter(this.serverData),
 			semester: new SemesterSelectorFilter(this.serverData, this.orgUnitTree),
 			orgUnit: new OrgUnitSelectorFilter(this.serverData, this.orgUnitTree)
+		};
+	}
+
+	saveSelectedRoleIds(target) {
+		this._history.save(
+			Array.from(this._selectorFilters.role.selected),
+			this.undoSetSelectedRoleIds(target)
+		);
+	}
+
+	undoSetSelectedRoleIds(target) {
+		return (oldRoles) => {
+			this._selectorFilters.role.selected = oldRoles;
+			target.selected = oldRoles;
 		};
 	}
 
@@ -97,10 +122,18 @@ export class Data {
 		return this._selectorFilters.role.selected;
 	}
 
+	saveSelectedSemesterIds() {
+		this._history.save(
+			this._selectorFilters.semester.selected,
+			(oldSemesters) => this._selectorFilters.semester.selected = oldSemesters
+		);
+	}
+
 	set selectedSemesterIds(newSemesterIds) {
 		if (this._selectorFilters.semester.shouldReloadFromServer(newSemesterIds)) {
 			this.loadData({ newSemesterIds });
 		} else {
+			this.saveSelectedSemesterIds();
 			this._selectorFilters.semester.selected = newSemesterIds;
 		}
 	}

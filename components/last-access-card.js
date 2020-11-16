@@ -1,9 +1,11 @@
-import { computed, decorate, observable } from 'mobx';
+import { computed, decorate } from 'mobx';
 import { RECORD, USER } from '../consts';
 import { html } from 'lit-element';
 import { Localizer } from '../locales/localizer';
+
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
+import { ToggleFilter } from '../model/toggleFilter';
 
 export const filterId = 'd2l-insights-last-access-card';
 const fourteenDayMillis = 1209600000;
@@ -12,26 +14,19 @@ function isWithoutRecentAccess(user) {
 	return !user[USER.LAST_SYS_ACCESS] || ((Date.now() - user[USER.LAST_SYS_ACCESS]) > fourteenDayMillis);
 }
 
-export class LastAccessFilter {
+export class LastAccessFilter extends ToggleFilter {
 	constructor() {
-		this.isApplied = false;
-	}
-
-	get id() { return filterId; }
-
-	get title() {
-		return 'components.insights-engagement-dashboard.lastSystemAccessHeading';
-	}
-
-	filter(record, userDictionary) {
-		const user = userDictionary.get(record[RECORD.USER_ID]);
-		return isWithoutRecentAccess(user);
+		super(
+			false,
+			filterId,
+			'components.insights-engagement-dashboard.lastSystemAccessHeading',
+			(record, userDictionary) => {
+				const user = userDictionary.get(record[RECORD.USER_ID]);
+				return isWithoutRecentAccess(user);
+			}
+		);
 	}
 }
-
-decorate(LastAccessFilter, {
-	isApplied: observable
-});
 
 class LastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
@@ -78,7 +73,7 @@ class LastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_valueClickHandler() {
-		this.filter.isApplied = !this.filter.isApplied;
+		this.filter.setIsApplied(!this.filter.isApplied);
 	}
 }
 customElements.define('d2l-insights-last-access-card', LastAccessCard);
