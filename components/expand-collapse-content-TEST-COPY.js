@@ -134,6 +134,7 @@ class ExpandCollapseContent extends LitElement {
 				if (this._state === states.PRECOLLAPSING) {
 					this._state = states.COLLAPSING;
 					this._height = '0';
+					console.log(`set height to 0; state is ${this._state} and expanded is ${this.expanded}`);
 				}
 			}
 		}
