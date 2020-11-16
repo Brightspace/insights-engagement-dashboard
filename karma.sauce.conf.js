@@ -28,6 +28,7 @@ const customLaunchers = {
 module.exports = config => {
 	config.set(
 		merge(createDefaultConfig(config), {
+			extendedDebugging: true,
 			// from https://support.saucelabs.com/hc/en-us/articles/225104707-Karma-Tests-Disconnect-Particularly-When-Running-Tests-on-Safari
 			// to avoid DISCONNECTED messages
 			browserDisconnectTimeout: 10000, // default 2000

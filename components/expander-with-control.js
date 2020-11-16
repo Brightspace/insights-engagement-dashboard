@@ -1,4 +1,4 @@
-import '@brightspace-ui/core/components/expand-collapse/expand-collapse-content';
+import './expand-collapse-content-TEST-COPY';
 import '@brightspace-ui/core/components/button/button-icon';
 
 import { css, html, LitElement } from 'lit-element';
