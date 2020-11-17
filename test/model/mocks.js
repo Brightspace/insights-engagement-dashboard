@@ -51,9 +51,9 @@ export const records = [
 	[112, 100, mockRoleIds.admin, 0, null, 0, null, 0, 0, 0],
 	[112, 200, mockRoleIds.instructor, 0, null, 0, null, 0, 0, 0], // this person was promoted from student to instructor
 	[113, 100, mockRoleIds.admin, 0, null, 0, null, 0, 0, 0],
-	[113, 300, mockRoleIds.student, 0, 75, 6000, null, 0, 12, 44],
+	[113, 300, mockRoleIds.student, 0, 75, 6000, Date.now() - 352800000, 0, 12, 44],
 	// course 2 offerings
-	[212, 100, mockRoleIds.admin, 0, null, 0, 0, 0, 0, 0],
+	[212, 100, mockRoleIds.admin, 0, null, 0, null, 0, 0, 0],
 	[212, 200, mockRoleIds.student, 0, 84, 4000, null, 0, 0, 0],
 	[212, 300, mockRoleIds.instructor, 0, null, 0, null, 0, 0, 0],
 

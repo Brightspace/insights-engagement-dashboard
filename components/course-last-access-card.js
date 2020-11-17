@@ -17,6 +17,7 @@ function lastAccessDateBucket(record) {
 	const fourteenDayMillis = 1209600000;
 	const sevenDayMillis = 604800000;
 	const fiveDayMillis = 432000000;
+	const threeDayMillis = 259200000;
 	const oneDayMillis = 86400000;
 	if (courseLastAccessDateRange < 0) {
 		return 0;
@@ -25,6 +26,9 @@ function lastAccessDateBucket(record) {
 		return 1;
 	}
 	if (courseLastAccessDateRange <= oneDayMillis) {
+		return 6;
+	}
+	if (courseLastAccessDateRange <= threeDayMillis) {
 		return 5;
 	}
 	if (courseLastAccessDateRange <= fiveDayMillis) {
@@ -117,8 +121,8 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _preparedBarChartData() {
-		// return an array of size 6, each element mapping to a category on the course last access bar chart
-		const dateBucketCounts = [0, 0, 0, 0, 0, 0];
+		// return an array of size 7, each element mapping to a category on the course last access bar chart
+		const dateBucketCounts = [0, 0, 0, 0, 0, 0, 0];
 		this.data
 			.withoutFilter(filterId)
 			.records
@@ -129,7 +133,7 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get _colours() {
 		if (!this.isApplied) return ['var(--d2l-color-celestine)'];
 
-		return [0, 1, 2, 3, 4, 5]
+		return [0, 1, 2, 3, 4, 5, 6]
 			.map(category =>
 				(this.category.has(category) ?
 					'var(--d2l-color-celestine)' :
@@ -147,7 +151,8 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			this.localize('components.insights-course-last-access-card.moreThanFourteenDaysAgo'),
 			this.localize('components.insights-course-last-access-card.sevenToFourteenDaysAgo'),
 			this.localize('components.insights-course-last-access-card.fiveToSevenDaysAgo'),
-			this.localize('components.insights-course-last-access-card.oneToFiveDaysAgo'),
+			this.localize('components.insights-course-last-access-card.threeToFiveDaysAgo'),
+			this.localize('components.insights-course-last-access-card.oneToThreeDaysAgo'),
 			this.localize('components.insights-course-last-access-card.lessThanOneDayAgo')
 		];
 	}
@@ -158,7 +163,8 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			this.localize('components.insights-course-last-access-card.tooltipMoreThanFourteenDays', { numberOfUsers }),
 			this.localize('components.insights-course-last-access-card.toolTipSevenToFourteenDays', { numberOfUsers }),
 			this.localize('components.insights-course-last-access-card.toolTipFiveToSevenDays', { numberOfUsers }),
-			this.localize('components.insights-course-last-access-card.toolTipOneToFiveDays', { numberOfUsers }),
+			this.localize('components.insights-course-last-access-card.toolTipThreeToFiveDays', { numberOfUsers }),
+			this.localize('components.insights-course-last-access-card.toolTipOneToThreeDays', { numberOfUsers }),
 			this.localize('components.insights-course-last-access-card.toolTipLessThanOneDay', { numberOfUsers })
 		];
 	}
@@ -169,7 +175,8 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			this.localize('components.insights-course-last-access-card.tooltipMoreThanFourteenDaysSingleUser'),
 			this.localize('components.insights-course-last-access-card.toolTipSevenToFourteenDaysSingleUser'),
 			this.localize('components.insights-course-last-access-card.toolTipFiveToSevenDaysSingleUser'),
-			this.localize('components.insights-course-last-access-card.toolTipOneToFiveDaysSingleUser'),
+			this.localize('components.insights-course-last-access-card.toolTipThreeToFiveDaysSingleUser'),
+			this.localize('components.insights-course-last-access-card.toolTipOneToThreeDaysSingleUser'),
 			this.localize('components.insights-course-last-access-card.toolTipLessThanOneDaySingleUser')
 		];
 	}
@@ -274,7 +281,7 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 						description: this._chartDescriptionTextLabel,
 						pointDescriptionFormatter: function(point) {
 							const val = point.y;
-							if (point.x === 5) {
+							if (point.x === 6) {
 								return `${that._accessibilityLessThanOneLabel}, ${that._horizontalLabel}, ${val}.`;
 							}
 							return `${that._cardCategoriesText[point.x]}, ${that._horizontalLabel}, ${val}.`;

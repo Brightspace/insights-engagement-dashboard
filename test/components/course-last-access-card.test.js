@@ -31,7 +31,7 @@ describe('d2l-insights-course-last-access-card', () => {
 			await new Promise(resolve => setTimeout(resolve, 200)); // allow fetch to run
 			const title = (el.shadowRoot.querySelectorAll('div.d2l-insights-course-last-access-title'));
 			expect(title[0].innerText).to.equal('Course Access');
-			expect(el._preparedBarChartData.toString()).to.equal([39, 7, 0, 0, 1, 1].toString());
+			expect(el._preparedBarChartData.toString()).to.equal([39, 6, 0, 0, 1, 1, 1].toString());
 			expect(el._colours).to.deep.equal(['var(--d2l-color-celestine)']);
 		});
 
@@ -45,7 +45,8 @@ describe('d2l-insights-course-last-access-card', () => {
 				'var(--d2l-color-mica)',
 				'var(--d2l-color-mica)',
 				'var(--d2l-color-mica)',
-				'var(--d2l-color-celestine)'
+				'var(--d2l-color-celestine)',
+				'var(--d2l-color-mica)',
 			]);
 		});
 	});
