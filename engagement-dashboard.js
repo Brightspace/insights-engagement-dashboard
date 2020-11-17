@@ -148,6 +148,12 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		];
 	}
 
+	renderSummaryHeader(isNotShow) {
+		if (!isNotShow) {
+			return html`<h2 class="d2l-heading-3">${this.localize('components.insights-engagement-dashboard.summaryHeading')}</h2>`;
+		}
+	}
+
 	renderVisualization(isNotShow) {
 		if (!isNotShow) {
 			return html`
@@ -226,7 +232,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 					.isNoDataReturned="${this._isNoUserResults}"
 					@d2l-insights-undo-last-filter="${this._handleUndoLastFilter}"
 				></d2l-insights-message-container>
-				<h2 class="d2l-heading-3">${this.localize('components.insights-engagement-dashboard.summaryHeading')}</h2>
+				${ this.renderSummaryHeader(this._isNoUserResults) }
 				<div class="d2l-insights-summary-container-applied-filters">
 					<d2l-insights-applied-filters .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-applied-filters>
 				</div>

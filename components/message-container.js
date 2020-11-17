@@ -35,8 +35,10 @@ class MessageContainer extends Localizer(MobxLitElement) {
 				border-radius: 8px;
 				color: var(--d2l-color-ferrite);
 				display: flex;
+				flex-direction: column;
 				height: 130px;
 				margin-bottom: 20px;
+				padding: 40px;
 				width: 73vw;
 			}
 
@@ -51,9 +53,12 @@ class MessageContainer extends Localizer(MobxLitElement) {
 			}
 
 			.d2l-insights-message-container-value {
-				padding-left: 40px;
-				padding-top: 50px;
+				margin: auto 0;
 				word-wrap: break-word;
+			}
+
+			.d2l-insights-message-container-body-noResultsAvailable > d2l-button {
+				width: 200px;
 			}
 		`;
 	}
@@ -71,6 +76,10 @@ class MessageContainer extends Localizer(MobxLitElement) {
 		return this.localize('components.insights-engagement-dashboard.noResultsAvailable');
 	}
 
+	get _undoButtonText() {
+		return this.localize('components.insights-engagement-dashboard.undoLastAction');
+	}
+
 	_handleUndo() {
 		this.dispatchEvent(new Event('d2l-insights-undo-last-filter'));
 	}
@@ -81,7 +90,8 @@ class MessageContainer extends Localizer(MobxLitElement) {
 			return html`
 				<div class="d2l-insights-message-container-body-noResultsAvailable">
 					<span class="d2l-insights-message-container-value">${this._messageContainerTextNoResultsAvailable}</span>
-					<d2l-button primary slot="footer" @click="${this._handleUndo}">Undo Last Filter</d2l-button-subtle>
+					<br/>
+					<d2l-button primary slot="footer" @click="${this._handleUndo}">${this._undoButtonText}</d2l-button-subtle>
 				</div>
 			`;
 		} else if (this._isRecordsTruncated) {
