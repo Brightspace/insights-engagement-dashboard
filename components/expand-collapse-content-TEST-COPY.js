@@ -89,6 +89,7 @@ class ExpandCollapseContent extends LitElement {
 	}
 
 	async _expandedChanged(val, firstUpdate) {
+		console.log(`expanded changed to ${val}`);
 		const eventPromise = new Promise(resolve => this._eventPromiseResolve = resolve);
 		if (val) {
 			if (!firstUpdate) {
@@ -103,12 +104,16 @@ class ExpandCollapseContent extends LitElement {
 				this._eventPromiseResolve();
 			} else {
 				this._state = states.PREEXPANDING;
+				console.log('awaiting preeaxpand updateComplete');
 				await this.updateComplete;
+				console.log(`waiting for expand animation frame in state ${this._state}`);
 				await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+				console.log(`expanding now from state ${this._state}`);
 				if (this._state === states.PREEXPANDING) {
 					this._state = states.EXPANDING;
 					const content = this.shadowRoot.querySelector('.d2l-expand-collapse-content-inner');
 					this._height = `${content.scrollHeight}px`;
+					console.log(`set height to 0; state is ${this._state} and expanded is ${this.expanded}`);
 				}
 			}
 		} else {
