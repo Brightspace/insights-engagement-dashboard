@@ -44,11 +44,7 @@ export class Data {
 			orgUnit: new OrgUnitSelectorFilter(this.serverData, this.orgUnitTree)
 		};
 
-		window.addEventListener('keydown', (e) => {
-			if (e.key === 'z' && e.ctrlKey) {
-				this._history.undo();
-			}
-		});
+		this._history.registerCtrlZ();
 
 		this.loadData({ defaultView: true });
 	}
@@ -94,20 +90,23 @@ export class Data {
 			semester: new SemesterSelectorFilter(this.serverData, this.orgUnitTree),
 			orgUnit: new OrgUnitSelectorFilter(this.serverData, this.orgUnitTree)
 		};
+
+		this._history.register('role-filter', this.undoSetSelectedRoleIds.bind(this));
+		this._history.register('semester-filter', this.undoSetSelectedSemesterIds.bind(this));
 	}
 
 	saveSelectedRoleIds(target) {
 		this._history.save(
-			Array.from(this._selectorFilters.role.selected),
-			this.undoSetSelectedRoleIds(target)
+			'role-filter',
+			{ target, data: Array.from(this._selectorFilters.role.selected) }
 		);
 	}
 
-	undoSetSelectedRoleIds(target) {
-		return (oldRoles) => {
-			this._selectorFilters.role.selected = oldRoles;
-			target.selected = oldRoles;
-		};
+	undoSetSelectedRoleIds(oldRoles) {
+		const target = oldRoles.target;
+		const data = oldRoles.data;
+		this._selectorFilters.role.selected = data;
+		target.selected = data;
 	}
 
 	set selectedRoleIds(newRoleIds) {
@@ -124,9 +123,13 @@ export class Data {
 
 	saveSelectedSemesterIds() {
 		this._history.save(
-			this._selectorFilters.semester.selected,
-			(oldSemesters) => this._selectorFilters.semester.selected = oldSemesters
+			'semester-filter',
+			this._selectorFilters.semester.selected
 		);
+	}
+
+	undoSetSelectedSemesterIds(oldSemesters) {
+		this._selectorFilters.semester.selected = oldSemesters;
 	}
 
 	set selectedSemesterIds(newSemesterIds) {

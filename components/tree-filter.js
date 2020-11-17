@@ -58,7 +58,9 @@ export class Tree {
 		this._bookmarks = new Map();
 
 		// to undo filtering
+		this.name = 'tree-filter';
 		this._history = history;
+		this._history.register(this.name, (oldSelection) => this.setSelected(oldSelection.id, !oldSelection.isSelected));
 
 		// fill in children (parents are provided by the caller, and ancestors will be generated on demand)
 		this._updateChildren(this.ids);
@@ -323,7 +325,7 @@ export class Tree {
 	}
 
 	setSelected(id, isSelected) {
-		this._history.save({ id, isSelected }, (oldSelection) => this.setSelected(oldSelection.id, !oldSelection.isSelected));
+		this._history.save(this.name, { id, isSelected });
 		// clicking on a node either fully selects or fully deselects its entire subtree
 		this._setSubtreeSelected(id, isSelected);
 

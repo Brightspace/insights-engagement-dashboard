@@ -28,7 +28,7 @@ export class CategoryFilter {
 	toggleCategory(category) {
 
 		if (this._history) {
-			this._history.save({}, () => this.toggleCategory(category));
+			this._history.save(this.title, category);
 		}
 
 		if (this.selectedCategories.has(category)) {
@@ -40,6 +40,7 @@ export class CategoryFilter {
 
 	set history(history) {
 		this._history = history;
+		history.register(this.title, (oldCategory) => this.toggleCategory(oldCategory));
 	}
 }
 decorate(CategoryFilter, {
