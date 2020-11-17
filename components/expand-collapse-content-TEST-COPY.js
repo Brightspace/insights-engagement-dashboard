@@ -89,7 +89,7 @@ class ExpandCollapseContent extends LitElement {
 	}
 
 	async _expandedChanged(val, firstUpdate) {
-		console.log(`expanded changed to ${val}`);
+		console.log(`${(new Date()).toTimeString()} expanded changed to ${val}`);
 		const eventPromise = new Promise(resolve => this._eventPromiseResolve = resolve);
 		if (val) {
 			if (!firstUpdate) {
@@ -104,16 +104,16 @@ class ExpandCollapseContent extends LitElement {
 				this._eventPromiseResolve();
 			} else {
 				this._state = states.PREEXPANDING;
-				console.log('awaiting preeaxpand updateComplete');
+				console.log(`${(new Date()).toTimeString()} awaiting preeaxpand updateComplete`);
 				await this.updateComplete;
-				console.log(`waiting for expand animation frame in state ${this._state}`);
+				console.log(`${(new Date()).toTimeString()} waiting for expand animation frame in state ${this._state}`);
 				await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-				console.log(`expanding now from state ${this._state}`);
+				console.log(`${(new Date()).toTimeString()} expanding now from state ${this._state}`);
 				if (this._state === states.PREEXPANDING) {
 					this._state = states.EXPANDING;
 					const content = this.shadowRoot.querySelector('.d2l-expand-collapse-content-inner');
 					this._height = `${content.scrollHeight}px`;
-					console.log(`set height to 0; state is ${this._state} and expanded is ${this.expanded}`);
+					console.log(`${(new Date()).toTimeString()} set height to 0; state is ${this._state} and expanded is ${this.expanded}`);
 				}
 			}
 		} else {
@@ -131,22 +131,22 @@ class ExpandCollapseContent extends LitElement {
 				this._state = states.PRECOLLAPSING;
 				const content = this.shadowRoot.querySelector('.d2l-expand-collapse-content-inner');
 				this._height = `${content.scrollHeight}px`;
-				console.log('waiting for precollapse updateComplete');
+				console.log(`${(new Date()).toTimeString()} waiting for precollapse updateComplete`);
 				await this.updateComplete;
-				console.log(`waiting for collapse animation frame in state ${this._state}`);
+				console.log(`${(new Date()).toTimeString()} waiting for collapse animation frame in state ${this._state}`);
 				await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-				console.log(`collapsing now from state ${this._state}`);
+				console.log(`${(new Date()).toTimeString()} collapsing now from state ${this._state}`);
 				if (this._state === states.PRECOLLAPSING) {
 					this._state = states.COLLAPSING;
 					this._height = '0';
-					console.log(`set height to 0; state is ${this._state} and expanded is ${this.expanded}`);
+					console.log(`${(new Date()).toTimeString()} set height to 0; state is ${this._state} and expanded is ${this.expanded}`);
 				}
 			}
 		}
 	}
 
 	_onTransitionEnd() {
-		console.log(`transitionend in state ${this._state}`);
+		console.log(`${(new Date()).toTimeString()} transitionend in state ${this._state}`);
 		if (this._state === states.EXPANDING) {
 			this._state = states.EXPANDED;
 			this._height = 'auto';

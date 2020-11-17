@@ -73,7 +73,7 @@ describe('d2l-insights-expander-with-control', () => {
 
 		it('should fire collapsed event if element is expanded and control is clicked', async function() {
 			this.timeout(8000);
-			console.log('start collapse test');
+			console.log(`${(new Date()).toTimeString()} start collapse test`);
 
 			const listener = oneEvent(elExpanded, 'd2l-insights-expander-with-control-collapsed');
 
