@@ -17,6 +17,7 @@ import './components/discussion-activity-card.js';
 import './components/message-container.js';
 import './components/default-view-popup.js';
 import './components/user-drill-view.js';
+import './components/dashboard-settings';
 
 import { css, html } from 'lit-element/lit-element.js';
 import { getPerformanceLoadPageMeasures, TelemetryHelper } from './model/telemetry-helper';
@@ -65,10 +66,15 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			css`
 				:host {
 					display: block;
-					padding: 0 30px;
+					height: 100%;
 				}
 				:host([hidden]) {
 					display: none;
+				}
+
+				.d2l-insights-engagement-dashboard-home {
+					background-color: white;
+					padding: 0 30px 30px 30px;
 				}
 
 				.d2l-insights-chart-container {
@@ -143,7 +149,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 						margin-bottom: 10px;
 					}
 
-					:host {
+					.d2l-insights-engagement-dashboard-home {
 						display: block;
 						padding: 0 18px;
 					}
@@ -160,6 +166,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		switch (this.currentView) {
 			case 'home': return this._renderHomeView();
 			case 'user': return this._renderUserDrillView();
+			case 'settings': return this._renderSettingsPageView();
 		}
 	}
 
@@ -179,9 +186,17 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		`;
 	}
 
+	_renderSettingsPageView() {
+		return html`
+			<d2l-insights-engagement-dashboard-settings
+				@d2l-insights-settings-view-back="${this._backToHomeHandler}"
+			></d2l-insights-engagement-dashboard-settings>
+		`;
+	}
+
 	_renderHomeView() {
 		return html`
-
+			<div class="d2l-insights-engagement-dashboard-home">
 				<d2l-insights-aria-loading-progress .data="${this._data}"></d2l-insights-aria-loading-progress>
 
 				<div class="d2l-heading-button-group">
@@ -201,6 +216,11 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 							icon="d2l-tier1:help"
 							text=${this.localize('components.insights-engagement-dashboard.learMore')}
 							@click="${this._openHelpLink}">
+						</d2l-button-subtle>
+						<d2l-button-subtle
+							icon="d2l-tier1:gear"
+							text=${this.localize('components.insights-settings-view.title')}
+							@click="${this._openSettingsPage}">
 						</d2l-button-subtle>
 					</d2l-action-button-group>
 				</div>
@@ -264,6 +284,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 						${this.localize('components.insights-default-view-popup.buttonOk')}
 					</d2l-button>
 				</d2l-dialog-confirm>
+			</div>
 		`;
 	}
 
@@ -332,6 +353,10 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 	_openHelpLink() {
 		window.open('https://community.brightspace.com/s/article/Brightspace-Performance-Plus-Analytics-Administrator-Guide', '_blank');
+	}
+
+	_openSettingsPage() {
+		this.currentView = 'settings';
 	}
 
 	_roleFilterChange(event) {

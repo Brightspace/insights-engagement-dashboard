@@ -22,13 +22,13 @@ class UserDrill extends Localizer(MobxLitElement) {
 			css`
 			:host {
 				display: block;
+				padding: 30px 30px 0 30px;
 			}
 			:host([hidden]) {
 				display: none;
 			}
 
 			.d2l-insights-user-drill-view-container {
-				padding-top: 30px;
 				width: 100%;
 			}
 
