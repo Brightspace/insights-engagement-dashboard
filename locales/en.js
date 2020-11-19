@@ -138,5 +138,14 @@ export default {
 	"components.insights-default-view-popup.emptyResultsFromNRecentSemesters": "This dashboard is designed to look at portions of your organization's engagement. You do not have permission to review data in any courses in the most recently created {numDefaultSemesters} semesters.",
 	"components.insights-default-view-popup.expandDefaultCourseList": "Expand to see the courses included in your default view",
 	"components.insights-default-view-popup.collapseDefaultCourseList": "Collapse the list of courses included in your default view",
-	"components.insights-default-view-popup.buttonOk": "Ok"
+	"components.insights-default-view-popup.buttonOk": "Ok",
+	
+	"components.insights-active-courses-table.title": "Active Courses",
+	"components.insights-active-courses-table.loadingPlaceholder": "Loading",
+	"components.insights-active-courses-table.course": "Course",
+	"components.insights-active-courses-table.currentGrade": "Current Grade",
+	"components.insights-active-courses-table.predictedGrade": "Predicted Grade",
+	"components.insights-active-courses-table.discussions": "Discussions",
+	"components.insights-active-courses-table.timeInContent": "Time in Content"
+
 };

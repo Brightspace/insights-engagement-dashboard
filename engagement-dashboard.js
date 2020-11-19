@@ -7,6 +7,7 @@ import './components/results-card.js';
 import './components/debug-card.js';
 import './components/role-filter.js';
 import './components/semester-filter.js';
+import './components/active-courses-table.js';
 import './components/users-table.js';
 import './components/table.js';
 import './components/current-final-grade-card.js';
@@ -220,6 +221,10 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 					?skeleton="${this._isLoading}"
 				></d2l-insights-users-table>
 
+				<d2l-insights-active-courses-table
+					.data="${this._data}"
+					?skeleton="${this._isLoading}"
+				></d2l-insights-active-courses-table>
 
 				<d2l-insights-default-view-popup
 					?opened=${Boolean(this._serverData.isDefaultView)}
