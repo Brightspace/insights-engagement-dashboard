@@ -145,5 +145,11 @@ export default {
 
 	"components.insights-user-drill-view.exportToCsv": "Export to CSV",
 	"components.insights-user-drill-view.print": "Print",
-	"components.insights-user-drill-view.emailButton": "Back"
+	"components.insights-user-drill-view.emailButton": "Back",
+
+	"components.insights-settings-view.title": "Settings",
+	"components.insights-settings-view.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
+	"components.insights-settings-view.saveAndClose": "Save and Close",
+	"components.insights-settings-view.save": "Save",
+	"components.insights-settings-view.cancel": "Cancel"
 };

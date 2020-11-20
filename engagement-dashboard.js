@@ -18,6 +18,7 @@ import './components/message-container.js';
 import './components/default-view-popup.js';
 import './components/user-drill-view.js';
 import './components/immersive-nav.js';
+import './components/dashboard-settings';
 
 import { css, html } from 'lit-element/lit-element.js';
 import { getPerformanceLoadPageMeasures, TelemetryHelper } from './model/telemetry-helper';
@@ -212,6 +213,8 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				return this._renderHomeView();
 			case 'user':
 				return this._renderUserDrillView();
+			case 'settings':
+				return this._renderSettingsView();
 		}
 	}
 
@@ -236,6 +239,22 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				.user="${user}"
 				@d2l-insights-user-drill-view-back="${this._backToHomeHandler}"
 			></d2l-insights-user-drill-view>
+		`;
+	}
+
+	_renderSettingsView() {
+		return html`
+			<d2l-insights-immersive-nav
+				back-button-type="button"
+				main-text="${this.localize('components.insights-settings-view.title')}"
+				back-text="${this.localize('components.insights-engagement-dashboard.backToEngagementDashboard')}"
+				back-text-short="${this.localize('components.insights-engagement-dashboard.backLinkTextShort')}"
+				@d2l-insights-immersive-nav-back="${this._backToHomeHandler}"
+			></d2l-insights-immersive-nav>
+
+			<d2l-insights-engagement-dashboard-settings
+				@d2l-insights-settings-view-back="${this._backToHomeHandler}"
+			></d2l-insights-engagement-dashboard-settings>
 		`;
 	}
 
@@ -268,6 +287,11 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 						icon="d2l-tier1:help"
 						text=${this.localize('components.insights-engagement-dashboard.learMore')}
 						@click="${this._openHelpLink}">
+					</d2l-button-subtle>
+					<d2l-button-subtle
+						icon="d2l-tier1:gear"
+						text=${this.localize('components.insights-settings-view.title')}
+						@click="${this._openSettingsPage}">
 					</d2l-button-subtle>
 				</d2l-action-button-group>
 			</div>
@@ -444,6 +468,10 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 	_openHelpLink() {
 		window.open('https://community.brightspace.com/s/article/Brightspace-Performance-Plus-Analytics-Administrator-Guide', '_blank');
+	}
+
+	_openSettingsPage() {
+		this.currentView = 'settings';
 	}
 
 	_roleFilterChange(event) {
