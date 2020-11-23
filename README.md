@@ -97,6 +97,11 @@ npm run test:headless
 npm run test:headless:watch
 ```
 
+#### Note on Sauce Labs tests
+
+Pull requests run cross-browser tests using Sauce. For troubleshooting,
+see https://wiki.saucelabs.com/pages/viewpage.action?pageId=70072943.
+
 ### Visual Diff Testing
 
 This repo uses the [@brightspace-ui/visual-diff utility](https://github.com/BrightspaceUI/visual-diff/) to compare current snapshots against a set of golden snapshots stored in source control.

@@ -1,6 +1,6 @@
 import '../../components/expander-with-control';
 
-import { expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper';
 
 describe('d2l-insights-expander-with-control', () => {
@@ -71,26 +71,30 @@ describe('d2l-insights-expander-with-control', () => {
 
 	describe('interactions/eventing', () => {
 
-		// This test fails on Chrome/OSX and it seems to sometimes crash Safari as well. I don't understand why, but
-		// collapsing and expanding does work on a real LMS
-		it.skip('should fire collapsed event if element is expanded and control is clicked', async function() {
-			this.timeout(3000);
+		it('should fire collapsed event if element is expanded and control is clicked', async function() {
+			// during Sauce tests, on Chrome for Mac, the wait for next animation frame in the d2l-expand-collapse-content
+			// sometimes takes over ten seconds - this is presumably an artifact of that test environment
+			this.timeout(15000);
 
-			const controlDiv = elExpanded.shadowRoot.querySelector('div');
-			setTimeout(() => controlDiv.click());
-			await new Promise(resolve => {
-				elExpanded.addEventListener('d2l-insights-expander-with-control-collapsed', (e => resolve(e)), { once: true });
-			});
+			const listener = oneEvent(elExpanded, 'd2l-insights-expander-with-control-collapsed');
+
+			const controlDiv = elExpanded.shadowRoot.querySelector('d2l-button-icon');
+			controlDiv.click();
+
+			const event = await listener;
+			expect(event.target).to.equal(elExpanded);
 		});
 
 		it('should fire expanded event if element is collapsed and control is clicked', async function() {
-			this.timeout(3000);
+			this.timeout(15000);
 
-			const controlDiv = elCollapsed.shadowRoot.querySelector('div');
-			setTimeout(() => controlDiv.click());
-			await new Promise(resolve => {
-				elCollapsed.addEventListener('d2l-insights-expander-with-control-expanded', (e => resolve(e)), { once: true });
-			});
+			const listener = oneEvent(elCollapsed, 'd2l-insights-expander-with-control-expanded');
+
+			const controlDiv = elCollapsed.shadowRoot.querySelector('d2l-button-icon');
+			controlDiv.click();
+
+			const event = await listener;
+			expect(event.target).to.equal(elCollapsed);
 		});
 	});
 });

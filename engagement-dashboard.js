@@ -17,6 +17,7 @@ import './components/course-last-access-card.js';
 import './components/discussion-activity-card.js';
 import './components/message-container.js';
 import './components/default-view-popup.js';
+import './components/user-drill-view.js';
 
 import { css, html } from 'lit-element/lit-element.js';
 import { getPerformanceLoadPageMeasures, TelemetryHelper } from './model/telemetry-helper';
@@ -39,6 +40,7 @@ import { toJS } from 'mobx';
 
 /**
  * @property {Boolean} isDemo - if true, use canned data; otherwise call the LMS
+ * @property {String} currentView - is the name of supported view. Valid values: home, user, settings
  * @property {String} telemetryEndpoint - endpoint for gathering telemetry performance data
  * @property {String} telemetryId - GUID that is used to group performance metrics for each separate page load
  */
@@ -47,9 +49,15 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	static get properties() {
 		return {
 			isDemo: { type: Boolean, attribute: 'demo' },
+			currentView: { type: String, attribute: 'view', reflect: true },
 			telemetryEndpoint: { type: String, attribute: 'telemetry-endpoint' },
 			telemetryId: { type: String, attribute: 'telemetry-id' },
 		};
+	}
+
+	constructor() {
+		super();
+		this.currentView = 'home';
 	}
 
 	static get styles() {
@@ -150,6 +158,29 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	}
 
 	render() {
+		switch (this.currentView) {
+			case 'home': return this._renderHomeView();
+			case 'user': return this._renderUserDrillView();
+		}
+	}
+
+	_renderUserDrillView() {
+		const user = {
+			firstName: 'Dane',
+			lastName: 'Clarie',
+			username: 'claire.dane',
+			userId: 887
+		};
+
+		return html`
+			<d2l-insights-user-drill-view
+				.user="${user}"
+				@d2l-insights-user-drill-view-back="${this._backToHomeHandler}"
+			></d2l-insights-user-drill-view>
+		`;
+	}
+
+	_renderHomeView() {
 		return html`
 
 				<d2l-insights-aria-loading-progress .data="${this._data}"></d2l-insights-aria-loading-progress>
@@ -239,6 +270,11 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 					</d2l-button>
 				</d2l-dialog-confirm>
 		`;
+	}
+
+	_backToHomeHandler(event) {
+		event.stopPropagation();
+		this.currentView = 'home';
 	}
 
 	_exportToCsv() {
