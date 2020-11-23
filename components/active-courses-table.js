@@ -11,7 +11,7 @@ import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton
 
 export const TABLE_USER = {
 	COURSE: 0,
-	AVG_GRADE: 1,
+	CURRENT_GRADE: 1,
 	AVG_TIME_IN_CONTENT: 2,
 	AVG_DISCUSSION_ACTIVITY: 3,
 	LAST_ACCESSED_SYS: 4
@@ -134,8 +134,8 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	_formatDataForDisplay(user) {
 		return [
 			user[TABLE_USER.COURSE],
-			user[TABLE_USER.AVG_GRADE] ? formatPercent(user[TABLE_USER.AVG_GRADE] / 100, numberFormatOptions) : '',
-			user[TABLE_USER.AVG_GRADE] ? formatPercent(user[TABLE_USER.AVG_GRADE] / 100, numberFormatOptions) : '',
+			user[TABLE_USER.CURRENT_GRADE] ? formatPercent(user[TABLE_USER.CURRENT_GRADE] / 100, numberFormatOptions) : '',
+			user[TABLE_USER.CURRENT_GRADE] ? formatPercent(user[TABLE_USER.CURRENT_GRADE] / 100, numberFormatOptions) : '',
 			user[TABLE_USER.AVG_DISCUSSION_ACTIVITY],
 			user[TABLE_USER.AVG_TIME_IN_CONTENT]
 		];
@@ -146,10 +146,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		// map to a 2D userData array, with column 1 as a sub-array of [id, FirstName, LastName, UserName]
 		// then sort by the selected sorting function
 		const sortFunction = this._choseSortFunction(this._sortColumn, this._sortOrder);
-		const userId = this.data.users[0][USER.ID];
-		console.log(this.data.recordsByUser.get(userId));
-
-		return this.data.recordsByUser.get(userId)
+		return this.data.recordsByUser.get(100)
 			.map(this._preProcessData, this)
 			.sort(sortFunction)
 			.map(this._formatDataForDisplay, this);
@@ -159,7 +156,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this.userDataForDisplay.map(data => {
 			return [
 				data[TABLE_USER.COURSE],
-				data[TABLE_USER.AVG_GRADE],
+				data[TABLE_USER.CURRENT_GRADE],
 				data[TABLE_USER.AVG_TIME_IN_CONTENT],
 				data[TABLE_USER.AVG_DISCUSSION_ACTIVITY],
 				data[TABLE_USER.LAST_ACCESSED_SYS]];
@@ -178,7 +175,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 			this.localize('components.insights-users-table-export.UserName'),
 			this.localize('components.insights-users-table-export.UserID'),
 			headerArray[TABLE_USER.COURSE],
-			headerArray[TABLE_USER.AVG_GRADE],
+			headerArray[TABLE_USER.CURRENT_GRADE],
 			headerArray[TABLE_USER.AVG_TIME_IN_CONTENT],
 			this.localize('components.insights-discussion-activity-card.threads'),
 			this.localize('components.insights-discussion-activity-card.reads'),

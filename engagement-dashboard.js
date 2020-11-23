@@ -171,10 +171,11 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			username: 'claire.dane',
 			userId: 887
 		};
-
 		return html`
 			<d2l-insights-user-drill-view
 				.user="${user}"
+				.data="${this._data}"
+				.skeleton="${this._isLoading}"
 				@d2l-insights-user-drill-view-back="${this._backToHomeHandler}"
 			></d2l-insights-user-drill-view>
 		`;
@@ -251,11 +252,6 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 					.data="${this._data}"
 					?skeleton="${this._isLoading}"
 				></d2l-insights-users-table>
-
-				<d2l-insights-active-courses-table
-					.data="${this._data}"
-					?skeleton="${this._isLoading}"
-				></d2l-insights-active-courses-table>
 
 				<d2l-insights-default-view-popup
 					?opened=${Boolean(this._serverData.isDefaultView)}

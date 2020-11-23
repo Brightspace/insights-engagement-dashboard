@@ -7,12 +7,14 @@ import { MobxLitElement } from '@adobe/lit-mobx';
 
 /**
  * @property {Object} user - {firstName, lastName, username, userId}
+ * @property {Object} data - an instance of Data from model/data.js
  * @fires d2l-insights-user-drill-view-back
  */
 class UserDrill extends Localizer(MobxLitElement) {
 	static get properties() {
 		return {
-			user: { type: Object, attribute: false }
+			user: { type: Object, attribute: false },
+			data: { type: Object, attribute: false }
 		};
 	}
 
@@ -135,7 +137,12 @@ class UserDrill extends Localizer(MobxLitElement) {
 			>${this.localize('components.insights-user-drill-view.emailButton')}</d2l-button>
 
 			<div class="d2l-insights-user-drill-view-content">
-				<!-- put your tables here -->
+				
+				<d2l-insights-active-courses-table
+					.data="${this.data}"
+					?skeleton="${this.skeleton}">
+				</d2l-insights-active-courses-table>
+				
 			</div>
 
 		</div>`;
