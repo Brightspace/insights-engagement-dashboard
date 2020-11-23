@@ -64,22 +64,25 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 			.d2l-insights-table-header {
 				background-color: var(--d2l-color-regolith);
 				color: var(--d2l-color-ferrite);
-				height: 27px; /* min-height to be 48px including border */
 				line-height: 1.4rem;
+				max-width: 1200px;
+				position: sticky;
 			}
 
 			.d2l-insights-table-cell {
 				border-bottom: 1px solid var(--d2l-color-mica);
-				display: table-cell;
 				font-weight: normal;
-				height: 41px; /* min-height to be 62px including border */
+				min-height: 41px; /* min-height to be 62px including border */
 				padding: 10px 20px;
 				position: relative;
 				vertical-align: middle;
 			}
 
 			.d2l-insights-table-cell-header {
+				background: var(--d2l-color-regolith);
 				cursor: pointer;
+				top: 0;
+				z-index: 1;
 			}
 
 			.d2l-insights-table-cell-header:focus {
@@ -164,6 +167,20 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 				min-width: 130px;
 			}
 
+			div[role="table"] {
+				display: block;
+			}
+
+			div[role="row"] {
+				display: grid;
+				grid-template-columns: 65px auto 130px 112px 180px 270px 180px;
+				max-width: 1200px;
+			}
+
+			div[role="cell"]:nth-child(2):not(.fit) {
+				min-width: 100px;
+			}
+
 			d2l-scroll-wrapper {
 				--d2l-scroll-wrapper-h-scroll: {
 					border-left: var(--d2l-table-border-overflow);
@@ -198,14 +215,24 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 		this.sortOrder = 'desc';
 	}
 
+	firstUpdated() {
+		const scrollable = this.shadowRoot.querySelector('.limit-width');
+		const header = this.shadowRoot.querySelector('.d2l-insights-table-header');
+		console.log(scrollable);
+		scrollable.addEventListener('scroll', (e) => {
+			console.log(scrollable.scrollLeft);
+			header.scroll(scrollable.scrollLeft, 0);
+		}, { passive: true });
+	}
+
 	render() {
 		return html`
-			<d2l-scroll-wrapper show-actions>
-				<table class="d2l-insights-table-table" aria-label="${this.title}">
-					${this._renderThead()}
+			${this._renderThead()}
+			<div class="limit-width" onscroll="this._scroll">
+				<div role="table" class="d2l-insights-table-table" aria-label="${this.title}">
 					${this._renderTbody()}
-				</table>
-			</d2l-scroll-wrapper>
+				</div>
+			</div>
 		`;
 	}
 
@@ -222,11 +249,11 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 		};
 
 		return html`
-			<thead class="d2l-insights-table-header">
-				<tr class="${classMap(styles)}">
+			<div role="rowgroup" class="d2l-insights-table-header">
+				<div role="row" class="${classMap(styles)}">
 					${this.columnInfo.map(this._renderHeaderCell, this)}
-				</tr>
-			</thead>
+				</div>
+			</div>
 		`;
 	}
 
@@ -244,7 +271,7 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 			const isAllSelected = this.data.every(row => row[idx].selected);
 
 			return html`
-				<th class="${classMap(styles)}"
+				<div role="cell" class="${classMap(styles)}"
 					scope="col"
 					tabindex="${this.skeleton ? -1 : 0}"
 				>
@@ -254,7 +281,7 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 						@change="${this._handleAllSelected}"
 						?checked="${isAllSelected}"
 					></d2l-input-checkbox>
-				</th>
+				</div>
 			`;
 		} else {
 			const isSortedColumn = idx === this.sortColumn;
@@ -263,7 +290,7 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 			const arrowDirection = isSortedColumn ? this.sortOrder === 'desc' ? 'arrow-toggle-down' : 'arrow-toggle-up' : '';
 
 			return html`
-				<th role="button"
+				<div role="button"
 					class="${classMap(styles)}"
 					scope="col"
 					@keydown="${this._handleHeaderKey}"
@@ -272,7 +299,7 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 
 					${info.headerText}
 					${!isSortedColumn ? html`` : html`<d2l-icon role="img" aria-label="${arrowDirection === 'arrow-toggle-up' ? 'Sorted Ascending' : 'Sorted Descending'}" icon="tier1:${arrowDirection}" class="${classMap(spaceArrow)}"></d2l-icon>`}
-				</th>
+				</div>
 			`;
 		}
 	}
@@ -283,13 +310,13 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 		});
 
 		return html`
-			<tbody>
+			<div role="rowgroup">
 				${this.data.map((row, rowIdx) => html`
-					<tr class="${classMap(styles(rowIdx))}">
+					<div role="row" class="${classMap(styles(rowIdx))}">
 						${row.map(this._renderBodyCell, this)}
-					</tr>
+					</div>
 				`)}
-			</tbody>
+			</div>
 		`;
 	}
 
@@ -302,9 +329,9 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 		};
 
 		const defaultHtml = html`
-			<td class="${classMap(styles)}">
+			<div role="cell" class="${classMap(styles)}">
 				<div class="d2l-skeletize d2l-skeletize-95 d2l-body-standard">${cellValue}</div>
-			</td>
+			</div>
 		`;
 
 		if (this.skeleton) {
@@ -313,7 +340,7 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 
 		if (columnType === COLUMN_TYPES.ROW_SELECTOR) {
 			return html`
-				<td class="${classMap(styles)}">
+				<div role="cell" class="${classMap(styles)}">
 					<d2l-input-checkbox
 						aria-label="${cellValue.ariaLabel}"
 						name="checkbox-${cellValue.value}"
@@ -321,42 +348,42 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 						?checked="${cellValue.selected}"
 						@change="${this._handleRowSelected}"
 					></d2l-input-checkbox>
-				</td>
+				</div>
 			`;
 		} else if (columnType === COLUMN_TYPES.TEXT_SUB_TEXT) {
 			return html`
-				<td class="${classMap(styles)}">
+				<div role="cell" class="${classMap(styles)}">
 					<div class="d2l-body-standard">${cellValue[0]}</div>
 					<div class="d2l-body-small">${cellValue[1]}</div>
-				</td>
+				</div>
 			`;
 		} else if (columnType === COLUMN_TYPES.SUB_COLUMNS) {
 			return html`
-				<td class="${classMap(styles)}">
+				<div role="cell" class="${classMap(styles)}">
 
-					<table>
-						<tr>
-							<td>
+					<div role="table">
+						<div role="row" style="display:flex">
+							<div role="cell" class="fit">
 								<div class="d2l-body-standard" style="text-align:center;">${cellValue[0]}</div>
 								<div class="d2l-body-standard" style="text-align:center;">${this.localize('components.insights-discussion-activity-card.threads')}</div>
-							</td>
-							<td>
+							</div>
+							<div role="cell" class="fit">
 								<d2l-icon icon="tier2:divider"></d2l-icon>
-							</td>
-							<td>
+							</div>
+							<div role="cell" class="fit">
 								<div class="d2l-body-standard" style="text-align:center;">${cellValue[1]}</div>
 								<div class="d2l-body-standard" style="text-align:center;">${this.localize('components.insights-discussion-activity-card.reads')}</div>
-							</td>
-							<td>
+							</div>
+							<div role="cell" class="fit">
 								<d2l-icon icon="tier2:divider"></d2l-icon>
-							</td>
-							<td>
+							</div>
+							<div role="cell" class="fit">
 								<div class="d2l-body-standard" style="text-align:center;">${cellValue[2]}</div>
 								<div class="d2l-body-standard" style="text-align:center;">${this.localize('components.insights-discussion-activity-card.replies')}</div>
-							</td>
-						</tr>
-					</table>
-				</td>
+							</div>
+						</div>
+					</div>
+				</div>
 			`;
 		} else if (columnType === COLUMN_TYPES.NORMAL_TEXT) {
 			return defaultHtml;
