@@ -51,25 +51,24 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 			}
 
 			.d2l-insights-table-table {
-				background-color: #ffffff;
 				border-collapse: separate;
 				border-spacing: 0;
 				font-weight: normal;
 				max-width: 1200px;
-				overflow-x: auto;
 				text-align: left;
 				width: 100%;
 			}
 
 			.d2l-insights-table-header {
-				background-color: var(--d2l-color-regolith);
 				color: var(--d2l-color-ferrite);
 				line-height: 1.4rem;
-				max-width: 1200px;
 				position: sticky;
+				top: 0;
+				z-index: 1;
 			}
 
 			.d2l-insights-table-cell {
+				background-color: white;
 				border-bottom: 1px solid var(--d2l-color-mica);
 				font-weight: normal;
 				min-height: 41px; /* min-height to be 62px including border */
@@ -80,6 +79,7 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 
 			.d2l-insights-table-cell-header {
 				background: var(--d2l-color-regolith);
+				border-top: 1px solid var(--d2l-color-mica);
 				cursor: pointer;
 				top: 0;
 				z-index: 1;
@@ -163,8 +163,15 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 			.d2l-insights-table-arrow-spacing {
 				padding-right: 30px;
 			}
+			.d2l-insights-table-arrow-spacing:nth-child(2) {
+				padding-right: 20px;
+			}
 			.d2l-insights-table-table td:not(.d2l-insights-table-cell-first):not(td>d2l-icon) {
 				min-width: 130px;
+			}
+
+			.d2l-insights-table-row-first {
+				overflow: hidden;
 			}
 
 			div[role="table"] {
@@ -177,11 +184,21 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 				max-width: 1200px;
 			}
 
-			div[role="cell"]:nth-child(2):not(.fit) {
+			div[role="row"] > div:nth-child(2):not(.fit) {
 				min-width: 100px;
 			}
 
+			div[role="cell"]:first-child:not(.fit) {
+				display: flex;
+			}
+
+			div[role="cell"]:first-child:not(.fit) > * {
+				margin: auto;
+			}
+
 			d2l-scroll-wrapper {
+				--d2l-scroll-wrapper-action-visible_-_top: 100px;
+
 				--d2l-scroll-wrapper-h-scroll: {
 					border-left: var(--d2l-table-border-overflow);
 					border-right: var(--d2l-table-border-overflow);
@@ -216,22 +233,20 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 	}
 
 	firstUpdated() {
-		const scrollable = this.shadowRoot.querySelector('.limit-width');
-		const header = this.shadowRoot.querySelector('.d2l-insights-table-header');
-		console.log(scrollable);
-		scrollable.addEventListener('scroll', (e) => {
-			console.log(scrollable.scrollLeft);
+		const scrollable = this.shadowRoot.querySelector('d2l-scroll-wrapper').shadowRoot.querySelector('#wrapper');
+		const header = this.shadowRoot.querySelector('.d2l-insights-table-row-first');
+		scrollable.addEventListener('scroll', () => {
 			header.scroll(scrollable.scrollLeft, 0);
-		}, { passive: true });
+		}, { passive: false });
 	}
 
 	render() {
 		return html`
-			${this._renderThead()}
-			<div class="limit-width" onscroll="this._scroll">
-				<div role="table" class="d2l-insights-table-table" aria-label="${this.title}">
+			<div role="table" class="d2l-insights-table-table" aria-label="${this.title}">
+				${this._renderThead()}
+				<d2l-scroll-wrapper show-actions>
 					${this._renderTbody()}
-				</div>
+				</d2l-scroll-wrapper>
 			</div>
 		`;
 	}
@@ -290,15 +305,14 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 			const arrowDirection = isSortedColumn ? this.sortOrder === 'desc' ? 'arrow-toggle-down' : 'arrow-toggle-up' : '';
 
 			return html`
-				<div role="button"
+				<div role="cell"
 					class="${classMap(styles)}"
 					scope="col"
 					@keydown="${this._handleHeaderKey}"
 					@click="${this._handleHeaderClicked}"
 					tabindex="${this.skeleton ? -1 : 0}">
-
-					${info.headerText}
-					${!isSortedColumn ? html`` : html`<d2l-icon role="img" aria-label="${arrowDirection === 'arrow-toggle-up' ? 'Sorted Ascending' : 'Sorted Descending'}" icon="tier1:${arrowDirection}" class="${classMap(spaceArrow)}"></d2l-icon>`}
+						${info.headerText}
+						${!isSortedColumn ? html`` : html`<d2l-icon role="img" aria-label="${arrowDirection === 'arrow-toggle-up' ? 'Sorted Ascending' : 'Sorted Descending'}" icon="tier1:${arrowDirection}" class="${classMap(spaceArrow)}"></d2l-icon>`}
 				</div>
 			`;
 		}
@@ -310,7 +324,7 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 		});
 
 		return html`
-			<div role="rowgroup">
+			<div role="rowgroup" class="scrollable">
 				${this.data.map((row, rowIdx) => html`
 					<div role="row" class="${classMap(styles(rowIdx))}">
 						${row.map(this._renderBodyCell, this)}
@@ -409,9 +423,25 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 			if (columnNumber >= children.length) {
 				columnNumber = 0;
 			}
+		} else if (e.key === 'Tab' && !e.shiftKey) {
+			columnNumber += 1;
+			if (columnNumber >= children.length) {
+				return;
+			}
+			e.preventDefault();
+		} else if (e.key === 'Tab' && e.shiftKey) {
+			columnNumber -= 1;
+			if (columnNumber < 0) {
+				return;
+			}
+			e.preventDefault();
 		}
+
 		children[columnNumber].focus();
-		if (e.keyCode === 'Tab') e.preventDefault();
+
+		const scrollable = this.shadowRoot.querySelector('d2l-scroll-wrapper').shadowRoot.querySelector('#wrapper');
+		const header = this.shadowRoot.querySelector('.d2l-insights-table-row-first');
+		scrollable.scroll(header.scrollLeft, 0);
 		return false;
 	}
 
