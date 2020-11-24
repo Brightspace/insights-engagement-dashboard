@@ -537,7 +537,10 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 	}
 
 	_handleAllSelected() {
-		const checkboxes = Array.from(this.shadowRoot.querySelectorAll('td > d2l-input-checkbox')); // NB: this will only handle 1 checkbox column
+		const checkboxes = Array.from(this.shadowRoot.querySelector('d2l-scroll-wrapper')
+			.shadowRoot.querySelector('slot').assignedNodes()[2]
+			.querySelectorAll('div[role="cell"] > d2l-input-checkbox')); // NB: this will only handle 1 checkbox column
+
 		const values = checkboxes.map(checkbox => checkbox.value);
 		const isAllSelected = checkboxes.every(checkbox => checkbox.checked);
 
