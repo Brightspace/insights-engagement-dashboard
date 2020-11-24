@@ -39,7 +39,6 @@ import { TimeInContentVsGradeFilter } from './components/time-in-content-vs-grad
 import { toJS } from 'mobx';
 
 const insightsPortalEndpoint = '/d2l/ap/insightsPortal/main.d2l';
-const engagementDashboardEndpoint = '/d2l/ap/visualizations/dashboards/engagement';
 
 /**
  * @property {Boolean} isDemo - if true, use canned data; otherwise call the LMS
@@ -77,6 +76,8 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 	constructor() {
 		super();
+
+		this.__defaultViewPopupShown = false; // a test-and-set variable: will always be true after the first read
 
 		this.orgUnitId = 0;
 		this.isDemo = false;
@@ -206,31 +207,12 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	}
 
 	render() {
-		let innerView = html``;
-		let href = '';
-		let backLinkText = '';
 		switch (this.currentView) {
 			case 'home':
-				innerView = this._renderHomeView();
-				href = this.linkToInsightsPortal;
-				backLinkText = this.localize('components.insights-engagement-dashboard.backToInsightsPortal');
-				break;
+				return this._renderHomeView();
 			case 'user':
-				innerView =  this._renderUserDrillView();
-				href = new URL(engagementDashboardEndpoint, window.location.origin).toString();
-				backLinkText = this.localize('components.insights-engagement-dashboard.backToEngagementDashboard');
-				break;
+				return this._renderUserDrillView();
 		}
-
-		return html`
-			<d2l-insights-immersive-nav
-				href="${href}"
-				main-text="${this.localize('components.insights-engagement-dashboard.title')}"
-				back-text="${backLinkText}"
-				back-text-short="${this.localize('components.insights-engagement-dashboard.backLinkTextShort')}"
-			></d2l-insights-immersive-nav>
-			${ innerView }
-		`;
 	}
 
 	_renderUserDrillView() {
@@ -242,6 +224,14 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		};
 
 		return html`
+			<d2l-insights-immersive-nav
+				back-button-type="button"
+				main-text="${this.localize('components.insights-engagement-dashboard.title')}"
+				back-text="${this.localize('components.insights-engagement-dashboard.backToEngagementDashboard')}"
+				back-text-short="${this.localize('components.insights-engagement-dashboard.backLinkTextShort')}"
+				@d2l-insights-immersive-nav-back="${this._backToHomeHandler}"
+			></d2l-insights-immersive-nav>
+
 			<d2l-insights-user-drill-view
 				.user="${user}"
 				@d2l-insights-user-drill-view-back="${this._backToHomeHandler}"
@@ -251,6 +241,13 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 	_renderHomeView() {
 		return html`
+			<d2l-insights-immersive-nav
+				back-button-type="link"
+				href="${this.linkToInsightsPortal}"
+				main-text="${this.localize('components.insights-engagement-dashboard.title')}"
+				back-text="${this.localize('components.insights-engagement-dashboard.backToInsightsPortal')}"
+				back-text-short="${this.localize('components.insights-engagement-dashboard.backLinkTextShort')}"
+			></d2l-insights-immersive-nav>
 
 			<d2l-insights-aria-loading-progress .data="${this._data}"></d2l-insights-aria-loading-progress>
 
@@ -326,9 +323,8 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				?show-tic-col="${this.showTicCol}"
 			></d2l-insights-users-table>
 
-
 			<d2l-insights-default-view-popup
-				?opened=${Boolean(this._serverData.isDefaultView)}
+				?opened=${Boolean(this._serverData.isDefaultView && !this._defaultViewPopupShown)}
 				.data="${this._serverData}">
 			</d2l-insights-default-view-popup>
 
@@ -340,6 +336,12 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				</d2l-button>
 			</d2l-dialog-confirm>
 		`;
+	}
+
+	get _defaultViewPopupShown() {
+		const currentVal = this.__defaultViewPopupShown;
+		this.__defaultViewPopupShown = true;
+		return currentVal;
 	}
 
 	get _courseAccessCard() {
