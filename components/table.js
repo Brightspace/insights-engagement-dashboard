@@ -284,16 +284,13 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 			(cell, i) => {
 				const stableCell = rows[1][i];
 				const width = stableCell.offsetWidth;
-				const dataIsBigger = width === stableCell.offsetWidth;
-				if (dataIsBigger) {
-					if (i === 0) {
-						cell.style.width = `calc(${width}px - 42px)`;
-						cell.style.minWidth = `calc(${width}px - 42px)`;
-					}
-					else {
-						cell.style.width = `calc(${width}px - 41px)`;
-						cell.style.minWidth = `calc(${width}px - 41px)`;
-					}
+				if (i === 0) {
+					cell.style.width = `calc(${width}px - 42px)`;
+					cell.style.minWidth = `calc(${width}px - 42px)`;
+				}
+				else {
+					cell.style.width = `calc(${width}px - 41px)`;
+					cell.style.minWidth = `calc(${width}px - 41px)`;
 				}
 			}
 		);
