@@ -65,7 +65,7 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 				overflow: hidden;
 				position: sticky;
 				top: 0;
-				z-index: 1;
+				z-index: 10;
 			}
 
 			.d2l-insights-table-cell {
@@ -165,6 +165,7 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 			.d2l-insights-table-arrow-spacing:nth-child(2) {
 				padding-right: 20px;
 			}
+
 			.d2l-insights-table-table td:not(.d2l-insights-table-cell-first):not(td>d2l-icon) {
 				min-width: 100px;
 			}
@@ -176,6 +177,18 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 
 			div[role="row"] > div:nth-child(2):not(.d2l-insights-discussion-activity-fit) {
 				min-width: 100px;
+			}
+
+			div[role="row"] > div:nth-child(1):not(.d2l-insights-discussion-activity-fit) {
+				left: 0;
+				position: sticky;
+				z-index: 1;
+			}
+
+			div[role="row"].d2l-insights-table-row-first > div:nth-child(1):not(.d2l-insights-discussion-activity-fit) {
+				left: 0;
+				position: sticky;
+				z-index: 11;
 			}
 
 			div[role="cell"] {
@@ -199,7 +212,7 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 			}
 
 			d2l-scroll-wrapper {
-				--d2l-scroll-wrapper-action-visible_-_top: 100px;
+				--d2l-scroll-wrapper-action-visible_-_top: 150px;
 
 				--d2l-scroll-wrapper-h-scroll: {
 					border-left: var(--d2l-table-border-overflow);
