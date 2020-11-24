@@ -62,6 +62,7 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 			.d2l-insights-table-header {
 				color: var(--d2l-color-ferrite);
 				line-height: 1.4rem;
+				overflow: hidden;
 				position: sticky;
 				top: 0;
 				z-index: 1;
@@ -190,16 +191,11 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 			}
 
 			div[role="row"].d2l-insights-table-row-first {
-				display: flex;
-				overflow: hidden;
+				display: table-row;
 			}
 
 			.d2l-insights-table-row-first > div[role="cell"] {
-				display: block;
-			}
-
-			div[role="cell"]:first-child:not(.d2l-insights-discussion-activity-fit) > * {
-				margin: auto;
+				display: table-cell;
 			}
 
 			d2l-scroll-wrapper {
@@ -237,17 +233,19 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 		this.title = '';
 		this.sortColumn = 0;
 		this.sortOrder = 'desc';
+		this.hasSized = false;
 	}
 
 	firstUpdated() {
 		// allow header to scroll with body
 		const scrollable = this.shadowRoot.querySelector('d2l-scroll-wrapper').shadowRoot.querySelector('#wrapper');
-		const header = this.shadowRoot.querySelector('.d2l-insights-table-row-first');
+		const header = this.shadowRoot.querySelector('.d2l-insights-table-header');
 		scrollable.addEventListener('scroll', () => {
 			header.scroll(scrollable.scrollLeft, 0);
 		}, { passive: false });
 
 		window.addEventListener('resize', this._resizeTable.bind(this), { passive: true });
+		this._resizeTable();
 	}
 
 	updated() {
@@ -255,9 +253,13 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 	}
 
 	_resizeTable() {
-		console.log("resize");
 		// size the header and the content based on which is largest.
 		const rows = [Array.from(this.shadowRoot.querySelector('div[role="row"]').children)];
+
+		if (!this.hasSized) {
+			this.hasSized = true;
+			this.originalHeaderSize = rows[0].map(cell => cell.offsetWidth);
+		}
 
 		Array.from(this.shadowRoot
 			.querySelector('d2l-scroll-wrapper')
@@ -268,14 +270,17 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 		rows[0].forEach(
 			(cell, i) => {
 				const stableCell = rows[1][i];
-				console.log(stableCell.offsetWidth);
-				if (i === 0) {
-					cell.style.width = `calc(${stableCell.offsetWidth}px - 42px)`;
-					cell.style.minWidth = `calc(${stableCell.offsetWidth}px - 42px)`;
-				}
-				else {
-					cell.style.width = `calc(${stableCell.offsetWidth}px - 41px)`;
-					cell.style.minWidth = `calc(${stableCell.offsetWidth}px - 41px)`;
+				const width = stableCell.offsetWidth;
+				const dataIsBigger = width === stableCell.offsetWidth;
+				if (dataIsBigger) {
+					if (i === 0) {
+						cell.style.width = `calc(${width}px - 42px)`;
+						cell.style.minWidth = `calc(${width}px - 42px)`;
+					}
+					else {
+						cell.style.width = `calc(${width}px - 41px)`;
+						cell.style.minWidth = `calc(${width}px - 41px)`;
+					}
 				}
 			}
 		);
