@@ -160,39 +160,45 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 			:host([dir="rtl"]) .d2l-insights-table-table .d2l-insights-table-row-last > .d2l-insights-table-cell-last {
 				border-bottom-left-radius: 8px;
 			}
-			.d2l-insights-table-arrow-spacing {
-				padding-right: 30px;
-			}
+
 			.d2l-insights-table-arrow-spacing:nth-child(2) {
 				padding-right: 20px;
 			}
 			.d2l-insights-table-table td:not(.d2l-insights-table-cell-first):not(td>d2l-icon) {
-				min-width: 130px;
-			}
-
-			.d2l-insights-table-row-first {
-				overflow: hidden;
-			}
-
-			div[role="table"] {
-				display: block;
-			}
-
-			div[role="row"] {
-				display: grid;
-				grid-template-columns: 65px auto 130px 112px 180px 270px 180px;
-				max-width: 1200px;
-			}
-
-			div[role="row"] > div:nth-child(2):not(.fit) {
 				min-width: 100px;
 			}
 
-			div[role="cell"]:first-child:not(.fit) {
-				display: flex;
+			div[role="row"] {
+				display: table-row;
+				max-width: 1200px;
 			}
 
-			div[role="cell"]:first-child:not(.fit) > * {
+			div[role="row"] > div:nth-child(2):not(.d2l-insights-discussion-activity-fit) {
+				min-width: 100px;
+			}
+
+			div[role="cell"] {
+				display: table-cell;
+			}
+
+			div[role="cell"]:not(.d2l-insights-discussion-activity-fit) {
+				min-width: 100px;
+			}
+
+			div[role="cell"]:first-child:not(.d2l-insights-discussion-activity-fit) {
+				min-width: 24px;
+			}
+
+			div[role="row"].d2l-insights-table-row-first {
+				display: flex;
+				overflow: hidden;
+			}
+
+			.d2l-insights-table-row-first > div[role="cell"] {
+				display: block;
+			}
+
+			div[role="cell"]:first-child:not(.d2l-insights-discussion-activity-fit) > * {
 				margin: auto;
 			}
 
@@ -220,6 +226,7 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 					@apply --d2l-table;
 				};
 			}
+
 		`];
 	}
 
@@ -233,11 +240,45 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 	}
 
 	firstUpdated() {
+		// allow header to scroll with body
 		const scrollable = this.shadowRoot.querySelector('d2l-scroll-wrapper').shadowRoot.querySelector('#wrapper');
 		const header = this.shadowRoot.querySelector('.d2l-insights-table-row-first');
 		scrollable.addEventListener('scroll', () => {
 			header.scroll(scrollable.scrollLeft, 0);
 		}, { passive: false });
+
+		window.addEventListener('resize', this._resizeTable.bind(this), { passive: true });
+	}
+
+	updated() {
+		this._resizeTable();
+	}
+
+	_resizeTable() {
+		console.log("resize");
+		// size the header and the content based on which is largest.
+		const rows = [Array.from(this.shadowRoot.querySelector('div[role="row"]').children)];
+
+		Array.from(this.shadowRoot
+			.querySelector('d2l-scroll-wrapper')
+			.shadowRoot.querySelector('slot').assignedNodes()[2]
+			.querySelectorAll('div[role="row"]:not(.d2l-insights-ignore-row-size)'))
+			.forEach(row => rows.push(Array.from(row.children)));
+
+		rows[0].forEach(
+			(cell, i) => {
+				const stableCell = rows[1][i];
+				console.log(stableCell.offsetWidth);
+				if (i === 0) {
+					cell.style.width = `calc(${stableCell.offsetWidth}px - 42px)`;
+					cell.style.minWidth = `calc(${stableCell.offsetWidth}px - 42px)`;
+				}
+				else {
+					cell.style.width = `calc(${stableCell.offsetWidth}px - 41px)`;
+					cell.style.minWidth = `calc(${stableCell.offsetWidth}px - 41px)`;
+				}
+			}
+		);
 	}
 
 	render() {
@@ -376,22 +417,22 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 				<div role="cell" class="${classMap(styles)}">
 
 					<div role="table">
-						<div role="row" style="display:flex">
-							<div role="cell" class="fit">
+						<div role="row" class="d2l-insights-ignore-row-size">
+							<div role="cell" class="d2l-insights-discussion-activity-fit">
 								<div class="d2l-body-standard" style="text-align:center;">${cellValue[0]}</div>
 								<div class="d2l-body-standard" style="text-align:center;">${this.localize('components.insights-discussion-activity-card.threads')}</div>
 							</div>
-							<div role="cell" class="fit">
+							<div role="cell" class="d2l-insights-discussion-activity-fit">
 								<d2l-icon icon="tier2:divider"></d2l-icon>
 							</div>
-							<div role="cell" class="fit">
+							<div role="cell" class="d2l-insights-discussion-activity-fit">
 								<div class="d2l-body-standard" style="text-align:center;">${cellValue[1]}</div>
 								<div class="d2l-body-standard" style="text-align:center;">${this.localize('components.insights-discussion-activity-card.reads')}</div>
 							</div>
-							<div role="cell" class="fit">
+							<div role="cell" class="d2l-insights-discussion-activity-fit">
 								<d2l-icon icon="tier2:divider"></d2l-icon>
 							</div>
-							<div role="cell" class="fit">
+							<div role="cell" class="d2l-insights-discussion-activity-fit">
 								<div class="d2l-body-standard" style="text-align:center;">${cellValue[2]}</div>
 								<div class="d2l-body-standard" style="text-align:center;">${this.localize('components.insights-discussion-activity-card.replies')}</div>
 							</div>
