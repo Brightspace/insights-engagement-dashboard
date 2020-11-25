@@ -1,5 +1,6 @@
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/inputs/input-checkbox';
+import '@brightspace-ui/core/components/link/link.js';
 import 'd2l-table/d2l-scroll-wrapper';
 
 import { bodySmallStyles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
@@ -286,24 +287,30 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 			<tbody>
 				${this.data.map((row, rowIdx) => html`
 					<tr class="${classMap(styles(rowIdx))}">
-						${row.map(this._renderBodyCell, this)}
+						${row.map((cell, cellIdx) => this._renderBodyCell(cell, cellIdx, rowIdx), this)}
 					</tr>
 				`)}
 			</tbody>
 		`;
 	}
 
-	_renderBodyCell(cellValue, idx) {
+	_renderBodyCell(cellValue, idx, rowIdx) {
 		const columnType = this.columnInfo[idx].columnType;
+		const clickable = this.columnInfo[idx].clickable;
 		const styles = {
 			'd2l-insights-table-cell': true,
 			'd2l-insights-table-cell-first': idx === 0,
-			'd2l-insights-table-cell-last': idx === this._numColumns - 1
+			'd2l-insights-table-cell-last': idx === this._numColumns - 1,
+			'd2l-insights-table-cell-clickable': clickable
 		};
 
+		const clickHandler = clickable ? this._clickHandler.bind(this, rowIdx, idx) : null;
+
+		const defaultTextHtml = html`<div class="d2l-skeletize d2l-skeletize-95 d2l-body-standard">${cellValue}</div>`;
+		const defaultLinkHtml = html`<d2l-link @click="${clickHandler}">${cellValue}</d2l-link>`;
 		const defaultHtml = html`
 			<td class="${classMap(styles)}">
-				<div class="d2l-skeletize d2l-skeletize-95 d2l-body-standard">${cellValue}</div>
+				${clickable && !this.skeleton ? defaultLinkHtml : defaultTextHtml}
 			</td>
 		`;
 
@@ -324,9 +331,12 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 				</td>
 			`;
 		} else if (columnType === COLUMN_TYPES.TEXT_SUB_TEXT) {
+			const regularCell = html`<div class="d2l-body-standard">${cellValue[0]}</div>`;
+			const clickableCell = html`<d2l-link @click="${clickHandler}">${cellValue[0]}</d2l-link>`;
+
 			return html`
 				<td class="${classMap(styles)}">
-					<div class="d2l-body-standard">${cellValue[0]}</div>
+					${clickable ? clickableCell : regularCell }
 					<div class="d2l-body-small">${cellValue[1]}</div>
 				</td>
 			`;
@@ -431,6 +441,16 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 				selected: !isAllSelected
 			}
 		}));
+	}
+
+	_clickHandler(rowIdx, columnIdx, e) {
+		this.dispatchEvent(new CustomEvent('d2l-insights-table-cell-clicked', {
+			detail: {
+				rowIdx,
+				columnIdx
+			}
+		}));
+		e.preventDefault();
 	}
 }
 customElements.define('d2l-insights-table', Table);

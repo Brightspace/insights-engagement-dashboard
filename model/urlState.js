@@ -11,7 +11,12 @@ export function enableUrlState() {
 export function isDefault() {
 	// this function does not attempt to handle
 	// pages that include query parameters for the server in their default state
-	return window.location.search === '';
+	const searchParams = new URLSearchParams(window.location.search);
+	const keys = Array.from(searchParams.keys());
+
+	// there are no query params or one `v` parame pointed to the home view
+	return keys.length < 1
+		|| (keys.length < 2 && keys[0] === 'v' && searchParams.get('v').startsWith('home'));
 }
 
 export function setStateForTesting(key, value) {
@@ -40,7 +45,6 @@ export class UrlState {
 
 	constructor(wrapped) {
 		this._wrapped = wrapped;
-		this.popping = false;
 
 		if (isDisabledForTesting) return;
 
@@ -49,15 +53,11 @@ export class UrlState {
 		this._load();
 		this._onpopstate = this._onpopstate.bind(this);
 		window.addEventListener('popstate', this._onpopstate);
-
 		autorun(() => this.save());
 	}
 
 	save() {
-
 		// don't save state changes if we are restoring an old state
-		if (this.popping) return;
-
 		const url = new URL(window.location.href);
 		const valueToSave = this.value;
 		if (valueToSave === '' && url.searchParams.has(this.key)) {
@@ -83,9 +83,7 @@ export class UrlState {
 	}
 
 	_onpopstate(e) {
-		this.popping = true;
 		if (e.state !== null) this._load();
-		this.popping = false;
 	}
 
 	_load() {

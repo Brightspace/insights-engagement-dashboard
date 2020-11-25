@@ -533,8 +533,8 @@ function verifyColumns(table, expectedNumDisplayedRows, startRowNum) {
 
 function verifyCellValue(expectedValue, cell, colType) {
 	if (colType === COLS.USER_INFO) {
-		const mainText = cell.querySelector('div:first-child');
-		const subText = cell.querySelector('div:last-child');
+		const mainText = cell.querySelector('d2l-link');
+		const subText = cell.querySelector('div');
 		expect(mainText.innerText).to.equal(expectedValue[0]);
 		expect(subText.innerText).to.equal(expectedValue[1]);
 

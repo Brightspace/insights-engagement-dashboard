@@ -9,7 +9,6 @@ import { MobxLitElement } from '@adobe/lit-mobx';
  * @property {Object} user - {firstName, lastName, username, userId}
  * @property {Object} data - an instance of Data from model/data.js
  * @property {Object} orgUnitTree
- * @fires d2l-insights-user-drill-view-back
  */
 class UserDrill extends Localizer(MobxLitElement) {
 	static get properties() {
@@ -76,7 +75,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 				width: 100;
 			}
 
-			.d2l-main-action-button-group {
+			.d2l-insights-user-drill-view-action-button-group {
 				flex-grow: 1;
 				margin: 0.7em;
 				max-width: 300px;
@@ -94,10 +93,6 @@ class UserDrill extends Localizer(MobxLitElement) {
 
 	_composeEmailHandler() {
 		// outside the scope of the story
-		/**
-		 * @event d2l-insights-user-drill-view-back
-		 */
-		this.dispatchEvent(new CustomEvent('d2l-insights-user-drill-view-back'));
 	}
 
 	render() {
@@ -114,19 +109,19 @@ class UserDrill extends Localizer(MobxLitElement) {
 				</div>
 
 				<d2l-action-button-group
-						class="d2l-main-action-button-group"
+						class="d2l-insights-user-drill-view-action-button-group"
 						min-to-show="0"
 						max-to-show="2"
 						opener-type="more"
 					>
 					<d2l-button-subtle
 						icon="d2l-tier1:export"
-						text=${this.localize('components.insights-user-drill-view.exportToCsv')}
+						text=${this.localize('components.insights-engagement-dashboard.exportToCsv')}
 						@click="${this._exportToCsvHandler}">
 					</d2l-button-subtle>
 					<d2l-button-subtle
 						icon="d2l-tier1:print"
-						text=${this.localize('components.insights-user-drill-view.print')}
+						text=${this.localize('components.insights-engagement-dashboard.print')}
 						@click="${this._printHandler}">
 					</d2l-button-subtle>
 				</d2l-action-button-group>
@@ -136,7 +131,8 @@ class UserDrill extends Localizer(MobxLitElement) {
 			<d2l-button
 				primary
 				@click="${this._composeEmailHandler}"
-			>${this.localize('components.insights-user-drill-view.emailButton')}</d2l-button>
+			>${this.localize('components.insights-engagement-dashboard.emailButton')}</d2l-button>
+
 			<h2 class="d2l-heading-3">${this.localize('components.insights-active-courses-table.title')}</h2>
 
 			<div class="d2l-insights-user-drill-view-content">

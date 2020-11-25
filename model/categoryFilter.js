@@ -25,6 +25,11 @@ export class CategoryFilter {
 		this.selectedCategories.add(category);
 	}
 
+	setCategories(categories) {
+		this.selectedCategories.clear();
+		categories.forEach(category => this.selectedCategories.add(category));
+	}
+
 	toggleCategory(category) {
 		if (this.selectedCategories.has(category)) {
 			this.clearCategory(category);
@@ -37,6 +42,7 @@ decorate(CategoryFilter, {
 	isApplied: computed,
 	clearCategory: action,
 	selectCategory: action,
+	setCategories: action,
 	toggleCategory: action,
 	selectedCategories: observable
 });

@@ -8,12 +8,13 @@ import { Tree } from '../components/tree-filter';
  * Data from the server, along with filter settings that are passed in server calls.
  */
 export class Data {
-	constructor({ recordProvider, isDefault }) {
+	constructor({ recordProvider }) {
 		this.recordProvider = recordProvider;
 		this.orgUnitTree = new Tree({});
 		this.userDictionary = null;
 
 		// @observables
+		this.userViewUserId = null;
 		this.isLoading = true;
 		this.serverData = {
 			records: [],
@@ -39,8 +40,6 @@ export class Data {
 			semester: new SemesterSelectorFilter(this),
 			orgUnit: new OrgUnitSelectorFilter(this)
 		};
-
-		this.loadData({ defaultView: isDefault });
 	}
 
 	loadData({ newRoleIds = null, newSemesterIds = null, newOrgUnitIds = null, defaultView = false }) {
@@ -155,6 +154,7 @@ decorate(Data, {
 	serverData: observable,
 	orgUnitTree: observable,
 	isLoading: observable,
+	userViewUserId: observable,
 	records: computed,
 	onServerDataReload: action
 });

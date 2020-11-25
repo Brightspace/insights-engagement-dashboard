@@ -315,6 +315,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 			{
 				headerText: this.localize('components.insights-users-table.lastFirstName'),
 				columnType: COLUMN_TYPES.TEXT_SUB_TEXT,
+				clickable: true
 			},
 			{
 				headerText: this.localize('components.insights-users-table.courses'),
@@ -351,6 +352,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 				.data="${this._displayData}"
 				?skeleton="${this.skeleton}"
 				@d2l-insights-table-select-changed="${this._handleSelectChanged}"
+				@d2l-insights-table-cell-clicked="${this._handleCellClick}"
 			></d2l-insights-table>
 
 			<d2l-labs-pagination
@@ -408,6 +410,18 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		} else {
 			this.selectedUserIds = this.selectedUserIds.filter(userId => !changedUserIds.includes(userId));
 		}
+	}
+
+	_handleCellClick(event) {
+		const table = this.shadowRoot.querySelector('d2l-insights-table');
+		const row = table.data[event.detail.rowIdx];
+		this.dispatchEvent(new CustomEvent('d2l-insights-users-table-cell-clicked', {
+			detail: {
+				userId: row[TABLE_USER.SELECTOR_VALUE].value,
+				row: row,
+				columnIdx: event.detail.columnIdx
+			}
+		}));
 	}
 }
 decorate(UsersTable, {

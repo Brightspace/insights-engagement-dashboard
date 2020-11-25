@@ -57,10 +57,10 @@ describe('Data', () => {
 		isOrgUnitsTruncated: roleIds.includes(TRUNCATE_IF_THIS_ROLE_IS_PRESENT)
 	});
 
-	const cardFilters = [];
 	let sut;
 	beforeEach(async() => {
-		sut = new Data({ recordProvider, cardFilters });
+		sut = new Data({ recordProvider });
+		sut.loadData({});
 		await new Promise(resolve => setTimeout(resolve, 0)); // allow recordProvider to resolve
 	});
 

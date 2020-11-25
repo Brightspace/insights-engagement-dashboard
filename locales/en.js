@@ -2,6 +2,7 @@
 
 export default {
 	"components.insights-engagement-dashboard.title": "Engagement Dashboard",
+	"components.insights-engagement-dashboard.title-user-view": "Learner Engagement Dashboard",
 	"components.insights-engagement-dashboard.backToInsightsPortal": "Back to Insights Portal",
 	"components.insights-engagement-dashboard.backToEngagementDashboard": "Back to Engagement Dashboard",
 	"components.insights-engagement-dashboard.backLinkTextShort": "Back",
@@ -17,6 +18,7 @@ export default {
 	"components.insights-engagement-dashboard.exportToCsv": "Export to CSV",
 	"components.insights-engagement-dashboard.saveDefaultView": "Make this my default view",
 	"components.insights-engagement-dashboard.emailButton": "Email",
+	"components.insights-engagement-dashboard.print": "Print",
 	"components.insights-engagement-dashboard.noUsersSelectedDialogText": "Please select one or more users to email.",
 	"components.insights-engagement-dashboard.noResultsAvailable": "There are no results available that match your filters.",
 

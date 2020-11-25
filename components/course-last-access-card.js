@@ -66,8 +66,7 @@ export class CourseLastAccessFilter extends CategoryFilter {
 			return;
 		}
 		const categories = value.split(',').map(category => Number(category));
-		this.selectedCategories.clear();
-		categories.forEach(category => this.selectCategory(category));
+		this.setCategories(categories);
 	}
 }
 
