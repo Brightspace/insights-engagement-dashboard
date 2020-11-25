@@ -8,7 +8,12 @@ describe('d2l-insights-engagement-dashboard', () => {
 		it('should pass all axe tests', async function() {
 			this.timeout(7000);
 
-			const el = await fixture(html`<d2l-insights-engagement-dashboard demo></d2l-insights-engagement-dashboard>`);
+			const el = await fixture(html`<d2l-insights-engagement-dashboard
+				course-access-card courses-col discussions-card discussions-col
+				grade-col grades-card last-access-col overdue-card results-card
+				system-access-card tic-col tic-grades-card
+ 				demo
+ 			></d2l-insights-engagement-dashboard>`);
 			// need for this delay might be tied to the mock data async loading in engagement-dashboard.js
 			await new Promise(resolve => setTimeout(resolve, 1500));
 
@@ -39,4 +44,48 @@ describe('d2l-insights-engagement-dashboard', () => {
 		});
 	});
 
+	describe('prefs', () => {
+		const allCards = [
+			'course-last-access-card',
+			'discussion-activity-card',
+			'current-final-grade-card',
+			'overdue-assignments-card',
+			'results-card',
+			'last-access-card',
+			'time-in-content-vs-grade-card'
+		];
+
+		[
+			allCards,
+			[],
+			['results-card', 'last-access-card'],
+			...allCards.map(omitCard => allCards.filter(card => card !== omitCard))
+		]
+			.forEach(cards =>
+				it(`should show selected cards (${cards})`, async() => {
+					const el = await fixture(html`<d2l-insights-engagement-dashboard
+						?course-access-card="${cards.includes('course-last-access-card')}"
+						?discussions-card="${cards.includes('discussion-activity-card')}"
+						?grades-card="${cards.includes('current-final-grade-card')}"
+						?overdue-card="${cards.includes('overdue-assignments-card')}"
+						?results-card="${cards.includes('results-card')}"
+						?system-access-card="${cards.includes('last-access-card')}"
+						?tic-grades-card="${cards.includes('time-in-content-vs-grade-card')}"
+
+						courses-col	discussions-col	grade-col last-access-col tic-col
+						demo
+					></d2l-insights-engagement-dashboard>`);
+					await new Promise(resolve => setTimeout(resolve, 100));
+
+					allCards.forEach(card => {
+						const renderedCard = el.shadowRoot.querySelector(`d2l-insights-${card}`);
+						if (cards.includes(card)) {
+							expect(renderedCard, card).to.exist;
+						} else {
+							expect(renderedCard, card).to.not.exist;
+						}
+					});
+				})
+			);
+	});
 });

@@ -66,7 +66,7 @@ export class Tree {
 		}
 
 		if (selectedIds) {
-			selectedIds.forEach(x => this.setSelected(x, true));
+			this.select(selectedIds);
 		}
 
 		if (ancestorIds) {
@@ -94,7 +94,20 @@ export class Tree {
 	}
 
 	get selected() {
+		// if selections are set before any nodes are populated, this getter should still work
+		if (this._nodes.size === 0) {
+			return [...this._state]
+				.filter(([, state]) => state === 'explicit')
+				.flat();
+		}
+
+		// if there are nodes, only return the root of each selected subtree
 		return this._getSelected(this.rootId);
+	}
+
+	set selected(ids) {
+		this.clearSelection();
+		this.select(ids);
 	}
 
 	/**
@@ -280,6 +293,10 @@ export class Tree {
 		return !this._populated || this._populated.has(id);
 	}
 
+	select(ids) {
+		ids.forEach(x => this.setSelected(x, true));
+	}
+
 	/**
 	 * Filters the visible tree to nodes which are ancestors of nodes descended from the given ids
 	 * (a node is its own ancestor).
@@ -414,6 +431,7 @@ decorate(Tree, {
 	selected: computed,
 	addNodes: action,
 	clearSelection: action,
+	select: action,
 	setAncestorFilter: action,
 	setLoading: action,
 	setOpen: action,

@@ -1,9 +1,14 @@
+import { disableUrlStateForTesting, enableUrlState, setStateForTesting } from '../../model/urlState';
 import { elementUpdated, expect, fixture, html } from '@open-wc/testing';
 import { records } from '../model/mocks';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 import { TimeInContentVsGradeFilter } from '../../components/time-in-content-vs-grade-card';
 
 describe('TimeInContentVsGradeFilter', () => {
+
+	before(() => disableUrlStateForTesting());
+	after(() => enableUrlState());
+
 	let sut;
 	beforeEach(() => {
 		sut = new TimeInContentVsGradeFilter({ records });
@@ -111,6 +116,29 @@ describe('d2l-insights-time-in-content-vs-grade-card', () => {
 			el.skeleton = false;
 			await elementUpdated(el);
 			expect(chartDiv.getAttribute('tabindex')).to.equal('0');
+		});
+	});
+
+	describe('urlState', () => {
+
+		const key = new TimeInContentVsGradeFilter().persistenceKey;
+		before(() => enableUrlState());
+		after(() => disableUrlStateForTesting());
+
+		it('should load the default value and then save to the url', () => {
+			// set the filter to active
+			setStateForTesting(key, 'upperLeft');
+
+			// check that the filter loads the url state
+			const filter = new TimeInContentVsGradeFilter();
+			expect(filter.quadrant).to.equal('upperLeft');
+
+			filter.quadrant = 'bottomRight';
+
+			// check that the change state was saved
+			const params = new URLSearchParams(window.location.search);
+			const state = params.get(filter.persistenceKey);
+			expect(state).to.equal('bottomRight');
 		});
 	});
 });

@@ -2,6 +2,9 @@
 
 export default {
 	"components.insights-engagement-dashboard.title": "Engagement Dashboard",
+	"components.insights-engagement-dashboard.backToInsightsPortal": "Back to Insights Portal",
+	"components.insights-engagement-dashboard.backToEngagementDashboard": "Back to Engagement Dashboard",
+	"components.insights-engagement-dashboard.backLinkTextShort": "Back",
 	"components.insights-engagement-dashboard.summaryHeading": "Summary View",
 	"components.insights-engagement-dashboard.resultsHeading": "Results",
 	"components.insights-engagement-dashboard.resultsReturned": "Users returned within results.",
@@ -12,6 +15,7 @@ export default {
 	"components.insights-engagement-dashboard.tooManyResults": "There are too many results in your filters. Please refine your selection.",
 	"components.insights-engagement-dashboard.learMore": "Learn More",
 	"components.insights-engagement-dashboard.exportToCsv": "Export to CSV",
+	"components.insights-engagement-dashboard.saveDefaultView": "Make this my default view",
 	"components.insights-engagement-dashboard.emailButton": "Email",
 	"components.insights-engagement-dashboard.noUsersSelectedDialogText": "Please select one or more users to email.",
 	"components.insights-engagement-dashboard.noResultsAvailable": "There are no results available that match your filters.",

@@ -1,9 +1,15 @@
+import { disableUrlStateForTesting, enableUrlState, setStateForTesting } from '../../model/urlState';
 import { expect, fixture, html } from '@open-wc/testing';
 import { LastAccessFilter } from '../../components/last-access-card';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
 describe('d2l-insights-last-access-card', () => {
+
+	before(() => disableUrlStateForTesting());
+	after(() => enableUrlState());
+
 	const filter = new LastAccessFilter();
+
 	const data = {
 		getFilter: id => (id === filter.id ? filter : null),
 		withoutFilter: id => (id === filter.id ? {
@@ -37,6 +43,29 @@ describe('d2l-insights-last-access-card', () => {
 			expect(el.shadowRoot.querySelector('d2l-labs-summary-card').isValueClickable).to.deep.equal(true);
 			const expected = 2;
 			expect(el._cardValue).to.deep.equal(expected);
+		});
+	});
+
+	describe('urlState', () => {
+
+		const key = new LastAccessFilter().persistenceKey;
+		before(() => enableUrlState());
+		after(() => disableUrlStateForTesting());
+
+		it('should load the default value and then save to the url', () => {
+			// set the filter to active
+			setStateForTesting(key, 1);
+
+			// check that the filter loads the url state
+			const filter = new LastAccessFilter();
+			expect(filter.persistenceValue).to.equal('1');
+
+			filter.isApplied = false;
+
+			// check that the change state was saved
+			const params = new URLSearchParams(window.location.search);
+			const state = params.get(filter.persistenceKey);
+			expect(state).to.equal(null);
 		});
 	});
 });

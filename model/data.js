@@ -8,7 +8,7 @@ import { Tree } from '../components/tree-filter';
  * Data from the server, along with filter settings that are passed in server calls.
  */
 export class Data {
-	constructor({ recordProvider }) {
+	constructor({ recordProvider, isDefault }) {
 		this.recordProvider = recordProvider;
 		this.orgUnitTree = new Tree({});
 		this.userDictionary = null;
@@ -35,12 +35,12 @@ export class Data {
 		};
 
 		this._selectorFilters = {
-			role: new RoleSelectorFilter(this.serverData),
-			semester: new SemesterSelectorFilter(this.serverData, this.orgUnitTree),
-			orgUnit: new OrgUnitSelectorFilter(this.serverData, this.orgUnitTree)
+			role: new RoleSelectorFilter(this),
+			semester: new SemesterSelectorFilter(this),
+			orgUnit: new OrgUnitSelectorFilter(this)
 		};
 
-		this.loadData({ defaultView: true });
+		this.loadData({ defaultView: isDefault });
 	}
 
 	loadData({ newRoleIds = null, newSemesterIds = null, newOrgUnitIds = null, defaultView = false }) {
@@ -77,19 +77,15 @@ export class Data {
 		this.userDictionary = new Map(newServerData.users.map(user => [user[USER.ID], user]));
 		this.isLoading = false;
 		this.serverData = newServerData;
-
-		this._selectorFilters = {
-			role: new RoleSelectorFilter(this.serverData),
-			semester: new SemesterSelectorFilter(this.serverData, this.orgUnitTree),
-			orgUnit: new OrgUnitSelectorFilter(this.serverData, this.orgUnitTree)
-		};
+		if (this.serverData.selectedSemestersIds) {
+			this._selectorFilters.semester.selected = this.serverData.selectedSemestersIds;
+		}
 	}
 
 	set selectedRoleIds(newRoleIds) {
+		this._selectorFilters.role.selected = newRoleIds;
 		if (this._selectorFilters.role.shouldReloadFromServer(newRoleIds)) {
 			this.loadData({ newRoleIds });
-		} else {
-			this._selectorFilters.role.selected = newRoleIds;
 		}
 	}
 

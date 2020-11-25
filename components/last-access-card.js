@@ -4,6 +4,7 @@ import { html } from 'lit-element';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
+import { UrlState } from '../model/urlState';
 
 export const filterId = 'd2l-insights-last-access-card';
 const fourteenDayMillis = 1209600000;
@@ -15,6 +16,7 @@ function isWithoutRecentAccess(user) {
 export class LastAccessFilter {
 	constructor() {
 		this.isApplied = false;
+		this._urlState = new UrlState(this);
 	}
 
 	get id() { return filterId; }
@@ -26,6 +28,17 @@ export class LastAccessFilter {
 	filter(record, userDictionary) {
 		const user = userDictionary.get(record[RECORD.USER_ID]);
 		return isWithoutRecentAccess(user);
+	}
+
+	// for UrlState
+	get persistenceKey() { return 'saf'; }
+
+	get persistenceValue() {
+		return this.isApplied ? '1' : '';
+	}
+
+	set persistenceValue(value) {
+		this.isApplied = value === '1';
 	}
 }
 

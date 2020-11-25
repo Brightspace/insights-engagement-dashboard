@@ -4,6 +4,8 @@
 		<link rel="stylesheet" href="/node_modules/@brightspace-ui/core/components/demo/styles.css" type="text/css">
 		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 		<script type="module">
+			/* eslint-disable no-console */
+
 			import '@brightspace-ui/core/components/demo/demo-page.js';
 			import '../engagement-dashboard.js';
 			import fetchMock from 'fetch-mock/esm/client';
@@ -43,10 +45,13 @@
 	</style>
 	<body>
 		<d2l-insights-engagement-dashboard
-			view='user'
+			view='home'
 			demo
 			telemetry-endpoint="https://example.com/api/events/"
 			telemetry-id="cfc669e0-509e-4ed0-b932-4a7ec5c2d8c7"
+			course-access-card courses-col discussions-card discussions-col
+			grade-col grades-card last-access-col overdue-card results-card
+			system-access-card tic-col tic-grades-card
 		></d2l-insights-engagement-dashboard>
 	</body>
 </html>

@@ -74,10 +74,10 @@ describe('d2l-insights-role-filter', () => {
 			fetchMock.get(rolesEndpoint, mockLmsResponseData);
 
 			const expectedFilterData = [
-				{ id: '1', name: 'role', displayName: 'role' },
-				{ id: '2', name: 'Role', displayName: 'Role' },
-				{ id: '3', name: 'Role', displayName: 'Role' },
-				{ id: '4', name: 'ZZZRole', displayName: 'ZZZRole' }
+				{ id: '1', name: 'role', displayName: 'role', selected: false },
+				{ id: '2', name: 'Role', displayName: 'Role', selected: false },
+				{ id: '3', name: 'Role', displayName: 'Role', selected: false },
+				{ id: '4', name: 'ZZZRole', displayName: 'ZZZRole', selected: false }
 			];
 			const el = await fixture(html`<d2l-insights-role-filter></d2l-insights-role-filter>`);
 			await new Promise(resolve => setTimeout(resolve, 200)); // allow fetch to run. Add 200 ms for Firefox on OSX

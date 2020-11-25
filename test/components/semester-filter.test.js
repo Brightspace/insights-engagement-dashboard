@@ -1,4 +1,5 @@
 import '../../components/semester-filter';
+import { disableUrlStateForTesting, enableUrlState } from '../../model/urlState';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import fetchMock from 'fetch-mock/esm/client';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
@@ -6,6 +7,10 @@ import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-help
 const endpoint = new URL('/d2l/api/ap/unstable/insights/data/semesters?pageSize=3', location.href);
 
 describe('d2l-insights-semester-filter', () => {
+
+	before(() => disableUrlStateForTesting());
+	after(() => enableUrlState());
+
 	beforeEach(() => {
 		fetchMock.reset();
 

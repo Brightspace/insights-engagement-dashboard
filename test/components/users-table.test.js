@@ -77,6 +77,13 @@ const expected = [
 	]).sort((u1, u2) => u1[COLS.USER_INFO][0].localeCompare(u2[COLS.USER_INFO][0]))
 ];
 
+async function getInnerTable(el) {
+	const innerTable = el.shadowRoot.querySelector('d2l-insights-table');
+	await new Promise(resolve => setTimeout(resolve, 200));
+	await innerTable.updateComplete;
+	return innerTable;
+}
+
 describe('d2l-insights-users-table', () => {
 
 	describe('constructor', () => {
@@ -111,6 +118,33 @@ describe('d2l-insights-users-table', () => {
 			const totalUsersText = el.shadowRoot.querySelectorAll('.d2l-insights-users-table-total-users')[0];
 			expect(totalUsersText.innerText).to.equal('Total Users: 23');
 		});
+
+		describe('prefs', () => {
+			const allCols = Object.values(COLS).slice(2);
+
+			[
+				allCols,
+				[],
+				[COLS.COURSES, COLS.AVG_TIC],
+				...allCols.map(omitCol => allCols.filter(col => col !== omitCol))
+			]
+				.forEach(columns =>
+					it(`should render configured columns (${columns})`, async() => {
+						const el = await fixture(html`<d2l-insights-users-table
+							.data="${data}"
+							?courses-col="${columns.includes(COLS.COURSES)}"
+							?discussions-col="${columns.includes(COLS.AVG_DISCUSSION)}"
+							?grade-col="${columns.includes(COLS.AVG_GRADE)}"
+							?last-access-col="${columns.includes(COLS.LAST_SYS_ACCESS)}"
+							?tic-col="${columns.includes(COLS.AVG_TIC)}"
+						></d2l-insights-users-table>`);
+
+						const expectedCols = [0, 1, ...columns];
+
+						verifyConfiguredColumns(await getInnerTable(el), 20, 0, expectedCols);
+					})
+				);
+		});
 	});
 
 	describe('pagination', () => {
@@ -129,10 +163,15 @@ describe('d2l-insights-users-table', () => {
 			before(async function() {
 				this.timeout(10000);
 
-				el = await fixture(html`<d2l-insights-users-table .data="${data}"></d2l-insights-users-table>`);
-				innerTable = el.shadowRoot.querySelector('d2l-insights-table');
-				await new Promise(resolve => setTimeout(resolve, 200));
-				await innerTable.updateComplete;
+				el = await fixture(html`<d2l-insights-users-table
+ 					.data="${data}"
+ 					 courses-col
+ 					 discussions-col
+ 					 grade-col
+ 					 last-access-col
+ 					 tic-col
+ 				></d2l-insights-users-table>`);
+				innerTable = await getInnerTable(el);
 				pageSelector = el.shadowRoot.querySelector('d2l-labs-pagination');
 				await pageSelector.updateComplete;
 				pageSizeSelector = pageSelector.shadowRoot.querySelector('select');
@@ -241,7 +280,14 @@ describe('d2l-insights-users-table', () => {
 		before(async function() {
 			this.timeout(10000);
 
-			const table = await fixture(html`<d2l-insights-users-table .data="${data}"></d2l-insights-users-table>`);
+			const table = await fixture(html`<d2l-insights-users-table
+				.data="${data}"
+				 courses-col
+				 discussions-col
+				 grade-col
+				 last-access-col
+				 tic-col
+			></d2l-insights-users-table>`);
 			await new Promise(resolve => setTimeout(resolve, 200));
 			await table.updateComplete;
 
@@ -366,7 +412,14 @@ describe('d2l-insights-users-table', () => {
 
 	describe('eventing', () => {
 		it('should modify selectedUserIds when items in the table are selected', async() => {
-			const el = await fixture(html`<d2l-insights-users-table .data="${data}"></d2l-insights-users-table>`);
+			const el = await fixture(html`<d2l-insights-users-table
+ 					.data="${data}"
+ 					 courses-col
+ 					 discussions-col
+ 					 grade-col
+ 					 last-access-col
+ 					 tic-col
+ 				></d2l-insights-users-table>`);
 			const innerTable = el.shadowRoot.querySelector('d2l-insights-table');
 			await new Promise(resolve => setTimeout(resolve, 200));
 			await innerTable.updateComplete;
@@ -396,22 +449,73 @@ describe('d2l-insights-users-table', () => {
 
 	describe('export', () => {
 		it('should get headersForExport', async() => {
-			const el = await fixture(html`<d2l-insights-users-table .data="${data}"></d2l-insights-users-table>`);
+			const el = await fixture(html`<d2l-insights-users-table
+				.data="${data}"
+				 courses-col
+				 discussions-col
+				 grade-col
+				 last-access-col
+				 tic-col
+			></d2l-insights-users-table>`);
 			expect(el.headersForExport).to.deep.equal(
 				['Last Name', 'First Name', 'User Name', 'User ID', 'Courses', 'Average Grade', 'Average Time in Content (mins)', 'Threads', 'Reads', 'Replies', 'Last Accessed System']);
 		});
 		it('should get dataForExport[0]', async() => {
-			const el = await fixture(html`<d2l-insights-users-table .data="${data}"></d2l-insights-users-table>`);
+			const el = await fixture(html`<d2l-insights-users-table
+				.data="${data}"
+				 courses-col
+				 discussions-col
+				 grade-col
+				 last-access-col
+				 tic-col
+			></d2l-insights-users-table>`);
 			expect(el.dataForExport[0]).to.deep.equal(
-				[{ value: 300, ariaLabel: 'Select Harrison, George', selected: false }, [300, 'George', 'Harrison', 'gharrison'], 14, '71.42 %', '19.64', [1, 6, 28], `${getLocalDateTime(2)}`]);
+				['Harrison', 'George', 'gharrison', 300, 14, '71.42 %', '19.64', 1, 6, 28, `${getLocalDateTime(2)}`]);
+		});
+
+		describe('prefs', () => {
+			const allCols = {
+				'courses-col': [4],
+				'discussions-col': [7, 8, 9],
+				'grade-col': [5],
+				'last-access-col': [10],
+				'tic-col': [6]
+			};
+
+			[
+				[],
+				['courses-col', 'tic-col'],
+				...Object.keys(allCols).map(omitCol => Object.keys(allCols).filter(col => col !== omitCol))
+			]
+				.forEach(columns =>
+					it(`should export configured columns (${columns})`, async() => {
+						const el = await fixture(html`<d2l-insights-users-table
+							.data="${data}"
+							?courses-col="${columns.includes('courses-col')}"
+							?discussions-col="${columns.includes('discussions-col')}"
+							?grade-col="${columns.includes('grade-col')}"
+							?last-access-col="${columns.includes('last-access-col')}"
+							?tic-col="${columns.includes('tic-col')}"
+						></d2l-insights-users-table>`);
+
+						const expectedCols = [0, 1, 2, 3, ...columns.flatMap(col => allCols[col])]
+							.sort((a, b) => a - b);
+						const expectedExport = expectedCols.map(i =>
+							['Harrison', 'George', 'gharrison', 300, 14, '71.42 %', '19.64', 1, 6, 28, `${getLocalDateTime(2)}`][i]
+						);
+						expect(el.dataForExport[0]).to.deep.equal(expectedExport);
+					})
+				);
 		});
 	});
 });
 
-function verifyColumns(table, expectedNumDisplayedRows, startRowNum) {
-	Object.values(COLS).forEach(colType => {
+function verifyConfiguredColumns(table, expectedNumDisplayedRows, startRowNum, cols) {
+	cols.forEach((colType, i) => {
+		// css nth-child is 1-indexed, so add 1
+		const index = i + 1;
 		const displayedUserInfo = Array.from(
-			table.shadowRoot.querySelectorAll(`.d2l-insights-table-table > tbody > tr > td:nth-child(${colType + 1})`) // css nth-child is 1-indexed, so add 1
+			table.shadowRoot.querySelectorAll(`.d2l-insights-table-table > tbody > tr > td:nth-child(${index})`)
 		);
 
 		expect(displayedUserInfo.length).to.equal(expectedNumDisplayedRows);
@@ -421,7 +525,10 @@ function verifyColumns(table, expectedNumDisplayedRows, startRowNum) {
 			verifyCellValue(expectedCellValue, cell, colType);
 		});
 	});
+}
 
+function verifyColumns(table, expectedNumDisplayedRows, startRowNum) {
+	verifyConfiguredColumns(table, expectedNumDisplayedRows, startRowNum, Object.values(COLS));
 }
 
 function verifyCellValue(expectedValue, cell, colType) {
