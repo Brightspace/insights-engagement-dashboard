@@ -2,19 +2,22 @@ import '@brightspace-ui/core/components/inputs/input-text';
 import './table.js';
 import { action, computed, decorate, observable } from 'mobx';
 import { css, html } from 'lit-element';
-import { formatNumber, formatPercent } from '@brightspace-ui/intl';
-import { RECORD, USER } from '../consts';
+import { formatPercent } from '@brightspace-ui/intl';
+import { formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
+import { RECORD } from '../consts';
 import { COLUMN_TYPES } from './table';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 
-export const TABLE_USER = {
-	COURSE: 0,
+
+export const TABLE_COURSES = {
+	COURSE_NAME: 0,
 	CURRENT_GRADE: 1,
-	AVG_TIME_IN_CONTENT: 2,
-	AVG_DISCUSSION_ACTIVITY: 3,
-	LAST_ACCESSED_SYS: 4
+	PREDICTED_GRADE: 2,
+	TIME_IN_CONTENT: 3,
+	DISCUSSION_ACTIVITY: 4,
+	COURSE_LAST_ACCESS: 5
 };
 
 const numberFormatOptions = { maximumFractionDigits: 2 };
@@ -25,6 +28,7 @@ const DEFAULT_PAGE_SIZE = 20;
  * The mobx data object is doing filtering logic
  *
  * @property {Object} data - an instance of Data from model/data.js
+ * @property {Object} orgUnitTree 
  * @property {Number} _sortColumn - The index of the column that is currently sorted
  * @property {String} _sortOrder - either 'asc' or 'desc'
  */
@@ -33,6 +37,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
 			data: { type: Object, attribute: false },
+			orgUnitTree: { type: Object, attribute: false },
 			_sortColumn: { type: Number, attribute: false },
 			_sortOrder: { type: String, attribute: false },
 		};
@@ -66,7 +71,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 			users: []
 		};
 		this._sortOrder = 'desc';
-		this._sortColumn = TABLE_USER.COURSE;
+		this._sortColumn = TABLE_COURSES.COURSE_NAME;
 	}
 
 	get _itemsCount() {
@@ -97,21 +102,23 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_preProcessData(userRecords) {
-		
 		const orgUnitId =  userRecords.get(RECORD.ORG_UNIT_ID);
+		const orgUnitName = this.orgUnitTree._nodes.get(orgUnitId)[1];
 		const finalGrade = userRecords.get(RECORD.CURRENT_FINAL_GRADE);
 		const predictedGrade = userRecords.get(RECORD.CURRENT_FINAL_GRADE);
+		const timeInContent = userRecords.get(RECORD.TIME_IN_CONTENT);
 		const threads = userRecords.get(RECORD.DISCUSSION_ACTIVITY_THREADS);
 		const reads = userRecords.get(RECORD.DISCUSSION_ACTIVITY_READS);
 		const replies = userRecords.get(RECORD.DISCUSSION_ACTIVITY_REPLIES);
-		const timeInContent = userRecords.get(RECORD.TIME_IN_CONTENT);
+		const lastCourseAccess = userRecords.get(RECORD.COURSE_LAST_ACCESS) ? new Date(userRecords.get(RECORD.COURSE_LAST_ACCESS)) : undefined;
 
 		return [
-			`Org Unit ID: ${orgUnitId}`,
+			orgUnitName,
 			finalGrade,
 			predictedGrade,
+			timeInContent,
 			[threads, reads, replies],
-			timeInContent
+			lastCourseAccess
 		];
 	}
 
@@ -132,12 +139,17 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_formatDataForDisplay(user) {
+		const lastSysAccessFormatted = user[TABLE_COURSES.COURSE_LAST_ACCESS]
+			? formatDateTime(new Date(user[TABLE_COURSES.COURSE_LAST_ACCESS]), { format: 'medium' })
+			: this.localize('components.insights-users-table.null');
+
 		return [
-			user[TABLE_USER.COURSE],
-			user[TABLE_USER.CURRENT_GRADE] ? formatPercent(user[TABLE_USER.CURRENT_GRADE] / 100, numberFormatOptions) : '',
-			user[TABLE_USER.CURRENT_GRADE] ? formatPercent(user[TABLE_USER.CURRENT_GRADE] / 100, numberFormatOptions) : '',
-			user[TABLE_USER.AVG_DISCUSSION_ACTIVITY],
-			user[TABLE_USER.AVG_TIME_IN_CONTENT]
+			user[TABLE_COURSES.COURSE_NAME],
+			user[TABLE_COURSES.CURRENT_GRADE] ? formatPercent(user[TABLE_COURSES.CURRENT_GRADE] / 100, numberFormatOptions) : '',
+			user[TABLE_COURSES.CURRENT_GRADE] ? formatPercent(user[TABLE_COURSES.CURRENT_GRADE] / 100, numberFormatOptions) : '',
+			user[TABLE_COURSES.PREDICTED_GRADE],
+			user[TABLE_COURSES.DISCUSSION_ACTIVITY],
+			lastSysAccessFormatted
 		];
 	}
 
@@ -155,11 +167,12 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get userDataForDisplayFormatted() {
 		return this.userDataForDisplay.map(data => {
 			return [
-				data[TABLE_USER.COURSE],
-				data[TABLE_USER.CURRENT_GRADE],
-				data[TABLE_USER.AVG_TIME_IN_CONTENT],
-				data[TABLE_USER.AVG_DISCUSSION_ACTIVITY],
-				data[TABLE_USER.LAST_ACCESSED_SYS]];
+				data[TABLE_COURSES.COURSE_NAME],
+				data[TABLE_COURSES.CURRENT_GRADE],
+				data[TABLE_COURSES.PREDICTED_GRADE],
+				data[TABLE_COURSES.TIME_IN_CONTENT],
+				data[TABLE_COURSES.DISCUSSION_ACTIVITY],
+				data[TABLE_COURSES.COURSE_LAST_ACCESS]];
 		});
 	}
 
@@ -174,13 +187,13 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 			this.localize('components.insights-users-table-export.FirstName'),
 			this.localize('components.insights-users-table-export.UserName'),
 			this.localize('components.insights-users-table-export.UserID'),
-			headerArray[TABLE_USER.COURSE],
-			headerArray[TABLE_USER.CURRENT_GRADE],
-			headerArray[TABLE_USER.AVG_TIME_IN_CONTENT],
+			headerArray[TABLE_COURSES.COURSE_NAME],
+			headerArray[TABLE_COURSES.CURRENT_GRADE],
+			headerArray[TABLE_COURSES.AVG_TIME_IN_CONTENT],
 			this.localize('components.insights-discussion-activity-card.threads'),
 			this.localize('components.insights-discussion-activity-card.reads'),
 			this.localize('components.insights-discussion-activity-card.replies'),
-			headerArray[TABLE_USER.LAST_ACCESSED_SYS]
+			headerArray[TABLE_COURSES.TIME_IN_CONTENT]
 		];
 	}
 
@@ -199,11 +212,15 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			},
 			{
+				headerText: this.localize('components.insights-active-courses-table.timeInContent'),
+				columnType: COLUMN_TYPES.NORMAL_TEXT
+			},
+			{
 				headerText: this.localize('components.insights-active-courses-table.discussions'),
 				columnType: COLUMN_TYPES.SUB_COLUMNS
 			},
 			{
-				headerText: this.localize('components.insights-active-courses-table.timeInContent'),
+				headerText: this.localize('components.insights-active-courses-table.courseLastAccess'),
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			}
 		];

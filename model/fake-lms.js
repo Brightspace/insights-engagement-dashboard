@@ -3,7 +3,7 @@
 export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView = false }) {
 	const demoData = {
 		records: [
-			[1, 100, 500, 1, 55, 1000, null, 0, 0, 0],
+			[1, 100, 500, 1, 55, 1000, Date.now(), 0, 0, 0],
 			[1, 200, 600, 0, 33, 2000, Date.now() - 2093, 0, 0, 0],
 			[1, 300, 500, 0, null, 1000, null, 0, 0, 0],
 			[1, 400, 500, 0, 30, 5000, null, 0, 0, 0],

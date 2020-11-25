@@ -1,6 +1,6 @@
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/button/button.js';
-import { bodySmallStyles, heading2Styles } from '@brightspace-ui/core/components/typography/styles.js';
+import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
@@ -8,19 +8,21 @@ import { MobxLitElement } from '@adobe/lit-mobx';
 /**
  * @property {Object} user - {firstName, lastName, username, userId}
  * @property {Object} data - an instance of Data from model/data.js
+ * @property {Object} orgUnitTree 
  * @fires d2l-insights-user-drill-view-back
  */
 class UserDrill extends Localizer(MobxLitElement) {
 	static get properties() {
 		return {
 			user: { type: Object, attribute: false },
-			data: { type: Object, attribute: false }
+			data: { type: Object, attribute: false },
+			orgUnitTree: { type: Object, attribute: false }
 		};
 	}
 
 	static get styles() {
 		return [
-			bodySmallStyles, heading2Styles,
+			bodySmallStyles, heading2Styles, heading3Styles,
 			css`
 			:host {
 				display: block;
@@ -135,11 +137,13 @@ class UserDrill extends Localizer(MobxLitElement) {
 				primary
 				@click="${this._composeEmailHandler}"
 			>${this.localize('components.insights-user-drill-view.emailButton')}</d2l-button>
+			<h2 class="d2l-heading-3">${this.localize('components.insights-active-courses-table.title')}</h2>
 
 			<div class="d2l-insights-user-drill-view-content">
 				
 				<d2l-insights-active-courses-table
 					.data="${this.data}"
+					.orgUnitTree="${this.orgUnitTree}"
 					?skeleton="${this.skeleton}">
 				</d2l-insights-active-courses-table>
 				

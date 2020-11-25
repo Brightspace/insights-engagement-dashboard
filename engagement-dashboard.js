@@ -171,10 +171,12 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			username: 'claire.dane',
 			userId: 887
 		};
+		const orgUnitTree = this._serverData.orgUnitTree;
 		return html`
 			<d2l-insights-user-drill-view
 				.user="${user}"
 				.data="${this._data}"
+				.orgUnitTree="${orgUnitTree}"
 				.skeleton="${this._isLoading}"
 				@d2l-insights-user-drill-view-back="${this._backToHomeHandler}"
 			></d2l-insights-user-drill-view>
@@ -298,7 +300,6 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 			this.__data = rowFilteredData.withFilter(new TimeInContentVsGradeFilter(rowFilteredData));
 		}
-
 		return this.__data;
 	}
 

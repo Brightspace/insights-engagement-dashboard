@@ -147,10 +147,11 @@ export default {
 
 	"components.insights-active-courses-table.title": "Active Courses",
 	"components.insights-active-courses-table.loadingPlaceholder": "Loading",
-	"components.insights-active-courses-table.course": "Course",
+	"components.insights-active-courses-table.course": "Course Name",
 	"components.insights-active-courses-table.currentGrade": "Current Grade",
 	"components.insights-active-courses-table.predictedGrade": "Predicted Grade",
-	"components.insights-active-courses-table.discussions": "Discussions",
-	"components.insights-active-courses-table.timeInContent": "Time in Content"
+	"components.insights-active-courses-table.timeInContent": "Time in Content (mins)",
+	"components.insights-active-courses-table.discussions": "Discussion Activity",
+	"components.insights-active-courses-table.courseLastAccess": "Course Last Access"
 
 };
