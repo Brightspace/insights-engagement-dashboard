@@ -2,14 +2,13 @@ import '@brightspace-ui/core/components/inputs/input-text';
 import './table.js';
 import { action, computed, decorate, observable } from 'mobx';
 import { css, html } from 'lit-element';
-import { formatPercent } from '@brightspace-ui/intl';
-import { formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
-import { RECORD } from '../consts';
 import { COLUMN_TYPES } from './table';
+import { formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
+import { formatPercent } from '@brightspace-ui/intl';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
+import { RECORD } from '../consts';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
-
 
 export const TABLE_COURSES = {
 	COURSE_NAME: 0,
@@ -28,7 +27,7 @@ const DEFAULT_PAGE_SIZE = 20;
  * The mobx data object is doing filtering logic
  *
  * @property {Object} data - an instance of Data from model/data.js
- * @property {Object} orgUnitTree 
+ * @property {Object} orgUnitTree
  * @property {Number} _sortColumn - The index of the column that is currently sorted
  * @property {String} _sortOrder - either 'asc' or 'desc'
  */
@@ -77,7 +76,6 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get _itemsCount() {
 		return this.userDataForDisplayFormatted.length;
 	}
-
 
 	// don't use displayData.length to get the itemsCount. When we display a skeleton view, displayData.length is
 	// the number of skeleton rows we're displaying, but the Total Users count should still be 0

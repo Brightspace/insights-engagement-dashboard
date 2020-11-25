@@ -143,8 +143,7 @@ export default {
 	"components.insights-default-view-popup.expandDefaultCourseList": "Expand to see the courses included in your default view",
 	"components.insights-default-view-popup.collapseDefaultCourseList": "Collapse the list of courses included in your default view",
 	"components.insights-default-view-popup.buttonOk": "Ok",
-	
-	
+
 	"components.insights-user-drill-view.exportToCsv": "Export to CSV",
 	"components.insights-user-drill-view.print": "Print",
 	"components.insights-user-drill-view.emailButton": "Back",

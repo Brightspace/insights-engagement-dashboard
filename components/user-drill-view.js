@@ -8,7 +8,7 @@ import { MobxLitElement } from '@adobe/lit-mobx';
 /**
  * @property {Object} user - {firstName, lastName, username, userId}
  * @property {Object} data - an instance of Data from model/data.js
- * @property {Object} orgUnitTree 
+ * @property {Object} orgUnitTree
  * @fires d2l-insights-user-drill-view-back
  */
 class UserDrill extends Localizer(MobxLitElement) {
