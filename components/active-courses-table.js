@@ -111,7 +111,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const lastCourseAccess = userRecords.get(RECORD.COURSE_LAST_ACCESS) ? new Date(userRecords.get(RECORD.COURSE_LAST_ACCESS)) : undefined;
 
 		return [
-			orgUnitName,
+			this.localize('components.tree-filter.node-name', { orgUnitName, id: orgUnitId }),
 			finalGrade,
 			predictedGrade,
 			timeInContent,
@@ -156,7 +156,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		// map to a 2D userData array, with column 1 as a sub-array of [id, FirstName, LastName, UserName]
 		// then sort by the selected sorting function
 		const sortFunction = this._choseSortFunction(this._sortColumn, this._sortOrder);
-		return this.data.recordsByUser.get(100)
+		return this.data
 			.map(this._preProcessData, this)
 			.sort(sortFunction)
 			.map(this._formatDataForDisplay, this);

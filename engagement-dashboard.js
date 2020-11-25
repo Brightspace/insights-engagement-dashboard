@@ -240,13 +240,13 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			firstName: 'Dane',
 			lastName: 'Clarie',
 			username: 'claire.dane',
-			userId: 887
+			userId: 100
 		};
 		const orgUnitTree = this._serverData.orgUnitTree;
 		return html`
 			<d2l-insights-user-drill-view
 				.user="${user}"
-				.data="${this._data}"
+				.data="${this._data.recordsByUser.get(user.userId)}"
 				.orgUnitTree="${orgUnitTree}"
 				.skeleton="${this._isLoading}"
 				@d2l-insights-user-drill-view-back="${this._backToHomeHandler}"
