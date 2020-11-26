@@ -1,6 +1,6 @@
-import '@brightspace-ui/core/components/inputs/input-text';
-import '@brightspace-ui-labs/pagination/pagination';
 import './table.js';
+import '@brightspace-ui-labs/pagination/pagination';
+import '@brightspace-ui/core/components/inputs/input-text';
 import { action, computed, decorate, observable, reaction } from 'mobx';
 import { css, html } from 'lit-element';
 import { formatNumber, formatPercent } from '@brightspace-ui/intl';
@@ -53,7 +53,14 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 			_pageSize: { type: Number, attribute: false },
 			_sortColumn: { type: Number, attribute: false },
 			_sortOrder: { type: String, attribute: false },
-			selectedUserIds: { type: Array, attribute: false }
+			selectedUserIds: { type: Array, attribute: false },
+
+			// user preferences:
+			showCoursesCol: { type: Boolean, attribute: 'courses-col', reflect: true },
+			showDiscussionsCol: { type: Boolean, attribute: 'discussions-col', reflect: true },
+			showGradeCol: { type: Boolean, attribute: 'grade-col', reflect: true },
+			showLastAccessCol: { type: Boolean, attribute: 'last-access-col', reflect: true },
+			showTicCol: { type: Boolean, attribute: 'tic-col', reflect: true }
 		};
 	}
 
@@ -94,6 +101,11 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this._sortOrder = 'desc';
 		this._sortColumn = TABLE_USER.NAME_INFO;
 		this.selectedUserIds = [];
+		this.showCoursesCol = false;
+		this.showDiscussionsCol = false;
+		this.showGradeCol = false;
+		this.showLastAccessCol = false;
+		this.showTicCol = false;
 
 		// reset selectedUserIds whenever the input data changes
 		reaction(
@@ -130,7 +142,10 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 			const start = this._pageSize * (this._currentPage - 1);
 			const end = this._pageSize * (this._currentPage); // it's ok if this goes over the end of the array
-			return this.userDataForDisplayFormatted.slice(start, end);
+			const visibleColumns = this._visibleColumns;
+			return this.userDataForDisplayFormatted
+				.slice(start, end)
+				.map(user => visibleColumns.map(column => user[column]));
 		}
 
 		return [];
@@ -138,7 +153,8 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_handleColumnSort(e) {
 		this._sortOrder = e.detail.order;
-		this._sortColumn = e.detail.column;
+		// convert from index in visible columns to general column index matching TABLE_USER
+		this._sortColumn = this._visibleColumns[e.detail.column];
 		this._currentPage = 0;
 
 		this._resetSelectedUserIds();
@@ -175,7 +191,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		];
 	}
 
-	_choseSortFunction(column, order) {
+	_chosenSortFunction(column, order) {
 		const ORDER = {
 			'asc': [-1, 1, 0],
 			'desc': [1, -1, 0]
@@ -221,7 +237,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get userDataForDisplay() {
 		// map to a 2D userData array, with column 1 as a sub-array of [id, FirstName, LastName, UserName]
 		// then sort by the selected sorting function
-		const sortFunction = this._choseSortFunction(this._sortColumn, this._sortOrder);
+		const sortFunction = this._chosenSortFunction(this._sortColumn, this._sortOrder);
 		return this.data.users
 			.map(this._preProcessData, this)
 			.sort(sortFunction)
@@ -243,28 +259,55 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get dataForExport() {
-		return this.userDataForDisplay;
+		const visibleColumns = this._visibleColumns;
+		return this.userDataForDisplay
+			.map(user => visibleColumns.flatMap(column => {
+				const val = user[column];
+				if (column === TABLE_USER.NAME_INFO) {
+					// setting a different order for these columns
+					return [val[USER.LAST_NAME], val[USER.FIRST_NAME], val[USER.USERNAME], val[USER.ID]];
+				}
+				return val;
+			})
+				// skip the selector column
+				.slice(1)
+			);
 	}
 
 	get headersForExport() {
-		const headerArray = this.columnInfo.map(item => item.headerText);
-		return [
+		const headers = [
 			this.localize('components.insights-users-table-export.lastName'),
 			this.localize('components.insights-users-table-export.FirstName'),
 			this.localize('components.insights-users-table-export.UserName'),
-			this.localize('components.insights-users-table-export.UserID'),
-			headerArray[TABLE_USER.COURSES],
-			headerArray[TABLE_USER.AVG_GRADE],
-			headerArray[TABLE_USER.AVG_TIME_IN_CONTENT],
-			this.localize('components.insights-discussion-activity-card.threads'),
-			this.localize('components.insights-discussion-activity-card.reads'),
-			this.localize('components.insights-discussion-activity-card.replies'),
-			headerArray[TABLE_USER.LAST_ACCESSED_SYS]
+			this.localize('components.insights-users-table-export.UserID')
 		];
+		if (this.showCoursesCol) headers.push(this.localize('components.insights-users-table.courses'));
+		if (this.showGradeCol) headers.push(this.localize('components.insights-users-table.avgGrade'));
+		if (this.showTicCol) headers.push(this.localize('components.insights-users-table.avgTimeInContent'));
+		if (this.showDiscussionsCol) {
+			headers.push(this.localize('components.insights-discussion-activity-card.threads'));
+			headers.push(this.localize('components.insights-discussion-activity-card.reads'));
+			headers.push(this.localize('components.insights-discussion-activity-card.replies'));
+		}
+		if (this.showLastAccessCol) headers.push(this.localize('components.insights-users-table.lastAccessedSys'));
+
+		return headers;
+	}
+
+	get _visibleColumns() {
+		const columns = [TABLE_USER.SELECTOR_VALUE, TABLE_USER.NAME_INFO];
+
+		if (this.showCoursesCol) columns.push(TABLE_USER.COURSES);
+		if (this.showGradeCol) columns.push(TABLE_USER.AVG_GRADE);
+		if (this.showTicCol) columns.push(TABLE_USER.AVG_TIME_IN_CONTENT);
+		if (this.showDiscussionsCol) columns.push(TABLE_USER.AVG_DISCUSSION_ACTIVITY);
+		if (this.showLastAccessCol) columns.push(TABLE_USER.LAST_ACCESSED_SYS);
+
+		return columns;
 	}
 
 	get columnInfo() {
-		return [
+		const columnInfo = [
 			{
 				headerText: '', // no text should appear for this column header
 				columnType: COLUMN_TYPES.ROW_SELECTOR
@@ -272,6 +315,10 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 			{
 				headerText: this.localize('components.insights-users-table.lastFirstName'),
 				columnType: COLUMN_TYPES.TEXT_SUB_TEXT,
+				clickable: true,
+				ariaLabelFn: (cellValue) => {
+					return this.localize('components.insights-users-table.openUserPage', { userName: cellValue[0] });
+				}
 			},
 			{
 				headerText: this.localize('components.insights-users-table.courses'),
@@ -294,6 +341,8 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			}
 		];
+
+		return this._visibleColumns.map(column => columnInfo[column]);
 	}
 
 	render() {
@@ -306,6 +355,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 				.data="${this._displayData}"
 				?skeleton="${this.skeleton}"
 				@d2l-insights-table-select-changed="${this._handleSelectChanged}"
+				@d2l-insights-table-cell-clicked="${this._handleCellClick}"
 			></d2l-insights-table>
 
 			<d2l-labs-pagination
@@ -363,6 +413,18 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		} else {
 			this.selectedUserIds = this.selectedUserIds.filter(userId => !changedUserIds.includes(userId));
 		}
+	}
+
+	_handleCellClick(event) {
+		const table = this.shadowRoot.querySelector('d2l-insights-table');
+		const row = table.data[event.detail.rowIdx];
+		this.dispatchEvent(new CustomEvent('d2l-insights-users-table-cell-clicked', {
+			detail: {
+				userId: row[TABLE_USER.SELECTOR_VALUE].value,
+				row: row,
+				columnIdx: event.detail.columnIdx
+			}
+		}));
 	}
 }
 decorate(UsersTable, {

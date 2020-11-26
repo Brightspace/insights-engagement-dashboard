@@ -1,9 +1,12 @@
+import { disableUrlStateForTesting, enableUrlState, setStateForTesting } from '../../model/urlState';
 import { expect, fixture, html } from '@open-wc/testing';
 import { CourseLastAccessFilter } from '../../components/course-last-access-card';
 import { records } from '../model/mocks';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
 describe('d2l-insights-course-last-access-card', () => {
+	before(() => disableUrlStateForTesting());
+	after(() => enableUrlState());
 	const filter = new CourseLastAccessFilter();
 	const data = {
 		getFilter: id => (id === filter.id ? filter : null),
@@ -48,6 +51,29 @@ describe('d2l-insights-course-last-access-card', () => {
 				'var(--d2l-color-celestine)',
 				'var(--d2l-color-mica)',
 			]);
+		});
+	});
+
+	describe('urlState', () => {
+
+		const key = new CourseLastAccessFilter().persistenceKey;
+		before(() => enableUrlState());
+		after(() => disableUrlStateForTesting());
+
+		it('should load the default value and then save to the url', () => {
+			// set the filter to active
+			setStateForTesting(key, '1');
+
+			// check that the filter loads the url state
+			const filter = new CourseLastAccessFilter();
+			expect(filter.isApplied).to.be.true;
+
+			filter.isApplied = false;
+
+			// check that the change state was saved
+			const params = new URLSearchParams(window.location.search);
+			const state = params.get(filter.persistenceKey);
+			expect(state).to.equal(null);
 		});
 	});
 

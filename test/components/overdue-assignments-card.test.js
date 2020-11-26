@@ -1,9 +1,14 @@
+import { disableUrlStateForTesting, enableUrlState, setStateForTesting } from '../../model/urlState';
 import { expect, fixture, html } from '@open-wc/testing';
 import { OverdueAssignmentsFilter } from '../../components/overdue-assignments-card';
 import { records } from '../model/mocks';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
 describe('d2l-insights-overdue-assignments-card', () => {
+
+	before(() => disableUrlStateForTesting());
+	after(() => enableUrlState());
+
 	const filter = new OverdueAssignmentsFilter();
 	const data = {
 		getFilter: id => (id === filter.id ? filter : null),
@@ -30,6 +35,29 @@ describe('d2l-insights-overdue-assignments-card', () => {
 			expect(el.shadowRoot.querySelector('d2l-labs-summary-card').title).to.deep.equal('Overdue Assignments');
 			expect(el.shadowRoot.querySelector('d2l-labs-summary-card').message).to.deep.equal('Users currently have one or more overdue assignments.');
 			expect(el.shadowRoot.querySelector('d2l-labs-summary-card').isValueClickable).to.deep.equal(true);
+		});
+	});
+
+	describe('urlState', () => {
+
+		const key = new OverdueAssignmentsFilter().persistenceKey;
+		before(() => enableUrlState());
+		after(() => disableUrlStateForTesting());
+
+		it('should load the default value and then save to the url', () => {
+			// set the filter to active
+			setStateForTesting(key, '1');
+
+			// check that the filter loads the url state
+			const filter = new OverdueAssignmentsFilter();
+			expect(filter.isApplied).to.be.true;
+
+			filter.isApplied = false;
+
+			// check that the change state was saved
+			const params = new URLSearchParams(window.location.search);
+			const state = params.get(filter.persistenceKey);
+			expect(state).to.equal(null);
 		});
 	});
 });

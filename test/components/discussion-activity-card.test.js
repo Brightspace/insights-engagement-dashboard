@@ -1,10 +1,12 @@
 import '../../components/discussion-activity-card.js';
-
+import { disableUrlStateForTesting, enableUrlState, setStateForTesting } from '../../model/urlState';
 import { expect, fixture, html } from '@open-wc/testing';
 import { DiscussionActivityFilter } from '../../components/discussion-activity-card';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
 describe('d2l-insights-discussion-activity-card', () => {
+	before(() => disableUrlStateForTesting());
+	after(() => enableUrlState());
 	const records = [
 		[1, 100, 500, 1, 55, 1000, null, 0, 0, 0],
 		[1, 200, 600, 0, 33, 2000, Date.now() - 2093, 0, 0, 0],
@@ -53,6 +55,33 @@ describe('d2l-insights-discussion-activity-card', () => {
 			expect(el._discussionActivityStats.threadSum).to.equal(70);
 			expect(el._discussionActivityStats.replySum).to.equal(49);
 			expect(el._discussionActivityStats.readSum).to.equal(55);
+		});
+	});
+
+	describe('urlState', () => {
+
+		const key = new DiscussionActivityFilter().persistenceKey;
+		before(() => enableUrlState());
+		after(() => disableUrlStateForTesting());
+
+		it('should load the default value and then save to the url', () => {
+			// set the filter to select categories
+			setStateForTesting(key, '1,2,3');
+
+			// check that the filter loads the url state
+			const filter = new DiscussionActivityFilter();
+			expect([...filter.selectedCategories]).to.eql([1, 2, 3]);
+
+			filter.toggleCategory(1);
+			filter.toggleCategory(2);
+			filter.toggleCategory(3);
+			filter.toggleCategory(4);
+			filter.toggleCategory(5);
+
+			// check that the change state was saved
+			const params = new URLSearchParams(window.location.search);
+			const state = params.get(filter.persistenceKey);
+			expect(state).to.equal('4,5');
 		});
 	});
 });

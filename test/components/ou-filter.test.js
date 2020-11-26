@@ -1,5 +1,6 @@
 import '../../components/ou-filter.js';
 
+import { disableUrlStateForTesting, enableUrlState } from '../../model/urlState';
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 import sinon from 'sinon/pkg/sinon-esm.js';
@@ -11,6 +12,9 @@ async function waitForTree(el) {
 }
 
 describe('d2l-insights-ou-filter', () => {
+
+	before(() => disableUrlStateForTesting());
+	after(() => enableUrlState());
 	const sandbox = sinon.createSandbox();
 	const data = {
 		orgUnitTree: new Tree({

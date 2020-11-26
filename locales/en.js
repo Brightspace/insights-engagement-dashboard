@@ -2,6 +2,7 @@
 
 export default {
 	"components.insights-engagement-dashboard.title": "Engagement Dashboard",
+	"components.insights-engagement-dashboard.title-user-view": "Learner Engagement Dashboard",
 	"components.insights-engagement-dashboard.backToInsightsPortal": "Back to Insights Portal",
 	"components.insights-engagement-dashboard.backToEngagementDashboard": "Back to Engagement Dashboard",
 	"components.insights-engagement-dashboard.backLinkTextShort": "Back",
@@ -10,12 +11,15 @@ export default {
 	"components.insights-engagement-dashboard.resultsReturned": "Users returned within results.",
 	"components.insights-engagement-dashboard.overdueAssignments": "Users currently have one or more overdue assignments.",
 	"components.insights-engagement-dashboard.overdueAssignmentsHeading": "Overdue Assignments",
-	"components.insights-engagement-dashboard.lastSystemAccess": "Users have no system access in the last 14 days.",
+	"components.insights-engagement-dashboard.lastSystemAccessMessage": 'Users have no system access in the last {thresholdDays} days.',
+	"components.insights-engagement-dashboard.lastSystemAccessMessageOneDay": 'Users have no system access in the last day.',
 	"components.insights-engagement-dashboard.lastSystemAccessHeading": "System Access",
 	"components.insights-engagement-dashboard.tooManyResults": "There are too many results in your filters. Please refine your selection.",
 	"components.insights-engagement-dashboard.learMore": "Learn More",
 	"components.insights-engagement-dashboard.exportToCsv": "Export to CSV",
+	"components.insights-engagement-dashboard.saveDefaultView": "Make this my default view",
 	"components.insights-engagement-dashboard.emailButton": "Email",
+	"components.insights-engagement-dashboard.print": "Print",
 	"components.insights-engagement-dashboard.noUsersSelectedDialogText": "Please select one or more users to email.",
 	"components.insights-engagement-dashboard.noResultsAvailable": "There are no results available that match your filters.",
 
@@ -53,6 +57,7 @@ export default {
 	"components.insights-users-table.title": "User Details",
 	"components.insights-users-table.loadingPlaceholder": "Loading",
 	"components.insights-users-table.lastFirstName": "Name",
+	"components.insights-users-table.openUserPage": "Open user's page for {userName}",
 	"components.insights-users-table.lastAccessedSystem": "Last Accessed System",
 	"components.insights-users-table.courses": "Courses",
 	"components.insights-users-table.avgGrade": "Average Grade",
@@ -141,9 +146,5 @@ export default {
 	"components.insights-default-view-popup.emptyResultsFromNRecentSemesters": "This dashboard is designed to look at portions of your organization's engagement. You do not have permission to review data in any courses in the most recently created {numDefaultSemesters} semesters.",
 	"components.insights-default-view-popup.expandDefaultCourseList": "Expand to see the courses included in your default view",
 	"components.insights-default-view-popup.collapseDefaultCourseList": "Collapse the list of courses included in your default view",
-	"components.insights-default-view-popup.buttonOk": "Ok",
-
-	"components.insights-user-drill-view.exportToCsv": "Export to CSV",
-	"components.insights-user-drill-view.print": "Print",
-	"components.insights-user-drill-view.emailButton": "Back"
+	"components.insights-default-view-popup.buttonOk": "Ok"
 };

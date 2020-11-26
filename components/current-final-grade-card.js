@@ -7,6 +7,7 @@ import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { RECORD } from '../consts';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
+import { UrlState } from '../model/urlState';
 
 const filterId = 'd2l-insights-current-final-grade-card';
 
@@ -27,8 +28,25 @@ export class CurrentFinalGradesFilter extends CategoryFilter {
 		super(
 			filterId,
 			'components.insights-current-final-grade-card.currentGrade',
-			record => this.selectedCategories.has(gradeCategory(record[RECORD.CURRENT_FINAL_GRADE]))
+			record => this.selectedCategories.has(gradeCategory(record[RECORD.CURRENT_FINAL_GRADE])),
+			'cgf'
 		);
+		this._urlState = new UrlState(this);
+	}
+
+	//for Urlstate
+	get persistenceValue() {
+		if (this.selectedCategories.size === 0) return '';
+		return [...this.selectedCategories].join(',');
+	}
+
+	set persistenceValue(value) {
+		if (value === '') {
+			this.selectedCategories.clear();
+			return;
+		}
+		const categories = value.split(',').map(category => Number(category));
+		this.setCategories(categories);
 	}
 }
 

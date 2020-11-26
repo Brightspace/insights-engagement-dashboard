@@ -10,10 +10,10 @@ import { Localizer } from '../locales/localizer';
  * @fires d2l-insights-role-filter-close
  */
 class RoleFilter extends Localizer(LitElement) {
-
 	static get properties() {
 		return {
 			isDemo: { type: Boolean, attribute: 'demo' },
+			selected: { type: Array, attribute: false },
 			_filterData: { type: Array, attribute: false }
 		};
 	}
@@ -22,6 +22,7 @@ class RoleFilter extends Localizer(LitElement) {
 		super();
 
 		this.isDemo = false;
+		this.selected = [];
 		/** @type {{id: string, displayName: string}[]} */
 		this._filterData = [];
 	}
@@ -32,7 +33,7 @@ class RoleFilter extends Localizer(LitElement) {
 		this._setRoleData(data);
 	}
 
-	get selected() {
+	get _selected() {
 		return this.shadowRoot
 			.querySelector('d2l-insights-dropdown-filter')
 			.selected
@@ -57,10 +58,14 @@ class RoleFilter extends Localizer(LitElement) {
 	}
 
 	render() {
+		const selected = new Set(this.selected.map(String));
+		const filterData = this._filterData.map(x => Object.assign(x, {
+			selected: selected.has(x.id)
+		}));
 		return html`
 			<d2l-insights-dropdown-filter
 				name="${this.localize('components.insights-role-filter.name')}"
-				.data="${this._filterData}"
+				.data="${filterData}"
 
 				@d2l-insights-dropdown-filter-selected="${this._updateFilterSelections}"
 				@d2l-insights-dropdown-filter-selection-cleared="${this._updateFilterSelections}"
@@ -71,6 +76,7 @@ class RoleFilter extends Localizer(LitElement) {
 	}
 
 	_updateFilterSelections() {
+		this.selected = this._selected;
 		/**
 		 * @event d2l-insights-role-filter-change
 		 */

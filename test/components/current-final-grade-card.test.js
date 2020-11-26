@@ -1,9 +1,12 @@
+import { disableUrlStateForTesting, enableUrlState, setStateForTesting } from '../../model/urlState';
 import { elementUpdated, expect, fixture, html } from '@open-wc/testing';
 import { CurrentFinalGradesFilter } from '../../components/current-final-grade-card';
 import { records } from '../model/mocks';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
 describe('d2l-insights-current-final-grade-card', () => {
+	before(() => disableUrlStateForTesting());
+	after(() => enableUrlState());
 	const filter = new CurrentFinalGradesFilter();
 	const data = {
 		getFilter: id => (id === filter.id ? filter : null),
@@ -108,5 +111,31 @@ describe('d2l-insights-current-final-grade-card', () => {
 				expect(actual).to.deep.equal(params.expected);
 			})
 		);
+
+		describe('urlState', () => {
+
+			const key = new CurrentFinalGradesFilter().persistenceKey;
+			before(() => enableUrlState());
+			after(() => disableUrlStateForTesting());
+
+			it('should load the default value and then save to the url', () => {
+				// set the filter to select categories
+				setStateForTesting(key, '1,2,3');
+
+				// check that the filter loads the url state
+				const filter = new CurrentFinalGradesFilter();
+				expect([...filter.selectedCategories]).to.eql([1, 2, 3]);
+
+				filter.toggleCategory(2);
+				filter.toggleCategory(3);
+				filter.toggleCategory(4);
+				filter.toggleCategory(5);
+
+				// check that the change state was saved
+				const params = new URLSearchParams(window.location.search);
+				const state = params.get(filter.persistenceKey);
+				expect(state).to.equal('1,4,5');
+			});
+		});
 	});
 });

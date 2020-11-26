@@ -7,6 +7,7 @@ import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { RECORD } from '../consts';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
+import { UrlState } from '../model/urlState';
 
 const filterId = 'd2l-insights-time-in-content-vs-grade-card';
 
@@ -23,6 +24,7 @@ export class TimeInContentVsGradeFilter {
 	constructor(data) {
 		this._data = data;
 		this.quadrant = null;
+		this._urlState = new UrlState(this);
 	}
 
 	get avgGrade() {
@@ -85,6 +87,18 @@ export class TimeInContentVsGradeFilter {
 			this.quadrant = quadrant;
 		}
 	}
+
+	//for Urlstate
+	get persistenceKey() { return 'tcgf'; }
+
+	get persistenceValue() {
+		return this.quadrant ? this.quadrant : '';
+	}
+
+	set persistenceValue(value) {
+		this.quadrant = value === '' ? null : value;
+	}
+
 }
 decorate(TimeInContentVsGradeFilter, {
 	_data: observable,
@@ -186,7 +200,6 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 
 	get chartOptions() {
 		const that = this;
-
 		return {
 			chart: {
 				type: 'scatter',
@@ -195,7 +208,7 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 				events: {
 					click: function(event) {
 						that.filter.toggleQuadrant(that.filter.calculateQuadrant(Math.floor(event.xAxis[0].value), Math.floor(event.yAxis[0].value)));
-					}
+					},
 				}
 			},
 			tooltip: {

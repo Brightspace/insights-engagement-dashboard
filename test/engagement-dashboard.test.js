@@ -1,5 +1,6 @@
 import '../engagement-dashboard.js';
 import { expect, fixture, html } from '@open-wc/testing';
+import { LastAccessFilter } from '../components/last-access-card';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
 describe('d2l-insights-engagement-dashboard', () => {
@@ -45,6 +46,26 @@ describe('d2l-insights-engagement-dashboard', () => {
 	});
 
 	describe('prefs', () => {
+		it('should provide configured roles to the data object', async() => {
+			const el = await fixture(html`<d2l-insights-engagement-dashboard
+					include-roles="900, 1000, 11"
+					demo
+				></d2l-insights-engagement-dashboard>`);
+			await new Promise(resolve => setTimeout(resolve, 100));
+
+			expect(el._serverData.selectedRoleIds).to.deep.equal([900, 1000, 11]);
+		});
+
+		it('should provide threshold to last access filter', async() => {
+			const el = await fixture(html`<d2l-insights-engagement-dashboard
+					last-access-threshold-days="6"
+					demo
+				></d2l-insights-engagement-dashboard>`);
+			await new Promise(resolve => setTimeout(resolve, 100));
+
+			expect(el._data.getFilter(new LastAccessFilter().id).thresholdDays).to.equal(6);
+		});
+
 		const allCards = [
 			'course-last-access-card',
 			'discussion-activity-card',

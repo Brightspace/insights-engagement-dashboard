@@ -1,7 +1,9 @@
 import { computed, decorate, observable } from 'mobx';
 import { RECORD } from '../consts';
+import { UrlState } from './urlState';
 
 function hasSelections(selectedIds) {
+	if (!selectedIds) return false;
 	return selectedIds.length > 0;
 }
 
@@ -10,10 +12,9 @@ function isFilterCleared(oldSelectedIds, newSelectedIds) {
 }
 
 export class RoleSelectorFilter {
-	constructor({ selectedRolesIds, isRecordsTruncated }) {
-		this._latestServerQuery = selectedRolesIds || [];
-		this.selected = selectedRolesIds || [];
-		this._isRecordsTruncated = isRecordsTruncated;
+	constructor(data) {
+		this._data = data;
+		this.selected = data.serverData.selectedRolesIds || [];
 	}
 
 	shouldInclude(record) {
@@ -21,22 +22,32 @@ export class RoleSelectorFilter {
 	}
 
 	shouldReloadFromServer(newRoleIds) {
-		if (this._isRecordsTruncated || isFilterCleared(this._latestServerQuery, newRoleIds)) {
+		if (this._data.serverData.isRecordsTruncated
+			|| isFilterCleared(this._data.serverData.selectedRolesIds, newRoleIds)) {
 			return true;
 		}
-
-		return hasSelections(this._latestServerQuery)
-			&& newRoleIds.some(newRoleId => !this._latestServerQuery.includes(newRoleId));
+		return hasSelections(this._data.serverData.selectedRolesIds)
+			&& newRoleIds.some(newRoleId => !this._data.serverData.selectedRolesIds.includes(newRoleId));
 	}
 }
 
 export class SemesterSelectorFilter {
-	constructor({ selectedSemestersIds, isRecordsTruncated, isOrgUnitsTruncated }, orgUnitAncestors) {
-		this._latestServerQuery = selectedSemestersIds || [];
-		this.selected = selectedSemestersIds || [];
-		this._isRecordsTruncated = isRecordsTruncated;
-		this._isOrgUnitsTruncated = isOrgUnitsTruncated;
-		this._orgUnitAncestors = orgUnitAncestors;
+	constructor(data) {
+		this._data = data;
+		this.selected = data.serverData.selectedSemestersIds || [];
+		// noinspection JSUnusedGlobalSymbols
+		this._urlState = new UrlState(this);
+	}
+
+	// persistence key and value for UrlState
+	get persistenceKey() { return 'sf'; }
+
+	get persistenceValue() {
+		return this.selected.join(',');
+	}
+
+	set persistenceValue(value) {
+		this.selected = value.split(',').filter(x => x).map(Number);
 	}
 
 	shouldInclude(record) {
@@ -44,16 +55,16 @@ export class SemesterSelectorFilter {
 	}
 
 	shouldIncludeOrgUnitId(orgUnitId) {
-		if (!hasSelections(this.selected) || !this._orgUnitAncestors) {
+
+		if (!hasSelections(this.selected) || !this._data.orgUnitTree) {
 			return true;
 		}
-
-		return this._orgUnitAncestors.hasAncestorsInList(orgUnitId, this.selected);
+		return this._data.orgUnitTree.hasAncestorsInList(orgUnitId, this.selected);
 	}
 
 	shouldReloadFromServer(newSemesterIds) {
-		if (this._isRecordsTruncated
-			|| this._isOrgUnitsTruncated
+		if (this._data.serverData.isRecordsTruncated
+			|| this._data.serverData.isOrgUnitsTruncated
 			|| isFilterCleared(this._latestServerQuery, newSemesterIds)
 		) {
 			return true;
@@ -62,18 +73,32 @@ export class SemesterSelectorFilter {
 		return hasSelections(this._latestServerQuery)
 			&& newSemesterIds.some(newSemesterId => !this._latestServerQuery.includes(newSemesterId));
 	}
+
+	get _latestServerQuery() {
+		return this._data.serverData.selectedSemestersIds;
+	}
 }
 
 export class OrgUnitSelectorFilter {
-	constructor({ selectedOrgUnitIds, isRecordsTruncated, isOrgUnitsTruncated }, orgUnitTree) {
-		this._latestServerQuery = selectedOrgUnitIds || [];
-		this._isRecordsTruncated = isRecordsTruncated;
-		this._isOrgUnitsTruncated = isOrgUnitsTruncated;
-		this._orgUnitTree = orgUnitTree;
+	constructor(data) {
+		this._data = data;
+		// noinspection JSUnusedGlobalSymbols
+		this._urlState = new UrlState(this);
 	}
 
 	get selected() {
-		return (this._orgUnitTree && this._orgUnitTree.selected) || [];
+		return (this._data.orgUnitTree && this._data.orgUnitTree.selected) || [];
+	}
+
+	// persistence key and value for UrlState
+	get persistenceKey() { return 'ouf'; }
+
+	get persistenceValue() {
+		return this.selected.join(',');
+	}
+
+	set persistenceValue(value) {
+		this._data.orgUnitTree.selected = value.split(',').filter(x => x).map(Number);
 	}
 
 	shouldInclude(record) {
@@ -82,20 +107,20 @@ export class OrgUnitSelectorFilter {
 			return true;
 		}
 
-		return this._orgUnitTree.hasAncestorsInList(record[RECORD.ORG_UNIT_ID], selected);
+		return this._data.orgUnitTree.hasAncestorsInList(record[RECORD.ORG_UNIT_ID], selected);
 	}
 
 	shouldReloadFromServer(newOrgUnitIds) {
-		if (this._isRecordsTruncated
+		if (this._data.serverData.isRecordsTruncated
 			// ou selection affects the *order* of org units, so if the ou tree is
 			// truncated, selection can affect which ones are in view
-			|| this._isOrgUnitsTruncated
-			|| isFilterCleared(this._latestServerQuery, newOrgUnitIds)) {
+			|| this._data.serverData.isOrgUnitsTruncated
+			|| isFilterCleared(this._data.serverData.selectedOrgUnitIds, newOrgUnitIds)) {
 			return true;
 		}
 
-		return hasSelections(this._latestServerQuery) && newOrgUnitIds.some(newOrgUnitId =>
-			!this._orgUnitTree.hasAncestorsInList(newOrgUnitId, this._latestServerQuery)
+		return hasSelections(this._data.serverData.selectedOrgUnitIds) && newOrgUnitIds.some(newOrgUnitId =>
+			!this._data.orgUnitTree.hasAncestorsInList(newOrgUnitId, this._data.serverData.selectedOrgUnitIds)
 		);
 	}
 }

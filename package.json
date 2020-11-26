@@ -21,10 +21,11 @@
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "devDependencies": {
-    "@brightspace-ui/stylelint-config": "0.0.2",
+    "@brightspace-ui/stylelint-config": "0.0.3",
     "@brightspace-ui/visual-diff": "^1.4.1",
     "@open-wc/testing": "^2",
     "@open-wc/testing-karma": "^4.0.1",
+    "@polymer/polymer": "^3.4.1",
     "babel-eslint": "^10",
     "deepmerge": "^4",
     "es-dev-server": "^1.55.1",

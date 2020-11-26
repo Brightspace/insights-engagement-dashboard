@@ -4,12 +4,14 @@ import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { RECORD } from '../consts';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
+import { UrlState } from '../model/urlState';
 
 const filterId = 'd2l-insights-overdue-assignments-card';
 
 export class OverdueAssignmentsFilter {
 	constructor() {
 		this.isApplied = false;
+		this._urlState = new UrlState(this);
 	}
 
 	get id() { return filterId; }
@@ -18,6 +20,17 @@ export class OverdueAssignmentsFilter {
 
 	filter(record) {
 		return record[RECORD.OVERDUE] > 0;
+	}
+
+	// for UrlState
+	get persistenceKey() { return 'oaf'; }
+
+	get persistenceValue() {
+		return this.isApplied ? '1' : '';
+	}
+
+	set persistenceValue(value) {
+		this.isApplied = value === '1';
 	}
 }
 decorate(OverdueAssignmentsFilter, {

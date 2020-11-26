@@ -9,6 +9,7 @@ import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { RECORD } from '../consts';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
+import { UrlState } from '../model/urlState';
 
 const filterId = 'd2l-insights-discussion-activity-card';
 
@@ -17,8 +18,25 @@ export class DiscussionActivityFilter extends CategoryFilter {
 		super(
 			filterId,
 			'components.insights-discussion-activity-card.cardTitle',
-			record => [...this.selectedCategories].some(category => record[category] > 0)
+			record => [...this.selectedCategories].some(category => record[category] > 0),
+			'daf'
 		);
+		this._urlState = new UrlState(this);
+	}
+
+	//for Urlstate
+	get persistenceValue() {
+		if (this.selectedCategories.size === 0) return '';
+		return [...this.selectedCategories].join(',');
+	}
+
+	set persistenceValue(value) {
+		if (value === '') {
+			this.selectedCategories.clear();
+			return;
+		}
+		const categories = value.split(',').map(category => Number(category));
+		this.setCategories(categories);
 	}
 }
 
