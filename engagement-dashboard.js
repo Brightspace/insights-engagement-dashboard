@@ -249,12 +249,12 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			username: userData[USER.USERNAME],
 			userId: userId
 		};
-		const orgUnitTree = this._serverData.orgUnitTree;
+
 		return html`
 			<d2l-insights-user-drill-view
 				.user="${user}"
 				.data="${this._data.recordsByUser.get(user.userId)}"
-				.orgUnitTree="${orgUnitTree}"
+				.orgUnitTree="${this._serverData.orgUnitTree}"
 				.skeleton="${this._isLoading}"
 			></d2l-insights-user-drill-view>
 		`;
@@ -420,6 +420,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 			this.__data = rowFilteredData.withFilter(new TimeInContentVsGradeFilter(rowFilteredData));
 		}
+
 		return this.__data;
 	}
 

@@ -25,8 +25,8 @@ const DEFAULT_PAGE_SIZE = 20;
 /**
  * The mobx data object is doing filtering logic
  *
- * @property {Object} data - an instance of Data from model/data.js
- * @property {Object} orgUnitTree
+ * @property {Object} data - an instance of Data from model/data.js filtered to only one user
+ * @property {Object} orgUnitTree - an instance of orgUnitTree from model/data.js
  * @property {Number} _sortColumn - The index of the column that is currently sorted
  * @property {String} _sortOrder - either 'asc' or 'desc'
  */

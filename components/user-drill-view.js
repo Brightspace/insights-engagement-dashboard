@@ -7,8 +7,8 @@ import { MobxLitElement } from '@adobe/lit-mobx';
 
 /**
  * @property {Object} user - {firstName, lastName, username, userId}
- * @property {Object} data - an instance of Data from model/data.js
- * @property {Object} orgUnitTree
+ * @property {Object} data - an instance of Data from model/data.js filtered to only one user
+ * @property {Object} orgUnitTree - an instance of orgUnitTree from model/data.js
  */
 class UserDrill extends Localizer(MobxLitElement) {
 	static get properties() {
