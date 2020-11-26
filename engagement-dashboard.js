@@ -18,6 +18,7 @@ import './components/message-container.js';
 import './components/default-view-popup.js';
 import './components/user-drill-view.js';
 import './components/immersive-nav.js';
+import './components/inactive-courses-table.js';
 
 import { css, html } from 'lit-element/lit-element.js';
 import { getPerformanceLoadPageMeasures, TelemetryHelper } from './model/telemetry-helper';
@@ -244,6 +245,9 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		return html`
 			<d2l-insights-user-drill-view
 				.user="${user}"
+				.data="${this._data.recordsByUser.get(user.userId)}"
+				.orgUnitTree="${this._serverData.orgUnitTree}"
+				.skeleton="${this._isLoading}"
 				@d2l-insights-user-drill-view-back="${this._backToHomeHandler}"
 			></d2l-insights-user-drill-view>
 		`;
@@ -315,7 +319,6 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 					@click="${this._handleEmailButtonPress}">
 				</d2l-button-subtle>
 			</d2l-action-button-group>
-
 			<d2l-insights-users-table
 				.data="${this._data}"
 				?skeleton="${this._isLoading}"

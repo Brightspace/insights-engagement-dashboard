@@ -1,5 +1,6 @@
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/button/button.js';
+import './inactive-courses-table.js';
 import { bodySmallStyles, heading2Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { Localizer } from '../locales/localizer';
@@ -12,7 +13,9 @@ import { MobxLitElement } from '@adobe/lit-mobx';
 class UserDrill extends Localizer(MobxLitElement) {
 	static get properties() {
 		return {
-			user: { type: Object, attribute: false }
+			user: { type: Object, attribute: false },
+			data: { type: Object, attribute: false },
+			orgUnitTree: { type: Object, attribute: false }
 		};
 	}
 
@@ -136,6 +139,11 @@ class UserDrill extends Localizer(MobxLitElement) {
 
 			<div class="d2l-insights-user-drill-view-content">
 				<!-- put your tables here -->
+				<d2l-insights-inactive-courses-table 
+					.data="${this.data}"
+					.orgUnitTree="${this.orgUnitTree}"
+					?skeleton="${this.skeleton}">
+				</d2l-insights-inactive-courses-table>
 			</div>
 
 		</div>`;

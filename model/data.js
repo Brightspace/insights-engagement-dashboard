@@ -57,6 +57,7 @@ export class Data {
 	// @action
 	onServerDataReload(newServerData) {
 		const lastSearchResults = fetchLastSearch(newServerData.selectedSemestersIds);
+		console.log(newServerData.orgUnits);
 		this.orgUnitTree = new Tree({
 			// add in any nodes from the most recent search (if the semester filter didn't change); otherwise
 			// the search will blink out and come back, and also drop any "load more" results
