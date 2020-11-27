@@ -57,7 +57,7 @@ export default {
 	"components.insights-users-table.title": "Kullanıcı Ayrıntıları",
 	"components.insights-users-table.loadingPlaceholder": "Yükleniyor",
 	"components.insights-users-table.lastFirstName": "Ad",
-	"components.insights-users-table.openUserPage": "Open user\'s page for {userName}",
+	"components.insights-users-table.openUserPage": "Open user's page for {userName}",
 	"components.insights-users-table.lastAccessedSystem": "Son Erişilen Sistem",
 	"components.insights-users-table.courses": "Dersler",
 	"components.insights-users-table.avgGrade": "Ortalama Not",

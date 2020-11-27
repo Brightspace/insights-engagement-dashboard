@@ -57,7 +57,7 @@ export default {
 	"components.insights-users-table.title": "使用者詳細資料",
 	"components.insights-users-table.loadingPlaceholder": "正在載入",
 	"components.insights-users-table.lastFirstName": "名稱",
-	"components.insights-users-table.openUserPage": "Open user\'s page for {userName}",
+	"components.insights-users-table.openUserPage": "Open user's page for {userName}",
 	"components.insights-users-table.lastAccessedSystem": "上次存取系統",
 	"components.insights-users-table.courses": "課程",
 	"components.insights-users-table.avgGrade": "平均成績",

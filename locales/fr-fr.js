@@ -57,7 +57,7 @@ export default {
 	"components.insights-users-table.title": "Détails de l’utilisateur",
 	"components.insights-users-table.loadingPlaceholder": "Chargement en cours",
 	"components.insights-users-table.lastFirstName": "Nom",
-	"components.insights-users-table.openUserPage": "Open user\'s page for {userName}",
+	"components.insights-users-table.openUserPage": "Open user's page for {userName}",
 	"components.insights-users-table.lastAccessedSystem": "Dernier accès au système",
 	"components.insights-users-table.courses": "Cours",
 	"components.insights-users-table.avgGrade": "Note moyenne",

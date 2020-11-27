@@ -57,7 +57,7 @@ export default {
 	"components.insights-users-table.title": "تفاصيل المستخدم",
 	"components.insights-users-table.loadingPlaceholder": "يتم الآن التحميل",
 	"components.insights-users-table.lastFirstName": "الاسم",
-	"components.insights-users-table.openUserPage": "Open user\'s page for {userName}",
+	"components.insights-users-table.openUserPage": "Open user's page for {userName}",
 	"components.insights-users-table.lastAccessedSystem": "تاريخ آخر وصول إلى النظام",
 	"components.insights-users-table.courses": "المقررات التعليمية",
 	"components.insights-users-table.avgGrade": "متوسط العلامة",

@@ -57,7 +57,7 @@ export default {
 	"components.insights-users-table.title": "Benutzer – Details",
 	"components.insights-users-table.loadingPlaceholder": "Wird geladen",
 	"components.insights-users-table.lastFirstName": "Name",
-	"components.insights-users-table.openUserPage": "Open user\'s page for {userName}",
+	"components.insights-users-table.openUserPage": "Open user's page for {userName}",
 	"components.insights-users-table.lastAccessedSystem": "Zuletzt aufgerufenes System",
 	"components.insights-users-table.courses": "Kurse",
 	"components.insights-users-table.avgGrade": "Durchschnittsnote",
@@ -123,7 +123,7 @@ export default {
 	"components.insights-course-last-access-card.toolTipLessThanOneDaySingleUser": "1 Benutzer hat vor weniger als 1 Tag zuletzt auf diesen Kurs zugegriffen.",
 
 	"components.insights-discussion-activity-card.cardTitle": "Diskussionsaktivität",
-	"components.insights-discussion-activity-card.threads": "Threads",
+	"components.insights-discussion-activity-card.threads": "Unterhaltungen",
 	"components.insights-discussion-activity-card.replies": "Antworten",
 	"components.insights-discussion-activity-card.reads": "Gelesene Beiträge",
 	"components.insights-discussion-activity-card.textLabel": "Dieses Diagramm zeigt die Gesamtzahl der Unterhaltungen, Antworten, und gelesenen Beiträge in Diskussionsforen für alle Benutzer in den ausgewählten Kursen an",

@@ -51,13 +51,13 @@ export default {
 
 	"components.dropdown-filter.load-more": "Meer laden",
 	"components.dropdown-filter.opener-text-all": "{filterName}: Alle",
-	"components.dropdown-filter.opener-text-multiple": "{filtername}: {selectedCount} geselecteerd",
+	"components.dropdown-filter.opener-text-multiple": "{filterName}: {selectedCount} geselecteerd",
 	"components.dropdown-filter.opener-text-single": '{filterName}: {selectedItemName}',
 
 	"components.insights-users-table.title": "Gebruikerdetails",
 	"components.insights-users-table.loadingPlaceholder": "Bezig met laden",
 	"components.insights-users-table.lastFirstName": "Naam",
-	"components.insights-users-table.openUserPage": "Open user\'s page for {userName}",
+	"components.insights-users-table.openUserPage": "Open user's page for {userName}",
 	"components.insights-users-table.lastAccessedSystem": "Laatst bezocht systeem",
 	"components.insights-users-table.courses": "Cursussen",
 	"components.insights-users-table.avgGrade": "Gemiddelde score",

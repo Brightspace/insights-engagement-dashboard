@@ -136,7 +136,7 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			chart: {
 				type: 'pie',
 				height: 100,
-				width: 245
+				width: 280
 			},
 			title: {
 				text: this._cardTitle, // override default title

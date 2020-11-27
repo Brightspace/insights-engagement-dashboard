@@ -57,7 +57,7 @@ export default {
 	"components.insights-users-table.title": "ユーザーの詳細",
 	"components.insights-users-table.loadingPlaceholder": "の読み込み中",
 	"components.insights-users-table.lastFirstName": "名前",
-	"components.insights-users-table.openUserPage": "Open user\'s page for {userName}",
+	"components.insights-users-table.openUserPage": "Open user's page for {userName}",
 	"components.insights-users-table.lastAccessedSystem": "最後にアクセスしたシステム",
 	"components.insights-users-table.courses": "コース",
 	"components.insights-users-table.avgGrade": "平均成績",

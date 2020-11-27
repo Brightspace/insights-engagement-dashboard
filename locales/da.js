@@ -57,7 +57,7 @@ export default {
 	"components.insights-users-table.title": "Brugeroplysninger",
 	"components.insights-users-table.loadingPlaceholder": "Indlæser",
 	"components.insights-users-table.lastFirstName": "Navn",
-	"components.insights-users-table.openUserPage": "Open user\'s page for {userName}",
+	"components.insights-users-table.openUserPage": "Open user's page for {userName}",
 	"components.insights-users-table.lastAccessedSystem": "Senest åbnet system",
 	"components.insights-users-table.courses": "Kurser",
 	"components.insights-users-table.avgGrade": "Gennemsnitskarakter",

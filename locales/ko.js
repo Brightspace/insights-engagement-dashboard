@@ -57,7 +57,7 @@ export default {
 	"components.insights-users-table.title": "사용자 상세 정보",
 	"components.insights-users-table.loadingPlaceholder": "로드 중...",
 	"components.insights-users-table.lastFirstName": "이름",
-	"components.insights-users-table.openUserPage": "Open user\'s page for {userName}",
+	"components.insights-users-table.openUserPage": "Open user's page for {userName}",
 	"components.insights-users-table.lastAccessedSystem": "최근 접근한 시스템",
 	"components.insights-users-table.courses": "강의",
 	"components.insights-users-table.avgGrade": "평균 평점",

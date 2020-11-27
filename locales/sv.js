@@ -57,7 +57,7 @@ export default {
 	"components.insights-users-table.title": "Användarinformation",
 	"components.insights-users-table.loadingPlaceholder": "Laddar",
 	"components.insights-users-table.lastFirstName": "Namn",
-	"components.insights-users-table.openUserPage": "Open user\'s page for {userName}",
+	"components.insights-users-table.openUserPage": "Open user's page for {userName}",
 	"components.insights-users-table.lastAccessedSystem": "Senaste åtkomstsystem",
 	"components.insights-users-table.courses": "Kurser",
 	"components.insights-users-table.avgGrade": "Genomsnittligt betyg",

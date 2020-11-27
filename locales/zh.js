@@ -57,7 +57,7 @@ export default {
 	"components.insights-users-table.title": "用户详细信息",
 	"components.insights-users-table.loadingPlaceholder": "正在加载",
 	"components.insights-users-table.lastFirstName": "名称",
-	"components.insights-users-table.openUserPage": "Open user\'s page for {userName}",
+	"components.insights-users-table.openUserPage": "Open user's page for {userName}",
 	"components.insights-users-table.lastAccessedSystem": "上次访问的系统",
 	"components.insights-users-table.courses": "课程",
 	"components.insights-users-table.avgGrade": "平均成绩",
