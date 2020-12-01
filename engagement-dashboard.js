@@ -323,7 +323,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 					@d2l-insights-semester-filter-change="${this._semesterFilterChange}"
 				></d2l-insights-semester-filter>
 			</div>
-			<d2l-insights-message-container .data="${this._data}" .isNoDataReturned="${this._isNoUserResults}"></d2l-insights-message-container>
+			<d2l-insights-message-container .data="${this._data}" .isNoDataReturned="${this._isNoUserResults}" .isQueryFails="${this._isQueryFails}"></d2l-insights-message-container>
 			<h2 class="d2l-heading-3">${this.localize('components.insights-engagement-dashboard.summaryHeading')}</h2>
 			<div class="d2l-insights-summary-container-applied-filters">
 				<d2l-insights-applied-filters .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-applied-filters>
@@ -450,6 +450,24 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			return this._data.records.length === 0 && !this._data.isLoading;
 		}
 		return false;
+	}
+
+	get _isQueryFails() {
+		if (this._data._data.isQueryError) {
+			this._setCardsVisible(false);
+			return true;
+		}
+		return false;
+	}
+
+	_setCardsVisible(isVisible) {
+		this.showSystemAccessCard = isVisible;
+		this.showCourseAccessCard = isVisible;
+		this.showDiscussionsCard = isVisible;
+		this.showTicGradesCard = isVisible;
+		this.showGradesCard = isVisible;
+		this.showOverdueCard = isVisible;
+		this.showResultsCard = isVisible;
 	}
 
 	get _serverData() {

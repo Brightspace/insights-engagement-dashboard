@@ -14,6 +14,7 @@ export class Data {
 		this.userDictionary = null;
 
 		// @observables
+		this.isQueryError = false;
 		this.userViewUserId = null;
 		this.isLoading = true;
 		this.serverData = {
@@ -75,6 +76,7 @@ export class Data {
 
 		this.userDictionary = new Map(newServerData.users.map(user => [user[USER.ID], user]));
 		this.isLoading = false;
+		this.isQueryError = newServerData.isQueryError !== undefined;
 		this.serverData = newServerData;
 		if (this.serverData.selectedSemestersIds) {
 			this._selectorFilters.semester.selected = this.serverData.selectedSemestersIds;
@@ -155,6 +157,7 @@ decorate(Data, {
 	orgUnitTree: observable,
 	isLoading: observable,
 	userViewUserId: observable,
+	isQueryError: observable,
 	records: computed,
 	onServerDataReload: action
 });
