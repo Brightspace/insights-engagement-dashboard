@@ -98,6 +98,12 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		this.showTicGradesCard = false;
 		this.lastAccessThresholdDays = 14;
 		this.includeRoles = '';
+
+		this._viewState = new ViewState({});
+		// if current view is not provided in url
+		if (!this._viewState.currentView) {
+			this._viewState.setHomeView();
+		}
 	}
 
 	static get styles() {
@@ -198,11 +204,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	}
 
 	firstUpdated() {
-		this._viewState = new ViewState({});
-		// if current view is not provided in url
-		if (!this._viewState.currentView) {
-			this._viewState.setHomeView();
-		}
+
 
 		// moved loadData call here because its inderect call in render function via _data getter causes nested render call with exception
 		this._serverData.loadData({ defaultView: isDefault() });
@@ -237,23 +239,27 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	}
 
 	_renderUserDrillView() {
-		const userId = this._viewState.userViewUserId;
-		const userData = this._serverData.userDictionary.get(userId);
+		let user = {};
+		if (!this._isLoading) {
+			const userId = this._viewState.userViewUserId;
+			const userData = this._serverData.userDictionary.get(userId);
 
-		if (!userData) {
-			return;
+			if (!userData) {
+				return;
+			}
+
+			user = {
+				firstName: userData[USER.FIRST_NAME],
+				lastName: userData[USER.LAST_NAME],
+				username: userData[USER.USERNAME],
+				userId: userId
+			};
 		}
-
-		const user = {
-			firstName: userData[USER.FIRST_NAME],
-			lastName: userData[USER.LAST_NAME],
-			username: userData[USER.USERNAME],
-			userId: userId
-		};
 
 		return html`
 			<d2l-insights-user-drill-view
 				.user="${user}"
+				?skeleton="${this._isLoading}"
 				@d2l-insights-user-drill-view-back="${this._backToHomeHandler}"
 			>
 				<div slot="filters">

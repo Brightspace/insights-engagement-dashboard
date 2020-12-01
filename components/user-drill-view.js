@@ -4,11 +4,14 @@ import { bodySmallStyles, heading2Styles } from '@brightspace-ui/core/components
 import { css, html } from 'lit-element/lit-element.js';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
+import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
+import { styleMap } from 'lit-html/directives/style-map';
+import { classMap } from 'lit-html/directives/class-map';
 
 /**
  * @property {Object} user - {firstName, lastName, username, userId}
  */
-class UserDrill extends Localizer(MobxLitElement) {
+class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
 			user: { type: Object, attribute: false }
@@ -17,7 +20,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 
 	static get styles() {
 		return [
-			bodySmallStyles, heading2Styles,
+			super.styles, bodySmallStyles, heading2Styles,
 			css`
 			:host {
 				display: block;
@@ -64,6 +67,15 @@ class UserDrill extends Localizer(MobxLitElement) {
 				margin-top: 18px;
 			}
 
+			.d2l-insights-user-drill-view-profile-name.d2l-insights-user-drill-skeleton > div.d2l-heading-2,
+			.d2l-insights-user-drill-view-profile-name.d2l-insights-user-drill-skeleton > div.d2l-body-small {
+				background-color: var(--d2l-color-gypsum);
+				border-radius: 5px;
+				color: var(--d2l-color-gypsum);
+				min-width: 200px;
+				user-select: none;
+			}
+
 			.d2l-insights-user-drill-view-profile-name > div.d2l-body-small {
 				margin: 0;
 				margin-top: 12px;
@@ -98,15 +110,18 @@ class UserDrill extends Localizer(MobxLitElement) {
 	}
 
 	render() {
+
+		const skeletonClass = this.skeleton ? 'd2l-skeletize' : '';
+
 		return html`<div class="d2l-insights-user-drill-view-container">
 
 			<div class="d2l-insights-user-drill-view-header-panel">
 
 				<div class="d2l-insights-user-drill-view-profile">
-					<d2l-icon class="d2l-insights-user-drill-view-profile-pic" icon="tier3:profile-pic"></d2l-icon>
+					<d2l-icon class="d2l-insights-user-drill-view-profile-pic ${skeletonClass}" icon="tier3:profile-pic"></d2l-icon>
 					<div class="d2l-insights-user-drill-view-profile-name">
-						<div class="d2l-heading-2">${this.user.firstName}, ${this.user.lastName}</div>
-						<div class="d2l-body-small">${this.user.username} - ${this.user.userId}</div>
+						<div class="d2l-heading-2 ${skeletonClass}">${this.user.firstName}, ${this.user.lastName}</div>
+						<div class="d2l-body-small ${skeletonClass}">${this.user.username} - ${this.user.userId}</div>
 					</div>
 				</div>
 
