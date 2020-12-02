@@ -47,7 +47,8 @@ class MessageContainer extends Localizer(MobxLitElement) {
 				border-radius: 8px;
 				color: var(--d2l-color-ferrite);
 				display: flex;
-				height: 130px;
+				margin-bottom: 20px;
+				padding: 40px;
 				width: 73vw;
 			}
 
