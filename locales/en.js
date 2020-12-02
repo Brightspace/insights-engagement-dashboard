@@ -22,6 +22,8 @@ export default {
 	"dashboard:print": "Print",
 	"dashboard:noUsersSelectedDialogText": "Please select one or more users to email.",
 	"dashboard:noResultsAvailable": "There are no results available that match your filters.",
+	"components.insights-engagement-dashboard.queryFails": "Unable to load your results. If this problem persists, please ",
+	"components.insights-engagement-dashboard.queryFailsLink": "contact D2L Support.",
 	"dashboard:undoLastAction": "Undo Last Action",
 
 	"settings:roleListTitle": "Roles filter",
