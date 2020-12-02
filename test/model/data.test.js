@@ -96,11 +96,12 @@ describe('Data', () => {
 			expect(sut.orgUnitTree.isPopulated(6606)).to.be.false;
 		});
 
-		it('should return empty data if recordProvider ends with an error', async() => {
-			sut.recordProvider = undefined;
+		it('should return default serverData if recordProvider ends with an error and set isQueryError to true', async() => {
+			sut = new Data({});
 			sut.loadData({});
-			expect(sut.userDictionary.size).to.equal(0);
 			expect(sut.isQueryError).to.equal(true);
+			expect(sut.serverData.records.length).to.equal(0);
+			expect(sut.userDictionary.size).to.equal(0);
 		});
 	});
 

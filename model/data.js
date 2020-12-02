@@ -4,8 +4,6 @@ import { fetchCachedChildren, fetchLastSearch } from './lms.js';
 import { OrgUnitSelectorFilter, RoleSelectorFilter, SemesterSelectorFilter } from './selectorFilters.js';
 import { Tree } from '../components/tree-filter';
 
-const emptyData = { orgUnits: [], records: [], users: [] };
-
 /**
  * Data from the server, along with filter settings that are passed in server calls.
  */
@@ -57,7 +55,7 @@ export class Data {
 			this.onServerDataReload(data);
 			this.isQueryError = false;
 		} catch (ignored) {
-			this.onServerDataReload(emptyData);
+			this.onServerDataReload(this.serverData);
 			this.isQueryError = true;
 		}
 	}
