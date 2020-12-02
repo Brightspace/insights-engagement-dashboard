@@ -78,6 +78,10 @@ class UserDrill extends Localizer(MobxLitElement) {
 				margin: 0.7em;
 				max-width: 300px;
 			}
+
+			.d2l-insights-view-filters-container {
+				margin-top: 20px;
+			}
 		`];
 	}
 
@@ -130,6 +134,10 @@ class UserDrill extends Localizer(MobxLitElement) {
 				primary
 				@click="${this._composeEmailHandler}"
 			>${this.localize('components.insights-engagement-dashboard.emailButton')}</d2l-button>
+
+			<div class="d2l-insights-view-filters-container">
+				<slot name="filters"></slot>
+			</div>
 
 			<div class="d2l-insights-user-drill-view-content">
 				<!-- put your tables here -->

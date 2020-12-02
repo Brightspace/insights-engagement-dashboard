@@ -15,7 +15,6 @@ export class Data {
 
 		// @observables
 		this.isQueryError = false;
-		this.userViewUserId = null;
 		this.isLoading = true;
 		this.serverData = {
 			records: [],
@@ -156,7 +155,6 @@ decorate(Data, {
 	serverData: observable,
 	orgUnitTree: observable,
 	isLoading: observable,
-	userViewUserId: observable,
 	isQueryError: observable,
 	records: computed,
 	onServerDataReload: action

@@ -33,6 +33,7 @@ class SummaryCard extends SkeletonMixin(Localizer(LitElement)) {
 			}
 
 			.d2l-insights-summary-card {
+				background-color: white;
 				border-color: var(--d2l-color-mica);
 				border-radius: 15px;
 				border-style: solid;
@@ -40,7 +41,6 @@ class SummaryCard extends SkeletonMixin(Localizer(LitElement)) {
 				display: flex;
 				flex-direction: column;
 				height: 121px;
-				margin-top: 10px;
 				padding: 15px 4px;
 				position: relative;
 				width: 280px;

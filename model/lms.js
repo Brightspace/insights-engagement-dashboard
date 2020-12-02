@@ -1,3 +1,15 @@
+import { d2lfetch } from 'd2l-fetch/src';
+import { fetchAuth } from 'd2l-fetch-auth';
+d2lfetch.use({ name: 'auth', fn: fetchAuth });
+
+let isMocked = false;
+export function mock() {
+	isMocked = true;
+}
+export function restore() {
+	isMocked = false;
+}
+
 const rolesEndpoint = '/d2l/api/ap/unstable/insights/data/roles';
 const semestersEndpoint = '/d2l/api/ap/unstable/insights/data/semesters';
 const dataEndpoint = '/d2l/api/ap/unstable/insights/data/engagement';
@@ -138,6 +150,8 @@ export function fetchLastSearch(selectedSemesterIds) {
  * "lastAccessThresholdDays" (number) and "includeRoles" (array) fields are optional.
  */
 export async function saveSettings(settings) {
+	if (isMocked) return { ok: true };
+
 	const requiredFields = [
 		'showResultsCard',
 		'showOverdueCard',
@@ -159,11 +173,11 @@ export async function saveSettings(settings) {
 	});
 
 	const url = new URL(saveSettingsEndpoint, window.location.origin);
-	await fetch(url.toString(), {
+	return await d2lfetch.fetch(new Request(url.toString(), {
 		method: 'PUT',
 		headers: {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify(settings)
-	});
+	}));
 }

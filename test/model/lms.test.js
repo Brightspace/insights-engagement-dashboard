@@ -298,6 +298,7 @@ describe('Lms', () => {
 				showDiscussionsCol: true,
 				showLastAccessCol: true
 			};
+			window.localStorage.setItem('XSRF.Token', 'token');
 			fetchMock.put(
 				'end:/d2l/api/ap/unstable/insights/mysettings/engagement',
 				200
@@ -305,13 +306,11 @@ describe('Lms', () => {
 
 			await saveSettings(settings);
 
-			expect(fetchMock.lastOptions()).to.deep.equal({
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify(settings)
-			});
+			const request = fetchMock.lastCall().request; // assumes fetch was called with a Request
+			expect(request.method).to.equal('PUT');
+			expect(request.headers.get('content-type')).to.equal('application/json');
+			expect(request.headers.get('x-csrf-token')).to.equal('token');
+			expect(await request.json()).to.deep.equal(settings);
 		});
 	});
 });
