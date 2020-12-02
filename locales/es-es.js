@@ -148,9 +148,9 @@ export default {
 	"components.insights-default-view-popup.collapseDefaultCourseList": "Contraer la lista de cursos incluidos en la vista predeterminada",
 	"components.insights-default-view-popup.buttonOk": "Aceptar",
 
-	"components.insights-settings-view.title": "Configuración",
-	"components.insights-settings-view.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
-	"components.insights-settings-view.saveAndClose": "Guardar y cerrar",
-	"components.insights-settings-view.save": "Save",
-	"components.insights-settings-view.cancel": "Cancel"
+	"components.insights-engagement-settings.title": "Configuración",
+	"components.insights-engagement-settings.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
+	"components.insights-engagement-settings.saveAndClose": "Guardar y cerrar",
+	"components.insights-engagement-settings.save": "Save",
+	"components.insights-engagement-settings.cancel": "Cancel"
 };

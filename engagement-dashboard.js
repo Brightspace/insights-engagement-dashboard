@@ -331,7 +331,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 					</d2l-button-subtle>
 					<d2l-button-subtle
 						icon="d2l-tier1:gear"
-						text=${this.localize('components.insights-settings-view.title')}
+						text=${this.localize('components.insights-engagement-settings.title')}
 						@click="${this._openSettingsPage}">
 					</d2l-button-subtle>
 				</d2l-action-button-group>

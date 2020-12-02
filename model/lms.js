@@ -36,7 +36,10 @@ export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [
 	}
 	url.searchParams.set('defaultView', defaultView ? 'true' : 'false');
 	const response = await fetch(url.toString());
-	return await response.json();
+	if (response.ok) return await response.json();
+	else {
+		throw new Error('query-failure');
+	}
 }
 
 /**

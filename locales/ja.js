@@ -148,9 +148,9 @@ export default {
 	"components.insights-default-view-popup.collapseDefaultCourseList": "デフォルトビューに含まれているコースのリストを折りたたむ",
 	"components.insights-default-view-popup.buttonOk": "OK",
 
-	"components.insights-settings-view.title": "設定",
-	"components.insights-settings-view.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
-	"components.insights-settings-view.saveAndClose": "保存して閉じる",
-	"components.insights-settings-view.save": "保存",
-	"components.insights-settings-view.cancel": "キャンセル"
+	"components.insights-engagement-settings.title": "設定",
+	"components.insights-engagement-settings.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
+	"components.insights-engagement-settings.saveAndClose": "保存して閉じる",
+	"components.insights-engagement-settings.save": "保存",
+	"components.insights-engagement-settings.cancel": "キャンセル"
 };

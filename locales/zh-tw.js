@@ -148,9 +148,9 @@ export default {
 	"components.insights-default-view-popup.collapseDefaultCourseList": "摺疊預設檢視中包含的課程清單",
 	"components.insights-default-view-popup.buttonOk": "確定",
 
-	"components.insights-settings-view.title": "設定",
-	"components.insights-settings-view.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
-	"components.insights-settings-view.saveAndClose": "儲存並關閉",
-	"components.insights-settings-view.save": "儲存",
-	"components.insights-settings-view.cancel": "取消"
+	"components.insights-engagement-settings.title": "設定",
+	"components.insights-engagement-settings.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
+	"components.insights-engagement-settings.saveAndClose": "儲存並關閉",
+	"components.insights-engagement-settings.save": "儲存",
+	"components.insights-engagement-settings.cancel": "取消"
 };

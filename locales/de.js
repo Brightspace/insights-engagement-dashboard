@@ -148,9 +148,9 @@ export default {
 	"components.insights-default-view-popup.collapseDefaultCourseList": "Liste der Kurse reduzieren, die in der Standardansicht enthalten ist",
 	"components.insights-default-view-popup.buttonOk": "OK",
 
-	"components.insights-settings-view.title": "Einstellungen",
-	"components.insights-settings-view.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
-	"components.insights-settings-view.saveAndClose": "Speichern und schließen",
-	"components.insights-settings-view.save": "Speichern",
-	"components.insights-settings-view.cancel": "Abbrechen"
+	"components.insights-engagement-settings.title": "Einstellungen",
+	"components.insights-engagement-settings.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
+	"components.insights-engagement-settings.saveAndClose": "Speichern und schließen",
+	"components.insights-engagement-settings.save": "Speichern",
+	"components.insights-engagement-settings.cancel": "Abbrechen"
 };

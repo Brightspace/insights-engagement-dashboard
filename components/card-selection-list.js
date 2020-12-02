@@ -114,7 +114,7 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 								${this.localize('components.insights-current-final-grade-card.currentGrade')}
 							</h3>
 							<d2l-offscreen>${this.localize('components.insights-current-final-grade-card.currentGrade')}</d2l-offscreen>
-							<p class="d2l-body-standard">${this.localize('components.insights-settings-view.currentGradeDesc')}</p>
+							<p class="d2l-body-standard">${this.localize('components.insights-engagement-settings.currentGradeDesc')}</p>
 						</div>
 					</div>
 				</d2l-list-item>
@@ -127,7 +127,7 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 								${this.localize('components.insights-course-last-access-card.courseAccess')}
 							</h3>
 							<d2l-offscreen>${this.localize('components.insights-course-last-access-card.courseAccess')}</d2l-offscreen>
-							<p class="d2l-body-standard">${this.localize('components.insights-settings-view.courseAccessDesc')}</p>
+							<p class="d2l-body-standard">${this.localize('components.insights-engagement-settings.courseAccessDesc')}</p>
 						</div>
 					</div>
 				</d2l-list-item>
@@ -140,7 +140,7 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 								${this.localize('components.insights-time-in-content-vs-grade-card.timeInContentVsGrade')}
 							</h3>
 							<d2l-offscreen>${this.localize('components.insights-time-in-content-vs-grade-card.timeInContentVsGrade')}</d2l-offscreen>
-							<p class="d2l-body-standard">${this.localize('components.insights-settings-view.ticVsGradeDesc')}</p>
+							<p class="d2l-body-standard">${this.localize('components.insights-engagement-settings.ticVsGradeDesc')}</p>
 						</div>
 					</div>
 				</d2l-list-item>
@@ -160,7 +160,7 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 								${this.localize('components.insights-engagement-dashboard.overdueAssignmentsHeading')}
 							</h3>
 							<d2l-offscreen>${this.localize('components.insights-engagement-dashboard.overdueAssignmentsHeading')}</d2l-offscreen>
-							<p class="d2l-body-standard">${this.localize('components.insights-settings-view.overdueAssignmentsDesc')}</p>
+							<p class="d2l-body-standard">${this.localize('components.insights-engagement-settings.overdueAssignmentsDesc')}</p>
 						</div>
 					</div>
 				</d2l-list-item>
@@ -179,7 +179,7 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 								${this.localize('components.insights-discussion-activity-card.cardTitle')}
 							</h3>
 							<d2l-offscreen>${this.localize('components.insights-discussion-activity-card.cardTitle')}</d2l-offscreen>
-							<p class="d2l-body-standard">${this.localize('components.insights-settings-view.discActivityDesc')}</p>
+							<p class="d2l-body-standard">${this.localize('components.insights-engagement-settings.discActivityDesc')}</p>
 						</div>
 					</div>
 				</d2l-list-item>
@@ -194,7 +194,7 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 		);
 
 		// hack to get 2 parts of a localized version of a string
-		const editTextParts = this.localize('components.insights-settings-view.systemAccessEdit', { num: '{num}' }).split('{num}');
+		const editTextParts = this.localize('components.insights-engagement-settings.systemAccessEdit', { num: '{num}' }).split('{num}');
 
 		return html`
 			<d2l-labs-summary-card
@@ -208,8 +208,8 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 				<h3 class="d2l-heading-3 d2l-card-selection-title" aria-hidden="true">
 					${this.localize('components.insights-engagement-dashboard.lastSystemAccessHeading')}
 				</h3>
-				<d2l-offscreen>${this.localize('components.insights-settings-view.systemAccessDesc')}</d2l-offscreen>
-				<p class="d2l-body-standard">${this.localize('components.insights-settings-view.systemAccessDesc')}</p>
+				<d2l-offscreen>${this.localize('components.insights-engagement-settings.systemAccessDesc')}</d2l-offscreen>
+				<p class="d2l-body-standard">${this.localize('components.insights-engagement-settings.systemAccessDesc')}</p>
 
 				<div>
 					<span class="d2l-body-small">${editTextParts[0]}</span>
@@ -219,7 +219,7 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 						value="${this.lastAccessThresholdDays}"
 						min="${lastSysAccessThresholdMinDays}"
 						max="${lastSysAccessThresholdMaxDays}"
-						label="${this.localize('components.insights-settings-view.systemAccessEditLabel')}"
+						label="${this.localize('components.insights-engagement-settings.systemAccessEditLabel')}"
 						label-hidden
 						@change="${this._handleThresholdFieldChange}">
 					</d2l-input-number>

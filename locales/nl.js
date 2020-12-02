@@ -148,9 +148,9 @@ export default {
 	"components.insights-default-view-popup.collapseDefaultCourseList": "De lijst met cursussen in uw standaardweergave samenvouwen",
 	"components.insights-default-view-popup.buttonOk": "OK",
 
-	"components.insights-settings-view.title": "Settings",
-	"components.insights-settings-view.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
-	"components.insights-settings-view.saveAndClose": "Opslaan en sluiten",
-	"components.insights-settings-view.save": "Opslaan",
-	"components.insights-settings-view.cancel": "Annuleren"
+	"components.insights-engagement-settings.title": "Settings",
+	"components.insights-engagement-settings.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
+	"components.insights-engagement-settings.saveAndClose": "Opslaan en sluiten",
+	"components.insights-engagement-settings.save": "Opslaan",
+	"components.insights-engagement-settings.cancel": "Annuleren"
 };

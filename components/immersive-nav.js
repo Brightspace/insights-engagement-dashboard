@@ -58,7 +58,7 @@ class InsightsImmersiveNav extends Localizer(MobxLitElement) {
 		switch (this.view) {
 			case 'home': return this.localize('components.insights-engagement-dashboard.title');
 			case 'user': return this.localize('components.insights-engagement-dashboard.title-user-view');
-			case 'settings': return this.localize('components.insights-settings-view.title');
+			case 'settings': return this.localize('components.insights-engagement-settings.title');
 		}
 		return this.localize('components.insights-engagement-dashboard.title');
 	}

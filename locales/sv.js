@@ -148,9 +148,9 @@ export default {
 	"components.insights-default-view-popup.collapseDefaultCourseList": "Komprimera listan med kurser som visas i standardvyn",
 	"components.insights-default-view-popup.buttonOk": "Ok",
 
-	"components.insights-settings-view.title": "Inställningar",
-	"components.insights-settings-view.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
-	"components.insights-settings-view.saveAndClose": "Spara och stäng",
-	"components.insights-settings-view.save": "Spara",
-	"components.insights-settings-view.cancel": "Avbryt"
+	"components.insights-engagement-settings.title": "Inställningar",
+	"components.insights-engagement-settings.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
+	"components.insights-engagement-settings.saveAndClose": "Spara och stäng",
+	"components.insights-engagement-settings.save": "Spara",
+	"components.insights-engagement-settings.cancel": "Avbryt"
 };

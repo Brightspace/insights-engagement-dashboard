@@ -148,9 +148,9 @@ export default {
 	"components.insights-default-view-popup.collapseDefaultCourseList": "기본 보기에 포함된 강의 목록을 축소합니다.",
 	"components.insights-default-view-popup.buttonOk": "확인",
 
-	"components.insights-settings-view.title": "설정",
-	"components.insights-settings-view.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
-	"components.insights-settings-view.saveAndClose": "저장 및 닫기",
-	"components.insights-settings-view.save": "저장",
-	"components.insights-settings-view.cancel": "취소"
+	"components.insights-engagement-settings.title": "설정",
+	"components.insights-engagement-settings.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
+	"components.insights-engagement-settings.saveAndClose": "저장 및 닫기",
+	"components.insights-engagement-settings.save": "저장",
+	"components.insights-engagement-settings.cancel": "취소"
 };

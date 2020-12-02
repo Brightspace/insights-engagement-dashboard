@@ -148,9 +148,9 @@ export default {
 	"components.insights-default-view-popup.collapseDefaultCourseList": "Varsayılan görünümünüze dahil edilen derslerin listesini daraltın",
 	"components.insights-default-view-popup.buttonOk": "Tamam",
 
-	"components.insights-settings-view.title": "Ayarlar",
-	"components.insights-settings-view.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
-	"components.insights-settings-view.saveAndClose": "Kaydet ve Kapat",
-	"components.insights-settings-view.save": "Kaydet",
-	"components.insights-settings-view.cancel": "Cancel"
+	"components.insights-engagement-settings.title": "Ayarlar",
+	"components.insights-engagement-settings.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
+	"components.insights-engagement-settings.saveAndClose": "Kaydet ve Kapat",
+	"components.insights-engagement-settings.save": "Kaydet",
+	"components.insights-engagement-settings.cancel": "Cancel"
 };

@@ -148,9 +148,9 @@ export default {
 	"components.insights-default-view-popup.collapseDefaultCourseList": "Crebachu’r rhestr o gyrsiau sydd wedi'u cynnwys yn eich gwedd ddiofyn",
 	"components.insights-default-view-popup.buttonOk": "Iawn",
 
-	"components.insights-settings-view.title": "Gosodiadau",
-	"components.insights-settings-view.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
-	"components.insights-settings-view.saveAndClose": "Cadw a Chau",
-	"components.insights-settings-view.save": "Save",
-	"components.insights-settings-view.cancel": "Cancel"
+	"components.insights-engagement-settings.title": "Gosodiadau",
+	"components.insights-engagement-settings.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
+	"components.insights-engagement-settings.saveAndClose": "Cadw a Chau",
+	"components.insights-engagement-settings.save": "Save",
+	"components.insights-engagement-settings.cancel": "Cancel"
 };

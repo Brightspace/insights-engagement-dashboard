@@ -148,9 +148,9 @@ export default {
 	"components.insights-default-view-popup.collapseDefaultCourseList": "Skjul listen over kurser, der er inkluderet i standardvisningen",
 	"components.insights-default-view-popup.buttonOk": "Ok",
 
-	"components.insights-settings-view.title": "Settings",
-	"components.insights-settings-view.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
-	"components.insights-settings-view.saveAndClose": "Gem og luk",
-	"components.insights-settings-view.save": "Gem",
-	"components.insights-settings-view.cancel": "Cancel"
+	"components.insights-engagement-settings.title": "Settings",
+	"components.insights-engagement-settings.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
+	"components.insights-engagement-settings.saveAndClose": "Gem og luk",
+	"components.insights-engagement-settings.save": "Gem",
+	"components.insights-engagement-settings.cancel": "Cancel"
 };

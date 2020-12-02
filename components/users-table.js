@@ -21,7 +21,7 @@ export const TABLE_USER = {
 	LAST_ACCESSED_SYS: 6
 };
 
-const numberFormatOptions = { maximumFractionDigits: 2 };
+export const numberFormatOptions = { maximumFractionDigits: 2 };
 
 const DEFAULT_PAGE_SIZE = 20;
 

@@ -2,6 +2,7 @@ import './dropdown-filter';
 import '@brightspace-ui/core/components/inputs/input-checkbox';
 
 import { css, html, LitElement } from 'lit-element';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { fetchRoles as fetchDemoRoles } from '../model/fake-lms';
 import { fetchRoles } from '../model/lms';
 import { heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
@@ -38,14 +39,16 @@ class RoleList extends Localizer(LitElement) {
 				min-width: 260px;
 			}
 
+			.d2l-insights-role-list-small-list > d2l-input-checkbox {
+				flex: 1 1 50%;
+			}
+
 			.d2l-insights-role-list-list {
 				display: flex;
 				flex-direction: row;
 				flex-wrap: wrap;
-				max-height: 536px;
 				max-width: 100vw;
-				min-height: 200px;
-				overflow-y: auto;
+				min-height: 50px;
 			}
 
 		`];
@@ -100,12 +103,19 @@ class RoleList extends Localizer(LitElement) {
 	}
 
 	render() {
+		const filterData = this._filterData;
+		const styles = {
+			'd2l-insights-role-list-list': true,
+			// shows only one column if there are less than 13 roles in the list
+			'd2l-insights-role-list-small-list': filterData.length < 13
+		};
+
 		return html`
 			<h3 class="d2l-heading-3">${this.localize('components.insights-settings-view-role-list.title')}</h3>
 			<span>${this.localize('components.insights-settings-view-role-list.description')}</span>
 
-			<div class="d2l-insights-role-list-list">
-				${this._filterData.map(item => html`<d2l-input-checkbox value="${item.id}" @change="${this._handleSelectionChange}" ?checked="${item.selected}" >${item.displayName}</d2l-input-checkbox>`)}
+			<div class="${classMap(styles)}">
+				${filterData.map(item => html`<d2l-input-checkbox value="${item.id}" @change="${this._handleSelectionChange}" ?checked="${item.selected}" >${item.displayName}</d2l-input-checkbox>`)}
 			</div>
 		`;
 	}

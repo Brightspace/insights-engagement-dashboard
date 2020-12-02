@@ -24,6 +24,12 @@ describe('d2l-insights-message-container', () => {
 		users: [],
 	};
 
+	const dataWithQueryError = {
+		_data: {
+			isQueryError: true
+		}
+	};
+
 	describe('constructor', () => {
 		it('should construct', () => {
 			runConstructor('d2l-insights-message-container');
@@ -46,6 +52,11 @@ describe('d2l-insights-message-container', () => {
 		it('should not render without truncated records', async() => {
 			const el = await fixture(html`<d2l-insights-message-container .data="${dataWithoutTruncatedRecords}" .isNoDataReturned=${Boolean(1)}></d2l-insights-message-container>`);
 			expect(el.shadowRoot.querySelector('.d2l-insights-message-container-value').innerText).to.equal('There are no results available that match your filters.');
+		});
+
+		it('should render as expected with contact support message', async() => {
+			const el = await fixture(html`<d2l-insights-message-container .data="${dataWithQueryError}" .isNoDataReturned=${Boolean(0)}></d2l-insights-message-container>`);
+			expect(el.shadowRoot.querySelector('.d2l-insights-message-container-value').innerText).to.equal('Unable to load your results. If this problem persists, please contact D2L Support.');
 		});
 	});
 });

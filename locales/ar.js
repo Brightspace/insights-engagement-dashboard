@@ -148,9 +148,9 @@ export default {
 	"components.insights-default-view-popup.collapseDefaultCourseList": "طي قائمة المقررات التعليمية المضمنة في العرض الافتراضي الخاص بك",
 	"components.insights-default-view-popup.buttonOk": "موافق",
 
-	"components.insights-settings-view.title": "الإعدادات",
-	"components.insights-settings-view.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
-	"components.insights-settings-view.saveAndClose": "حفظ وإغلاق",
-	"components.insights-settings-view.save": "حفظ",
-	"components.insights-settings-view.cancel": "إلغاء"
+	"components.insights-engagement-settings.title": "الإعدادات",
+	"components.insights-engagement-settings.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
+	"components.insights-engagement-settings.saveAndClose": "حفظ وإغلاق",
+	"components.insights-engagement-settings.save": "حفظ",
+	"components.insights-engagement-settings.cancel": "إلغاء"
 };

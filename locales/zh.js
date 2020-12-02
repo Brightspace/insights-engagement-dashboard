@@ -148,9 +148,9 @@ export default {
 	"components.insights-default-view-popup.collapseDefaultCourseList": "折叠您的默认视图中包含的课程列表",
 	"components.insights-default-view-popup.buttonOk": "确定",
 
-	"components.insights-settings-view.title": "设置",
-	"components.insights-settings-view.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
-	"components.insights-settings-view.saveAndClose": "保存并关闭",
-	"components.insights-settings-view.save": "保存",
-	"components.insights-settings-view.cancel": "取消"
+	"components.insights-engagement-settings.title": "设置",
+	"components.insights-engagement-settings.description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
+	"components.insights-engagement-settings.saveAndClose": "保存并关闭",
+	"components.insights-engagement-settings.save": "保存",
+	"components.insights-engagement-settings.cancel": "取消"
 };
