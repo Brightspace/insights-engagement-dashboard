@@ -1,17 +1,21 @@
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/button/button.js';
+
 import { bodySmallStyles, heading2Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html } from 'lit-element/lit-element.js';
+import { createComposeEmailPopup } from './email-integration';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 
 /**
  * @property {Object} user - {firstName, lastName, username, userId}
+ * @property {Object} data - Data Model
  */
 class UserDrill extends Localizer(MobxLitElement) {
 	static get properties() {
 		return {
-			user: { type: Object, attribute: false }
+			user: { type: Object, attribute: false },
+			data: { type: Object, attribute: false }
 		};
 	}
 
@@ -94,6 +98,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 	}
 
 	_composeEmailHandler() {
+		createComposeEmailPopup([this.user.id], this.data.orgUnitTree.rootId);
 		// outside the scope of the story
 	}
 
