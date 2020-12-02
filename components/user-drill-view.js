@@ -98,7 +98,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 	}
 
 	_composeEmailHandler() {
-		createComposeEmailPopup([this.user.id], this.data.orgUnitTree.rootId);
+		createComposeEmailPopup([this.user.userId], this.data.orgUnitTree.rootId);
 		// outside the scope of the story
 	}
 
