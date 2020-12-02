@@ -44,16 +44,6 @@ class MessageContainer extends Localizer(MobxLitElement) {
 				flex-direction: column;
 			}
 
-			.d2l-insights-message-container-body-queryFails {
-				background-color: var(--d2l-color-regolith);
-				border: 1px solid var(--d2l-color-gypsum);
-				border-radius: 8px;
-				color: var(--d2l-color-ferrite);
-				display: flex;
-				height: 130px;
-				width: 73vw;
-			}
-
 			.d2l-insights-message-container-value {
 				word-wrap: break-word;
 			}
@@ -102,7 +92,7 @@ class MessageContainer extends Localizer(MobxLitElement) {
 		// conditinally render message text and body
 		if (this._isQueryFails) {
 			return html`
-				<div class="d2l-insights-message-container-body-queryFails">
+				<div class="d2l-insights-message-container-body">
 					<span class="d2l-insights-message-container-value">${this._messageContainerTextQueryFails}
 						<a href="https://www.d2l.com/support/" target="_blank">${this._messageContainerTextQueryFailsLink}</a>
 					</span>
