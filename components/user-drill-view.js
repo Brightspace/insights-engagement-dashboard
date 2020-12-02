@@ -1,5 +1,6 @@
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/button/button.js';
+import 'd2l-users/components/d2l-profile-image-base';
 import { bodySmallStyles, heading2Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { Localizer } from '../locales/localizer';
@@ -48,9 +49,9 @@ class UserDrill extends Localizer(MobxLitElement) {
 			}
 
 			.d2l-insights-user-drill-view-profile-pic {
-				--d2l-icon-height: 100px;
-				--d2l-icon-width: 100px;
+				height: 100px;
 				margin-right: 12px;
+				width: 100px;
 			}
 
 			.d2l-insights-user-drill-view-profile-name {
@@ -99,11 +100,10 @@ class UserDrill extends Localizer(MobxLitElement) {
 
 	render() {
 		return html`<div class="d2l-insights-user-drill-view-container">
-
 			<div class="d2l-insights-user-drill-view-header-panel">
 
 				<div class="d2l-insights-user-drill-view-profile">
-					<d2l-icon class="d2l-insights-user-drill-view-profile-pic" icon="tier3:profile-pic"></d2l-icon>
+					<d2l-profile-image-base class="d2l-insights-user-drill-view-profile-pic" colour-id="8" first-name="${this.user.firstName}" last-name="${this.user.lastName}" x-large></d2l-profile-image-base>
 					<div class="d2l-insights-user-drill-view-profile-name">
 						<div class="d2l-heading-2">${this.user.firstName}, ${this.user.lastName}</div>
 						<div class="d2l-body-small">${this.user.username} - ${this.user.userId}</div>
@@ -142,6 +142,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 			<div class="d2l-insights-user-drill-view-content">
 				<!-- put your tables here -->
 			</div>
+
 
 		</div>`;
 	}
