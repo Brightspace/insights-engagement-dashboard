@@ -98,7 +98,7 @@ class MessageContainer extends Localizer(MobxLitElement) {
 			return html`
 				<div class="d2l-insights-message-container-body-queryFails">
 					<span class="d2l-insights-message-container-value">${this._messageContainerTextQueryFails}
-						<a href="https://www.d2l.com/support/">${this._messageContainerTextQueryFailsLink}</a>
+						<a href="https://www.d2l.com/support/" target="_blank">${this._messageContainerTextQueryFailsLink}</a>
 					</span>
 				</div>
 			`;

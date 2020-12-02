@@ -84,7 +84,6 @@ export class Data {
 
 		this.userDictionary = new Map(newServerData.users.map(user => [user[USER.ID], user]));
 		this.isLoading = false;
-		this.isQueryError = newServerData.isQueryError !== undefined;
 		this.serverData = newServerData;
 		if (this.serverData.selectedSemestersIds) {
 			this._selectorFilters.semester.selected = this.serverData.selectedSemestersIds;

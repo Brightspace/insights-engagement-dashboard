@@ -95,6 +95,13 @@ describe('Data', () => {
 
 			expect(sut.orgUnitTree.isPopulated(6606)).to.be.false;
 		});
+
+		it('should return empty data if recordProvider ends with an error', async() => {
+			sut.recordProvider = undefined;
+			sut.loadData({});
+			expect(sut.userDictionary.size).to.equal(0);
+			expect(sut.isQueryError).to.equal(true);
+		});
 	});
 
 	describe('set selectedRoleIds', () => {
