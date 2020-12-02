@@ -138,12 +138,13 @@ describe('d2l-insights-engagement-dashboard', () => {
 
 				const usersTable = el.shadowRoot.querySelector('d2l-insights-users-table');
 				const innerTable = usersTable.shadowRoot.querySelector('d2l-insights-table');
+				await innerTable.updateComplete;
 
 				const actualColHeaders = Array.from(innerTable.shadowRoot.querySelectorAll('th'));
 				expect(actualColHeaders.length).to.equal(expectedList.length + 2); // 2 extra for row-selector and name columns
 
 				expect(actualColHeaders[0].firstElementChild.nodeName).to.equal('D2L-INPUT-CHECKBOX');
-				expect(actualColHeaders[1].innerText).to.equal('Name');
+				expect(actualColHeaders[1].innerText.trim()).to.equal('Name');
 
 				expectedList.forEach((col, idx) => {
 					expect(actualColHeaders[idx + 2].innerText).to.equal(allCols.get(col));
