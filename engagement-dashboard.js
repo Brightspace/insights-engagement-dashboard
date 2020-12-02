@@ -22,6 +22,7 @@ import './components/dashboard-settings';
 import { css, html } from 'lit-element/lit-element.js';
 import { DefaultViewState, ViewState } from './model/view-state';
 import { getPerformanceLoadPageMeasures, TelemetryHelper } from './model/telemetry-helper';
+import { isDefault, UrlState } from './model/urlState';
 import { LastAccessFilter, filterId as lastAccessFilterId } from './components/last-access-card';
 import { CourseLastAccessFilter } from './components/course-last-access-card';
 import { createComposeEmailPopup } from './components/email-integration';
@@ -33,7 +34,6 @@ import { fetchData } from './model/lms.js';
 import { fetchData as fetchDemoData } from './model/fake-lms.js';
 import { FilteredData } from './model/filteredData';
 import { heading3Styles } from '@brightspace-ui/core/components/typography/styles';
-import { isDefault } from './model/urlState';
 import { Localizer } from './locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { OverdueAssignmentsFilter } from './components/overdue-assignments-card';
@@ -340,8 +340,12 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			<div class="view-filters-container">
 				${this._renderFilters()}
 			</div>
-			<d2l-insights-message-container .data="${this._data}" .isNoDataReturned="${this._isNoUserResults}"></d2l-insights-message-container>
-			<h2 class="d2l-heading-3">${this.localize('components.insights-engagement-dashboard.summaryHeading')}</h2>
+			<d2l-insights-message-container
+				.data="${this._data}"
+				.isNoDataReturned="${this._isNoUserResults}"
+				@d2l-insights-undo-last-filter="${this._handleUndo}">
+			</d2l-insights-message-container>
+			${this._summaryViewHeader}
 			<div class="d2l-insights-summary-container-applied-filters">
 				<d2l-insights-applied-filters .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-applied-filters>
 			</div>
@@ -356,27 +360,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				${this._ticGradesCard}
 				${this._courseAccessCard}
 			</div>
-			<h2 class="d2l-heading-3">${this.localize('components.insights-engagement-dashboard.resultsHeading')}</h2>
-			<d2l-action-button-group class="d2l-table-action-button-group" min-to-show="0" max-to-show="2" opener-type="more">
-				<d2l-button-subtle
-					icon="d2l-tier1:email"
-					text="${this.localize('components.insights-engagement-dashboard.emailButton')}"
-					@click="${this._handleEmailButtonPress}">
-				</d2l-button-subtle>
-			</d2l-action-button-group>
-
-			<d2l-insights-users-table
-				.data="${this._data}"
-				?skeleton="${this._isLoading}"
-				@d2l-insights-users-table-cell-clicked="${this._userTableCellClicked}"
-				?courses-col="${this.showCoursesCol}"
-				?discussions-col="${this.showDiscussionsCol}"
-				?grade-col="${this.showGradeCol}"
-				?last-access-col="${this.showLastAccessCol}"
-				?tic-col="${this.showTicCol}"
-			></d2l-insights-users-table>
-
-
+			${this._userTable}
 			<d2l-insights-default-view-popup
 				?opened=${Boolean(this._serverData.isDefaultView && !this._defaultViewPopupShown)}
 				.data="${this._serverData}">
@@ -393,43 +377,77 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	}
 
 	get _courseAccessCard() {
-		if (!this.showCourseAccessCard) return '';
+		if (!this.showCourseAccessCard || this._isNoUserResults) return '';
 		return html`<div><d2l-insights-course-last-access-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-course-last-access-card></div>`;
 	}
 
 	get _discussionsCard() {
-		if (!this.showDiscussionsCard) return '';
+		if (!this.showDiscussionsCard || this._isNoUserResults) return '';
 		return html`<d2l-insights-discussion-activity-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-discussion-activity-card>`;
 	}
 
 	get _gradesCard() {
-		if (!this.showGradesCard) return '';
+		if (!this.showGradesCard || this._isNoUserResults) return '';
 		return html`<div><d2l-insights-current-final-grade-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-current-final-grade-card></div>`;
 	}
 
 	get _lastAccessCard() {
-		if (!this.showSystemAccessCard) return '';
+		if (!this.showSystemAccessCard || this._isNoUserResults) return '';
 		return html`<d2l-insights-last-access-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-last-access-card>`;
 	}
 
 	get _overdueAssignmentsCard() {
-		if (!this.showOverdueCard) return '';
+		if (!this.showOverdueCard || this._isNoUserResults) return '';
 		return html`<d2l-insights-overdue-assignments-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-overdue-assignments-card>`;
 	}
 
 	get _resultsCard() {
-		if (!this.showResultsCard) return '';
+		if (!this.showResultsCard || this._isNoUserResults) return '';
 		return html`<d2l-insights-results-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-results-card>`;
 	}
 
 	get _ticGradesCard() {
-		if (!this.showTicGradesCard) return '';
+		if (!this.showTicGradesCard || this._isNoUserResults) return '';
 		return html`<div><d2l-insights-time-in-content-vs-grade-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-time-in-content-vs-grade-card></div>`;
+	}
+
+	get _userTable() {
+		if (this._isNoUserResults) return '';
+		return html`
+			<h2 class="d2l-heading-3">${this.localize('components.insights-engagement-dashboard.resultsHeading')}</h2>
+			<d2l-action-button-group class="d2l-table-action-button-group" min-to-show="0" max-to-show="2" opener-type="more">
+				<d2l-button-subtle
+					icon="d2l-tier1:email"
+					text="${this.localize('components.insights-engagement-dashboard.emailButton')}"
+					@click="${this._handleEmailButtonPress}">
+				</d2l-button-subtle>
+			</d2l-action-button-group>
+
+			<d2l-insights-users-table
+				.data="${this._data}"
+				?skeleton="${this._isLoading}"
+				?show-courses-col="${this.showCoursesCol}"
+				?show-discussions-col="${this.showDiscussionsCol}"
+				?show-grade-col="${this.showGradeCol}"
+				?show-last-access-col="${this.showLastAccessCol}"
+				?show-tic-col="${this.showTicCol}"
+				@d2l-insights-users-table-cell-clicked="${this._userTableCellClicked}"
+			></d2l-insights-users-table>
+		`;
+	}
+
+	get _summaryViewHeader() {
+		if (this._isNoUserResults) return '';
+		return html`<h2 class="d2l-heading-3">${this.localize('components.insights-engagement-dashboard.summaryHeading')}</h2>`;
 	}
 
 	_exportToCsv() {
 		const usersTable = this.shadowRoot.querySelector('d2l-insights-users-table');
 		ExportData.userDataToCsv(usersTable.dataForExport, usersTable.headersForExport);
+	}
+
+	_handleUndo() {
+		UrlState.backOrResetView();
 	}
 
 	get _defaultViewPopupShown() {

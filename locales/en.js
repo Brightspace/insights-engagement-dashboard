@@ -24,6 +24,7 @@ export default {
 	"components.insights-engagement-dashboard.noResultsAvailable": "There are no results available that match your filters.",
 	"components.insights-engagement-dashboard.queryFails": "Unable to load your results. If this problem persists, please ",
 	"components.insights-engagement-dashboard.queryFailsLink": "contact D2L Support.",
+	"components.insights-engagement-dashboard.undoLastAction": "Undo Last Action",
 
 	"components.insights-role-filter.name": "Role",
 	"components.insights-settings-view-role-list.title": "Roles filter",

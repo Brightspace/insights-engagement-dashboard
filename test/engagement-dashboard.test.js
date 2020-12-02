@@ -52,7 +52,7 @@ describe('d2l-insights-engagement-dashboard', () => {
 					demo
 				></d2l-insights-engagement-dashboard>`);
 			await new Promise(resolve => setTimeout(resolve, 100));
-
+			await el.updateComplete;
 			expect(el._serverData.selectedRoleIds).to.deep.equal([900, 1000, 11]);
 		});
 
