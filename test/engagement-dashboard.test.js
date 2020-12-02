@@ -108,5 +108,48 @@ describe('d2l-insights-engagement-dashboard', () => {
 					});
 				})
 			);
+
+		const allCols = new Map([
+			['courses-col', 'Courses'],
+			['grade-col', 'Average Grade'],
+			['tic-col', 'Average Time in Content (mins)'],
+			['discussions-col', 'Average Discussion Activity'],
+			['last-access-col', 'Last Accessed System']
+		]);
+		const allColsKeys = Array.from(allCols.keys());
+
+		[
+			allColsKeys,
+			[],
+			['grade-col', 'discussions-col'],
+			...allColsKeys.map(omitCol => allColsKeys.filter(col => col !== omitCol))
+		].forEach(expectedList => {
+			it(`should show selected columns in users table (${expectedList})`, async() => {
+				// cards aren't loaded for this test
+				const el = await fixture(html`<d2l-insights-engagement-dashboard
+						?courses-col="${expectedList.includes('courses-col')}"
+						?discussions-col="${expectedList.includes('discussions-col')}"
+						?grade-col="${expectedList.includes('grade-col')}"
+						?last-access-col="${expectedList.includes('last-access-col')}"
+						?tic-col="${expectedList.includes('tic-col')}"
+						demo
+					></d2l-insights-engagement-dashboard>`);
+				await new Promise(resolve => setTimeout(resolve, 100));
+
+				const usersTable = el.shadowRoot.querySelector('d2l-insights-users-table');
+				const innerTable = usersTable.shadowRoot.querySelector('d2l-insights-table');
+				await innerTable.updateComplete;
+
+				const actualColHeaders = Array.from(innerTable.shadowRoot.querySelectorAll('th'));
+				expect(actualColHeaders.length).to.equal(expectedList.length + 2); // 2 extra for row-selector and name columns
+
+				expect(actualColHeaders[0].firstElementChild.nodeName).to.equal('D2L-INPUT-CHECKBOX');
+				expect(actualColHeaders[1].innerText.trim()).to.equal('Name');
+
+				expectedList.forEach((col, idx) => {
+					expect(actualColHeaders[idx + 2].innerText).to.equal(allCols.get(col));
+				});
+			});
+		});
 	});
 });
