@@ -90,11 +90,11 @@ class MessageContainer extends Localizer(MobxLitElement) {
 	}
 
 	get _messageContainerTextQueryFails() {
-		return this.localize('components.insights-engagement-dashboard.queryFails');
+		return this.localize('dashboard:queryFailed');
 	}
 
 	get _messageContainerTextQueryFailsLink() {
-		return this.localize('components.insights-engagement-dashboard.queryFailsLink');
+		return this.localize('dashboard:queryFailedLink');
 	}
 
 	get _undoButtonText() {
