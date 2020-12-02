@@ -68,15 +68,15 @@ class MessageContainer extends Localizer(MobxLitElement) {
 	}
 
 	get _messageContainerTextTooManyResults() {
-		return this.localize('components.insights-engagement-dashboard.tooManyResults');
+		return this.localize('dashboard:tooManyResults');
 	}
 
 	get _messageContainerTextNoResultsAvailable() {
-		return this.localize('components.insights-engagement-dashboard.noResultsAvailable');
+		return this.localize('dashboard:noResultsAvailable');
 	}
 
 	get _undoButtonText() {
-		return this.localize('components.insights-engagement-dashboard.undoLastAction');
+		return this.localize('dashboard:undoLastAction');
 	}
 
 	_handleUndo() {

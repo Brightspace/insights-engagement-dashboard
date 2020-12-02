@@ -10,7 +10,7 @@ class CourseAccessThumbnailSvg extends RtlMixin(Localizer(LitElement)) {
 
 	render() {
 		return html`
-			<span class="d2l-insights-thumbnail-title">${this.localize('components.insights-course-last-access-card.courseAccess')}</span>
+			<span class="d2l-insights-thumbnail-title">${this.localize('courseLastAccessCard:courseAccess')}</span>
 			<svg xmlns="http://www.w3.org/2000/svg" width="293" height="150" viewBox="0 0 291 150">
 				<g id="Course_Access">
 					<g fill="#fff" stroke="#e3e9f1"

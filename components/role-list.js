@@ -111,8 +111,8 @@ class RoleList extends Localizer(LitElement) {
 		};
 
 		return html`
-			<h3 class="d2l-heading-3">${this.localize('components.insights-settings-view-role-list.title')}</h3>
-			<span>${this.localize('components.insights-settings-view-role-list.description')}</span>
+			<h3 class="d2l-heading-3">${this.localize('settings:roleListTitle')}</h3>
+			<span>${this.localize('settings:roleListDescription')}</span>
 
 			<div class="${classMap(styles)}">
 				${filterData.map(item => html`<d2l-input-checkbox value="${item.id}" @change="${this._handleSelectionChange}" ?checked="${item.selected}" >${item.displayName}</d2l-input-checkbox>`)}
@@ -122,6 +122,9 @@ class RoleList extends Localizer(LitElement) {
 
 	_handleSelectionChange() {
 		this.includeRoles = this._selected;
+		/**
+		 * @event d2l-insights-role-list-change
+		 */
 		this.dispatchEvent(new Event('d2l-insights-role-list-change'));
 	}
 }

@@ -118,12 +118,12 @@ class UserDrill extends Localizer(MobxLitElement) {
 					>
 					<d2l-button-subtle
 						icon="d2l-tier1:export"
-						text=${this.localize('components.insights-engagement-dashboard.exportToCsv')}
+						text=${this.localize('dashboard:exportToCsv')}
 						@click="${this._exportToCsvHandler}">
 					</d2l-button-subtle>
 					<d2l-button-subtle
 						icon="d2l-tier1:print"
-						text=${this.localize('components.insights-engagement-dashboard.print')}
+						text=${this.localize('dashboard:print')}
 						@click="${this._printHandler}">
 					</d2l-button-subtle>
 				</d2l-action-button-group>
@@ -133,7 +133,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 			<d2l-button
 				primary
 				@click="${this._composeEmailHandler}"
-			>${this.localize('components.insights-engagement-dashboard.emailButton')}</d2l-button>
+			>${this.localize('dashboard:emailButton')}</d2l-button>
 
 			<div class="d2l-insights-view-filters-container">
 				<slot name="filters"></slot>

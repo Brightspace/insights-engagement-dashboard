@@ -19,7 +19,7 @@ export class LastAccessFilter {
 	get id() { return filterId; }
 
 	get title() {
-		return 'components.insights-engagement-dashboard.lastSystemAccessHeading';
+		return 'dashboard:lastSystemAccessHeading';
 	}
 
 	filter(record, userDictionary) {
@@ -64,14 +64,14 @@ class LastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get _cardMessage() {
 		return this.filter.thresholdDays !== 1 ?
 			this.localize(
-				'components.insights-engagement-dashboard.lastSystemAccessMessage',
+				'dashboard:lastSystemAccessMessage',
 				{ thresholdDays: this.filter.thresholdDays }
 			) :
-			this.localize('components.insights-engagement-dashboard.lastSystemAccessMessageOneDay');
+			this.localize('dashboard:lastSystemAccessMessageOneDay');
 	}
 
 	get _cardTitle() {
-		return this.localize('components.insights-engagement-dashboard.lastSystemAccessHeading');
+		return this.localize('dashboard:lastSystemAccessHeading');
 	}
 
 	get filter() {

@@ -16,7 +16,7 @@ export class OverdueAssignmentsFilter {
 
 	get id() { return filterId; }
 
-	get title() { return 'components.insights-engagement-dashboard.overdueAssignmentsHeading'; }
+	get title() { return 'dashboard:overdueAssignmentsHeading'; }
 
 	filter(record) {
 		return record[RECORD.OVERDUE] > 0;
@@ -51,11 +51,11 @@ class OverdueAssignmentsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _cardMessage() {
-		return this.localize('components.insights-engagement-dashboard.overdueAssignments');
+		return this.localize('dashboard:overdueAssignments');
 	}
 
 	get _cardTitle() {
-		return this.localize('components.insights-engagement-dashboard.overdueAssignmentsHeading');
+		return this.localize('dashboard:overdueAssignmentsHeading');
 	}
 
 	get _cardValue() {
