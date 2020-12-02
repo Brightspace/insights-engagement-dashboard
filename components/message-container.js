@@ -8,8 +8,7 @@ class MessageContainer extends Localizer(MobxLitElement) {
 	static get properties() {
 		return {
 			data: { type: Object, attribute: false },
-			isNoDataReturned: { type: Boolean, attribute: false },
-			isQueryFails: { type: Boolean, attribute: false }
+			isNoDataReturned: { type: Boolean, attribute: false }
 		};
 	}
 
@@ -73,6 +72,10 @@ class MessageContainer extends Localizer(MobxLitElement) {
 		return this.data._data.serverData.isRecordsTruncated;
 	}
 
+	get _isQueryFails() {
+		return this.data._data.isQueryError;
+	}
+
 	get _messageContainerTextTooManyResults() {
 		return this.localize('components.insights-engagement-dashboard.tooManyResults');
 	}
@@ -91,7 +94,7 @@ class MessageContainer extends Localizer(MobxLitElement) {
 
 	render() {
 		// conditinally render message text and body
-		if (this.isQueryFails) {
+		if (this._isQueryFails) {
 			return html`
 				<div class="d2l-insights-message-container-body-queryFails">
 					<span class="d2l-insights-message-container-value">${this._messageContainerTextQueryFails}
@@ -116,7 +119,8 @@ class MessageContainer extends Localizer(MobxLitElement) {
 }
 
 decorate(MessageContainer, {
-	_isRecordsTruncated: computed
+	_isRecordsTruncated: computed,
+	_isQueryFails: computed
 });
 
 customElements.define('d2l-insights-message-container', MessageContainer);

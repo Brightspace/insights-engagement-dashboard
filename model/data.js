@@ -4,6 +4,8 @@ import { fetchCachedChildren, fetchLastSearch } from './lms.js';
 import { OrgUnitSelectorFilter, RoleSelectorFilter, SemesterSelectorFilter } from './selectorFilters.js';
 import { Tree } from '../components/tree-filter';
 
+const emptyData = { orgUnits: [], records: [], users: [] };
+
 /**
  * Data from the server, along with filter settings that are passed in server calls.
  */
@@ -42,7 +44,7 @@ export class Data {
 		};
 	}
 
-	loadData({ newRoleIds = null, newSemesterIds = null, newOrgUnitIds = null, defaultView = false }) {
+	async loadData({ newRoleIds = null, newSemesterIds = null, newOrgUnitIds = null, defaultView = false }) {
 		this.isLoading = true;
 		const filters = {
 			roleIds: newRoleIds || this._selectorFilters.role.selected,
@@ -50,7 +52,14 @@ export class Data {
 			orgUnitIds: newOrgUnitIds || this._selectorFilters.orgUnit.selected,
 			defaultView
 		};
-		this.recordProvider(filters).then(data => this.onServerDataReload(data));
+		try {
+			const data = await this.recordProvider(filters);
+			this.onServerDataReload(data);
+			this.isQueryError = false;
+		} catch (ignored) {
+			this.onServerDataReload(emptyData);
+			this.isQueryError = true;
+		}
 	}
 
 	// @action

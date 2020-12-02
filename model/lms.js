@@ -17,10 +17,6 @@ const relevantChildrenEndpoint = orgUnitId => `/d2l/api/ap/unstable/insights/dat
 const ouSearchEndpoint = '/d2l/api/ap/unstable/insights/data/orgunits';
 const saveSettingsEndpoint = '/d2l/api/ap/unstable/insights/mysettings/engagement';
 
-const emptyServerData = {
-	orgUnits: [], records: [], users: [], selectedRolesIds: [0], selectedSemestersIds: [0], selectedOrgUnitIds: [0], isQueryError: true
-};
-
 /**
  * @param {[Number]} roleIds
  * @param {[Number]} semesterIds
@@ -41,7 +37,9 @@ export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [
 	url.searchParams.set('defaultView', defaultView ? 'true' : 'false');
 	const response = await fetch(url.toString());
 	if (response.ok) return await response.json();
-	else {return Promise.resolve({	...emptyServerData });}
+	else {
+		throw new Error('query-failure');
+	}
 }
 
 /**
