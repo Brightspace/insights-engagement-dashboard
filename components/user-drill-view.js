@@ -9,13 +9,13 @@ import { MobxLitElement } from '@adobe/lit-mobx';
 
 /**
  * @property {Object} user - {firstName, lastName, username, userId}
- * @property {Object} data - Data Model
+ * @property {Object} orgUnitId - the org unit the user belongs too
  */
 class UserDrill extends Localizer(MobxLitElement) {
 	static get properties() {
 		return {
 			user: { type: Object, attribute: false },
-			data: { type: Object, attribute: false }
+			orgUnitId: { type: Object, attribute: 'org-unit-id' }
 		};
 	}
 
@@ -98,7 +98,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 	}
 
 	_composeEmailHandler() {
-		createComposeEmailPopup([this.user.userId], this.data.orgUnitTree.rootId);
+		createComposeEmailPopup([this.user.userId], this.orgUnitId);
 	}
 
 	render() {

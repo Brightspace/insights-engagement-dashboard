@@ -260,7 +260,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		return html`
 			<d2l-insights-user-drill-view
 				.user="${user}"
-				.data="${this._serverData}"
+				org-unit-id="${this.orgUnitId}"
 				@d2l-insights-user-drill-view-back="${this._backToHomeHandler}"
 			>
 				<div slot="filters">
