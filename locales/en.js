@@ -164,7 +164,7 @@ export default {
 	"settings:ticVsGradeDesc": "The Time in Content versus Grade card shows the total time spent in a course relative to the current grade for each enrollment per user for courses that are filtered on. The chart is mapped into quadrants based on the average grade or time spent for the users in view.",
 	"settings:overdueAssignmentsDesc": "The Overdue Assignments card shows the number of users who have one or more assignments overdue in the courses that are filtered on.",
 	"settings:systemAccessDesc": "The System Access card shows the last access the user had in any way.",
-	"settings:discActivityDesc": "The Discussion Activity card shows passive and active social engagement in each course that is filtered on. The metric reports when a user creates a thread, replies to an existing post, or reads a post.",
+	"settings:discActivityDesc": "The Discussion Activity card shows passive and active social engagement in each course that is filtered on. This metric reports when a user creates a thread, replies to an existing post, or reads a post.",
 
 	"settings:systemAccessEdit": "Show users who have not accessed the system in the last {num} days.",
 	"settings:systemAccessEditLabel": "Edit system access threshold",
