@@ -3,6 +3,7 @@ import './tree-selector.js';
 import 'array-flat-polyfill';
 import { action, computed, decorate, observable } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
+import { COURSE_OFFERING } from '../consts';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 
@@ -216,9 +217,14 @@ export class Tree {
 	}
 
 	getChildIdsForDisplay(id) {
-		return this.getChildIds(id)
-			.filter(x => this._isVisible(x))
+		const children = this.getChildIds(id).filter(x => this._isVisible(x));
+		if (children.length < 1) return [];
+
+		const nonPrunedChildren = children.filter(x => !this._isPruned(x))
 			.sort((a, b) => this._nameForSort(a).localeCompare(this._nameForSort(b)));
+		if (nonPrunedChildren.length > 0) return nonPrunedChildren;
+
+		return children.flatMap(x => this.getChildIdsForDisplay(x));
 	}
 
 	getChildIds(id) {
@@ -362,6 +368,12 @@ export class Tree {
 	_isVisible(id) {
 		return (this._visible === null || this._visible.has(id))
 			&& !this.invisibleTypes.includes(this.getType(id));
+	}
+
+	_isPruned(id) {
+		return !this.isDynamic
+			&& this.getType(id) !== COURSE_OFFERING
+			&& (!this._children.has(id) || this._children.get(id).size < 2);
 	}
 
 	_nameForSort(id) {
