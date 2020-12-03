@@ -249,13 +249,11 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			username: userData[USER.USERNAME],
 			userId: userId
 		};
-
 		return html`
 			<d2l-insights-user-drill-view
 				.user="${user}"
-				.data="${this._data.recordsByUser.get(user.userId)}"
-				.orgUnitTree="${this._serverData.orgUnitTree}"
-				.skeleton="${this._isLoading}"
+				.userCourses="${this._data.recordsByUser.get(user.userId)}"
+				.orgUnits="${this._serverData.serverData.orgUnits}"
 			></d2l-insights-user-drill-view>
 		`;
 	}

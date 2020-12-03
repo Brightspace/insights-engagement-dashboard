@@ -2,11 +2,11 @@ import './table.js';
 import { action, computed, decorate, observable } from 'mobx';
 import { css, html } from 'lit-element';
 import { formatNumber, formatPercent } from '@brightspace-ui/intl';
+import { ORG_UNIT, RECORD } from '../consts';
 import { COLUMN_TYPES } from './table';
 import { formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
-import { RECORD } from '../consts';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 
 export const TABLE_COURSES = {
@@ -25,19 +25,15 @@ const DEFAULT_PAGE_SIZE = 20;
 /**
  * The mobx data object is doing filtering logic
  *
- * @property {Object} data - an instance of Data from model/data.js filtered to only one user
- * @property {Object} orgUnitTree - an instance of orgUnitTree from model/data.js
- * @property {Number} _sortColumn - The index of the column that is currently sorted
- * @property {String} _sortOrder - either 'asc' or 'desc'
+ * @property {Object} userCourses - an instance of Data from model/data.js filtered to only one user
+ * @property {Object} orgUnits - an array of orgUnits
  */
 class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	static get properties() {
 		return {
-			data: { type: Object, attribute: false },
-			orgUnitTree: { type: Object, attribute: false },
-			_sortColumn: { type: Number, attribute: false },
-			_sortOrder: { type: String, attribute: false },
+			userCourses: { type: Object, attribute: false },
+			orgUnits: { type: Object, attribute: false }
 		};
 	}
 
@@ -86,9 +82,16 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this._sortColumn = e.detail.column;
 	}
 
+	_activeCourses(userRecords) {
+		const orgUnitId =  userRecords.get(RECORD.ORG_UNIT_ID);
+		const orgUnit = this.orgUnits.find(x => x[ORG_UNIT.ID] === orgUnitId);
+		return orgUnit[ORG_UNIT.IS_ACTIVE];
+	}
+
 	_preProcessData(userRecords) {
 		const orgUnitId =  userRecords.get(RECORD.ORG_UNIT_ID);
-		const orgUnitName = this.orgUnitTree._nodes.get(orgUnitId)[1];
+		const orgUnit = this.orgUnits.find(x => x[ORG_UNIT.ID] === orgUnitId);
+		const orgUnitName = orgUnit[ORG_UNIT.NAME];
 		const finalGrade = userRecords.get(RECORD.CURRENT_FINAL_GRADE);
 		const predictedGrade = userRecords.get(RECORD.CURRENT_FINAL_GRADE);
 		const timeInContent = userRecords.get(RECORD.TIME_IN_CONTENT);
@@ -152,7 +155,8 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		// map to a 2D userData array, with column 1 as a sub-array of [id, FirstName, LastName, UserName]
 		// then sort by the selected sorting function
 		const sortFunction = this._choseSortFunction(this._sortColumn, this._sortOrder);
-		return this.data
+		return this.userCourses
+			.filter(this._activeCourses, this)
 			.map(this._preProcessData, this)
 			.sort(sortFunction)
 			.map(this._formatDataForDisplay, this);
@@ -202,7 +206,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	render() {
 		return html`
 			<d2l-insights-table
-				title="${this.localize('components.insights-users-table.title')}"
+				title="${this.localize('components.insights-active-courses-table.title')}"
 				@d2l-insights-table-sort="${this._handleColumnSort}"
 				sort-column="0"
 				.columnInfo=${this.columnInfo}

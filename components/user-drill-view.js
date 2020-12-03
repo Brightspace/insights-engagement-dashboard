@@ -7,15 +7,15 @@ import { MobxLitElement } from '@adobe/lit-mobx';
 
 /**
  * @property {Object} user - {firstName, lastName, username, userId}
- * @property {Object} data - an instance of Data from model/data.js filtered to only one user
- * @property {Object} orgUnitTree - an instance of orgUnitTree from model/data.js
+ * @property {Object} userCourses
+ * @property {Object} orgUnits
  */
 class UserDrill extends Localizer(MobxLitElement) {
 	static get properties() {
 		return {
 			user: { type: Object, attribute: false },
-			data: { type: Object, attribute: false },
-			orgUnitTree: { type: Object, attribute: false }
+			userCourses: { type: Object, attribute: false },
+			orgUnits: { type: Object, attribute: false }
 		};
 	}
 
@@ -138,9 +138,8 @@ class UserDrill extends Localizer(MobxLitElement) {
 			<div class="d2l-insights-user-drill-view-content">
 				
 				<d2l-insights-active-courses-table
-					.data="${this.data}"
-					.orgUnitTree="${this.orgUnitTree}"
-					?skeleton="${this.skeleton}">
+					.userCourses="${this.userCourses}"
+					.orgUnits="${this.orgUnits}">
 				</d2l-insights-active-courses-table>
 				
 			</div>
