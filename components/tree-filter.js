@@ -407,11 +407,11 @@ export class Tree {
 		if (this.isDynamic) return false;
 
 		let prunedNodeId = this.rootId;
-		let children = this.getChildIds(this.rootId);
+		let children = this.getChildIds(prunedNodeId).filter(x => this._isVisible(x));
 		while (children.length === 1) {
 			this._pruned.set(prunedNodeId, this.getType(prunedNodeId) !== COURSE_OFFERING);
 			prunedNodeId = children[0];
-			children = this.getChildIds(prunedNodeId);
+			children = this.getChildIds(prunedNodeId).filter(x => this._isVisible(x));
 		}
 	}
 
