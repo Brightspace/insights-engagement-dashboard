@@ -1,6 +1,6 @@
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/button/button.js';
-import 'd2l-users/components/d2l-profile-image-base';
+import 'd2l-users/components/d2l-profile-image';
 import { bodySmallStyles, heading2Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { Localizer } from '../locales/localizer';
@@ -103,7 +103,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 			<div class="d2l-insights-user-drill-view-header-panel">
 
 				<div class="d2l-insights-user-drill-view-profile">
-					<d2l-profile-image-base class="d2l-insights-user-drill-view-profile-pic" colour-id="8" first-name="${this.user.firstName}" last-name="${this.user.lastName}" x-large></d2l-profile-image-base>
+					<d2l-profile-image class="d2l-insights-user-drill-view-profile-pic" href="./response/profile_first_last.json" token="token" x-large></d2l-profile-image>
 					<div class="d2l-insights-user-drill-view-profile-name">
 						<div class="d2l-heading-2">${this.user.firstName}, ${this.user.lastName}</div>
 						<div class="d2l-body-small">${this.user.username} - ${this.user.userId}</div>
