@@ -10,7 +10,7 @@ class TicVsGradeThumbnailSvg extends RtlMixin(Localizer(LitElement)) {
 
 	render() {
 		return html`
-			<span class="d2l-insights-thumbnail-title">${this.localize('components.insights-time-in-content-vs-grade-card.timeInContentVsGrade')}</span>
+			<span class="d2l-insights-thumbnail-title">${this.localize('timeInContentVsGradeCard:timeInContentVsGrade')}</span>
 			<svg xmlns="http://www.w3.org/2000/svg" width="293" height="150" viewBox="0 0 291 150">
 				<g id="TiC_v_Grade">
 					<g fill="#fff" stroke="#e3e9f1" stroke-miterlimit="10" stroke-width="1">

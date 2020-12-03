@@ -65,23 +65,23 @@ class MessageContainer extends Localizer(MobxLitElement) {
 	}
 
 	get _messageContainerTextTooManyResults() {
-		return this.localize('components.insights-engagement-dashboard.tooManyResults');
+		return this.localize('dashboard:tooManyResults');
 	}
 
 	get _messageContainerTextNoResultsAvailable() {
-		return this.localize('components.insights-engagement-dashboard.noResultsAvailable');
+		return this.localize('dashboard:noResultsAvailable');
 	}
 
 	get _messageContainerTextQueryFails() {
-		return this.localize('components.insights-engagement-dashboard.queryFails');
+		return this.localize('dashboard:queryFailed');
 	}
 
 	get _messageContainerTextQueryFailsLink() {
-		return this.localize('components.insights-engagement-dashboard.queryFailsLink');
+		return this.localize('dashboard:queryFailedLink');
 	}
 
 	get _undoButtonText() {
-		return this.localize('components.insights-engagement-dashboard.undoLastAction');
+		return this.localize('dashboard:undoLastAction');
 	}
 
 	_handleUndo() {

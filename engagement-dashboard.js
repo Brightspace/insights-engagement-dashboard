@@ -313,7 +313,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			<d2l-insights-aria-loading-progress .data="${this._data}"></d2l-insights-aria-loading-progress>
 
 			<div class="d2l-heading-button-group">
-				<h1 class="d2l-heading-1">${this.localize('components.insights-engagement-dashboard.title')}</h1>
+				<h1 class="d2l-heading-1">${this.localize('dashboard:title')}</h1>
 				<d2l-action-button-group
 					class="d2l-main-action-button-group"
 					min-to-show="0"
@@ -321,17 +321,17 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				>
 					<d2l-button-subtle
 						icon="d2l-tier1:export"
-						text=${this.localize('components.insights-engagement-dashboard.exportToCsv')}
+						text=${this.localize('dashboard:exportToCsv')}
 						@click="${this._exportToCsv}">
 					</d2l-button-subtle>
 					<d2l-button-subtle
 						icon="d2l-tier1:help"
-						text=${this.localize('components.insights-engagement-dashboard.learMore')}
+						text=${this.localize('dashboard:learMore')}
 						@click="${this._openHelpLink}">
 					</d2l-button-subtle>
 					<d2l-button-subtle
 						icon="d2l-tier1:gear"
-						text=${this.localize('components.insights-engagement-settings.title')}
+						text=${this.localize('settings:title')}
 						@click="${this._openSettingsPage}">
 					</d2l-button-subtle>
 				</d2l-action-button-group>
@@ -368,9 +368,9 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 			<d2l-dialog-confirm
 				id="no-users-selected-dialog"
-				text="${this.localize('components.insights-engagement-dashboard.noUsersSelectedDialogText')}">
+				text="${this.localize('dashboard:noUsersSelectedDialogText')}">
 				<d2l-button slot="footer" primary data-dialog-action>
-					${this.localize('components.insights-default-view-popup.buttonOk')}
+					${this.localize('defaultViewPopup:buttonOk')}
 				</d2l-button>
 			</d2l-dialog-confirm>
 		`;
@@ -414,11 +414,11 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	get _userTable() {
 		if (this._isNoUserResults) return '';
 		return html`
-			<h2 class="d2l-heading-3">${this.localize('components.insights-engagement-dashboard.resultsHeading')}</h2>
+			<h2 class="d2l-heading-3">${this.localize('dashboard:resultsHeading')}</h2>
 			<d2l-action-button-group class="d2l-table-action-button-group" min-to-show="0" max-to-show="2" opener-type="more">
 				<d2l-button-subtle
 					icon="d2l-tier1:email"
-					text="${this.localize('components.insights-engagement-dashboard.emailButton')}"
+					text="${this.localize('dashboard:emailButton')}"
 					@click="${this._handleEmailButtonPress}">
 				</d2l-button-subtle>
 			</d2l-action-button-group>
@@ -438,7 +438,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 	get _summaryViewHeader() {
 		if (this._isNoUserResults) return '';
-		return html`<h2 class="d2l-heading-3">${this.localize('components.insights-engagement-dashboard.summaryHeading')}</h2>`;
+		return html`<h2 class="d2l-heading-3">${this.localize('dashboard:summaryHeading')}</h2>`;
 	}
 
 	_exportToCsv() {

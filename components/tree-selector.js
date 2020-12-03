@@ -89,17 +89,17 @@ class TreeSelector extends Localizer(LitElement) {
 				<d2l-dropdown-button-subtle text="${this.name}">
 					<d2l-dropdown-content align="start" no-auto-fit>
 						<div class="d2l-filter-dropdown-content-header" slot="header">
-							<span>${this.localize('components.tree-selector.filterBy')}</span>
+							<span>${this.localize('treeSelector:filterBy')}</span>
 							<d2l-button-subtle
-							 	text="${this.localize('components.tree-selector.clear-label')}"
+							 	text="${this.localize('treeSelector:clearLabel')}"
 							 	?hidden="${!this.isSelected}"
 							 	@click="${this._onClear}"
 							></d2l-button-subtle>
 						</div>
 						<div class="d2l-insights-tree-selector-search">
 							<d2l-input-search
-								label="${this.localize('components.tree-selector.search-label')}"
-								placeholder="${this.localize('components.tree-selector.search-placeholder')}"
+								label="${this.localize('treeSelector:searchLabel')}"
+								placeholder="${this.localize('treeSelector:searchPlaceholder')}"
 								@d2l-input-search-searched="${this._onSearch}"
 							></d2l-input-search>
 						</div>
