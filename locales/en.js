@@ -159,12 +159,12 @@ export default {
 	"settings:save": "Save",
 	"settings:cancel": "Cancel",
 
-	"settings:currentGradeDesc": "The Current Grade card shows the current grade for each enrollment per user. Data shown will appear both with the card and in the Result Detail table.",
-	"settings:courseAccessDesc": "The Course Access card shows the last access in a course for each enrollment per user. Data shown will appear both with the card and in the Result Detail table.",
-	"settings:ticVsGradeDesc": "The Time in Content vs. Grade card shows the time spent relative to the current grade for each enrollment per user. The chart is mapped into quadrants of high or low time and grade based off of course averages. Data shown will appear both with the card and in the Result Detail table.",
-	"settings:overdueAssignmentsDesc": "The Overdue Assignments card shows the number of users who have one or more assignments overdue. Data shown will appear both with the card and in the Result Detail table.",
-	"settings:systemAccessDesc": "The System Access card shows the last access in the system per user even if no courses have been accessed. Data shown will appear both with the card and in the Result Detail table.",
-	"settings:discActivityDesc": "The Discussion Activity card shows passive and active social engagement in each course. The metric captures and shows when a user creates a post, replies to an existing post or reads a post.",
+	"settings:currentGradeDesc": "The Current Grade card shows the current grade for each enrollment per user for courses that are filtered on.",
+	"settings:courseAccessDesc": "The Course Access card shows the last access in a course for each enrollment per user for courses that are filtered on.",
+	"settings:ticVsGradeDesc": "The Time in Content versus Grade card shows the total time spent in a course relative to the current grade for each enrollment per user for courses that are filtered on. The chart is mapped into quadrants based on the average grade or time spent for the users in view.",
+	"settings:overdueAssignmentsDesc": "The Overdue Assignments card shows the number of users who have one or more assignments overdue in the courses that are filtered on.",
+	"settings:systemAccessDesc": "The System Access card shows the last access the user had in any way.",
+	"settings:discActivityDesc": "The Discussion Activity card shows passive and active social engagement in each course that is filtered on. The metric reports when a user creates a thread, replies to an existing post, or reads a post.",
 
 	"settings:systemAccessEdit": "Show users who have not accessed the system in the last {num} days.",
 	"settings:systemAccessEditLabel": "Edit system access threshold",
