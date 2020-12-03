@@ -1,8 +1,21 @@
+import { d2lfetch } from 'd2l-fetch/src';
+import { fetchAuth } from 'd2l-fetch-auth';
+d2lfetch.use({ name: 'auth', fn: fetchAuth });
+
+let isMocked = false;
+export function mock() {
+	isMocked = true;
+}
+export function restore() {
+	isMocked = false;
+}
+
 const rolesEndpoint = '/d2l/api/ap/unstable/insights/data/roles';
 const semestersEndpoint = '/d2l/api/ap/unstable/insights/data/semesters';
 const dataEndpoint = '/d2l/api/ap/unstable/insights/data/engagement';
 const relevantChildrenEndpoint = orgUnitId => `/d2l/api/ap/unstable/insights/data/orgunits/${orgUnitId}/children`;
 const ouSearchEndpoint = '/d2l/api/ap/unstable/insights/data/orgunits';
+const saveSettingsEndpoint = '/d2l/api/ap/unstable/insights/mysettings/engagement';
 
 /**
  * @param {[Number]} roleIds
@@ -23,7 +36,10 @@ export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [
 	}
 	url.searchParams.set('defaultView', defaultView ? 'true' : 'false');
 	const response = await fetch(url.toString());
-	return await response.json();
+	if (response.ok) return await response.json();
+	else {
+		throw new Error('query-failure');
+	}
 }
 
 /**
@@ -124,4 +140,42 @@ export function fetchLastSearch(selectedSemesterIds) {
 	}
 
 	return null;
+}
+
+/**
+ * Save user preferences to the LMS.
+ * @param settings Must contain values for all the card and column settings (validated on call);
+ * "lastAccessThresholdDays" (number) and "includeRoles" (array) fields are optional.
+ */
+export async function saveSettings(settings) {
+	if (isMocked) return { ok: true };
+
+	const requiredFields = [
+		'showResultsCard',
+		'showOverdueCard',
+		'showDiscussionsCard',
+		'showSystemAccessCard',
+		'showGradesCard',
+		'showTicGradesCard',
+		'showCourseAccessCard',
+		'showCoursesCol',
+		'showGradeCol',
+		'showTicCol',
+		'showDiscussionsCol',
+		'showLastAccessCol'
+	];
+	requiredFields.forEach(field => {
+		if (settings[field] !== true && settings[field] !== false) {
+			throw new Error(`save settings: missing required field ${field}`);
+		}
+	});
+
+	const url = new URL(saveSettingsEndpoint, window.location.origin);
+	return await d2lfetch.fetch(new Request(url.toString(), {
+		method: 'PUT',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(settings)
+	}));
 }

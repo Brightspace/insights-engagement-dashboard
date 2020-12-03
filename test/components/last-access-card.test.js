@@ -8,7 +8,7 @@ describe('d2l-insights-last-access-card', () => {
 	before(() => disableUrlStateForTesting());
 	after(() => enableUrlState());
 
-	const filter = new LastAccessFilter();
+	const filter = new LastAccessFilter(14);
 
 	const data = {
 		getFilter: id => (id === filter.id ? filter : null),

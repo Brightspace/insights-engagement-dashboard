@@ -1,14 +1,15 @@
 import 'd2l-navigation/d2l-navigation-immersive';
 import 'd2l-navigation/d2l-navigation-link-back';
 
-import { css, html, LitElement } from 'lit-element/lit-element';
+import { css, html } from 'lit-element/lit-element';
 import { DefaultViewState } from '../model/view-state';
 import { Localizer } from '../locales/localizer';
+import { MobxLitElement } from '@adobe/lit-mobx';
 
 const insightsPortalEndpoint = '/d2l/ap/insightsPortal/main.d2l';
 
 // Extends the standard immersive nav to resize the back link on small screens
-class InsightsImmersiveNav extends Localizer(LitElement) {
+class InsightsImmersiveNav extends Localizer(MobxLitElement) {
 	static get properties() {
 		return {
 			viewState: { type: Object, attribute: false },
@@ -55,18 +56,22 @@ class InsightsImmersiveNav extends Localizer(LitElement) {
 
 	get mainText() {
 		switch (this.view) {
-			case 'home': return this.localize('components.insights-engagement-dashboard.title');
-			case 'user': return this.localize('components.insights-engagement-dashboard.title-user-view');
+			case 'home': return this.localize('dashboard:title');
+			case 'user': return this.localize('dashboard:userView:title');
+			case 'settings': return this.localize('settings:title');
 		}
-		return this.localize('components.insights-engagement-dashboard.title');
+		return this.localize('dashboard:title');
 	}
 
 	get backText() {
 		switch (this.view) {
-			case 'home': return this.localize('components.insights-engagement-dashboard.backToInsightsPortal');
-			case 'user': return this.localize('components.insights-engagement-dashboard.backToEngagementDashboard');
+			case 'home':
+				return this.localize('dashboard:backToInsightsPortal');
+			case 'user':
+			case 'settings':
+				return this.localize('dashboard:backToEngagementDashboard');
 		}
-		return this.localize('components.insights-engagement-dashboard.backToInsightsPortal');
+		return this.localize('dashboard:backToInsightsPortal');
 	}
 
 	render() {
@@ -85,7 +90,7 @@ class InsightsImmersiveNav extends Localizer(LitElement) {
 						@click=${this._backLinkClickHandler}>
 					</d2l-navigation-link-back>
 					<d2l-navigation-link-back
-						text="${this.localize('components.insights-engagement-dashboard.backLinkTextShort')}"
+						text="${this.localize('dashboard:backLinkTextShort')}"
 						href="${href}"
 						class="d2l-insights-link-back-responsive"
 						@click=${this._backLinkClickHandler}>

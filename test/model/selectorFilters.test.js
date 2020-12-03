@@ -88,30 +88,6 @@ describe('selectorFilters', () => {
 				expect(sut.shouldReloadFromServer([1, 3, 5, 6])).to.be.true;
 			});
 		});
-
-		describe('urlState', () => {
-
-			const key = new RoleSelectorFilter({ serverData: {} }).persistenceKey;
-			before(() => {
-				enableUrlState();
-			});
-			after(() => disableUrlStateForTesting());
-
-			it('should load the filter from the url state then save to it', async() => {
-
-				setStateForTesting(key, '1,3,5');
-
-				const sut = new RoleSelectorFilter({ serverData: { selectedRolesIds: null, isRecordsTruncated: false } });
-				expect(sut.selected).eqls([1, 3, 5]);
-
-				sut.selected = [1];
-
-				const params = new URLSearchParams(window.location.search);
-				const values = params.get(sut.persistenceKey);
-
-				expect(values).equals('1');
-			});
-		});
 	});
 
 	describe('SemesterSelectorFilter', () => {

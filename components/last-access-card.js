@@ -7,27 +7,24 @@ import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton
 import { UrlState } from '../model/urlState';
 
 export const filterId = 'd2l-insights-last-access-card';
-const fourteenDayMillis = 1209600000;
-
-function isWithoutRecentAccess(user) {
-	return !user[USER.LAST_SYS_ACCESS] || ((Date.now() - user[USER.LAST_SYS_ACCESS]) > fourteenDayMillis);
-}
+const oneDayMillis = 86400000;
 
 export class LastAccessFilter {
-	constructor() {
+	constructor(thresholdDays) {
 		this.isApplied = false;
+		this.thresholdDays = thresholdDays;
 		this._urlState = new UrlState(this);
 	}
 
 	get id() { return filterId; }
 
 	get title() {
-		return 'components.insights-engagement-dashboard.lastSystemAccessHeading';
+		return 'dashboard:lastSystemAccessHeading';
 	}
 
 	filter(record, userDictionary) {
 		const user = userDictionary.get(record[RECORD.USER_ID]);
-		return isWithoutRecentAccess(user);
+		return this.isWithoutRecentAccess(user);
 	}
 
 	// for UrlState
@@ -39,6 +36,11 @@ export class LastAccessFilter {
 
 	set persistenceValue(value) {
 		this.isApplied = value === '1';
+	}
+
+	isWithoutRecentAccess(user) {
+		return !user[USER.LAST_SYS_ACCESS] ||
+			((Date.now() - user[USER.LAST_SYS_ACCESS]) > this.thresholdDays * oneDayMillis);
 	}
 }
 
@@ -60,11 +62,16 @@ class LastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _cardMessage() {
-		return this.localize('components.insights-engagement-dashboard.lastSystemAccess');
+		return this.filter.thresholdDays !== 1 ?
+			this.localize(
+				'dashboard:lastSystemAccessMessage',
+				{ thresholdDays: this.filter.thresholdDays }
+			) :
+			this.localize('dashboard:lastSystemAccessMessageOneDay');
 	}
 
 	get _cardTitle() {
-		return this.localize('components.insights-engagement-dashboard.lastSystemAccessHeading');
+		return this.localize('dashboard:lastSystemAccessHeading');
 	}
 
 	get filter() {
@@ -73,7 +80,7 @@ class LastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	get _cardValue() {
 		return this.data.withoutFilter(filterId).users
-			.filter(user => isWithoutRecentAccess(user)).length;
+			.filter(user => this.filter.isWithoutRecentAccess(user)).length;
 	}
 
 	render() {

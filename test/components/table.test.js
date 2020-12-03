@@ -4,10 +4,18 @@ import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { COLUMN_TYPES } from '../../components/table';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
+const ROW_SELECTOR_IDX = 5;
+
 const columnInfo = [
 	{
 		headerText: 'header1',
 		columnType: COLUMN_TYPES.NORMAL_TEXT
+	},
+	{
+		headerText: 'header1 (clickable)',
+		columnType: COLUMN_TYPES.NORMAL_TEXT,
+		clickable: true,
+		ariaLabelFn: (cellValue) => { return `Arial label for ${cellValue}`; }
 	},
 	{
 		headerText: 'header2',
@@ -18,16 +26,22 @@ const columnInfo = [
 		columnType: COLUMN_TYPES.TEXT_SUB_TEXT
 	},
 	{
+		headerText: 'header3 (clickable)',
+		columnType: COLUMN_TYPES.TEXT_SUB_TEXT,
+		clickable: true,
+		ariaLabelFn: (cellValue) => { return `Arial label for ${cellValue[0]}`; }
+	},
+	{
 		headerText: '',
 		columnType: COLUMN_TYPES.ROW_SELECTOR
 	}
 ];
 
 const data = [
-	['First Item', 1, ['text1', 'subtext1'], { value: 123, ariaLabel: '123', selected: false }],
-	['Second Item', 2, ['text2', 'subtext2'], { value: 234, ariaLabel: '234', selected: true }],
-	['Third Item', 3, ['text3', 'subtext3'], { value: 345, ariaLabel: '345', selected: false }],
-	['Fourth Item', 4, ['text4', 'subtext4'], { value: 456, ariaLabel: '456', selected: false }]
+	['First Item', 'First Item', 1, ['text1', 'subtext1'], ['text1', 'subtext1'], { value: 123, ariaLabel: '123', selected: false }],
+	['Second Item', 'Second Item', 2, ['text1', 'subtext1'], ['text2', 'subtext2'], { value: 234, ariaLabel: '234', selected: true }],
+	['Third Item', 'Third Item', 3, ['text1', 'subtext1'], ['text3', 'subtext3'], { value: 345, ariaLabel: '345', selected: false }],
+	['Fourth Item', 'Fourth Item', 4, ['text1', 'subtext1'], ['text4', 'subtext4'], { value: 456, ariaLabel: '456', selected: false }]
 ];
 
 describe('d2l-insights-table', () => {
@@ -71,7 +85,7 @@ describe('d2l-insights-table', () => {
 
 			rows.forEach((row, rowIdx) => {
 				const cells = Array.from(row.querySelectorAll('td'));
-				expect(cells.length).to.equal(4);
+				expect(cells.length).to.equal(6);
 
 				cells.forEach((cell, colIdx) => {
 					verifyCellData(cell, rowIdx, colIdx);
@@ -111,7 +125,7 @@ describe('d2l-insights-table', () => {
 
 			it('should fire d2l-insights-table-select-changed with selected=true when none initially selected ', async() => {
 				const initialData = [ ...data ];
-				initialData.forEach(row => row[3].selected = false);
+				initialData.forEach(row => row[ROW_SELECTOR_IDX].selected = false);
 
 				await runSelectAllTest(initialData, true);
 			});
@@ -124,14 +138,14 @@ describe('d2l-insights-table', () => {
 
 			it('should fire d2l-insights-table-select-changed with selected=true when multiple initially selected ', async() => {
 				const initialData = [ ...data ];
-				initialData[0][3].selected = true; // should have 2 rows selected
+				initialData[0][ROW_SELECTOR_IDX].selected = true; // should have 2 rows selected
 
 				await runSelectAllTest(initialData, true);
 			});
 
 			it('should fire d2l-insights-table-select-changed with selected=false when all initially selected ', async() => {
 				const initialData = [ ...data ];
-				initialData.forEach(row => row[3].selected = true);
+				initialData.forEach(row => row[ROW_SELECTOR_IDX].selected = true);
 
 				await runSelectAllTest(initialData, false);
 			});
@@ -143,9 +157,23 @@ function verifyCellData(cell, rowIdx, colIdx) {
 	const columnType = columnInfo[colIdx].columnType;
 	const expectedValue = data[rowIdx][colIdx];
 
-	if (columnType === COLUMN_TYPES.NORMAL_TEXT) {
+	if (columnType === COLUMN_TYPES.NORMAL_TEXT && columnInfo[colIdx].clickable) {
+		const innerDiv = cell.querySelector('d2l-link');
+		expect(innerDiv.innerText).to.equal(expectedValue.toString());
+		expect(innerDiv.href).to.equal('#');
+		expect(innerDiv.ariaLabel).to.equal(`Arial label for ${expectedValue}`);
+
+	} else if (columnType === COLUMN_TYPES.NORMAL_TEXT) {
 		const innerDiv = cell.querySelector('div');
 		expect(innerDiv.innerText).to.equal(expectedValue.toString());
+
+	} else if (columnType === COLUMN_TYPES.TEXT_SUB_TEXT && columnInfo[colIdx].clickable) {
+		const mainTextLink = cell.querySelector('d2l-link');
+		const subTextDiv = cell.querySelector('div');
+		expect(mainTextLink.innerText).to.equal(expectedValue[0].toString());
+		expect(subTextDiv.innerText).to.equal(expectedValue[1].toString());
+		expect(mainTextLink.href).to.equal('#');
+		expect(mainTextLink.ariaLabel).to.equal(`Arial label for ${expectedValue[0]}`);
 
 	} else if (columnType === COLUMN_TYPES.TEXT_SUB_TEXT) {
 		const mainTextDiv = cell.querySelector('div:first-child');

@@ -15,19 +15,6 @@ export class RoleSelectorFilter {
 	constructor(data) {
 		this._data = data;
 		this.selected = data.serverData.selectedRolesIds || [];
-		// noinspection JSUnusedGlobalSymbols
-		this._urlState = new UrlState(this);
-	}
-
-	// persistence key and value for UrlState
-	get persistenceKey() { return 'rf'; }
-
-	get persistenceValue() {
-		return this.selected.join(',');
-	}
-
-	set persistenceValue(value) {
-		this.selected = value.split(',').filter(x => x).map(Number);
 	}
 
 	shouldInclude(record) {

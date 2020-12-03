@@ -6,6 +6,7 @@ import 'd2l-table/d2l-scroll-wrapper';
 import { bodySmallStyles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { ifDefined } from 'lit-html/directives/if-defined';
 import { Localizer } from '../locales/localizer';
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
@@ -187,6 +188,10 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 					@apply --d2l-table;
 				};
 			}
+
+			td.d2l-insights-discussion-info {
+				vertical-align: top;
+			}
 		`];
 	}
 
@@ -250,7 +255,7 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 					tabindex="${this.skeleton ? -1 : 0}"
 				>
 					<d2l-input-checkbox
-						aria-label="${this.localize('components.insights-table.selectAll')}"
+						aria-label="${this.localize('table:selectAll')}"
 						name="checkbox-all"
 						@change="${this._handleAllSelected}"
 						?checked="${isAllSelected}"
@@ -297,6 +302,8 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 	_renderBodyCell(cellValue, idx, rowIdx) {
 		const columnType = this.columnInfo[idx].columnType;
 		const clickable = this.columnInfo[idx].clickable;
+		const ariaLabel = clickable && this.columnInfo[idx].ariaLabelFn ? this.columnInfo[idx].ariaLabelFn(cellValue) : undefined;
+
 		const styles = {
 			'd2l-insights-table-cell': true,
 			'd2l-insights-table-cell-first': idx === 0,
@@ -307,7 +314,7 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 		const clickHandler = clickable ? this._clickHandler.bind(this, rowIdx, idx) : null;
 
 		const defaultTextHtml = html`<div class="d2l-skeletize d2l-skeletize-95 d2l-body-standard">${cellValue}</div>`;
-		const defaultLinkHtml = html`<d2l-link @click="${clickHandler}">${cellValue}</d2l-link>`;
+		const defaultLinkHtml = html`<d2l-link href="#" aria-label="${ifDefined(ariaLabel)}" @click="${clickHandler}">${cellValue}</d2l-link>`;
 		const defaultHtml = html`
 			<td class="${classMap(styles)}">
 				${clickable && !this.skeleton ? defaultLinkHtml : defaultTextHtml}
@@ -332,7 +339,7 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 			`;
 		} else if (columnType === COLUMN_TYPES.TEXT_SUB_TEXT) {
 			const regularCell = html`<div class="d2l-body-standard">${cellValue[0]}</div>`;
-			const clickableCell = html`<d2l-link @click="${clickHandler}">${cellValue[0]}</d2l-link>`;
+			const clickableCell = html`<d2l-link href="#" aria-label="${ifDefined(ariaLabel)}" @click="${clickHandler}">${cellValue[0]}</d2l-link>`;
 
 			return html`
 				<td class="${classMap(styles)}">
@@ -346,23 +353,23 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 
 					<table>
 						<tr>
-							<td>
+							<td class="d2l-insights-discussion-info">
 								<div class="d2l-body-standard" style="text-align:center;">${cellValue[0]}</div>
-								<div class="d2l-body-standard" style="text-align:center;">${this.localize('components.insights-discussion-activity-card.threads')}</div>
+								<div class="d2l-body-standard" style="text-align:center;">${this.localize('discussionActivityCard:threads')}</div>
 							</td>
 							<td>
 								<d2l-icon icon="tier2:divider"></d2l-icon>
 							</td>
-							<td>
+							<td class="d2l-insights-discussion-info">
 								<div class="d2l-body-standard" style="text-align:center;">${cellValue[1]}</div>
-								<div class="d2l-body-standard" style="text-align:center;">${this.localize('components.insights-discussion-activity-card.reads')}</div>
+								<div class="d2l-body-standard" style="text-align:center;">${this.localize('discussionActivityCard:reads')}</div>
 							</td>
 							<td>
 								<d2l-icon icon="tier2:divider"></d2l-icon>
 							</td>
-							<td>
+							<td class="d2l-insights-discussion-info">
 								<div class="d2l-body-standard" style="text-align:center;">${cellValue[2]}</div>
-								<div class="d2l-body-standard" style="text-align:center;">${this.localize('components.insights-discussion-activity-card.replies')}</div>
+								<div class="d2l-body-standard" style="text-align:center;">${this.localize('discussionActivityCard:replies')}</div>
 							</td>
 						</tr>
 					</table>

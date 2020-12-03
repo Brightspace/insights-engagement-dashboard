@@ -64,6 +64,13 @@ describe('Data', () => {
 		await new Promise(resolve => setTimeout(resolve, 0)); // allow recordProvider to resolve
 	});
 
+	describe('constructor', () => {
+		it('should set configured roles', () => {
+			expect(new Data({ recordProvider, includeRoles: [123, 4, 567] }).selectedRoleIds)
+				.to.deep.equal([123, 4, 567]);
+		});
+	});
+
 	describe('reload from server', () => {
 		it('maintains ou tree open state', async() => {
 			const oldTree = sut.orgUnitTree;
@@ -87,6 +94,14 @@ describe('Data', () => {
 			await new Promise(resolve => setTimeout(resolve, 0));
 
 			expect(sut.orgUnitTree.isPopulated(6606)).to.be.false;
+		});
+
+		it('should return default serverData if recordProvider ends with an error and set isQueryError to true', async() => {
+			sut = new Data({});
+			sut.loadData({});
+			expect(sut.isQueryError).to.equal(true);
+			expect(sut.serverData.records.length).to.equal(0);
+			expect(sut.userDictionary.size).to.equal(0);
 		});
 	});
 

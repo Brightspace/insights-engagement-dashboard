@@ -64,7 +64,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	// the number of skeleton rows we're displaying, but the Total Users count should still be 0
 	get _displayData() {
 		if (this.skeleton) {
-			const loadingPlaceholderText = this.localize('components.insights-users-table.loadingPlaceholder');
+			const loadingPlaceholderText = this.localize('activeCoursesTable:loadingPlaceholder');
 
 			// a DEFAULT_PAGE_SIZE x columnInfoLength 2D array filled with a generic string
 			return Array(DEFAULT_PAGE_SIZE).fill(Array(this.columnInfo.length).fill(loadingPlaceholderText));
@@ -101,7 +101,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const lastCourseAccess = userRecords.get(RECORD.COURSE_LAST_ACCESS) ? new Date(userRecords.get(RECORD.COURSE_LAST_ACCESS)) : undefined;
 
 		return [
-			this.localize('components.tree-filter.node-name', { orgUnitName, id: orgUnitId }),
+			this.localize('treeFilter:nodeName', { orgUnitName, id: orgUnitId }),
 			finalGrade,
 			predictedGrade,
 			timeInContent,
@@ -139,7 +139,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	_formatDataForDisplay(user) {
 		const lastSysAccessFormatted = user[TABLE_COURSES.COURSE_LAST_ACCESS]
 			? formatDateTime(new Date(user[TABLE_COURSES.COURSE_LAST_ACCESS]), { format: 'medium' })
-			: this.localize('components.insights-users-table.null');
+			: this.localize('usersTable:null');
 		return [
 			user[TABLE_COURSES.COURSE_NAME],
 			user[TABLE_COURSES.CURRENT_GRADE] ? formatPercent(user[TABLE_COURSES.CURRENT_GRADE] / 100, numberFormatOptions) : '',
@@ -177,27 +177,27 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get columnInfo() {
 		return [
 			{
-				headerText: this.localize('components.insights-active-courses-table.course'),
+				headerText: this.localize('activeCoursesTable:course'),
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			},
 			{
-				headerText: this.localize('components.insights-active-courses-table.currentGrade'),
+				headerText: this.localize('activeCoursesTable:currentGrade'),
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			},
 			{
-				headerText: this.localize('components.insights-active-courses-table.predictedGrade'),
+				headerText: this.localize('activeCoursesTable:predictedGrade'),
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			},
 			{
-				headerText: this.localize('components.insights-active-courses-table.timeInContent'),
+				headerText: this.localize('activeCoursesTable:timeInContent'),
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			},
 			{
-				headerText: this.localize('components.insights-active-courses-table.discussions'),
+				headerText: this.localize('activeCoursesTable:discussions'),
 				columnType: COLUMN_TYPES.SUB_COLUMNS
 			},
 			{
-				headerText: this.localize('components.insights-active-courses-table.courseLastAccess'),
+				headerText: this.localize('activeCoursesTable:courseLastAccess'),
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			}
 		];
@@ -206,7 +206,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	render() {
 		return html`
 			<d2l-insights-table
-				title="${this.localize('components.insights-active-courses-table.title')}"
+				title="${this.localize('activeCoursesTable:title')}"
 				@d2l-insights-table-sort="${this._handleColumnSort}"
 				sort-column="0"
 				.columnInfo=${this.columnInfo}

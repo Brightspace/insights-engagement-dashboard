@@ -21,7 +21,7 @@ export const TABLE_USER = {
 	LAST_ACCESSED_SYS: 6
 };
 
-const numberFormatOptions = { maximumFractionDigits: 2 };
+export const numberFormatOptions = { maximumFractionDigits: 2 };
 
 const DEFAULT_PAGE_SIZE = 20;
 
@@ -132,7 +132,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	// the number of skeleton rows we're displaying, but the Total Users count should still be 0
 	get _displayData() {
 		if (this.skeleton) {
-			const loadingPlaceholderText = this.localize('components.insights-users-table.loadingPlaceholder');
+			const loadingPlaceholderText = this.localize('usersTable:loadingPlaceholder');
 
 			// a DEFAULT_PAGE_SIZE x columnInfoLength 2D array filled with a generic string
 			return Array(DEFAULT_PAGE_SIZE).fill(Array(this.columnInfo.length).fill(loadingPlaceholderText));
@@ -167,7 +167,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const userLastFirstName = `${user[USER.LAST_NAME]}, ${user[USER.FIRST_NAME]}`;
 		const selectorInfo = {
 			value: userId,
-			ariaLabel: this.localize('components.insights-users-table.selectorAriaLabel', { userLastFirstName }),
+			ariaLabel: this.localize('usersTable:selectorAriaLabel', { userLastFirstName }),
 			selected: this.selectedUserIds.includes(userId)
 		};
 		const userInfo = [user[USER.ID], user[USER.FIRST_NAME], user[USER.LAST_NAME], user[USER.USERNAME]];
@@ -220,7 +220,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	_formatDataForDisplay(user) {
 		const lastSysAccessFormatted = user[TABLE_USER.LAST_ACCESSED_SYS]
 			? formatDateTime(new Date(user[TABLE_USER.LAST_ACCESSED_SYS]), { format: 'medium' })
-			: this.localize('components.insights-users-table.null');
+			: this.localize('usersTable:null');
 
 		return [
 			user[TABLE_USER.SELECTOR_VALUE],
@@ -276,20 +276,20 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	get headersForExport() {
 		const headers = [
-			this.localize('components.insights-users-table-export.lastName'),
-			this.localize('components.insights-users-table-export.FirstName'),
-			this.localize('components.insights-users-table-export.UserName'),
-			this.localize('components.insights-users-table-export.UserID')
+			this.localize('usersTableExport:lastName'),
+			this.localize('usersTableExport:FirstName'),
+			this.localize('usersTableExport:UserName'),
+			this.localize('usersTableExport:UserID')
 		];
-		if (this.showCoursesCol) headers.push(this.localize('components.insights-users-table.courses'));
-		if (this.showGradeCol) headers.push(this.localize('components.insights-users-table.avgGrade'));
-		if (this.showTicCol) headers.push(this.localize('components.insights-users-table.avgTimeInContent'));
+		if (this.showCoursesCol) headers.push(this.localize('usersTable:courses'));
+		if (this.showGradeCol) headers.push(this.localize('usersTable:avgGrade'));
+		if (this.showTicCol) headers.push(this.localize('usersTable:avgTimeInContent'));
 		if (this.showDiscussionsCol) {
-			headers.push(this.localize('components.insights-discussion-activity-card.threads'));
-			headers.push(this.localize('components.insights-discussion-activity-card.reads'));
-			headers.push(this.localize('components.insights-discussion-activity-card.replies'));
+			headers.push(this.localize('discussionActivityCard:threads'));
+			headers.push(this.localize('discussionActivityCard:reads'));
+			headers.push(this.localize('discussionActivityCard:replies'));
 		}
-		if (this.showLastAccessCol) headers.push(this.localize('components.insights-users-table.lastAccessedSys'));
+		if (this.showLastAccessCol) headers.push(this.localize('usersTable:lastAccessedSys'));
 
 		return headers;
 	}
@@ -313,28 +313,31 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 				columnType: COLUMN_TYPES.ROW_SELECTOR
 			},
 			{
-				headerText: this.localize('components.insights-users-table.lastFirstName'),
+				headerText: this.localize('usersTable:lastFirstName'),
 				columnType: COLUMN_TYPES.TEXT_SUB_TEXT,
-				clickable: true
+				clickable: true,
+				ariaLabelFn: (cellValue) => {
+					return this.localize('usersTable:openUserPage', { userName: cellValue[0] });
+				}
 			},
 			{
-				headerText: this.localize('components.insights-users-table.courses'),
+				headerText: this.localize('usersTable:courses'),
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			},
 			{
-				headerText: this.localize('components.insights-users-table.avgGrade'),
+				headerText: this.localize('usersTable:avgGrade'),
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			},
 			{
-				headerText: this.localize('components.insights-users-table.avgTimeInContent'),
+				headerText: this.localize('usersTable:avgTimeInContent'),
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			},
 			{
-				headerText: this.localize('components.insights-users-table.avgDiscussionActivity'),
+				headerText: this.localize('usersTable:avgDiscussionActivity'),
 				columnType: COLUMN_TYPES.SUB_COLUMNS
 			},
 			{
-				headerText: this.localize('components.insights-users-table.lastAccessedSys'),
+				headerText: this.localize('usersTable:lastAccessedSys'),
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			}
 		];
@@ -345,7 +348,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	render() {
 		return html`
 			<d2l-insights-table
-				title="${this.localize('components.insights-users-table.title')}"
+				title="${this.localize('usersTable:title')}"
 				@d2l-insights-table-sort="${this._handleColumnSort}"
 				sort-column="1"
 				.columnInfo=${this.columnInfo}
@@ -374,7 +377,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		return html`
 			<div class="d2l-insights-users-table-total-users">
-				${this.localize('components.insights-users-table.totalUsers', { num: itemCounts })}
+				${this.localize('usersTable:totalUsers', { num: itemCounts })}
 			</div>
 		`;
 	}

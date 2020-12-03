@@ -66,7 +66,29 @@ export async function fetchRoles() {
 	const demoData = [
 		{ Identifier: '500', DisplayName: 'Administrator' },
 		{ Identifier: '600', DisplayName: 'Instructor' },
-		{ Identifier: '700', DisplayName: 'Student' }
+		{ Identifier: '700', DisplayName: 'Student' },
+
+		{ Identifier: '578', DisplayName: 'End User' },
+		{ Identifier: '579', DisplayName: 'Resource Creator' },
+		{ Identifier: '581', DisplayName: 'Blank Role' },
+		{ Identifier: '582', DisplayName: 'Blank Role 2' },
+		{ Identifier: '583', DisplayName: 'Admin (co)' },
+		{ Identifier: '590', DisplayName: 'LR Admin' },
+		{ Identifier: '591', DisplayName: 'LR Power User' },
+		{ Identifier: '592', DisplayName: 'LR Contributor' },
+		{ Identifier: '593', DisplayName: 'LR User' },
+		{ Identifier: '594', DisplayName: 'LR Guest' },
+		{ Identifier: '597', DisplayName: 'D2LMonitor' },
+		{ Identifier: '952', DisplayName: 'SIS Integration' },
+		{ Identifier: '953', DisplayName: 'AllSection AllGroup' },
+		{ Identifier: '954', DisplayName: 'AllSection NoGroup' },
+		{ Identifier: '955', DisplayName: 'NoSection AllGroup' },
+		{ Identifier: '956', DisplayName: 'NoSection NoGroup' },
+		{ Identifier: '9000', DisplayName: 'LYNC_TEST_PERSONAL' },
+		{ Identifier: '11590', DisplayName: 'IPSCT_Student' },
+		{ Identifier: '11591', DisplayName: 'IPSCT_Admin' },
+		{ Identifier: '11598', DisplayName: 'IPSCT_Manage' },
+		{ Identifier: '11599', DisplayName: 'IPSCT_Security' }
 	];
 
 	return new Promise(resolve =>	setTimeout(() => resolve(demoData), 100));

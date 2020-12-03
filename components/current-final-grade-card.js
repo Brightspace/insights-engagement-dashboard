@@ -27,7 +27,7 @@ export class CurrentFinalGradesFilter extends CategoryFilter {
 	constructor() {
 		super(
 			filterId,
-			'components.insights-current-final-grade-card.currentGrade',
+			'currentFinalGradeCard:currentGrade',
 			record => this.selectedCategories.has(gradeCategory(record[RECORD.CURRENT_FINAL_GRADE])),
 			'cgf'
 		);
@@ -98,11 +98,11 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _cardTitle() {
-		return this.localize('components.insights-current-final-grade-card.currentGrade');
+		return this.localize('currentFinalGradeCard:currentGrade');
 	}
 
 	get _chartDescriptionTextLabel() {
-		return this.localize('components.insights-current-final-grade-card.textLabel');
+		return this.localize('currentFinalGradeCard:textLabel');
 	}
 
 	// @computed
@@ -138,11 +138,11 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _xAxisLabel() {
-		return this.localize('components.insights-current-final-grade-card.xAxisLabel');
+		return this.localize('currentFinalGradeCard:xAxisLabel');
 	}
 
 	get _yAxisLabel() {
-		return this.localize('components.insights-current-final-grade-card.numberOfStudents');
+		return this.localize('currentFinalGradeCard:numberOfStudents');
 	}
 
 	get category() {
@@ -158,11 +158,11 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_gradeBetweenText(numberOfUsers, range) {
-		return this.localize('components.insights-current-final-grade-card.gradeBetween', { numberOfUsers, range });
+		return this.localize('currentFinalGradeCard:gradeBetween', { numberOfUsers, range });
 	}
 
 	_gradeBetweenTextSingleUser(range) {
-		return this.localize('components.insights-current-final-grade-card.gradeBetweenSingleUser', { range });
+		return this.localize('currentFinalGradeCard:gradeBetweenSingleUser', { range });
 
 	}
 
@@ -175,7 +175,7 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				<div class="d2l-insights-current-final-grade-title">${this._cardTitle}</div>
 				<div class="d2l-insights-summary-card-body">
 					<span class="d2l-insights-empty-chart-message">
-						${this.localize('components.insights-current-final-grade-card.emptyMessage')}
+						${this.localize('currentFinalGradeCard:emptyMessage')}
 					</span>
 				</div>
 			</div>`;

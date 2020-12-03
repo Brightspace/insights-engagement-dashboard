@@ -1,4 +1,4 @@
-import { fetchCachedChildren, fetchLastSearch, fetchRelevantChildren, fetchRoles, orgUnitSearch } from '../../model/lms';
+import { fetchCachedChildren, fetchData, fetchLastSearch, fetchRelevantChildren, fetchRoles, orgUnitSearch, saveSettings } from '../../model/lms';
 import { expect } from '@open-wc/testing';
 import fetchMock from 'fetch-mock/esm/client';
 
@@ -269,6 +269,61 @@ describe('Lms', () => {
 
 			expect(fetchLastSearch([4, 500, 8])).to.deep.equal(null);
 			expect(fetchLastSearch([1, 2, 3])).to.deep.equal(mockLmsResponseData2.Items);
+		});
+	});
+
+	describe('saveSettings', () => {
+		it('should throw if settings are missing', async() => {
+			let didThrow = false;
+			try {
+				await saveSettings({ showOverdueCard: true });
+			} catch (err) {
+				didThrow = true;
+			}
+			expect(didThrow, 'didThrow').to.be.true;
+		});
+
+		it('should send the settings to the lms', async() => {
+			const settings = {
+				showResultsCard: true,
+				showOverdueCard: true,
+				showDiscussionsCard: true,
+				showSystemAccessCard: false,
+				showGradesCard: true,
+				showTicGradesCard: true,
+				showCourseAccessCard: false,
+				showCoursesCol: true,
+				showGradeCol: false,
+				showTicCol: true,
+				showDiscussionsCol: true,
+				showLastAccessCol: true
+			};
+			window.localStorage.setItem('XSRF.Token', 'token');
+			fetchMock.put(
+				'end:/d2l/api/ap/unstable/insights/mysettings/engagement',
+				200
+			);
+
+			await saveSettings(settings);
+
+			const request = fetchMock.lastCall().request; // assumes fetch was called with a Request
+			expect(request.method).to.equal('PUT');
+			expect(request.headers.get('content-type')).to.equal('application/json');
+			expect(request.headers.get('x-csrf-token')).to.equal('token');
+			expect(await request.json()).to.deep.equal(settings);
+		});
+	});
+
+	describe('fetchData', () => {
+		it('should throw an error if the query fails', async() => {
+			fetchMock.get('', 403);
+			let error;
+			try {
+				await fetchData({});
+			} catch (err) {
+				error = err.toString();
+			}
+			expect(error).to.equal('Error: query-failure');
 		});
 	});
 });
