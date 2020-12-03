@@ -50,6 +50,7 @@ export class Tree {
 		this._open = oldTree ? new Set(oldTree.open) : new Set();
 		// null for no filter, vs. empty Set() when none match
 		this._visible = null;
+		this._pruned = new Map();
 		this._populated = isDynamic ? new Set() : null;
 
 		// for dynamic trees; see addNodes
@@ -59,6 +60,8 @@ export class Tree {
 
 		// fill in children (parents are provided by the caller, and ancestors will be generated on demand)
 		this._updateChildren(this.ids);
+
+		this._updatePruned();
 
 		if (extraChildren) {
 			extraChildren.forEach((data, orgUnitId) => {
@@ -371,9 +374,7 @@ export class Tree {
 	}
 
 	_isPruned(id) {
-		return !this.isDynamic
-			&& this.getType(id) !== COURSE_OFFERING
-			&& (!this._children.has(id) || this._children.get(id).size < 2);
+		return this._pruned.get(id);
 	}
 
 	_nameForSort(id) {
@@ -400,6 +401,18 @@ export class Tree {
 				}
 			});
 		});
+	}
+
+	_updatePruned() {
+		if (this.isDynamic) return false;
+
+		let prunedNodeId = this.rootId;
+		let children = this.getChildIds(this.rootId);
+		while (children.length === 1) {
+			this._pruned.set(prunedNodeId, this.getType(prunedNodeId) !== COURSE_OFFERING);
+			prunedNodeId = children[0];
+			children = this.getChildIds(prunedNodeId);
+		}
 	}
 
 	_updateSelected(id) {
