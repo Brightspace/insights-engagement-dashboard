@@ -20,6 +20,12 @@ export const TABLE_COURSES = {
 
 const numberFormatOptions = { maximumFractionDigits: 2 };
 
+function arrayOfColumnsWithOutPredictedGrade() {
+	const array = Object.values(TABLE_COURSES);
+	array.splice(TABLE_COURSES.PREDICTED_GRADE, 1);
+	return array;
+}
+
 const DEFAULT_PAGE_SIZE = 20;
 
 /**
@@ -71,9 +77,11 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		}
 
 		if (this._itemsCount) {
-			return this.userDataForDisplayFormatted;
+			return this._showPredictedGradeCol ?
+				this.userDataForDisplayFormatted :
+				this.userDataForDisplayFormatted
+					.map(user => arrayOfColumnsWithOutPredictedGrade().map(column => user[column]));
 		}
-
 		return [];
 	}
 
@@ -93,7 +101,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const orgUnit = this.orgUnits.find(x => x[ORG_UNIT.ID] === orgUnitId);
 		const orgUnitName = orgUnit[ORG_UNIT.NAME];
 		const finalGrade = userRecords.get(RECORD.CURRENT_FINAL_GRADE);
-		const predictedGrade = userRecords.get(RECORD.CURRENT_FINAL_GRADE);
+		const predictedGrade = userRecords.get(RECORD.PREDICTED_GRADE);
 		const timeInContent = userRecords.get(RECORD.TIME_IN_CONTENT);
 		const threads = userRecords.get(RECORD.DISCUSSION_ACTIVITY_THREADS);
 		const reads = userRecords.get(RECORD.DISCUSSION_ACTIVITY_READS);
@@ -143,7 +151,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return [
 			user[TABLE_COURSES.COURSE_NAME],
 			user[TABLE_COURSES.CURRENT_GRADE] ? formatPercent(user[TABLE_COURSES.CURRENT_GRADE] / 100, numberFormatOptions) : '',
-			user[TABLE_COURSES.PREDICTED_GRADE] ? formatPercent(user[TABLE_COURSES.PREDICTED_GRADE] / 100, numberFormatOptions) : '',
+			user[TABLE_COURSES.PREDICTED_GRADE] ? formatPercent(user[TABLE_COURSES.PREDICTED_GRADE], numberFormatOptions) : this.localize('activeCoursesTable:noPredictedGrade'),
 			formatNumber(user[TABLE_COURSES.TIME_IN_CONTENT] / 60, numberFormatOptions),
 			user[TABLE_COURSES.DISCUSSION_ACTIVITY],
 			lastSysAccessFormatted
@@ -152,7 +160,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	// @computed
 	get userDataForDisplay() {
-		// map to a 2D userData array, with column 1 as a sub-array of [id, FirstName, LastName, UserName]
+		// filter only active courses, map to a 2D userData array,
 		// then sort by the selected sorting function
 		const sortFunction = this._choseSortFunction(this._sortColumn, this._sortOrder);
 		return this.userCourses
@@ -175,7 +183,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get columnInfo() {
-		return [
+		const columnInfo = [
 			{
 				headerText: this.localize('activeCoursesTable:course'),
 				columnType: COLUMN_TYPES.NORMAL_TEXT
@@ -201,6 +209,15 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			}
 		];
+
+		return this._showPredictedGradeCol ? columnInfo : arrayOfColumnsWithOutPredictedGrade().map(column => columnInfo[column]);
+	}
+
+	get _showPredictedGradeCol() {
+		return this.userCourses
+			.filter(this._activeCourses, this)
+			.filter(data => data[RECORD.PREDICTED_GRADE] !== null)
+			.length > 0;
 	}
 
 	render() {
