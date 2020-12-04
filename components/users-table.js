@@ -221,12 +221,14 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const lastSysAccessFormatted = user[TABLE_USER.LAST_ACCESSED_SYS]
 			? formatDateTime(new Date(user[TABLE_USER.LAST_ACCESSED_SYS]), { format: 'medium' })
 			: this.localize('usersTable:null');
-
+		const averageGrade = user[TABLE_USER.AVG_GRADE]
+			? formatPercent(user[TABLE_USER.AVG_GRADE] / 100, numberFormatOptions)
+			: this.localize('usersTable:noGrades');
 		return [
 			user[TABLE_USER.SELECTOR_VALUE],
 			user[TABLE_USER.NAME_INFO],
 			user[TABLE_USER.COURSES],
-			user[TABLE_USER.AVG_GRADE] ? formatPercent(user[TABLE_USER.AVG_GRADE] / 100, numberFormatOptions) : '',
+			averageGrade,
 			formatNumber(user[TABLE_USER.AVG_TIME_IN_CONTENT] / 60, numberFormatOptions),
 			user[TABLE_USER.AVG_DISCUSSION_ACTIVITY],
 			lastSysAccessFormatted

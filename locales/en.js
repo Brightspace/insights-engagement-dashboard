@@ -71,6 +71,7 @@ export default {
 	"usersTable:lastAccessedSys" : "Last Accessed System",
 	"usersTable:null" : "NULL",
 	"usersTable:selectorAriaLabel": "Select {userLastFirstName}",
+	"usersTable:noGrades": "No Grades",
 
 	"table:selectAll": "Select all",
 
@@ -186,4 +187,5 @@ export default {
 	"activeCoursesTable:timeInContent": "Time in Content (mins)",
 	"activeCoursesTable:discussions": "Discussion Activity",
 	"activeCoursesTable:courseLastAccess": "Course Last Access",
+	"activeCoursesTable:noGrade": "No Grade"
 };

@@ -15,7 +15,7 @@ export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView 
 			[1, 100, 700, 1, 81, 1000, null, 3, 2, 1],
 			[2, 100, 700, 1, 91, 1200, null, 1, 33, 1],
 			[2, 300, 500, 0, 9, 7200, null, 1, 3, 5],
-			[2, 300, 700, 0, 3, 0, 289298332, 0, 0, 0],
+			[2, 300, 700, 0, null, 0, 289298332, 0, 0, 0],
 			[2, 400, 700, 0, 100, 7200, Date.now() - 432000001, 0, 0, 0],
 			[2, 500, 700, 0, 88, 4000, null, 4, 4, 1],
 			[8, 200, 700, 0, null, 0, null, 55, 2, 3],
@@ -24,7 +24,7 @@ export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView 
 		],
 		orgUnits: [
 			[1, 'Course 1', 3, [3, 4], true],
-			[2, 'Course 2', 3, [3, 10], false],
+			[2, 'Course 2', 3, [3, 10], true],
 			[6, 'Course 3 has a surprisingly long name, but nonetheless this kind of thing is bound to happen sometimes and we do need to design for it. Is that not so?', 3, [7, 4], false],
 			[8, 'ZCourse 4', 3, [5], false],
 			[3, 'Department 1', 2, [5], false],

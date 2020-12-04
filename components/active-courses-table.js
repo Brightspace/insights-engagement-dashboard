@@ -140,9 +140,12 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const lastSysAccessFormatted = user[TABLE_COURSES.COURSE_LAST_ACCESS]
 			? formatDateTime(new Date(user[TABLE_COURSES.COURSE_LAST_ACCESS]), { format: 'medium' })
 			: this.localize('usersTable:null');
+		const currentGrade = user[TABLE_COURSES.CURRENT_GRADE]
+			? formatPercent(user[TABLE_COURSES.CURRENT_GRADE] / 100, numberFormatOptions)
+			: this.localize('activeCoursesTable:noGrade');
 		return [
 			user[TABLE_COURSES.COURSE_NAME],
-			user[TABLE_COURSES.CURRENT_GRADE] ? formatPercent(user[TABLE_COURSES.CURRENT_GRADE] / 100, numberFormatOptions) : '',
+			currentGrade,
 			user[TABLE_COURSES.PREDICTED_GRADE] ? formatPercent(user[TABLE_COURSES.PREDICTED_GRADE] / 100, numberFormatOptions) : '',
 			formatNumber(user[TABLE_COURSES.TIME_IN_CONTENT] / 60, numberFormatOptions),
 			user[TABLE_COURSES.DISCUSSION_ACTIVITY],
