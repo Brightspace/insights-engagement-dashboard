@@ -55,6 +55,10 @@ class UserDrill extends Localizer(MobxLitElement) {
 				width: 100px;
 			}
 
+			d2l-icon.d2l-insights-user-drill-view-profile-pic {
+				margin-right: 12px;
+			}
+
 			.d2l-insights-user-drill-view-profile-name {
 				display: flex;
 				flex-direction: column;
@@ -100,6 +104,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 	}
 
 	get token() {
+		// built in oauth isn't available outside the LMS
 		return (!this.isDemo) ? D2L.LP.Web.Authentication.OAuth2.GetToken('users:profile:read') : Promise.resolve('token');
 	}
 
