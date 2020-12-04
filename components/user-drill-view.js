@@ -5,6 +5,7 @@ import { bodySmallStyles, heading2Styles } from '@brightspace-ui/core/components
 import { css, html } from 'lit-element/lit-element.js';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
+import { until } from 'lit-html/directives/until';
 
 /**
  * @property {Object} user - {firstName, lastName, username, userId}
@@ -12,7 +13,8 @@ import { MobxLitElement } from '@adobe/lit-mobx';
 class UserDrill extends Localizer(MobxLitElement) {
 	static get properties() {
 		return {
-			user: { type: Object, attribute: false }
+			user: { type: Object, attribute: false },
+			isDemo: { type: Boolean, attribute: 'demo' }
 		};
 	}
 
@@ -50,7 +52,6 @@ class UserDrill extends Localizer(MobxLitElement) {
 
 			.d2l-insights-user-drill-view-profile-pic {
 				height: 100px;
-				margin-right: 12px;
 				width: 100px;
 			}
 
@@ -98,12 +99,31 @@ class UserDrill extends Localizer(MobxLitElement) {
 		// outside the scope of the story
 	}
 
+	get token() {
+		return (!this.isDemo) ? D2L.LP.Web.Authentication.OAuth2.GetToken('users:profile:read') : Promise.resolve('token');
+	}
+
+	get userEntity() {
+		return `/d2l/api/hm/users/${this.user.userId}`;
+	}
+
+	get userProfile() {
+		return until(this.token.then(
+			token => html`
+				<d2l-profile-image
+					class="d2l-insights-user-drill-view-profile-pic"
+					href="${this.userEntity}"
+					token="${token}" x-large>
+				</d2l-profile-image>`), html`<d2l-icon class="d2l-insights-user-drill-view-profile-pic" icon="tier3:profile-pic"></d2l-icon>
+			`
+		);
+	}
+
 	render() {
 		return html`<div class="d2l-insights-user-drill-view-container">
 			<div class="d2l-insights-user-drill-view-header-panel">
-
 				<div class="d2l-insights-user-drill-view-profile">
-					<d2l-profile-image class="d2l-insights-user-drill-view-profile-pic" href="./response/profile_first_last.json" token="token" x-large></d2l-profile-image>
+					${this.userProfile}
 					<div class="d2l-insights-user-drill-view-profile-name">
 						<div class="d2l-heading-2">${this.user.firstName}, ${this.user.lastName}</div>
 						<div class="d2l-body-small">${this.user.username} - ${this.user.userId}</div>
@@ -147,4 +167,5 @@ class UserDrill extends Localizer(MobxLitElement) {
 		</div>`;
 	}
 }
+
 customElements.define('d2l-insights-user-drill-view', UserDrill);
