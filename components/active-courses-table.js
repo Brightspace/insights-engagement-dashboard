@@ -20,11 +20,6 @@ export const TABLE_COURSES = {
 
 const numberFormatOptions = { maximumFractionDigits: 2 };
 
-function selectColumns(columns, condition) {
-	if (!condition) columns.splice(TABLE_COURSES.PREDICTED_GRADE, 1);
-	return columns;
-}
-
 const DEFAULT_PAGE_SIZE = 20;
 
 /**
@@ -76,9 +71,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		}
 
 		if (this._itemsCount) {
-			return this.showPredictedGradeCol ?
-				this.userDataForDisplayFormatted :
-				this.userDataForDisplayFormatted.map(user => selectColumns(user));
+			return this.userDataForDisplayFormatted.map(user => this._selectColumns(user));
 		}
 		return [];
 	}
@@ -210,7 +203,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			}
 		];
-		return selectColumns(columnInfo, this.showPredictedGradeCol);
+		return this._selectColumns(columnInfo);
 	}
 
 	get showPredictedGradeCol() {
@@ -218,6 +211,11 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 			.filter(this._activeCourses, this)
 			.filter(data => data[RECORD.PREDICTED_GRADE] !== null)
 			.length > 0;
+	}
+
+	_selectColumns(columns) {
+		if (!this.showPredictedGradeCol) columns.splice(TABLE_COURSES.PREDICTED_GRADE, 1);
+		return columns;
 	}
 
 	render() {
