@@ -3,7 +3,7 @@
 export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView = false }) {
 	const demoData = {
 		records: [
-			[1, 100, 500, 1, 55, 1000, null, 0, 0, 0],
+			[1, 100, 500, 1, 55, 1000, Date.now(), 0, 0, 0],
 			[1, 200, 600, 0, 33, 2000, Date.now() - 2093, 0, 0, 0],
 			[1, 300, 500, 0, null, 1000, null, 0, 0, 0],
 			[1, 400, 500, 0, 30, 5000, null, 0, 0, 0],
@@ -15,7 +15,7 @@ export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView 
 			[1, 100, 700, 1, 81, 1000, null, 3, 2, 1],
 			[2, 100, 700, 1, 91, 1200, null, 1, 33, 1],
 			[2, 300, 500, 0, 9, 7200, null, 1, 3, 5],
-			[2, 300, 700, 0, 3, 0, 289298332, 0, 0, 0],
+			[2, 300, 700, 0, null, 0, 289298332, 0, 0, 0],
 			[2, 400, 700, 0, 100, 7200, Date.now() - 432000001, 0, 0, 0],
 			[2, 500, 700, 0, 88, 4000, null, 4, 4, 1],
 			[8, 200, 700, 0, null, 0, null, 55, 2, 3],
@@ -23,17 +23,17 @@ export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView 
 			[1, 400, 700, 1, 75, 2000, null, 2, 1, 4]
 		],
 		orgUnits: [
-			[1, 'Course 1', 3, [3, 4]],
-			[2, 'Course 2', 3, [3, 10]],
-			[6, 'Course 3 has a surprisingly long name, but nonetheless this kind of thing is bound to happen sometimes and we do need to design for it. Is that not so?', 3, [7, 4]],
-			[8, 'ZCourse 4', 3, [5]],
-			[3, 'Department 1', 2, [5]],
-			[7, 'Department 2 has a longer name', 2, [5]],
-			[4, 'Semester 1', 25, [6606]],
-			[10, 'Semester 2', 25, [6606]],
-			[5, 'Faculty 1', 7, [6606]],
-			[9, 'Faculty 2', 7, [6606, 10]],
-			[6606, 'Dev', 1, [0]]
+			[1, 'Course 1', 3, [3, 4], true],
+			[2, 'Course 2', 3, [3, 10], true],
+			[6, 'Course 3 has a surprisingly long name, but nonetheless this kind of thing is bound to happen sometimes and we do need to design for it. Is that not so?', 3, [7, 4], false],
+			[8, 'ZCourse 4', 3, [5], false],
+			[3, 'Department 1', 2, [5], false],
+			[7, 'Department 2 has a longer name', 2, [5], false],
+			[4, 'Semester 1', 25, [6606], false],
+			[10, 'Semester 2', 25, [6606], false],
+			[5, 'Faculty 1', 7, [6606], false],
+			[9, 'Faculty 2', 7, [6606, 10], false],
+			[6606, 'Dev', 1, [0], false]
 		],
 		users: [ // some of which are out of order
 			[100,  'ATest', 'AStudent', 'AStudent', Date.now() - 2000000000],

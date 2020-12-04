@@ -71,6 +71,7 @@ export default {
 	"usersTable:lastAccessedSys" : "Last Accessed System",
 	"usersTable:null" : "NULL",
 	"usersTable:selectorAriaLabel": "Select {userLastFirstName}",
+	"usersTable:noGrades": "No grades",
 
 	"table:selectAll": "Select all",
 
@@ -177,4 +178,14 @@ export default {
 	"settings:avgTimeInContentDescription": "The Average Time in Content indicator shows the average time spent in content, as an average of total time per course, for the user across all the courses included in the applied filters.  This metric is reported in minutes.",
 	"settings:avgDiscussionActivityDescription": "The Average Discussion Participation indicator presents user statistics for how often the user creates a thread, reads a post or replies to a post across all the courses included in the applied filters.  This metric averages the total count per course.",
 	"settings:lastAccessedSystemDescription": "The System Last Access indicator displays the timestamp, in Brightspace local time, of the last time the user accessed the system in any way.",
+
+	"activeCoursesTable:title": "Active Courses",
+	"activeCoursesTable:loadingPlaceholder": "Loading",
+	"activeCoursesTable:course": "Course Name",
+	"activeCoursesTable:currentGrade": "Current Grade",
+	"activeCoursesTable:predictedGrade": "Predicted Grade",
+	"activeCoursesTable:timeInContent": "Time in Content (mins)",
+	"activeCoursesTable:discussions": "Discussion Activity",
+	"activeCoursesTable:courseLastAccess": "Course Last Access",
+	"activeCoursesTable:noGrade": "No grade"
 };

@@ -6,6 +6,7 @@ import './components/ou-filter.js';
 import './components/results-card.js';
 import './components/debug-card.js';
 import './components/semester-filter.js';
+import './components/active-courses-table.js';
 import './components/users-table.js';
 import './components/table.js';
 import './components/current-final-grade-card.js';
@@ -256,10 +257,12 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			username: userData[USER.USERNAME],
 			userId: userId
 		};
-
 		return html`
 			<d2l-insights-user-drill-view
 				.user="${user}"
+				.userCourses="${this._data.recordsByUser.get(user.userId)}"
+				.orgUnits="${this._serverData.serverData.orgUnits}"
+				org-unit-id="${this.orgUnitId}"
 				@d2l-insights-user-drill-view-back="${this._backToHomeHandler}"
 			>
 				<div slot="filters">
