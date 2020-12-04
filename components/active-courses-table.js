@@ -236,6 +236,7 @@ decorate(CoursesTable, {
 	userDataForDisplay: computed,
 	userDataForDisplayFormatted: computed,
 	showPredictedGradeCol: computed,
+	_selectColumns: computed,
 	_sortColumn: observable,
 	_sortOrder: observable,
 	_handleColumnSort: action
