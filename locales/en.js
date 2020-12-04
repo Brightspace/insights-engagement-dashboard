@@ -71,6 +71,7 @@ export default {
 	"usersTable:lastAccessedSys" : "Last Accessed System",
 	"usersTable:null" : "NULL",
 	"usersTable:selectorAriaLabel": "Select {userLastFirstName}",
+	"usersTable:noGrades": "No grades",
 
 	"table:selectAll": "Select all",
 
@@ -177,4 +178,14 @@ export default {
 	"settings:avgTimeInContentDescription": "The Average Time in Content indicator shows the average time spent in content across all the applied filtered fields. The metric is tracked in minutes.",
 	"settings:avgDiscussionActivityDescription": "The Average Discussion Participation Summary indicator presents user statistics for average reading, posting, and responding to discussions across all the applied filtered fields.",
 	"settings:lastAccessedSystemDescription": "The System Last Access indicator displays the last session date and local time that a user has accessed the system and any subsequent courses in the system.",
+
+	"activeCoursesTable:title": "Active Courses",
+	"activeCoursesTable:loadingPlaceholder": "Loading",
+	"activeCoursesTable:course": "Course Name",
+	"activeCoursesTable:currentGrade": "Current Grade",
+	"activeCoursesTable:predictedGrade": "Predicted Grade",
+	"activeCoursesTable:timeInContent": "Time in Content (mins)",
+	"activeCoursesTable:discussions": "Discussion Activity",
+	"activeCoursesTable:courseLastAccess": "Course Last Access",
+	"activeCoursesTable:noGrade": "No grade"
 };
