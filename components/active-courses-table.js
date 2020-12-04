@@ -20,10 +20,9 @@ export const TABLE_COURSES = {
 
 const numberFormatOptions = { maximumFractionDigits: 2 };
 
-function arrayOfColumnsWithOutPredictedGrade() {
-	const array = Object.values(TABLE_COURSES);
-	array.splice(TABLE_COURSES.PREDICTED_GRADE, 1);
-	return array;
+function selectColumns(columns, condition) {
+	if (!condition) columns.splice(TABLE_COURSES.PREDICTED_GRADE, 1);
+	return columns;
 }
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -77,10 +76,9 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		}
 
 		if (this._itemsCount) {
-			return this._showPredictedGradeCol ?
+			return this.showPredictedGradeCol ?
 				this.userDataForDisplayFormatted :
-				this.userDataForDisplayFormatted
-					.map(user => arrayOfColumnsWithOutPredictedGrade().map(column => user[column]));
+				this.userDataForDisplayFormatted.map(user => selectColumns(user));
 		}
 		return [];
 	}
@@ -209,11 +207,10 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			}
 		];
-
-		return this._showPredictedGradeCol ? columnInfo : arrayOfColumnsWithOutPredictedGrade().map(column => columnInfo[column]);
+		return selectColumns(columnInfo, this.showPredictedGradeCol);
 	}
 
-	get _showPredictedGradeCol() {
+	get showPredictedGradeCol() {
 		return this.userCourses
 			.filter(this._activeCourses, this)
 			.filter(data => data[RECORD.PREDICTED_GRADE] !== null)
@@ -237,6 +234,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 decorate(CoursesTable, {
 	userDataForDisplay: computed,
 	userDataForDisplayFormatted: computed,
+	showPredictedGradeCol: computed,
 	_sortColumn: observable,
 	_sortOrder: observable,
 	_handleColumnSort: action
