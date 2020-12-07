@@ -23,6 +23,12 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 	constructor() {
 		super();
 		this.data = {};
+
+		this.addEventListener('keypress', this._handleKeyEvents);
+	}
+
+	_handleKeyEvents(e) {
+		e.path[0].shadowRoot.querySelector('d2l-icon').click();
 	}
 
 	render() {
