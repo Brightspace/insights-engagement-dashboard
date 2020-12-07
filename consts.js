@@ -19,5 +19,12 @@ export const USER = {
 	USERNAME: 3,
 	LAST_SYS_ACCESS: 4
 };
+export const ORG_UNIT = {
+	ID: 0,
+	NAME: 1,
+	TYPE: 2,
+	PARENTS: 3,
+	IS_ACTIVE: 4
+};
 
 export const TiCVsGradesFilterId = 'd2l-insights-time-in-content-vs-grade-card';

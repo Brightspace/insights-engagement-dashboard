@@ -40,15 +40,7 @@ describe('TelemetryHelper', () => {
 
 			expect(lastCall[0]).to.equal('http://example.com/');
 
-			const body = await lastCall[1].body;
-
-			if (body === '[object ReadableStream]') {
-				/// skip test for Safari 13.0.1 (Mac OS X 10.13.6) due to invalid body
-				console.log('Skip test for Safari 13.0.1 (Mac OS X 10.13.6) due to invalid body.');
-				return;
-			}
-
-			const event = JSON.parse(body);
+			const event = await lastCall.request.json();
 
 			delete event.ts;
 			delete event.name;

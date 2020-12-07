@@ -32,8 +32,8 @@ class AriaLoadingProgress extends Localizer(MobxLitElement) {
 		return html`
 			<div class="d2l-insights-aria-loading-progress" aria-live="assertive">
 				${this.data.isLoading
-					? html`<div role="alert">${this.localize('components.insights-aria-loading-progress.loading-start')}</div>`
-					: html`<div role="alert" aria-label="${this.localize('components.insights-aria-loading-progress.loading-finish')}"></div>`}
+					? html`<div role="alert">${this.localize('ariaLoadingProgress:loadingStart')}</div>`
+					: html`<div role="alert" aria-label="${this.localize('ariaLoadingProgress:loadingFinish')}"></div>`}
 			</div>`;
 	}
 }

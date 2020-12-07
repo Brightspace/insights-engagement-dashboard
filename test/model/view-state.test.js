@@ -31,6 +31,15 @@ describe('ViewState', () => {
 			expect(sut.persistenceValue).equals('user,321');
 		});
 
+		it('should load settings view from url', async() => {
+			setStateForTesting(KEY, 'settings,0');
+
+			const sut = new ViewState();
+
+			expect(sut.currentView).equals('settings');
+			expect(sut.persistenceValue).equals('settings,0');
+		});
+
 		it('should save home view to the url', async() => {
 			setStateForTesting(KEY, 'viewId,userId');
 
@@ -59,6 +68,20 @@ describe('ViewState', () => {
 
 			const searchParams = new URLSearchParams(window.location.search);
 			expect(searchParams.get(KEY)).equals('user,321');
+		});
+
+		it('should save settings view to the url', async() => {
+			setStateForTesting(KEY, 'home,0');
+
+			const sut = new ViewState();
+
+			sut.setSettingsView();
+
+			expect(sut.currentView).equals('settings');
+			expect(sut.persistenceValue).equals('settings,0');
+
+			const searchParams = new URLSearchParams(window.location.search);
+			expect(searchParams.get(KEY)).equals('settings,0');
 		});
 	});
 });

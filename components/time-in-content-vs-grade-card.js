@@ -53,7 +53,7 @@ export class TimeInContentVsGradeFilter {
 			.map(item => [Math.floor(item[RECORD.TIME_IN_CONTENT] / 60), item[RECORD.CURRENT_FINAL_GRADE]]);
 	}
 
-	get title() { return 'components.insights-time-in-content-vs-grade-card.timeInContentVsGrade'; }
+	get title() { return 'timeInContentVsGradeCard:timeInContentVsGrade'; }
 
 	calculateQuadrant(tic, grade) {
 		// accept either a record or coordinates
@@ -160,15 +160,15 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 	}
 
 	get _cardTitle() {
-		return this.localize('components.insights-time-in-content-vs-grade-card.timeInContentVsGrade');
+		return this.localize('timeInContentVsGradeCard:timeInContentVsGrade');
 	}
 
 	get _currentGradeText() {
-		return this.localize('components.insights-time-in-content-vs-grade-card.currentGrade');
+		return this.localize('timeInContentVsGradeCard:currentGrade');
 	}
 
 	get _timeInContentText() {
-		return this.localize('components.insights-time-in-content-vs-grade-card.timeInContentLong');
+		return this.localize('timeInContentVsGradeCard:timeInContentLong');
 	}
 
 	get _dataMidPoints() {
@@ -270,7 +270,7 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 				}],
 				accessibility:{
 					description: `${this._timeInContentText} ${
-						this.localize('components.insights-time-in-content-vs-grade-card.averageTimeInContent', {
+						this.localize('timeInContentVsGradeCard:averageTimeInContent', {
 							avgTimeInContent: this.filter.avgTimeInContent
 						})
 					}`,
@@ -309,7 +309,7 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 				}],
 				accessibility:{
 					description: `${this._currentGradeText} ${
-						this.localize('components.insights-time-in-content-vs-grade-card.averageGrade', {
+						this.localize('timeInContentVsGradeCard:averageGrade', {
 							avgGrade: this.filter.avgGrade
 						})
 					}`,

@@ -28,6 +28,15 @@ export class ViewState {
 		if (this._urlState) this._urlState.save();
 	}
 
+	setSettingsView() {
+		this.currentView = 'settings';
+		this.userViewUserId = 0;
+		// odd, but after second navigation to user view
+		// autorun reaction stops observing properties form ViewState
+		// therefore this line is needed
+		if (this._urlState) this._urlState.save();
+	}
+
 	//for Urlstate
 	get persistenceKey() {
 		return 'v';
@@ -48,6 +57,8 @@ export class ViewState {
 			case 'home': this.setHomeView();
 				break;
 			case 'user': this.setUserView(Number(userId));
+				break;
+			case 'settings': this.setSettingsView();
 				break;
 			default:
 				this.setHomeView();
