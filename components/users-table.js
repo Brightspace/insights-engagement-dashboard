@@ -6,7 +6,7 @@ import { css, html } from 'lit-element';
 import { formatNumber, formatPercent } from '@brightspace-ui/intl';
 import { RECORD, USER } from '../consts';
 import { COLUMN_TYPES } from './table';
-import { formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
+import { formatDateTimeFromTimestamp } from '@brightspace-ui/intl/lib/dateTime.js';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
@@ -219,7 +219,7 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_formatDataForDisplay(user) {
 		const lastSysAccessFormatted = user[TABLE_USER.LAST_ACCESSED_SYS]
-			? formatDateTime(new Date(user[TABLE_USER.LAST_ACCESSED_SYS]), { format: 'medium' })
+			? formatDateTimeFromTimestamp(user[TABLE_USER.LAST_ACCESSED_SYS], { format: 'medium' })
 			: this.localize('usersTable:null');
 		const averageGrade = user[TABLE_USER.AVG_GRADE]
 			? formatPercent(user[TABLE_USER.AVG_GRADE] / 100, numberFormatOptions)
