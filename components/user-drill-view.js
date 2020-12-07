@@ -1,6 +1,6 @@
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/button/button.js';
-import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
+import { bodySmallStyles, heading2Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { createComposeEmailPopup } from './email-integration';
 import { Localizer } from '../locales/localizer';
@@ -24,7 +24,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 
 	static get styles() {
 		return [
-			bodySmallStyles, heading2Styles, heading3Styles,
+			bodySmallStyles, heading2Styles,
 			css`
 			:host {
 				display: block;
@@ -145,8 +145,6 @@ class UserDrill extends Localizer(MobxLitElement) {
 			<div class="d2l-insights-view-filters-container">
 				<slot name="filters"></slot>
 			</div>
-
-			<h2 class="d2l-heading-3">${this.localize('activeCoursesTable:title')}</h2>
 
 			<div class="d2l-insights-user-drill-view-content">
 				

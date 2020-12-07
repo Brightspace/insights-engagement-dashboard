@@ -5,6 +5,7 @@ import { formatNumber, formatPercent } from '@brightspace-ui/intl';
 import { ORG_UNIT, RECORD } from '../consts';
 import { COLUMN_TYPES } from './table';
 import { formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
+import { heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
@@ -39,6 +40,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	static get styles() {
 		return [
+			heading3Styles,
 			css`
 				:host {
 					display: block;
@@ -207,16 +209,22 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	render() {
-		return html`
-			<d2l-insights-table
-				title="${this.localize('activeCoursesTable:title')}"
-				@d2l-insights-table-sort="${this._handleColumnSort}"
-				sort-column="0"
-				.columnInfo=${this.columnInfo}
-				.data="${this._displayData}"
-				?skeleton="${this.skeleton}"
-			></d2l-insights-table>
-		`;
+		const hasActiveCourses = this._itemsCount;
+
+		if (hasActiveCourses) {
+			return html`
+				<h2 class="d2l-heading-3">${this.localize('activeCoursesTable:title')}</h2>
+
+				<d2l-insights-table
+					title="${this.localize('activeCoursesTable:title')}"
+					@d2l-insights-table-sort="${this._handleColumnSort}"
+					sort-column="0"
+					.columnInfo=${this.columnInfo}
+					.data="${this._displayData}"
+					?skeleton="${this.skeleton}"
+				></d2l-insights-table>
+			`;
+		}
 	}
 
 }
