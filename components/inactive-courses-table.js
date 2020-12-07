@@ -23,16 +23,15 @@ const DEFAULT_PAGE_SIZE = 20;
 
 /**
  * The mobx data object is doing filtering logic
- *
- * @property {Object} userCourses - an instance of Data from model/data.js filtered to only one user
- * @property {Object} orgUnits - an array of orgUnits
+ * @property {Object} data - an instance of Data from model/data.js
+ * @property {Object} user - {firstName, lastName, username, userId}
  */
 class InactiveCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	static get properties() {
 		return {
-			userCourses: { type: Object, attribute: false },
-			orgUnits: { type: Object, attribute: false }
+			data: { type: Object, attribute: false },
+			user: { type: Object, attribute: false }
 		};
 	}
 
@@ -83,13 +82,13 @@ class InactiveCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_inactiveCourses(userRecords) {
 		const orgUnitId =  userRecords.get(RECORD.ORG_UNIT_ID);
-		const orgUnit = this.orgUnits.find(x => x[ORG_UNIT.ID] === orgUnitId);
+		const orgUnit = this.data._data.serverData.orgUnits.find(x => x[ORG_UNIT.ID] === orgUnitId);
 		return !orgUnit[ORG_UNIT.IS_ACTIVE];
 	}
 
 	_preProcessData(userRecords) {
 		const orgUnitId =  userRecords.get(RECORD.ORG_UNIT_ID);
-		const orgUnitName = this.orgUnits.find(x => x[ORG_UNIT.ID] === orgUnitId)[ORG_UNIT.NAME];
+		const orgUnitName = this.data._data.serverData.orgUnits.find(x => x[ORG_UNIT.ID] === orgUnitId)[ORG_UNIT.NAME];
 		const finalGrade = userRecords.get(RECORD.CURRENT_FINAL_GRADE);
 		const timeInContent = userRecords.get(RECORD.TIME_IN_CONTENT);
 		const threads = userRecords.get(RECORD.DISCUSSION_ACTIVITY_THREADS);
@@ -149,7 +148,8 @@ class InactiveCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		// map to a 2D userData array, with column 1 as a sub-array of [id, FirstName, LastName, UserName]
 		// then sort by the selected sorting function
 		const sortFunction = this._choseSortFunction(this._sortColumn, this._sortOrder);
-		return this.userCourses
+		const recordsMap = this.data.recordsByUser.get(this.user.userId);
+		return recordsMap
 			.filter(this._inactiveCourses, this)
 			.map(this._preProcessData, this)
 			.sort(sortFunction)
@@ -193,16 +193,21 @@ class InactiveCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	render() {
-		return html`
-			<d2l-insights-table
-				title="${this.localize('inactiveCoursesTable:title')}"
-				@d2l-insights-table-sort="${this._handleColumnSort}"
-				sort-column="0"
-				.columnInfo=${this.columnInfo}
-				.data="${this._displayData}"
-				?skeleton="${this.skeleton}"
-			></d2l-insights-table>
-		`;
+		if (this.data.recordsByUser.get(this.user.userId) === undefined) {
+			return null;
+		}
+		if (this._displayData.length !== 0) {
+			return html`
+				<d2l-insights-table
+					title="${this.localize('inactiveCoursesTable:title')}"
+					@d2l-insights-table-sort="${this._handleColumnSort}"
+					sort-column="0"
+					.columnInfo=${this.columnInfo}
+					.data="${this._displayData}"
+					?skeleton="${this.skeleton}"
+				></d2l-insights-table>
+			`;
+		}
 	}
 
 }

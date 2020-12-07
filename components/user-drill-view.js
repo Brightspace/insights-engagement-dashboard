@@ -8,17 +8,15 @@ import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 
 /**
+ * @property {Object} data - {asd}
  * @property {Object} user - {firstName, lastName, username, userId}
- * @property {Object} userCourses
- * @property {Object} orgUnits
  * @property {Object} orgUnitId - the org unit the user belongs too
  */
 class UserDrill extends Localizer(MobxLitElement) {
 	static get properties() {
 		return {
+			data: { type: Object, attribute: {} },
 			user: { type: Object, attribute: false },
-			userCourses: { type: Object, attribute: false },
-			orgUnits: { type: Object, attribute: false },
 			orgUnitId: { type: Object, attribute: 'org-unit-id' }
 		};
 	}
@@ -152,14 +150,14 @@ class UserDrill extends Localizer(MobxLitElement) {
 				<!-- put your tables here -->
 				<h2 class="d2l-heading-3">${this.localize('activeCoursesTable:title')}</h2>
 				<d2l-insights-active-courses-table
-					.userCourses="${this.userCourses}"
-					.orgUnits="${this.orgUnits}">
+					.data="${this.data}"
+					.user="${this.user}">>
 				</d2l-insights-active-courses-table>
 
 				<h2 class="d2l-heading-3">${this.localize('inactiveCoursesTable:title')}</h2>
-				<d2l-insights-inactive-courses-table 
-					.userCourses="${this.userCourses}"
-					.orgUnits="${this.orgUnits}">>
+				<d2l-insights-inactive-courses-table
+					.data="${this.data}"
+					.user="${this.user}">>
 				</d2l-insights-inactive-courses-table>
 			</div>
 		</div>`;
