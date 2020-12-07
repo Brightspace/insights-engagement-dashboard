@@ -82,22 +82,22 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_activeCourses(userRecords) {
-		const orgUnitId =  userRecords.get(RECORD.ORG_UNIT_ID);
+		const orgUnitId =  userRecords[RECORD.ORG_UNIT_ID];
 		const orgUnit = this.orgUnits.find(x => x[ORG_UNIT.ID] === orgUnitId);
 		return orgUnit[ORG_UNIT.IS_ACTIVE];
 	}
 
 	_preProcessData(userRecords) {
-		const orgUnitId =  userRecords.get(RECORD.ORG_UNIT_ID);
+		const orgUnitId =  userRecords[RECORD.ORG_UNIT_ID];
 		const orgUnit = this.orgUnits.find(x => x[ORG_UNIT.ID] === orgUnitId);
 		const orgUnitName = orgUnit[ORG_UNIT.NAME];
-		const finalGrade = userRecords.get(RECORD.CURRENT_FINAL_GRADE);
-		const predictedGrade = userRecords.get(RECORD.PREDICTED_GRADE);
-		const timeInContent = userRecords.get(RECORD.TIME_IN_CONTENT);
-		const threads = userRecords.get(RECORD.DISCUSSION_ACTIVITY_THREADS);
-		const reads = userRecords.get(RECORD.DISCUSSION_ACTIVITY_READS);
-		const replies = userRecords.get(RECORD.DISCUSSION_ACTIVITY_REPLIES);
-		const lastCourseAccess = userRecords.get(RECORD.COURSE_LAST_ACCESS) ? new Date(userRecords.get(RECORD.COURSE_LAST_ACCESS)) : undefined;
+		const finalGrade = userRecords[RECORD.CURRENT_FINAL_GRADE];
+		const predictedGrade = userRecords[RECORD.PREDICTED_GRADE];
+		const timeInContent = userRecords[RECORD.TIME_IN_CONTENT];
+		const threads = userRecords[RECORD.DISCUSSION_ACTIVITY_THREADS];
+		const reads = userRecords[RECORD.DISCUSSION_ACTIVITY_READS];
+		const replies = userRecords[RECORD.DISCUSSION_ACTIVITY_REPLIES];
+		const lastCourseAccess = userRecords[RECORD.COURSE_LAST_ACCESS] ? new Date(userRecords[RECORD.COURSE_LAST_ACCESS]) : undefined;
 
 		return [
 			this.localize('treeFilter:nodeName', { orgUnitName, id: orgUnitId }),
