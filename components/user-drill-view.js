@@ -1,11 +1,13 @@
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/button/button.js';
+import 'd2l-users/components/d2l-profile-image';
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { createComposeEmailPopup } from './email-integration';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
-import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
+import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
+import { until } from 'lit-html/directives/until';
 
 /**
  * @property {Object} user - {firstName, lastName, username, userId}
@@ -17,6 +19,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
 			user: { type: Object, attribute: false },
+			isDemo: { type: Boolean, attribute: 'demo' },
 			userCourses: { type: Object, attribute: false },
 			orgUnits: { type: Object, attribute: false },
 			orgUnitId: { type: Object, attribute: 'org-unit-id' }
@@ -56,8 +59,13 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			}
 
 			.d2l-insights-user-drill-view-profile-pic {
-				--d2l-icon-height: 100px;
-				--d2l-icon-width: 100px;
+				height: 84px;
+				margin-right: 20px;
+				width: 84px;
+			}
+
+
+			d2l-icon.d2l-insights-user-drill-view-profile-pic {
 				margin-right: 12px;
 			}
 
@@ -99,6 +107,15 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			.d2l-insights-view-filters-container {
 				margin-top: 20px;
 			}
+
+			@media only screen and (max-width: 400px) {
+				.d2l-insights-user-drill-view-profile-pic {
+					margin-right: 10px;
+				}
+				.d2l-insights-user-drill-view-profile-name > div.d2l-heading-2 {
+					width: 150px;
+				}
+			}
 		`];
 	}
 
@@ -118,14 +135,33 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this.skeleton ? 'd2l-skeletize' : '';
 	}
 
+	get token() {
+		// built in oauth isn't available outside the LMS
+		return (!this.isDemo) ? D2L.LP.Web.Authentication.OAuth2.GetToken('users:profile:read') : Promise.resolve('token');
+	}
+
+	get userEntity() {
+		return `/d2l/api/hm/users/${this.user.userId}`;
+	}
+
+	get userProfile() {
+		return until(this.token.then(
+			token => html`
+				<d2l-profile-image
+					class="d2l-insights-user-drill-view-profile-pic ${this.skeletonClass}"
+					href="${this.userEntity}"
+					token="${token}" x-large>
+				</d2l-profile-image>`), html`<d2l-icon class="d2l-insights-user-drill-view-profile-pic ${this.skeletonClass}" icon="tier3:profile-pic"></d2l-icon>
+			`
+		);
+	}
+
 	render() {
 
 		return html`<div class="d2l-insights-user-drill-view-container">
-
 			<div class="d2l-insights-user-drill-view-header-panel">
-
 				<div class="d2l-insights-user-drill-view-profile">
-					<d2l-icon class="d2l-insights-user-drill-view-profile-pic ${this.skeletonClass}" icon="tier3:profile-pic"></d2l-icon>
+					${this.userProfile}
 					<div class="d2l-insights-user-drill-view-profile-name">
 						<div class="d2l-heading-2 ${this.skeletonClass}">${this.user.firstName}, ${this.user.lastName}</div>
 						<div class="d2l-body-small ${this.skeletonClass}">${this.user.username} - ${this.user.userId}</div>
@@ -173,7 +209,9 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 			</div>
 
+
 		</div>`;
 	}
 }
+
 customElements.define('d2l-insights-user-drill-view', UserDrill);

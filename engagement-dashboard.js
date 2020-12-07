@@ -264,6 +264,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		return html`
 			<d2l-insights-user-drill-view
 				?skeleton="${this._isLoading}"
+				?demo="${this.isDemo}"
 				.user="${user}"
 				.userCourses="${this._data.recordsByUser.get(user.userId)}"
 				.orgUnits="${this._serverData.serverData.orgUnits}"
