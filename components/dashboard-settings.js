@@ -165,11 +165,11 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 		return html`
 			<div class="d2l-insights-settings-page-main-container">
 				<div class="d2l-insights-settings-page-main-content">
-						<h1 class="d2l-heading-1">${this.localize('components.insights-engagement-settings.title')}</h1>
-						<h2 class="d2l-heading-2">${this.localize('components.insights-engagement-settings.description')}</h2>
+						<h1 class="d2l-heading-1">${this.localize('settings:title')}</h1>
+						<h2 class="d2l-heading-2">${this.localize('settings:description')}</h2>
 
 					<d2l-tabs>
-						<d2l-tab-panel text="${this.localize('components.insights-engagement-settings.tabTitleSummaryMetrics')}">
+						<d2l-tab-panel text="${this.localize('settings:tabTitleSummaryMetrics')}">
 
 							<d2l-insights-role-list
 								?demo="${this.isDemo}"
@@ -188,7 +188,7 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 							></d2l-insights-engagement-card-selection-list>
 						</d2l-tab-panel>
 
-						<d2l-tab-panel text="${this.localize('components.insights-engagement-settings.tabTitleResultsTableMetrics')}">
+						<d2l-tab-panel text="${this.localize('settings:tabTitleResultsTableMetrics')}">
 							<d2l-insights-engagement-column-configuration
 								?courses-col="${this.showCoursesCol}"
 								?discussions-col="${this.showDiscussionsCol}"
@@ -212,18 +212,18 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 						primary
 						class="d2l-insights-settings-footer-button-desktop"
 						@click="${this._handleSaveAndClose}">
-						${this.localize('components.insights-engagement-settings.saveAndClose')}
+						${this.localize('settings:saveAndClose')}
 					</d2l-button>
 					<d2l-button
 						primary
 						class="d2l-insights-settings-footer-button-responsive"
 						@click="${this._handleSaveAndClose}">
-						${this.localize('components.insights-engagement-settings.save')}
+						${this.localize('settings:save')}
 					</d2l-button>
 					<d2l-button
 						class="d2l-insights-settings-footer-button"
 						@click="${this._handleCancel}">
-						${this.localize('components.insights-engagement-settings.cancel')}
+						${this.localize('settings:cancel')}
 					</d2l-button>
 				</div>
 			</footer>

@@ -50,7 +50,7 @@ class SemesterFilter extends Localizer(LitElement) {
 	render() {
 		return html`
 			<d2l-insights-dropdown-filter
-				name="${this.localize('components.semester-filter.name')}"
+				name="${this.localize('semesterFilter:name')}"
 				.data="${this._filterDataWithSelections}"
 
 				@d2l-insights-dropdown-filter-selected="${this._updateFilterSelections}"
@@ -72,7 +72,7 @@ class SemesterFilter extends Localizer(LitElement) {
 		this._filterData = data.Items.map(item => ({
 			id: item.orgUnitId.toString(),
 			name: item.orgUnitName,
-			displayName: this.localize('components.semester-filter.semester-name', item)
+			displayName: this.localize('semesterFilter:semesterName', item)
 		}));
 	}
 

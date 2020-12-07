@@ -17,7 +17,7 @@ export class DiscussionActivityFilter extends CategoryFilter {
 	constructor() {
 		super(
 			filterId,
-			'components.insights-discussion-activity-card.cardTitle',
+			'discussionActivityCard:cardTitle',
 			record => [...this.selectedCategories].some(category => record[category] > 0),
 			'daf'
 		);
@@ -90,14 +90,14 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _cardTitle() {
-		return this.localize('components.insights-discussion-activity-card.cardTitle');
+		return this.localize('discussionActivityCard:cardTitle');
 	}
 
 	get _legendLabels() {
 		return [
-			this.localize('components.insights-discussion-activity-card.threads'),
-			this.localize('components.insights-discussion-activity-card.replies'),
-			this.localize('components.insights-discussion-activity-card.reads')
+			this.localize('discussionActivityCard:threads'),
+			this.localize('discussionActivityCard:replies'),
+			this.localize('discussionActivityCard:reads')
 		];
 	}
 
@@ -114,19 +114,19 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _chartDescriptionTextLabel() {
-		return this.localize('components.insights-discussion-activity-card.textLabel');
+		return this.localize('discussionActivityCard:textLabel');
 	}
 
 	toolTipTextThreads(numberOfUsers) {
-		return this.localize('components.insights-discussion-activity-card.toolTipThreads', { numberOfUsers });
+		return this.localize('discussionActivityCard:toolTipThreads', { numberOfUsers });
 	}
 
 	toolTipTextReplies(numberOfUsers) {
-		return this.localize('components.insights-discussion-activity-card.toolTipReplies', { numberOfUsers });
+		return this.localize('discussionActivityCard:toolTipReplies', { numberOfUsers });
 	}
 
 	toolTipTextReads(numberOfUsers) {
-		return this.localize('components.insights-discussion-activity-card.toolTipReads', { numberOfUsers });
+		return this.localize('discussionActivityCard:toolTipReads', { numberOfUsers });
 	}
 
 	render() {
@@ -289,8 +289,8 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				accessibility: {
 					legend: {
 						// highcharts will substitute the actual item name, so we pass the placeholder to localize()
-						legendItem: this.localize('components.insights-discussion-activity-card.legendItem', { itemName: '{itemName}' }),
-						legendLabel: this.localize('components.insights-discussion-activity-card.legendLabel')
+						legendItem: this.localize('discussionActivityCard:legendItem', { itemName: '{itemName}' }),
+						legendLabel: this.localize('discussionActivityCard:legendLabel')
 					}
 				}
 			}

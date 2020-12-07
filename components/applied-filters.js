@@ -38,7 +38,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		filters.push({
 			id: clearAllOptionId,
-			title: this.localize('components.insights-applied-filters.clear-all'),
+			title: this.localize('appliedFilters:clearAll'),
 			isApplied: true
 		});
 
@@ -64,7 +64,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 				? html`
 					<d2l-applied-filters
 						for="d2l-insights-applied-filters-dropdown"
-						label-text="${this.localize('components.insights-applied-filters.label-text')}">
+						label-text="${this.localize('appliedFilters:labelText')}">
 					</d2l-applied-filters>`
 				: html``
 			}
