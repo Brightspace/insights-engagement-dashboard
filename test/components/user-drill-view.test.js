@@ -7,10 +7,6 @@ import { mockOuTypes } from '../model/mocks';
 import noProfile from '../responses/no_profile';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
-// .data="${this._serverData.serverData.orgUnits}"
-// .user..
-// org-unit-id="${this.orgUnitId}
-
 describe('d2l-insights-user-drill-view', () => {
 	const user = {
 		firstName: 'firstName',

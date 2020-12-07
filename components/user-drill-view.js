@@ -10,7 +10,7 @@ import { MobxLitElement } from '@adobe/lit-mobx';
 import { until } from 'lit-html/directives/until';
 
 /**
- * @property {Object} data - {asd}
+ * @property {Object} data - an instance of Data from model/data.js
  * @property {Object} user - {firstName, lastName, username, userId}
  * @property {Object} orgUnitId - the org unit the user belongs too
  */
