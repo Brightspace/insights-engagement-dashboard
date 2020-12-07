@@ -26,6 +26,12 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		};
 	}
 
+	constructor() {
+		super();
+		this.hasToken = false;
+		this._token = undefined;
+	}
+
 	static get styles() {
 		return [
 			super.styles, bodySmallStyles, heading2Styles, heading3Styles,
@@ -131,28 +137,46 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		createComposeEmailPopup([this.user.userId], this.orgUnitId);
 	}
 
+	get isLoading() {
+		return this.skeleton || !this.hasToken;
+	}
+
 	get skeletonClass() {
-		return this.skeleton ? 'd2l-skeletize' : '';
+		return this.isLoading ? 'd2l-skeletize' : '';
 	}
 
 	get token() {
+		// use the cached token so we don't call for it everytime the ui reloads
+		if (this._token) return this._token;
+
+		// set and return the fetch
 		// built in oauth isn't available outside the LMS
-		return (!this.isDemo) ? D2L.LP.Web.Authentication.OAuth2.GetToken('users:profile:read') : Promise.resolve('token');
+		return this._token = !this.isDemo ? D2L.LP.Web.Authentication.OAuth2.GetToken('users:profile:read').then((token) => {
+			this.hasToken = true;
+			return token;
+		}) : Promise.resolve('token');
+
 	}
 
 	get userEntity() {
 		return `/d2l/api/hm/users/${this.user.userId}`;
 	}
 
+	loadingUserProfile = () => html`<d2l-icon class="d2l-insights-user-drill-view-profile-pic ${this.skeletonClass}" icon="tier3:profile-pic"></d2l-icon>`
+
 	get userProfile() {
 		return until(this.token.then(
-			token => html`
+			token => {
+				// token has resolved ?
+				return html`
 				<d2l-profile-image
 					class="d2l-insights-user-drill-view-profile-pic ${this.skeletonClass}"
 					href="${this.userEntity}"
 					token="${token}" x-large>
-				</d2l-profile-image>`), html`<d2l-icon class="d2l-insights-user-drill-view-profile-pic ${this.skeletonClass}" icon="tier3:profile-pic"></d2l-icon>
-			`
+				</d2l-profile-image>`;
+			}),
+			// token has not resolved
+			this.loadingUserProfile()
 		);
 	}
 
