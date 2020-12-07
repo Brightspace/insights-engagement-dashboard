@@ -18,7 +18,6 @@ import './components/message-container.js';
 import './components/default-view-popup.js';
 import './components/user-drill-view.js';
 import './components/immersive-nav.js';
-import './components/inactive-courses-table.js';
 import './components/dashboard-settings';
 
 import { css, html } from 'lit-element/lit-element.js';
@@ -259,7 +258,8 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			userId: userId
 		};
 		return html`
-			></d2l-insights-user-drill-view>
+			<d2l-insights-user-drill-view
+				.user="${user}"
 				.userCourses="${this._data.recordsByUser.get(user.userId)}"
 				.orgUnits="${this._serverData.serverData.orgUnits}"
 				org-unit-id="${this.orgUnitId}"
@@ -363,26 +363,6 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				${this._ticGradesCard}
 				${this._courseAccessCard}
 			</div>
-			<h2 class="d2l-heading-3">${this.localize('components.insights-engagement-dashboard.resultsHeading')}</h2>
-			<d2l-action-button-group class="d2l-table-action-button-group" min-to-show="0" max-to-show="2" opener-type="more">
-				<d2l-button-subtle
-					icon="d2l-tier1:email"
-					text="${this.localize('components.insights-engagement-dashboard.emailButton')}"
-					@click="${this._handleEmailButtonPress}">
-				</d2l-button-subtle>
-			</d2l-action-button-group>
-			<d2l-insights-users-table
-				.data="${this._data}"
-				?skeleton="${this._isLoading}"
-				@d2l-insights-users-table-cell-clicked="${this._userTableCellClicked}"
-				?courses-col="${this.showCoursesCol}"
-				?discussions-col="${this.showDiscussionsCol}"
-				?grade-col="${this.showGradeCol}"
-				?last-access-col="${this.showLastAccessCol}"
-				?tic-col="${this.showTicCol}"
-			></d2l-insights-users-table>
-
-
 			${this._userTable}
 			<d2l-insights-default-view-popup
 				?opened=${Boolean(this._serverData.isDefaultView && !this._defaultViewPopupShown)}

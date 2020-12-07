@@ -187,5 +187,14 @@ export default {
 	"activeCoursesTable:timeInContent": "Time in Content (mins)",
 	"activeCoursesTable:discussions": "Discussion Activity",
 	"activeCoursesTable:courseLastAccess": "Course Last Access",
-	"activeCoursesTable:noGrade": "No grade"
+	"activeCoursesTable:noGrade": "No grade",
+
+	"inactiveCoursesTable:title": "Inactive Courses",
+	"inactiveCoursesTable:course": "Course Name",
+	"inactiveCoursesTable:grade": "Final Grade",
+	"inactiveCoursesTable:content": "Total Time in Content (mins)",
+	"inactiveCoursesTable:discussions": "Discussion Activity",
+	"inactiveCoursesTable:lastAccessedCourse": "Course Last Access",
+	"inactiveCoursesTable:loadingPlaceholder": "Loading"
+
 };

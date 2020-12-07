@@ -2,20 +2,19 @@ import './table.js';
 import { action, computed, decorate, observable } from 'mobx';
 import { css, html } from 'lit-element';
 import { formatNumber, formatPercent } from '@brightspace-ui/intl';
+import { ORG_UNIT, RECORD } from '../consts';
 import { COLUMN_TYPES } from './table';
 import { formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
-import { RECORD } from '../consts';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 
 export const TABLE_COURSES = {
 	COURSE_NAME: 0,
 	CURRENT_GRADE: 1,
-	PREDICTED_GRADE: 2,
-	TIME_IN_CONTENT: 3,
-	DISCUSSION_ACTIVITY: 4,
-	COURSE_LAST_ACCESS: 5
+	TIME_IN_CONTENT: 2,
+	DISCUSSION_ACTIVITY: 3,
+	COURSE_LAST_ACCESS: 4
 };
 
 const numberFormatOptions = { maximumFractionDigits: 2 };
@@ -25,19 +24,15 @@ const DEFAULT_PAGE_SIZE = 20;
 /**
  * The mobx data object is doing filtering logic
  *
- * @property {Object} data - an instance of Data from model/data.js filtered to only one user
- * @property {Object} orgUnitTree - an instance of orgUnitTree from model/data.js
- * @property {Number} _sortColumn - The index of the column that is currently sorted
- * @property {String} _sortOrder - either 'asc' or 'desc'
+ * @property {Object} userCourses - an instance of Data from model/data.js filtered to only one user
+ * @property {Object} orgUnits - an array of orgUnits
  */
 class InactiveCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	static get properties() {
 		return {
-			data: { type: Object, attribute: false },
-			orgUnitTree: { type: Object, attribute: false },
-			_sortColumn: { type: Number, attribute: false },
-			_sortOrder: { type: String, attribute: false },
+			userCourses: { type: Object, attribute: false },
+			orgUnits: { type: Object, attribute: false }
 		};
 	}
 
@@ -68,7 +63,7 @@ class InactiveCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	// the number of skeleton rows we're displaying, but the Total Users count should still be 0
 	get _displayData() {
 		if (this.skeleton) {
-			const loadingPlaceholderText = this.localize('components.insights-users-table.loadingPlaceholder');
+			const loadingPlaceholderText = this.localize('inactiveCoursesTable:loadingPlaceholder');
 
 			// a DEFAULT_PAGE_SIZE x columnInfoLength 2D array filled with a generic string
 			return Array(DEFAULT_PAGE_SIZE).fill(Array(this.columnInfo.length).fill(loadingPlaceholderText));
@@ -86,21 +81,24 @@ class InactiveCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this._sortColumn = e.detail.column;
 	}
 
+	_inactiveCourses(userRecords) {
+		const orgUnitId =  userRecords.get(RECORD.ORG_UNIT_ID);
+		const orgUnit = this.orgUnits.find(x => x[ORG_UNIT.ID] === orgUnitId);
+		return !orgUnit[ORG_UNIT.IS_ACTIVE];
+	}
+
 	_preProcessData(userRecords) {
 		const orgUnitId =  userRecords.get(RECORD.ORG_UNIT_ID);
-		const orgUnitName = this.orgUnitTree._nodes.get(orgUnitId)[1];
+		const orgUnitName = this.orgUnits.find(x => x[ORG_UNIT.ID] === orgUnitId)[ORG_UNIT.NAME];
 		const finalGrade = userRecords.get(RECORD.CURRENT_FINAL_GRADE);
-		const predictedGrade = userRecords.get(RECORD.CURRENT_FINAL_GRADE);
 		const timeInContent = userRecords.get(RECORD.TIME_IN_CONTENT);
 		const threads = userRecords.get(RECORD.DISCUSSION_ACTIVITY_THREADS);
 		const reads = userRecords.get(RECORD.DISCUSSION_ACTIVITY_READS);
 		const replies = userRecords.get(RECORD.DISCUSSION_ACTIVITY_REPLIES);
 		const lastCourseAccess = userRecords.get(RECORD.COURSE_LAST_ACCESS) ? new Date(userRecords.get(RECORD.COURSE_LAST_ACCESS)) : undefined;
-
 		return [
-			this.localize('components.tree-filter.node-name', { orgUnitName, id: orgUnitId }),
+			this.localize('treeFilter:nodeName', { orgUnitName, id: orgUnitId }),
 			finalGrade,
-			predictedGrade,
 			timeInContent,
 			[threads, reads, replies],
 			lastCourseAccess
@@ -136,11 +134,10 @@ class InactiveCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	_formatDataForDisplay(user) {
 		const lastSysAccessFormatted = user[TABLE_COURSES.COURSE_LAST_ACCESS]
 			? formatDateTime(new Date(user[TABLE_COURSES.COURSE_LAST_ACCESS]), { format: 'medium' })
-			: this.localize('components.insights-users-table.null');
+			: this.localize('usersTable:null');
 		return [
 			user[TABLE_COURSES.COURSE_NAME],
 			user[TABLE_COURSES.CURRENT_GRADE] ? formatPercent(user[TABLE_COURSES.CURRENT_GRADE] / 100, numberFormatOptions) : '',
-			user[TABLE_COURSES.PREDICTED_GRADE] ? formatPercent(user[TABLE_COURSES.PREDICTED_GRADE] / 100, numberFormatOptions) : '',
 			formatNumber(user[TABLE_COURSES.TIME_IN_CONTENT] / 60, numberFormatOptions),
 			user[TABLE_COURSES.DISCUSSION_ACTIVITY],
 			lastSysAccessFormatted
@@ -152,7 +149,8 @@ class InactiveCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		// map to a 2D userData array, with column 1 as a sub-array of [id, FirstName, LastName, UserName]
 		// then sort by the selected sorting function
 		const sortFunction = this._choseSortFunction(this._sortColumn, this._sortOrder);
-		return this.data
+		return this.userCourses
+			.filter(this._inactiveCourses, this)
 			.map(this._preProcessData, this)
 			.sort(sortFunction)
 			.map(this._formatDataForDisplay, this);
@@ -163,7 +161,6 @@ class InactiveCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 			return [
 				data[TABLE_COURSES.COURSE_NAME],
 				data[TABLE_COURSES.CURRENT_GRADE],
-				data[TABLE_COURSES.PREDICTED_GRADE],
 				data[TABLE_COURSES.TIME_IN_CONTENT],
 				data[TABLE_COURSES.DISCUSSION_ACTIVITY],
 				data[TABLE_COURSES.COURSE_LAST_ACCESS]];
@@ -173,27 +170,23 @@ class InactiveCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get columnInfo() {
 		return [
 			{
-				headerText: this.localize('components.insights-active-courses-table.course'),
+				headerText: this.localize('inactiveCoursesTable:course'),
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			},
 			{
-				headerText: this.localize('components.insights-active-courses-table.currentGrade'),
+				headerText: this.localize('inactiveCoursesTable:grade'),
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			},
 			{
-				headerText: this.localize('components.insights-active-courses-table.predictedGrade'),
+				headerText: this.localize('inactiveCoursesTable:content'),
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			},
 			{
-				headerText: this.localize('components.insights-active-courses-table.timeInContent'),
-				columnType: COLUMN_TYPES.NORMAL_TEXT
-			},
-			{
-				headerText: this.localize('components.insights-active-courses-table.discussions'),
+				headerText: this.localize('inactiveCoursesTable:discussions'),
 				columnType: COLUMN_TYPES.SUB_COLUMNS
 			},
 			{
-				headerText: this.localize('components.insights-active-courses-table.courseLastAccess'),
+				headerText: this.localize('inactiveCoursesTable:lastAccessedCourse'),
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			}
 		];
@@ -202,7 +195,7 @@ class InactiveCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	render() {
 		return html`
 			<d2l-insights-table
-				title="${this.localize('components.insights-users-table.title')}"
+				title="${this.localize('inactiveCoursesTable:title')}"
 				@d2l-insights-table-sort="${this._handleColumnSort}"
 				sort-column="0"
 				.columnInfo=${this.columnInfo}

@@ -17,8 +17,6 @@ class UserDrill extends Localizer(MobxLitElement) {
 	static get properties() {
 		return {
 			user: { type: Object, attribute: false },
-			data: { type: Object, attribute: false },
-			orgUnitTree: { type: Object, attribute: false },
 			userCourses: { type: Object, attribute: false },
 			orgUnits: { type: Object, attribute: false },
 			orgUnitId: { type: Object, attribute: 'org-unit-id' }
@@ -149,22 +147,21 @@ class UserDrill extends Localizer(MobxLitElement) {
 				<slot name="filters"></slot>
 			</div>
 
-			<h2 class="d2l-heading-3">${this.localize('activeCoursesTable:title')}</h2>
 
 			<div class="d2l-insights-user-drill-view-content">
 				<!-- put your tables here -->
+				<h2 class="d2l-heading-3">${this.localize('activeCoursesTable:title')}</h2>
 				<d2l-insights-active-courses-table
 					.userCourses="${this.userCourses}"
 					.orgUnits="${this.orgUnits}">
 				</d2l-insights-active-courses-table>
-				<d2l-insights-inactive-courses-table 
-				.data="${this.data}"
-				.orgUnitTree="${this.orgUnitTree}"
-				?skeleton="${this.skeleton}">
-			</d2l-insights-inactive-courses-table>
-				
-			</div>
 
+				<h2 class="d2l-heading-3">${this.localize('inactiveCoursesTable:title')}</h2>
+				<d2l-insights-inactive-courses-table 
+					.userCourses="${this.userCourses}"
+					.orgUnits="${this.orgUnits}">>
+				</d2l-insights-inactive-courses-table>
+			</div>
 		</div>`;
 	}
 }
