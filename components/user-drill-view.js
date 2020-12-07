@@ -167,7 +167,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 				<d2l-insights-active-courses-table
 					.userCourses="${this.userCourses}"
-					.orgUnits="${this.orgUnits}">
+					.orgUnits="${this.orgUnits}"
+					?skeleton="${this.skeleton}">
 				</d2l-insights-active-courses-table>
 
 			</div>
