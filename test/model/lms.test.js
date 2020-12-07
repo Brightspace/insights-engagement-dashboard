@@ -1,4 +1,4 @@
-import { fetchCachedChildren, fetchLastSearch, fetchRelevantChildren, fetchRoles, orgUnitSearch, saveSettings } from '../../model/lms';
+import { fetchCachedChildren, fetchData, fetchLastSearch, fetchRelevantChildren, fetchRoles, orgUnitSearch, saveSettings } from '../../model/lms';
 import { expect } from '@open-wc/testing';
 import fetchMock from 'fetch-mock/esm/client';
 
@@ -311,6 +311,19 @@ describe('Lms', () => {
 			expect(request.headers.get('content-type')).to.equal('application/json');
 			expect(request.headers.get('x-csrf-token')).to.equal('token');
 			expect(await request.json()).to.deep.equal(settings);
+		});
+	});
+
+	describe('fetchData', () => {
+		it('should throw an error if the query fails', async() => {
+			fetchMock.get('', 403);
+			let error;
+			try {
+				await fetchData({});
+			} catch (err) {
+				error = err.toString();
+			}
+			expect(error).to.equal('Error: query-failure');
 		});
 	});
 });

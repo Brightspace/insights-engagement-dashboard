@@ -14,6 +14,7 @@ export class Data {
 		this.userDictionary = null;
 
 		// @observables
+		this.isQueryError = false;
 		this.isLoading = true;
 		this.serverData = {
 			records: [],
@@ -41,7 +42,7 @@ export class Data {
 		};
 	}
 
-	loadData({ newRoleIds = null, newSemesterIds = null, newOrgUnitIds = null, defaultView = false }) {
+	async loadData({ newRoleIds = null, newSemesterIds = null, newOrgUnitIds = null, defaultView = false }) {
 		this.isLoading = true;
 		const filters = {
 			roleIds: newRoleIds || this._selectorFilters.role.selected,
@@ -49,7 +50,14 @@ export class Data {
 			orgUnitIds: newOrgUnitIds || this._selectorFilters.orgUnit.selected,
 			defaultView
 		};
-		this.recordProvider(filters).then(data => this.onServerDataReload(data));
+		try {
+			const data = await this.recordProvider(filters);
+			this.onServerDataReload(data);
+			this.isQueryError = false;
+		} catch (ignored) {
+			this.onServerDataReload(this.serverData);
+			this.isQueryError = true;
+		}
 	}
 
 	// @action
@@ -153,6 +161,7 @@ decorate(Data, {
 	serverData: observable,
 	orgUnitTree: observable,
 	isLoading: observable,
+	isQueryError: observable,
 	records: computed,
 	onServerDataReload: action
 });

@@ -45,8 +45,8 @@ describe('d2l-insights-applied-filters', () => {
 
 		it('should render Clear All button and filter title for applied filters', async() => {
 			data.filters = [
-				{ id: 'filter-key-1', title: 'components.simple-filter.search-label', isApplied: false },
-				{ id: 'filter-key-2', title: 'components.insights-engagement-dashboard.title', isApplied: true }
+				{ id: 'filter-key-1', title: 'simpleFilter:searchLabel', isApplied: false },
+				{ id: 'filter-key-2', title: 'dashboard:title', isApplied: true }
 			];
 			const el = await fixture(html`<d2l-insights-applied-filters .data="${data}"></d2l-insights-applied-filters>`);
 			const appliedFilters = el.shadowRoot.querySelector('d2l-applied-filters');

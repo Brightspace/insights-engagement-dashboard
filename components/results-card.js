@@ -19,11 +19,11 @@ class ResultsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _cardMessage() {
-		return this.localize('components.insights-engagement-dashboard.resultsReturned');
+		return this.localize('dashboard:resultsReturned');
 	}
 
 	get _cardTitle() {
-		return this.localize('components.insights-engagement-dashboard.resultsHeading');
+		return this.localize('dashboard:resultsHeading');
 	}
 
 	get _cardValue() {
