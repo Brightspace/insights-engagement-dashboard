@@ -83,9 +83,7 @@ export class Data {
 		this.userDictionary = new Map(newServerData.users.map(user => [user[USER.ID], user]));
 		this.isLoading = false;
 		this.serverData = newServerData;
-		if (this.serverData.selectedSemestersIds) {
-			this._selectorFilters.semester.selected = this.serverData.selectedSemestersIds;
-		}
+		this._selectorFilters.semester.selected = this.serverData.selectedSemestersIds || [];
 	}
 
 	set selectedRoleIds(newRoleIds) {
@@ -163,5 +161,8 @@ decorate(Data, {
 	isLoading: observable,
 	isQueryError: observable,
 	records: computed,
+	selectedOrgUnitIds: computed,
+	selectedRoleIds: computed,
+	selectedSemesterIds: computed,
 	onServerDataReload: action
 });

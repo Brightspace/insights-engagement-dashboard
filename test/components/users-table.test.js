@@ -2,7 +2,7 @@ import '../../components/users-table.js';
 import { expect, fixture, html } from '@open-wc/testing';
 import { mockRoleIds, records } from '../model/mocks';
 import { RECORD, USER } from '../../consts';
-import { formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
+import { formatDateTimeFromTimestamp } from '@brightspace-ui/intl/lib/dateTime.js';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
 const COLS = {
@@ -559,5 +559,5 @@ function verifyCellValue(expectedValue, cell, colType) {
 }
 
 function getLocalDateTime(rowIndex) {
-	return formatDateTime(new Date(new Date(data.users[rowIndex][USER.LAST_SYS_ACCESS]).toISOString()), { format: 'medium' });
+	return formatDateTimeFromTimestamp(data.users[rowIndex][USER.LAST_SYS_ACCESS], { format: 'medium' });
 }

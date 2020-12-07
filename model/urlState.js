@@ -40,6 +40,8 @@ export function clearUrlState() {
  * set persistenceValue({String}) - called when the component should set the given state
  * If persistenceValue references one or more mobx observables, mobx will track changes. Otherwise,
  * it is necessary to call save() when the state changes.
+ * The wrapped object may optionally implement:
+ * {Boolean} get persistEmpty() - if true, the key will not be removed from the url even if the value is ''
  */
 export class UrlState {
 
@@ -60,7 +62,7 @@ export class UrlState {
 	save() {
 		const url = new URL(window.location.href);
 		const valueToSave = this.value;
-		if (valueToSave === '' && url.searchParams.has(this.key)) {
+		if (!this.persistEmpty && valueToSave === '' && url.searchParams.has(this.key)) {
 			url.searchParams.delete(this.key);
 			UrlState.pushState(url);
 		}
@@ -72,6 +74,10 @@ export class UrlState {
 
 	get key() {
 		return this._wrapped.persistenceKey;
+	}
+
+	get persistEmpty() {
+		return this._wrapped.persistEmpty;
 	}
 
 	get value() {
