@@ -58,9 +58,11 @@ class UserDrill extends Localizer(MobxLitElement) {
 			}
 
 			.d2l-insights-user-drill-view-profile-pic {
-				height: 100px;
-				width: 100px;
+				height: 84px;
+				margin-right: 20px;
+				width: 84px;
 			}
+
 
 			d2l-icon.d2l-insights-user-drill-view-profile-pic {
 				margin-right: 12px;
@@ -94,6 +96,15 @@ class UserDrill extends Localizer(MobxLitElement) {
 
 			.d2l-insights-view-filters-container {
 				margin-top: 20px;
+			}
+
+			@media only screen and (max-width: 400px) {
+				.d2l-insights-user-drill-view-profile-pic {
+					margin-right: 10px;
+				}
+				.d2l-insights-user-drill-view-profile-name > div.d2l-heading-2 {
+					width: 150px;
+				}
 			}
 		`];
 	}
