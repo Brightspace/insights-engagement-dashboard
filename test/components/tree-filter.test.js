@@ -604,6 +604,11 @@ describe('Tree', () => {
 				expect(tree.getChildIdsForDisplay(6606)).to.deep.equal([111]);
 			});
 
+			it('should skip pruning for a dynamic tree', () => {
+				const tree = new Tree({ nodes: singleCourseOfferingNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: true });
+				expect(tree.getChildIdsForDisplay(6606)).to.deep.equal([1001]);
+			});
+
 			it('should return non-pruned children for filtered part of the tree', () => {
 				const tree = new Tree({ nodes: singleDepartmentNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
 				tree.setAncestorFilter([12]);

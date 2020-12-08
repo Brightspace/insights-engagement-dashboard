@@ -219,7 +219,10 @@ export class Tree {
 	getChildIdsForDisplay(id, pruning) {
 		const children = this.getChildIds(id).filter(x => this._isVisible(x));
 
-		const isPrunning = (pruning || this._isRoot(id)) && children.length === 1 && this.getType(children[0]) !== COURSE_OFFERING;
+		const isPrunning = !this.isDynamic
+			&& (pruning || this._isRoot(id))
+			&& children.length === 1
+			&& this.getType(children[0]) !== COURSE_OFFERING;
 		if (isPrunning) return this.getChildIdsForDisplay(children[0], true);
 
 		return children.sort((a, b) => this._nameForSort(a).localeCompare(this._nameForSort(b)));
