@@ -33,7 +33,8 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
 			userCourses: { type: Object, attribute: false },
-			orgUnits: { type: Object, attribute: false }
+			orgUnits: { type: Object, attribute: false },
+			isStudentSuccessSys: { type: Object, attribute: false }
 		};
 	}
 
@@ -206,15 +207,8 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this._selectColumns(columnInfo);
 	}
 
-	get showPredictedGradeCol() {
-		return this.userCourses
-			.filter(this._activeCourses, this)
-			.filter(data => data[RECORD.PREDICTED_GRADE] !== null)
-			.length > 0;
-	}
-
 	_selectColumns(columns) {
-		if (!this.showPredictedGradeCol) columns.splice(TABLE_COURSES.PREDICTED_GRADE, 1);
+		if (!this.isStudentSuccessSys) columns.splice(TABLE_COURSES.PREDICTED_GRADE, 1);
 		return columns;
 	}
 
@@ -235,7 +229,6 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 decorate(CoursesTable, {
 	userDataForDisplay: computed,
 	userDataForDisplayFormatted: computed,
-	showPredictedGradeCol: computed,
 	_sortColumn: observable,
 	_sortOrder: observable,
 	_handleColumnSort: action

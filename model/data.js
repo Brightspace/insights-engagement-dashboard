@@ -32,7 +32,8 @@ export class Data {
 			selectedOrgUnitIds: [],
 			selectedRolesIds: includeRoles || [],
 			selectedSemestersIds: [],
-			defaultViewOrgUnitIds: null
+			defaultViewOrgUnitIds: null,
+			isStudentSuccessSys: false
 		};
 
 		this._selectorFilters = {
