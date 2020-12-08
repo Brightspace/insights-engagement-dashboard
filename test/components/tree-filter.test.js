@@ -624,6 +624,8 @@ describe('Tree', () => {
 
 		describe('getChildIdsForDisplay for pruned node', () => {
 			it('should return the first non-pruned child', () => {
+				expect(staticTree.getChildIdsForDisplay(6606)).to.deep.equal([1001, 1002, 1003]);
+
 				let tree = new Tree({ nodes: singleDepartmentNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
 				expect(tree.getChildIdsForDisplay(6606)).to.deep.equal([1, 2]);
 
