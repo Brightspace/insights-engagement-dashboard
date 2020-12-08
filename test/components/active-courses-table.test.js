@@ -45,8 +45,8 @@ describe('d2l-insights-active-courses-table', () => {
 			const userTable = el.shadowRoot.querySelector('d2l-insights-table');
 			await new Promise(res => setTimeout(res, 10));
 			const headers = [].slice.call(userTable.shadowRoot.querySelectorAll('th'));
-			const headersArr = headers.map(e => { return e.innerText; }).join(',');
-			expect(headersArr).to.deep.equal('Course Name,Current Grade,Predicted Grade,Time in Content (mins),Discussion Activity,Course Last Access');
+			const headersArr = headers.map(e => { return e.innerText; });
+			expect(headersArr).to.deep.equal(['Course Name', 'Current Grade', 'Predicted Grade', 'Time in Content (mins)', 'Discussion Activity', 'Course Last Access']);
 		});
 
 		it('should not render predicted grade column if isStudentSuccessSys false', async() => {
@@ -60,8 +60,8 @@ describe('d2l-insights-active-courses-table', () => {
 			const userTable = el.shadowRoot.querySelector('d2l-insights-table');
 			await new Promise(res => setTimeout(res, 10));
 			const headers = [].slice.call(userTable.shadowRoot.querySelectorAll('th'));
-			const headersArr = headers.map(e => { return e.innerText; }).join(',');
-			expect(headersArr).to.deep.equal('Course Name,Current Grade,Time in Content (mins),Discussion Activity,Course Last Access');
+			const headersArr = headers.map(e => { return e.innerText; });
+			expect(headersArr).to.deep.equal(['Course Name', 'Current Grade', 'Time in Content (mins)', 'Discussion Activity', 'Course Last Access']);
 		});
 	});
 });
