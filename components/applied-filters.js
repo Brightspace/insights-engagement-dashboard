@@ -28,7 +28,10 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_handleKeyEvents(e) {
-		e.path[0].shadowRoot.querySelector('d2l-icon').click();
+		if (e.keyCode === 32 || e.keyCode === 13) {
+			e.preventDefault();
+			e.path[0].shadowRoot.querySelector('d2l-icon').click();
+		}
 	}
 
 	render() {
