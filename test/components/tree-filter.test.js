@@ -562,7 +562,7 @@ describe('Tree', () => {
 			[12, 'Semester 2', mockOuTypes.semester, [6606]],
 
 			[111, 'Course 1 / Semester 1', mockOuTypes.courseOffering, [1, 11]],
-			[211, 'Course 2 / Semester 1', mockOuTypes.courseOffering, [2, 11]]
+			[211, 'Course 2 / Semester 1', mockOuTypes.courseOffering, [2, 12]]
 		];
 
 		const singleCourseNodes = [
@@ -590,8 +590,8 @@ describe('Tree', () => {
 			[111, 'Course 1 / Semester 1', mockOuTypes.courseOffering, [1, 11]]
 		];
 
-		describe('getChildIdsForDisplay for pruned node', () => {
-			it('should return the first non-pruned child', () => {
+		describe('getChildIdsForDisplay', () => {
+			it('should return non-pruned children', () => {
 				expect(staticTree.getChildIdsForDisplay(6606)).to.deep.equal([1001, 1002, 1003]);
 
 				let tree = new Tree({ nodes: singleDepartmentNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
@@ -602,6 +602,12 @@ describe('Tree', () => {
 
 				tree = new Tree({ nodes: singleCourseOfferingNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
 				expect(tree.getChildIdsForDisplay(6606)).to.deep.equal([111]);
+			});
+
+			it('should return non-pruned children for filtered part of the tree', () => {
+				const tree = new Tree({ nodes: singleDepartmentNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
+				tree.setAncestorFilter([12]);
+				expect(tree.getChildIdsForDisplay(6606)).to.deep.equal([211]);
 			});
 		});
 
