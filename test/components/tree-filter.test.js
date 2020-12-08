@@ -549,6 +549,67 @@ describe('Tree', () => {
 			expect(dynamicTree.isOpenable(2352235)).to.be.a('Boolean');
 		});
 	});
+
+	describe('pruning', () => {
+		const singleDepartmentNodes = [
+			[6606, 'Org', mockOuTypes.organization, [0]],
+			[1001, 'Department 1', mockOuTypes.department, [6606]],
+
+			[2, 'Course 2', mockOuTypes.course, [1001]],
+			[1, 'Course 1', mockOuTypes.course, [1001]],
+
+			[11, 'Semester 1', mockOuTypes.semester, [6606]],
+			[12, 'Semester 2', mockOuTypes.semester, [6606]],
+
+			[111, 'Course 1 / Semester 1', mockOuTypes.courseOffering, [1, 11]],
+			[211, 'Course 2 / Semester 1', mockOuTypes.courseOffering, [2, 11]]
+		];
+
+		const singleCourseNodes = [
+			[6606, 'Org', mockOuTypes.organization, [0]],
+			[1001, 'Department 1', mockOuTypes.department, [6606]],
+
+			[1, 'Course 1', mockOuTypes.course, [1001]],
+
+			[11, 'Semester 1', mockOuTypes.semester, [6606]],
+			[12, 'Semester 2', mockOuTypes.semester, [6606]],
+
+			[111, 'Course 1 / Semester 1', mockOuTypes.courseOffering, [1, 11]],
+			[112, 'Course 1 / Semester 2', mockOuTypes.courseOffering, [1, 12]]
+		];
+
+		describe('_updatePruned', () => {
+			it('should not find nodes to prune for a tree root with children', () => {
+				expect(staticTree._pruned.size).to.equal(0);
+			});
+
+			it('should mark pruned nodes', () => {
+				let tree = new Tree({ nodes: singleDepartmentNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
+				expect(tree._pruned.size).to.equal(1);
+				expect(tree._pruned.get(6606)).to.be.true;
+
+				tree = new Tree({ nodes: singleCourseNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
+				expect(tree._pruned.size).to.equal(2);
+				expect(tree._pruned.get(6606)).to.be.true;
+				expect(tree._pruned.get(1001)).to.be.true;
+			});
+
+			it('should skip pruning for dynamic tree', () => {
+				const tree = new Tree({ nodes: singleDepartmentNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: true });
+				expect(tree._pruned.size).to.equal(0);
+			});
+		});
+
+		describe('getChildIdsForDisplay for pruned node', () => {
+			it('should return the first non-pruned child', () => {
+				let tree = new Tree({ nodes: singleDepartmentNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
+				expect(tree.getChildIdsForDisplay(6606)).to.deep.equal([1001]);
+
+				tree = new Tree({ nodes: singleCourseNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
+				expect(tree.getChildIdsForDisplay(6606)).to.deep.equal([1]);
+			});
+		});
+	});
 });
 
 describe('d2l-insights-tree-filter', () => {
