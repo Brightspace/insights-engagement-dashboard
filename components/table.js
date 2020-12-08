@@ -255,7 +255,7 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 					tabindex="${this.skeleton ? -1 : 0}"
 				>
 					<d2l-input-checkbox
-						aria-label="${this.localize('components.insights-table.selectAll')}"
+						aria-label="${this.localize('table:selectAll')}"
 						name="checkbox-all"
 						@change="${this._handleAllSelected}"
 						?checked="${isAllSelected}"
@@ -355,21 +355,21 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 						<tr>
 							<td class="d2l-insights-discussion-info">
 								<div class="d2l-body-standard" style="text-align:center;">${cellValue[0]}</div>
-								<div class="d2l-body-standard" style="text-align:center;">${this.localize('components.insights-discussion-activity-card.threads')}</div>
+								<div class="d2l-body-standard" style="text-align:center;">${this.localize('discussionActivityCard:threads')}</div>
 							</td>
 							<td>
 								<d2l-icon icon="tier2:divider"></d2l-icon>
 							</td>
 							<td class="d2l-insights-discussion-info">
 								<div class="d2l-body-standard" style="text-align:center;">${cellValue[1]}</div>
-								<div class="d2l-body-standard" style="text-align:center;">${this.localize('components.insights-discussion-activity-card.reads')}</div>
+								<div class="d2l-body-standard" style="text-align:center;">${this.localize('discussionActivityCard:reads')}</div>
 							</td>
 							<td>
 								<d2l-icon icon="tier2:divider"></d2l-icon>
 							</td>
 							<td class="d2l-insights-discussion-info">
 								<div class="d2l-body-standard" style="text-align:center;">${cellValue[2]}</div>
-								<div class="d2l-body-standard" style="text-align:center;">${this.localize('components.insights-discussion-activity-card.replies')}</div>
+								<div class="d2l-body-standard" style="text-align:center;">${this.localize('discussionActivityCard:replies')}</div>
 							</td>
 						</tr>
 					</table>

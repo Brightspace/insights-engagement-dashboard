@@ -104,7 +104,7 @@ class SummaryCard extends SkeletonMixin(Localizer(LitElement)) {
 	}
 
 	get summaryLabel() {
-		return this.localize('components.insights-summary-card.label', { value: this.value, message: this.message });
+		return this.localize('summaryCard:label', { value: this.value, message: this.message });
 	}
 
 	get ariaLive() {

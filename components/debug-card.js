@@ -28,7 +28,7 @@ class DebugCard extends Localizer(MobxLitElement) {
 	}
 
 	get _cardTitle() {
-		return this.localize('components.insights-engagement-dashboard.resultsHeading');
+		return this.localize('dashboard:resultsHeading');
 	}
 
 	get _cardValue() {

@@ -3,13 +3,13 @@ import '@brightspace-ui/core/components/list/list-item';
 import { bodySmallStyles, bodyStandardStyles, heading3Styles } from '@brightspace-ui/core/components/typography/styles';
 import { css, html, LitElement } from 'lit-element/lit-element';
 import { formatNumber, formatPercent } from '@brightspace-ui/intl';
-import { formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
+import { formatDateTimeFromTimestamp } from '@brightspace-ui/intl/lib/dateTime.js';
 import { Localizer } from '../locales/localizer';
 import { numberFormatOptions } from './users-table';
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin';
 
 function thirtyHoursAgo() {
-	return new Date(Date.now() - 30 * 60 * 60 * 1000);
+	return Date.now() - 30 * 60 * 60 * 1000;
 }
 
 class ColumnConfiguration extends RtlMixin(Localizer(LitElement)) {
@@ -82,8 +82,8 @@ class ColumnConfiguration extends RtlMixin(Localizer(LitElement)) {
 					<div class="d2l-insights-config-list-item">
 						<div class="d2l-column-example">${formatPercent(0.8705, numberFormatOptions)}</div>
 						<div class="d2l-column-selection-text">
-							<h3 class="d2l-heading-3">${this.localize('components.insights-engagement-settings.avgGrade')}</h3>
-							<p class="d2l-body-standard">${this.localize('components.insights-engagement-settings.avgGrade-description')}</p>
+							<h3 class="d2l-heading-3">${this.localize('settings:avgGrade')}</h3>
+							<p class="d2l-body-standard">${this.localize('settings:avgGradeDescription')}</p>
 						</div>
 					</div>
 				</d2l-list-item>
@@ -91,8 +91,8 @@ class ColumnConfiguration extends RtlMixin(Localizer(LitElement)) {
 					<div class="d2l-insights-config-list-item">
 						<div class="d2l-column-example">${formatNumber(92, numberFormatOptions)}</div>
 						<div class="d2l-column-selection-text">
-							<h3 class="d2l-heading-3">${this.localize('components.insights-engagement-settings.avgTimeInContent')}</h3>
-							<p class="d2l-body-standard">${this.localize('components.insights-engagement-settings.avgTimeInContent-description')}</p>
+							<h3 class="d2l-heading-3">${this.localize('settings:avgTimeInContent')}</h3>
+							<p class="d2l-body-standard">${this.localize('settings:avgTimeInContentDescription')}</p>
 						</div>
 					</div>
 				</d2l-list-item>
@@ -100,17 +100,17 @@ class ColumnConfiguration extends RtlMixin(Localizer(LitElement)) {
 					<div class="d2l-insights-config-list-item">
 						<div class="d2l-column-example">${this._discussionsExample}</div>
 						<div class="d2l-column-selection-text">
-							<h3 class="d2l-heading-3">${this.localize('components.insights-engagement-settings.avgDiscussionActivity')}</h3>
-							<p class="d2l-body-standard">${this.localize('components.insights-engagement-settings.avgDiscussionActivity-description')}</p>
+							<h3 class="d2l-heading-3">${this.localize('settings:avgDiscussionActivity')}</h3>
+							<p class="d2l-body-standard">${this.localize('settings:avgDiscussionActivityDescription')}</p>
 						</div>
 					</div>
 				</d2l-list-item>
 				<d2l-list-item key="showLastAccessCol" selectable ?selected="${this.showLastAccessCol}">
 					<div class="d2l-insights-config-list-item">
-						<div class="d2l-column-example">${formatDateTime(thirtyHoursAgo(), { format: 'medium' })}</div>
+						<div class="d2l-column-example">${formatDateTimeFromTimestamp(thirtyHoursAgo(), { format: 'medium' })}</div>
 						<div class="d2l-column-selection-text">
-							<h3 class="d2l-heading-3">${this.localize('components.insights-engagement-settings.lastAccessedSystem')}</h3>
-							<p class="d2l-body-standard">${this.localize('components.insights-engagement-settings.lastAccessedSystem-description')}</p>
+							<h3 class="d2l-heading-3">${this.localize('settings:lastAccessedSystem')}</h3>
+							<p class="d2l-body-standard">${this.localize('settings:lastAccessedSystemDescription')}</p>
 						</div>
 					</div>
 				</d2l-list-item>
@@ -123,21 +123,21 @@ class ColumnConfiguration extends RtlMixin(Localizer(LitElement)) {
 			<tr>
 				<td class="d2l-insights-discussion-info">
 					<div class="d2l-body-standard" style="text-align:center;">1</div>
-					<div class="d2l-body-standard" style="text-align:center;">${this.localize('components.insights-discussion-activity-card.threads')}</div>
+					<div class="d2l-body-standard" style="text-align:center;">${this.localize('discussionActivityCard:threads')}</div>
 				</td>
 				<td>
 					<d2l-icon icon="tier2:divider"></d2l-icon>
 				</td>
 				<td class="d2l-insights-discussion-info">
 					<div class="d2l-body-standard" style="text-align:center;">1</div>
-					<div class="d2l-body-standard" style="text-align:center;">${this.localize('components.insights-discussion-activity-card.reads')}</div>
+					<div class="d2l-body-standard" style="text-align:center;">${this.localize('discussionActivityCard:reads')}</div>
 				</td>
 				<td>
 					<d2l-icon icon="tier2:divider"></d2l-icon>
 				</td>
 				<td class="d2l-insights-discussion-info">
 					<div class="d2l-body-standard" style="text-align:center;">0</div>
-					<div class="d2l-body-standard" style="text-align:center;">${this.localize('components.insights-discussion-activity-card.replies')}</div>
+					<div class="d2l-body-standard" style="text-align:center;">${this.localize('discussionActivityCard:replies')}</div>
 				</td>
 			</tr>
 		</table>`;
