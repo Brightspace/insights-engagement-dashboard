@@ -34,7 +34,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return {
 			userCourses: { type: Object, attribute: false },
 			orgUnits: { type: Object, attribute: false },
-			isStudentSuccessSys: { type: Object, attribute: false }
+			isStudentSuccessSys: { type: Boolean, attribute: false }
 		};
 	}
 

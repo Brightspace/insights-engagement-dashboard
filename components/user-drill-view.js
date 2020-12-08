@@ -22,7 +22,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 			isDemo: { type: Boolean, attribute: 'demo' },
 			userCourses: { type: Object, attribute: false },
 			orgUnits: { type: Object, attribute: false },
-			isStudentSuccessSys: { type: Object, attribute: false },
+			isStudentSuccessSys: { type: Boolean, attribute: false },
 			orgUnitId: { type: Object, attribute: 'org-unit-id' }
 		};
 	}
