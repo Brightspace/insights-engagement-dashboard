@@ -411,7 +411,7 @@ export class Tree {
 		do {
 			children = this.getChildIds(prunedNodeId).filter(x => this._isVisible(x));
 			// does not care about pruning root node due it is not rendered anyway
-			this._pruned.set(prunedNodeId, this.getType(prunedNodeId) !== COURSE_OFFERING && prunedNodeId !== this.rootId);
+			this._pruned.set(prunedNodeId, this.getType(prunedNodeId) !== COURSE_OFFERING);
 
 			prunedNodeId = children[0];
 		} while (children.length === 1);

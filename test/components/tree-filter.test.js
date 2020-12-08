@@ -592,25 +592,26 @@ describe('Tree', () => {
 
 		describe('_updatePruned', () => {
 			it('should not find nodes to prune for a tree root with children', () => {
+				// we always prune the root node
 				expect(staticTree._pruned.size).to.equal(1);
-				expect(staticTree._pruned.get(6606)).to.be.false;
+				expect(staticTree._pruned.get(6606)).to.be.true;
 			});
 
 			it('should mark pruned nodes', () => {
 				let tree = new Tree({ nodes: singleDepartmentNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
 				expect(tree._pruned.size).to.equal(2);
-				expect(tree._pruned.get(6606)).to.be.false;
+				expect(tree._pruned.get(6606)).to.be.true;
 				expect(tree._pruned.get(1001)).to.be.true;
 
 				tree = new Tree({ nodes: singleCourseNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
 				expect(tree._pruned.size).to.equal(3);
-				expect(tree._pruned.get(6606)).to.be.false;
+				expect(tree._pruned.get(6606)).to.be.true;
 				expect(tree._pruned.get(1001)).to.be.true;
 				expect(tree._pruned.get(1)).to.be.true;
 
 				tree = new Tree({ nodes: singleCourseOfferingNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
 				expect(tree._pruned.size).to.equal(4);
-				expect(tree._pruned.get(6606)).to.be.false;
+				expect(tree._pruned.get(6606)).to.be.true;
 				expect(tree._pruned.get(1001)).to.be.true;
 				expect(tree._pruned.get(1)).to.be.true;
 				expect(tree._pruned.get(111)).to.be.false;
