@@ -550,7 +550,7 @@ describe('Tree', () => {
 		});
 	});
 
-	describe.only('pruning', () => {
+	describe('pruning', () => {
 		const singleDepartmentNodes = [
 			[6606, 'Org', mockOuTypes.organization, [0]],
 			[1001, 'Department 1', mockOuTypes.department, [6606]],
@@ -635,6 +635,19 @@ describe('Tree', () => {
 
 				tree = new Tree({ nodes: singleCourseOfferingNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
 				expect(tree.getChildIdsForDisplay(6606)).to.deep.equal([111]);
+			});
+		});
+
+		describe('search', () => {
+			it('should return non-pruned nodes', async() => {
+				let tree = new Tree({ nodes: singleCourseOfferingNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
+				expect(tree.getMatchingIds('1')).to.deep.equal([111]);
+
+				tree = new Tree({ nodes: singleCourseNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
+				expect(tree.getMatchingIds('1')).to.deep.equal([112, 111]);
+
+				tree = new Tree({ nodes: singleDepartmentNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
+				expect(tree.getMatchingIds('1')).to.deep.equal([211, 111, 1]);
 			});
 		});
 	});

@@ -239,7 +239,7 @@ export class Tree {
 
 	getMatchingIds(searchString) {
 		return this.ids
-			.filter(x => this._isVisible(x))
+			.filter(x => this._isVisible(x) && !this._isPruned(x))
 			.filter(x => !this._isRoot(x) && this._nameForSort(x).toLowerCase().includes(searchString.toLowerCase()))
 			// reverse order by id so the order is consistent and (most likely) newer items are on top
 			.sort((x, y) => y - x);
