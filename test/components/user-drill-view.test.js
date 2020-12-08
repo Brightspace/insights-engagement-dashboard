@@ -14,6 +14,9 @@ describe('d2l-insights-user-drill-view', () => {
 		userId: 232
 	};
 
+	const userCourses = [];
+	const orgUnits = [];
+
 	afterEach(() => {
 		// d2l-action-button-group uses afterNextRender that causes
 		// 'Cannot read property 'disconnect' of undefined'
@@ -30,7 +33,11 @@ describe('d2l-insights-user-drill-view', () => {
 
 	describe('accessibility', () => {
 		it('should pass all axe tests', async() => {
-			const el = await fixture(html`<d2l-insights-user-drill-view .user=${user}></d2l-insights-user-drill-view>`);
+			const el = await fixture(html`<d2l-insights-user-drill-view
+				.user=${user}
+				.userCourses=${userCourses}
+				.orgUnits=${orgUnits}
+			></d2l-insights-user-drill-view>`);
 			await expect(el).to.be.accessible();
 		});
 	});
@@ -58,7 +65,11 @@ describe('d2l-insights-user-drill-view', () => {
 		});
 
 		it('should render proper title and sub-title', async() => {
-			const el = await fixture(html`<d2l-insights-user-drill-view .user=${user}></d2l-insights-user-drill-view>`);
+			const el = await fixture(html`<d2l-insights-user-drill-view
+				.user=${user}
+				.userCourses=${userCourses}
+				.orgUnits=${orgUnits}
+			></d2l-insights-user-drill-view>`);
 			await new Promise(res => setTimeout(res, 10));
 
 			const title = el.shadowRoot.querySelector('div.d2l-insights-user-drill-view-profile-name > div.d2l-heading-2').innerText;
@@ -69,7 +80,11 @@ describe('d2l-insights-user-drill-view', () => {
 		});
 
 		it('should render the users profile', async() => {
-			const el = await fixture(html`<d2l-insights-user-drill-view .user=${user}></d2l-insights-user-drill-view>`);
+			const el = await fixture(html`<d2l-insights-user-drill-view
+				.user=${user}
+				.userCourses=${userCourses}
+				.orgUnits=${orgUnits}
+			></d2l-insights-user-drill-view>`);
 			const profile = el.shadowRoot.querySelector('d2l-profile-image');
 			await new Promise(res => setTimeout(res, 10));
 

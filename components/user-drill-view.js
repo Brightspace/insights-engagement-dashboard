@@ -12,6 +12,7 @@ import { until } from 'lit-html/directives/until';
  * @property {Object} user - {firstName, lastName, username, userId}
  * @property {Object} userCourses
  * @property {Object} orgUnits
+ * @property {Boolean} isStudentSuccessSys - checking 'Access Student Success System' for org
  * @property {Object} orgUnitId - the org unit the user belongs too
  */
 class UserDrill extends Localizer(MobxLitElement) {
@@ -21,6 +22,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 			isDemo: { type: Boolean, attribute: 'demo' },
 			userCourses: { type: Object, attribute: false },
 			orgUnits: { type: Object, attribute: false },
+			isStudentSuccessSys: { type: Boolean, attribute: false },
 			orgUnitId: { type: Object, attribute: 'org-unit-id' }
 		};
 	}
@@ -188,7 +190,9 @@ class UserDrill extends Localizer(MobxLitElement) {
 
 				<d2l-insights-active-courses-table
 					.userCourses="${this.userCourses}"
-					.orgUnits="${this.orgUnits}">
+					.orgUnits="${this.orgUnits}"
+					.isStudentSuccessSys="${this.isStudentSuccessSys}"
+				>
 				</d2l-insights-active-courses-table>
 
 			</div>
