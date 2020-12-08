@@ -45,7 +45,7 @@ describe('d2l-insights-active-courses-table', () => {
 			const userTable = el.shadowRoot.querySelector('d2l-insights-table');
 			await new Promise(res => setTimeout(res, 10));
 			const headers = [].slice.call(userTable.shadowRoot.querySelectorAll('th'));
-			const headersArr = headers.map(e => { return e.innerText; });
+			const headersArr = headers.map(e => { return e.innerText.trim(); });
 			expect(headersArr).to.deep.equal(['Course Name', 'Current Grade', 'Predicted Grade', 'Time in Content (mins)', 'Discussion Activity', 'Course Last Access']);
 		});
 
@@ -60,7 +60,7 @@ describe('d2l-insights-active-courses-table', () => {
 			const userTable = el.shadowRoot.querySelector('d2l-insights-table');
 			await new Promise(res => setTimeout(res, 10));
 			const headers = [].slice.call(userTable.shadowRoot.querySelectorAll('th'));
-			const headersArr = headers.map(e => { return e.innerText; });
+			const headersArr = headers.map(e => { return e.innerText.trim(); });
 			expect(headersArr).to.deep.equal(['Course Name', 'Current Grade', 'Time in Content (mins)', 'Discussion Activity', 'Course Last Access']);
 		});
 	});
