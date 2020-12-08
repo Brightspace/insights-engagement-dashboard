@@ -106,6 +106,8 @@ see https://wiki.saucelabs.com/pages/viewpage.action?pageId=70072943.
 
 This repo uses the [@brightspace-ui/visual-diff utility](https://github.com/BrightspaceUI/visual-diff/) to compare current snapshots against a set of golden snapshots stored in source control.
 
+The visual diff action uses aws secrets that are generated in the [iam-build-tokens repo](https://github.com/Brightspace/iam-build-tokens/blob/master/terraform/roles/insights-dashboards.tf)
+
 ```shell
 # run visual-diff tests
 npm run test:diff
