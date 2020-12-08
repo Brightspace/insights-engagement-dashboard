@@ -1,9 +1,9 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('insights-engagement-dashboard', () => {
+describe('engagement-dashboard', () => {
 
-	const visualDiff = new VisualDiff('insights-engagement-dashboard', __dirname);
+	const visualDiff = new VisualDiff('engagement-dashboard', __dirname);
 
 	let browser, page;
 
@@ -35,3 +35,5 @@ describe('insights-engagement-dashboard', () => {
 	});
 
 });
+
+
