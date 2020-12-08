@@ -578,6 +578,18 @@ describe('Tree', () => {
 			[112, 'Course 1 / Semester 2', mockOuTypes.courseOffering, [1, 12]]
 		];
 
+		const singleCourseOfferingNodes = [
+			[6606, 'Org', mockOuTypes.organization, [0]],
+			[1001, 'Department 1', mockOuTypes.department, [6606]],
+
+			[1, 'Course 1', mockOuTypes.course, [1001]],
+
+			[11, 'Semester 1', mockOuTypes.semester, [6606]],
+			[12, 'Semester 2', mockOuTypes.semester, [6606]],
+
+			[111, 'Course 1 / Semester 1', mockOuTypes.courseOffering, [1, 11]]
+		];
+
 		describe('_updatePruned', () => {
 			it('should not find nodes to prune for a tree root with children', () => {
 				expect(staticTree._pruned.size).to.equal(0);
@@ -592,6 +604,12 @@ describe('Tree', () => {
 				expect(tree._pruned.size).to.equal(2);
 				expect(tree._pruned.get(6606)).to.be.true;
 				expect(tree._pruned.get(1001)).to.be.true;
+
+				tree = new Tree({ nodes: singleCourseOfferingNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
+				expect(tree._pruned.size).to.equal(3);
+				expect(tree._pruned.get(6606)).to.be.true;
+				expect(tree._pruned.get(1001)).to.be.true;
+				expect(tree._pruned.get(1)).to.be.true;
 			});
 
 			it('should skip pruning for dynamic tree', () => {
@@ -607,6 +625,9 @@ describe('Tree', () => {
 
 				tree = new Tree({ nodes: singleCourseNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
 				expect(tree.getChildIdsForDisplay(6606)).to.deep.equal([1]);
+
+				tree = new Tree({ nodes: singleCourseOfferingNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
+				expect(tree.getChildIdsForDisplay(6606)).to.deep.equal([111]);
 			});
 		});
 	});
