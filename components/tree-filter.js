@@ -50,7 +50,6 @@ export class Tree {
 		this._open = oldTree ? new Set(oldTree.open) : new Set();
 		// null for no filter, vs. empty Set() when none match
 		this._visible = null;
-		this._pruned = new Map();
 		this._populated = isDynamic ? new Set() : null;
 
 		// for dynamic trees; see addNodes
@@ -60,8 +59,6 @@ export class Tree {
 
 		// fill in children (parents are provided by the caller, and ancestors will be generated on demand)
 		this._updateChildren(this.ids);
-
-		this._updatePruned();
 
 		if (extraChildren) {
 			extraChildren.forEach((data, orgUnitId) => {
@@ -219,15 +216,14 @@ export class Tree {
 		return this._bookmarks.get(id);
 	}
 
-	getChildIdsForDisplay(id) {
+	getChildIdsForDisplay(id, pruning) {
 		const children = this.getChildIds(id).filter(x => this._isVisible(x));
 		if (children.length < 1) return [];
 
-		const nonPrunedChildren = children.filter(x => !this._isPruned(x))
-			.sort((a, b) => this._nameForSort(a).localeCompare(this._nameForSort(b)));
-		if (nonPrunedChildren.length > 0) return nonPrunedChildren;
+		const isPrunning = (pruning || this._isRoot(id)) && children.length === 1 && this.getType(children[0]) !== COURSE_OFFERING;
+		if (isPrunning) return this.getChildIdsForDisplay(children[0], true);
 
-		return children.flatMap(x => this.getChildIdsForDisplay(x));
+		return children.sort((a, b) => this._nameForSort(a).localeCompare(this._nameForSort(b)));
 	}
 
 	getChildIds(id) {
@@ -239,7 +235,7 @@ export class Tree {
 
 	getMatchingIds(searchString) {
 		return this.ids
-			.filter(x => this._isVisible(x) && !this._isPruned(x))
+			.filter(x => this._isVisible(x))
 			.filter(x => !this._isRoot(x) && this._nameForSort(x).toLowerCase().includes(searchString.toLowerCase()))
 			// reverse order by id so the order is consistent and (most likely) newer items are on top
 			.sort((x, y) => y - x);
@@ -373,10 +369,6 @@ export class Tree {
 			&& !this.invisibleTypes.includes(this.getType(id));
 	}
 
-	_isPruned(id) {
-		return this._pruned.get(id);
-	}
-
 	_nameForSort(id) {
 		return this.getName(id) + id;
 	}
@@ -401,20 +393,6 @@ export class Tree {
 				}
 			});
 		});
-	}
-
-	_updatePruned() {
-		if (this.isDynamic) return false;
-
-		let prunedNodeId = this.rootId;
-		let children = null;
-		do {
-			children = this.getChildIds(prunedNodeId).filter(x => this._isVisible(x));
-			// does not care about pruning root node due it is not rendered anyway
-			this._pruned.set(prunedNodeId, this.getType(prunedNodeId) !== COURSE_OFFERING);
-
-			prunedNodeId = children[0];
-		} while (children.length === 1);
 	}
 
 	_updateSelected(id) {
