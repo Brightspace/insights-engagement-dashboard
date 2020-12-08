@@ -3,13 +3,13 @@ import '@brightspace-ui/core/components/list/list-item';
 import { bodySmallStyles, bodyStandardStyles, heading3Styles } from '@brightspace-ui/core/components/typography/styles';
 import { css, html, LitElement } from 'lit-element/lit-element';
 import { formatNumber, formatPercent } from '@brightspace-ui/intl';
-import { formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
+import { formatDateTimeFromTimestamp } from '@brightspace-ui/intl/lib/dateTime.js';
 import { Localizer } from '../locales/localizer';
 import { numberFormatOptions } from './users-table';
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin';
 
 function thirtyHoursAgo() {
-	return new Date(Date.now() - 30 * 60 * 60 * 1000);
+	return Date.now() - 30 * 60 * 60 * 1000;
 }
 
 class ColumnConfiguration extends RtlMixin(Localizer(LitElement)) {
@@ -107,7 +107,7 @@ class ColumnConfiguration extends RtlMixin(Localizer(LitElement)) {
 				</d2l-list-item>
 				<d2l-list-item key="showLastAccessCol" selectable ?selected="${this.showLastAccessCol}">
 					<div class="d2l-insights-config-list-item">
-						<div class="d2l-column-example">${formatDateTime(thirtyHoursAgo(), { format: 'medium' })}</div>
+						<div class="d2l-column-example">${formatDateTimeFromTimestamp(thirtyHoursAgo(), { format: 'medium' })}</div>
 						<div class="d2l-column-selection-text">
 							<h3 class="d2l-heading-3">${this.localize('settings:lastAccessedSystem')}</h3>
 							<p class="d2l-body-standard">${this.localize('settings:lastAccessedSystemDescription')}</p>

@@ -35,6 +35,9 @@ export class SemesterSelectorFilter {
 	constructor(data) {
 		this._data = data;
 		this.selected = data.serverData.selectedSemestersIds || [];
+		// at least one filter needs this flag so that an intentional all-filters-cleared state
+		// is distinct from the default state
+		this.persistEmpty = true;
 		// noinspection JSUnusedGlobalSymbols
 		this._urlState = new UrlState(this);
 	}

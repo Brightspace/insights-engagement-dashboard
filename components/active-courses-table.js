@@ -4,7 +4,7 @@ import { css, html } from 'lit-element';
 import { formatNumber, formatPercent } from '@brightspace-ui/intl';
 import { ORG_UNIT, RECORD } from '../consts';
 import { COLUMN_TYPES } from './table';
-import { formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
+import { formatDateTimeFromTimestamp } from '@brightspace-ui/intl/lib/dateTime.js';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
@@ -137,7 +137,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_formatDataForDisplay(user) {
 		const lastSysAccessFormatted = user[TABLE_COURSES.COURSE_LAST_ACCESS]
-			? formatDateTime(new Date(user[TABLE_COURSES.COURSE_LAST_ACCESS]), { format: 'medium' })
+			? formatDateTimeFromTimestamp(user[TABLE_COURSES.COURSE_LAST_ACCESS], { format: 'medium' })
 			: this.localize('usersTable:null');
 		const currentGrade = user[TABLE_COURSES.CURRENT_GRADE]
 			? formatPercent(user[TABLE_COURSES.CURRENT_GRADE] / 100, numberFormatOptions)
