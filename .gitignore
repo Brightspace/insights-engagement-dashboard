@@ -4,3 +4,4 @@ test/screenshots/current/
 test/screenshots/golden/
 /.idea/
 .vscode/
+debug.log

@@ -4,7 +4,7 @@ import { css, html } from 'lit-element';
 import { formatNumber, formatPercent } from '@brightspace-ui/intl';
 import { ORG_UNIT, RECORD } from '../consts';
 import { COLUMN_TYPES } from './table';
-import { formatDateTime } from '@brightspace-ui/intl/lib/dateTime.js';
+import { formatDateTimeFromTimestamp } from '@brightspace-ui/intl/lib/dateTime.js';
 import { heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
@@ -34,7 +34,8 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
 			userCourses: { type: Object, attribute: false },
-			orgUnits: { type: Object, attribute: false }
+			orgUnits: { type: Object, attribute: false },
+			isStudentSuccessSys: { type: Object, attribute: false }
 		};
 	}
 
@@ -139,7 +140,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_formatDataForDisplay(user) {
 		const lastSysAccessFormatted = user[TABLE_COURSES.COURSE_LAST_ACCESS]
-			? formatDateTime(new Date(user[TABLE_COURSES.COURSE_LAST_ACCESS]), { format: 'medium' })
+			? formatDateTimeFromTimestamp(user[TABLE_COURSES.COURSE_LAST_ACCESS], { format: 'medium' })
 			: this.localize('usersTable:null');
 		const currentGrade = user[TABLE_COURSES.CURRENT_GRADE]
 			? formatPercent(user[TABLE_COURSES.CURRENT_GRADE] / 100, numberFormatOptions)
@@ -208,15 +209,8 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this._selectColumns(columnInfo);
 	}
 
-	get showPredictedGradeCol() {
-		return this.userCourses
-			.filter(this._activeCourses, this)
-			.filter(data => data[RECORD.PREDICTED_GRADE] !== null)
-			.length > 0;
-	}
-
 	_selectColumns(columns) {
-		if (!this.showPredictedGradeCol) columns.splice(TABLE_COURSES.PREDICTED_GRADE, 1);
+		if (!this.isStudentSuccessSys) columns.splice(TABLE_COURSES.PREDICTED_GRADE, 1);
 		return columns;
 	}
 
@@ -243,7 +237,6 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 decorate(CoursesTable, {
 	userDataForDisplay: computed,
 	userDataForDisplayFormatted: computed,
-	showPredictedGradeCol: computed,
 	_sortColumn: observable,
 	_sortOrder: observable,
 	_handleColumnSort: action
