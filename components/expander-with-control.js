@@ -66,7 +66,7 @@ class ExpanderWithControl extends RtlMixin(Localizer(LitElement)) {
 			<div
 				role="button"
 				class="d2l-insights-expand-collapse-control"
-				@click="${this._toggleExpanded}"></div>
+				@click="${this._toggleExpanded}">
 
 				<p class="d2l-insights-expand-collapse-control-text">${ controlText }</p>
 				<d2l-button-icon
