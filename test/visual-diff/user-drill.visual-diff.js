@@ -16,7 +16,7 @@ describe('user-drill', () => {
 			deviceScaleFactor: 1
 		});
 		await page.goto(
-			`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-insights-engagement-dashboard.visual-diff.html?v=user%2C100`,
+			`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-insights-engagement-dashboard.visual-diff.html?v=user%2C200`,
 			{ waitUntil: ['networkidle0', 'load'] }
 		);
 		await page.bringToFront();
