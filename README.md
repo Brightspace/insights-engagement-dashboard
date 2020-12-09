@@ -119,7 +119,14 @@ npm run test:diff -- -g some-pattern
 npm run test:diff:golden
 ```
 
-Golden snapshots in source control must be updated by Travis CI. To trigger an update, press the "Regenerate Goldens" button in the pull request `visual-difference` test run.
+Golden snapshots are stored in your repo so only generate new goldens if you are sure you want to keep them. Commiting and pushing them will overwrite the goldens other members will compare against.
+
+The github bot may create a new pull request to merge new goldens into your PR. You can check the difference between the goldens and the new snapshots by
+1. Going into the pr, changes, and finding the report.html file of the test you want to observe.
+2. Save the file to your computer or copy the contents into an online html viewer.
+3. Differences will be highlighted in red. If you approve these changes accept the bots pr.
+
+Note: Place all visual tests in the ./test/visual-diff folder or they will be ignored by the Github Action.
 
 ## Versioning, Releasing & Deploying
 
