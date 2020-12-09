@@ -1,4 +1,4 @@
-name: CI
+name: Visual Diff
 on: pull_request
 jobs:
   test:
