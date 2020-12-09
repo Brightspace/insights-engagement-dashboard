@@ -1,3 +1,4 @@
+/* eslint-disable lit-a11y/click-events-have-key-events */
 import '@brightspace-ui/core/components/expand-collapse/expand-collapse-content';
 import '@brightspace-ui/core/components/button/button-icon';
 
@@ -65,7 +66,7 @@ class ExpanderWithControl extends RtlMixin(Localizer(LitElement)) {
 			<div
 				role="button"
 				class="d2l-insights-expand-collapse-control"
-				@click="${this._toggleExpanded}">
+				@click="${this._toggleExpanded}"></div>
 
 				<p class="d2l-insights-expand-collapse-control-text">${ controlText }</p>
 				<d2l-button-icon
