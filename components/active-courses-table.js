@@ -18,6 +18,8 @@ export const TABLE_COURSES = {
 	COURSE_LAST_ACCESS: 5
 };
 
+export const IS_ACTIVE_COURSE = 6;
+
 const numberFormatOptions = { maximumFractionDigits: 2 };
 
 const DEFAULT_PAGE_SIZE = 20;
@@ -58,7 +60,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _itemsCount() {
-		return this.userDataForDisplayFormatted.length;
+		return this.userDataForDisplay.length;
 	}
 
 	// don't use displayData.length to get the itemsCount. When we display a skeleton view, displayData.length is
@@ -72,7 +74,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		}
 
 		if (this._itemsCount) {
-			return this.userDataForDisplayFormatted.map(user => this._selectColumns(user));
+			return this.userDataForDisplay.map(user => this._selectColumns(user));
 		}
 		return [];
 	}
@@ -86,6 +88,16 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const orgUnitId =  userRecords[RECORD.ORG_UNIT_ID];
 		const orgUnit = this.orgUnits.find(x => x[ORG_UNIT.ID] === orgUnitId);
 		return orgUnit[ORG_UNIT.IS_ACTIVE];
+	}
+
+	_activeCourseById(id) {
+		const orgUnit = this.orgUnits.find(x => x[ORG_UNIT.ID] === id);
+		return orgUnit ? orgUnit[ORG_UNIT.IS_ACTIVE] : false;
+	}
+
+	_getOrgIdFromCourseNameString(str) {
+		const result = str.match(/\(Id: ([0-9]+)\)/);
+		return result ? result[1] : 0;
 	}
 
 	_preProcessData(userRecords) {
@@ -165,18 +177,6 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 			.map(this._formatDataForDisplay, this);
 	}
 
-	get userDataForDisplayFormatted() {
-		return this.userDataForDisplay.map(data => {
-			return [
-				data[TABLE_COURSES.COURSE_NAME],
-				data[TABLE_COURSES.CURRENT_GRADE],
-				data[TABLE_COURSES.PREDICTED_GRADE],
-				data[TABLE_COURSES.TIME_IN_CONTENT],
-				data[TABLE_COURSES.DISCUSSION_ACTIVITY],
-				data[TABLE_COURSES.COURSE_LAST_ACCESS]];
-		});
-	}
-
 	get columnInfo() {
 		const columnInfo = [
 			{
@@ -212,6 +212,37 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return columns;
 	}
 
+	get dataForExport() {
+		const arrayOfHeaderColumnIndexes = Object.values(TABLE_COURSES);
+		arrayOfHeaderColumnIndexes.push(IS_ACTIVE_COURSE);
+
+		return this.userDataForDisplay
+			.map(user => arrayOfHeaderColumnIndexes.flatMap(column => {
+				const val = user[column];
+				if (column === IS_ACTIVE_COURSE) {
+					const isCourseActive = this._activeCourseById(Number(this._getOrgIdFromCourseNameString(user[TABLE_COURSES.COURSE_NAME])));
+					return [isCourseActive];
+				}
+				return val;
+			}));
+	}
+
+	get headersForExport() {
+		const headers = [
+			this.localize('activeCoursesTable:course'),
+			this.localize('activeCoursesTable:grade')
+		];
+		if (this.isStudentSuccessSys) headers.push(this.localize('activeCoursesTable:predictedGrade'));
+		headers.push(this.localize('activeCoursesTable:timeInContent'));
+		headers.push(this.localize('discussionActivityCard:threads'));
+		headers.push(this.localize('discussionActivityCard:reads'));
+		headers.push(this.localize('discussionActivityCard:replies'));
+		headers.push(this.localize('usersTable:lastAccessedSys'));
+		headers.push(this.localize('activeCoursesTable:isActive'));
+
+		return headers;
+	}
+
 	render() {
 		return html`
 			<d2l-insights-table
@@ -228,7 +259,8 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 }
 decorate(CoursesTable, {
 	userDataForDisplay: computed,
-	userDataForDisplayFormatted: computed,
+	headersForExport: computed,
+	dataForExport: computed,
 	_sortColumn: observable,
 	_sortOrder: observable,
 	_handleColumnSort: action

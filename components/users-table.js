@@ -434,6 +434,7 @@ decorate(UsersTable, {
 	userDataForDisplay: computed,
 	userDataForDisplayFormatted: computed,
 	headersForExport: computed,
+	dataForExport: computed,
 	_sortColumn: observable,
 	_sortOrder: observable,
 	_handleColumnSort: action
