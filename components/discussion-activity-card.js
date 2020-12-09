@@ -219,7 +219,7 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 					enabled: false
 				}
 			},
-			series: {
+			series: [{
 				colorByPoint: true,
 				data: [{
 					name: that._legendLabels[0],
@@ -251,7 +251,7 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 						return `${ix}, ${point.y}.`;
 					}
 				}
-			},
+			}],
 			accessibility: {
 				screenReaderSection: {
 					beforeChartFormat: BEFORE_CHART_FORMAT
