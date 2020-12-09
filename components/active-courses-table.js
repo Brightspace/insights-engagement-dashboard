@@ -32,7 +32,8 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
 			userCourses: { type: Object, attribute: false },
-			orgUnits: { type: Object, attribute: false }
+			orgUnits: { type: Object, attribute: false },
+			isStudentSuccessSys: { type: Boolean, attribute: false }
 		};
 	}
 
@@ -70,9 +71,8 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		}
 
 		if (this._itemsCount) {
-			return this.userDataForDisplayFormatted;
+			return this.userDataForDisplayFormatted.map(user => this._selectColumns(user));
 		}
-
 		return [];
 	}
 
@@ -82,22 +82,22 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_activeCourses(userRecords) {
-		const orgUnitId =  userRecords.get(RECORD.ORG_UNIT_ID);
-		const orgUnit = this.data._data.serverData.orgUnits.find(x => x[ORG_UNIT.ID] === orgUnitId);
+		const orgUnitId =  userRecords[RECORD.ORG_UNIT_ID];
+		const orgUnit = this.orgUnits.find(x => x[ORG_UNIT.ID] === orgUnitId);
 		return orgUnit[ORG_UNIT.IS_ACTIVE];
 	}
 
 	_preProcessData(userRecords) {
-		const orgUnitId =  userRecords.get(RECORD.ORG_UNIT_ID);
-		const orgUnit = this.data._data.serverData.orgUnits.find(x => x[ORG_UNIT.ID] === orgUnitId);
+		const orgUnitId =  userRecords[RECORD.ORG_UNIT_ID];
+		const orgUnit = this.orgUnits.find(x => x[ORG_UNIT.ID] === orgUnitId);
 		const orgUnitName = orgUnit[ORG_UNIT.NAME];
-		const finalGrade = userRecords.get(RECORD.CURRENT_FINAL_GRADE);
-		const predictedGrade = userRecords.get(RECORD.CURRENT_FINAL_GRADE);
-		const timeInContent = userRecords.get(RECORD.TIME_IN_CONTENT);
-		const threads = userRecords.get(RECORD.DISCUSSION_ACTIVITY_THREADS);
-		const reads = userRecords.get(RECORD.DISCUSSION_ACTIVITY_READS);
-		const replies = userRecords.get(RECORD.DISCUSSION_ACTIVITY_REPLIES);
-		const lastCourseAccess = userRecords.get(RECORD.COURSE_LAST_ACCESS) ? new Date(userRecords.get(RECORD.COURSE_LAST_ACCESS)) : undefined;
+		const finalGrade = userRecords[RECORD.CURRENT_FINAL_GRADE];
+		const predictedGrade = userRecords[RECORD.PREDICTED_GRADE];
+		const timeInContent = userRecords[RECORD.TIME_IN_CONTENT];
+		const threads = userRecords[RECORD.DISCUSSION_ACTIVITY_THREADS];
+		const reads = userRecords[RECORD.DISCUSSION_ACTIVITY_READS];
+		const replies = userRecords[RECORD.DISCUSSION_ACTIVITY_REPLIES];
+		const lastCourseAccess = userRecords[RECORD.COURSE_LAST_ACCESS] ? new Date(userRecords[RECORD.COURSE_LAST_ACCESS]) : undefined;
 
 		return [
 			this.localize('treeFilter:nodeName', { orgUnitName, id: orgUnitId }),
@@ -145,7 +145,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return [
 			user[TABLE_COURSES.COURSE_NAME],
 			currentGrade,
-			user[TABLE_COURSES.PREDICTED_GRADE] ? formatPercent(user[TABLE_COURSES.PREDICTED_GRADE] / 100, numberFormatOptions) : '',
+			user[TABLE_COURSES.PREDICTED_GRADE] ? formatPercent(user[TABLE_COURSES.PREDICTED_GRADE], numberFormatOptions) : this.localize('activeCoursesTable:noPredictedGrade'),
 			formatNumber(user[TABLE_COURSES.TIME_IN_CONTENT] / 60, numberFormatOptions),
 			user[TABLE_COURSES.DISCUSSION_ACTIVITY],
 			lastSysAccessFormatted
@@ -154,7 +154,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	// @computed
 	get userDataForDisplay() {
-		// map to a 2D userData array, with column 1 as a sub-array of [id, FirstName, LastName, UserName]
+		// filter only active courses, map to a 2D userData array,
 		// then sort by the selected sorting function
 		const sortFunction = this._choseSortFunction(this._sortColumn, this._sortOrder);
 		const recordsMap = this.data.recordsByUser.get(this.user.userId);
@@ -178,7 +178,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get columnInfo() {
-		return [
+		const columnInfo = [
 			{
 				headerText: this.localize('activeCoursesTable:course'),
 				columnType: COLUMN_TYPES.NORMAL_TEXT
@@ -204,6 +204,12 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 				columnType: COLUMN_TYPES.NORMAL_TEXT
 			}
 		];
+		return this._selectColumns(columnInfo);
+	}
+
+	_selectColumns(columns) {
+		if (!this.isStudentSuccessSys) columns.splice(TABLE_COURSES.PREDICTED_GRADE, 1);
+		return columns;
 	}
 
 	render() {

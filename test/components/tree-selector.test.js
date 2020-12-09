@@ -24,7 +24,7 @@ describe('d2l-insights-tree-selector', () => {
 	describe('render', () => {
 		it('should render a dropbdown with the given name', async() => {
 			const el = await fixture(html`<d2l-insights-tree-selector name="choose!"></d2l-insights-tree-selector>`);
-			expect(el.shadowRoot.querySelector('d2l-dropdown-button-subtle').text).to.equal('choose!');
+			expect(el.shadowRoot.querySelector('d2l-dropdown-button-subtle').getAttribute('text')).to.equal('choose!');
 		});
 
 		it('should have slots for tree and search-results', async() => {

@@ -195,6 +195,7 @@ export default {
 	"inactiveCoursesTable:content": "Total Time in Content (mins)",
 	"inactiveCoursesTable:discussions": "Discussion Activity",
 	"inactiveCoursesTable:lastAccessedCourse": "Course Last Access",
-	"inactiveCoursesTable:loadingPlaceholder": "Loading"
+	"inactiveCoursesTable:loadingPlaceholder": "Loading",
 
+	"activeCoursesTable:noPredictedGrade": "No predicted grade",
 };

@@ -3,24 +3,24 @@
 export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView = false }) {
 	const demoData = {
 		records: [
-			[1, 100, 500, 1, 55, 1000, Date.now(), 0, 0, 0],
-			[1, 200, 600, 0, 33, 2000, Date.now() - 2093, 0, 0, 0],
-			[1, 300, 500, 0, null, 1000, null, 0, 0, 0],
-			[1, 400, 500, 0, 30, 5000, null, 0, 0, 0],
-			[1, 500, 500, 0, 65, 5000, null, 2, 0, 40],
-			[1, 500, 600, 0, 51, 4000, null, 0, 0, 0],
-			[2, 100, 500, 0, 60, 1100, null, 2, 4, 0],
-			[2, 200, 700, 1, 38, 4000, null, 0, 0, 0],
-			[1, 200, 700, 1, 71, 4000, null, 0, 0, 0],
-			[1, 100, 700, 1, 81, 1000, null, 3, 2, 1],
-			[2, 100, 700, 1, 91, 1200, null, 1, 33, 1],
-			[2, 300, 500, 0, 9, 7200, null, 1, 3, 5],
-			[2, 300, 700, 0, null, 0, 289298332, 0, 0, 0],
-			[2, 400, 700, 0, 100, 7200, Date.now() - 432000001, 0, 0, 0],
-			[2, 500, 700, 0, 88, 4000, null, 4, 4, 1],
-			[8, 200, 700, 0, null, 0, null, 55, 2, 3],
-			[6, 600, 700, 0, 95, 2000, Date.now() - 8560938122, 0, 0, 0],
-			[1, 400, 700, 1, 75, 2000, null, 2, 1, 4]
+			[1, 100, 500, 1, 55, 1000, Date.now(), 0, 0, 0, null],
+			[1, 200, 600, 0, 33, 2000, Date.now() - 2093, 0, 0, 0, null],
+			[1, 300, 500, 0, null, 1000, null, 0, 0, 0, null],
+			[1, 400, 500, 0, 30, 5000, null, 0, 0, 0, null],
+			[1, 500, 500, 0, 65, 5000, null, 2, 0, 40, null],
+			[1, 500, 600, 0, 51, 4000, null, 0, 0, 0, 0.7],
+			[2, 100, 500, 0, 60, 1100, null, 2, 4, 0, null],
+			[2, 200, 700, 1, 38, 4000, null, 0, 0, 0, null],
+			[1, 200, 700, 1, 71, 4000, null, 0, 0, 0, 0.8],
+			[1, 100, 700, 1, 81, 1000, null, 3, 2, 1, null],
+			[2, 100, 700, 1, 91, 1200, null, 1, 33, 1, null],
+			[2, 300, 500, 0, 9, 7200, null, 1, 3, 5, null],
+			[2, 300, 700, 0, 3, 0, 289298332, 0, 0, 0, null],
+			[2, 400, 700, 0, 100, 7200, Date.now() - 432000001, 0, 0, 0, null],
+			[2, 500, 700, 0, 88, 4000, null, 4, 4, 1, null],
+			[8, 200, 700, 0, null, 0, null, 55, 2, 3, null],
+			[6, 600, 700, 0, 95, 2000, Date.now() - 8560938122, 0, 0, 0, null],
+			[1, 400, 700, 1, 75, 2000, null, 2, 1, 4, 0.9]
 		],
 		orgUnits: [
 			[1, 'Course 1', 3, [3, 4], false],
@@ -54,7 +54,8 @@ export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView 
 		selectedRolesIds: roleIds,
 		selectedOrgUnitIds: orgUnitIds,
 		defaultViewOrgUnitIds: defaultView ? [1, 2] : null,
-		isDefaultView: defaultView
+		isDefaultView: defaultView,
+		isStudentSuccessSys: true
 	};
 	return new Promise(resolve => setTimeout(() => resolve(demoData), 100));
 }
