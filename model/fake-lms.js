@@ -4,7 +4,7 @@ export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView 
 	const demoData = {
 		records: [
 			[1, 100, 500, 1, 55, 1000, Date.now(), 0, 0, 0, null],
-			[1, 200, 600, 0, 33, 2000, Date.now() - 2093, 0, 0, 0, null],
+			[1, 200, 600, 0, 33, 2000, 1607528563207, 0, 0, 0, null],
 			[1, 300, 500, 0, null, 1000, null, 0, 0, 0, null],
 			[1, 400, 500, 0, 30, 5000, null, 0, 0, 0, null],
 			[1, 500, 500, 0, 65, 5000, null, 2, 0, 40, null],
@@ -36,11 +36,11 @@ export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView 
 			[6606, 'Dev', 1, [0], false]
 		],
 		users: [ // some of which are out of order
-			[100,  'ATest', 'AStudent', 'AStudent', Date.now() - 2000000000],
+			[100,  'ATest', 'AStudent', 'AStudent', 1601193037132],
 			[300,  'CTest', 'CStudent', 'CStudent', 1603193037132],
-			[200,  'BTest', 'BStudent', 'BStudent', Date.now()],
+			[200,  'BTest', 'BStudent', 'BStudent', 1607528565300],
 			[400,  'DTest', 'DStudent', 'DStudent', null],
-			[500,  'ETest', 'EStudent', 'EStudent', Date.now()],
+			[500,  'ETest', 'EStudent', 'EStudent', 1546318800000],
 			[600,  'GTest', 'GStudent', 'GStudent', Date.now()],
 			[700,  'FTest', 'FStudent', 'FStudent', Date.now()],
 			[800,  'HTest', 'HStudent', 'HStudent', Date.now()],
