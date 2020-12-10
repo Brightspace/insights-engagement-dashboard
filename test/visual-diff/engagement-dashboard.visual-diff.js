@@ -19,7 +19,7 @@ describe('engagement-dashboard', () => {
 			`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-insights-engagement-dashboard.visual-diff.html`,
 			{ waitUntil: ['networkidle0', 'load'] }
 		);
-
+		// Accept the default view popup and close it.
 		await page.keyboard.press('Tab');
 		await page.keyboard.press('Enter');
 		await page.bringToFront();
