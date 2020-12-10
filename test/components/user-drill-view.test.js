@@ -15,7 +15,6 @@ describe('d2l-insights-user-drill-view', () => {
 		userId: 232
 	};
 
-<<<<<<< HEAD
 	const data = {
 		_data: {
 			serverData: {
@@ -29,10 +28,6 @@ describe('d2l-insights-user-drill-view', () => {
 	};
 
 	data.recordsByUser = new Map();
-=======
-	const userCourses = [];
-	const orgUnits = [];
->>>>>>> bf02eaf25150bff750ae87aa57fab36303fb3ac7
 
 	afterEach(() => {
 		// d2l-action-button-group uses afterNextRender that causes
@@ -50,15 +45,7 @@ describe('d2l-insights-user-drill-view', () => {
 
 	describe('accessibility', () => {
 		it('should pass all axe tests', async() => {
-<<<<<<< HEAD
 			const el = await fixture(html`<d2l-insights-user-drill-view .user=${user} .data=${data}></d2l-insights-user-drill-view>`);
-=======
-			const el = await fixture(html`<d2l-insights-user-drill-view
-				.user=${user}
-				.userCourses=${userCourses}
-				.orgUnits=${orgUnits}
-			></d2l-insights-user-drill-view>`);
->>>>>>> bf02eaf25150bff750ae87aa57fab36303fb3ac7
 			await expect(el).to.be.accessible();
 		});
 	});
@@ -86,15 +73,7 @@ describe('d2l-insights-user-drill-view', () => {
 		});
 
 		it('should render proper title and sub-title', async() => {
-<<<<<<< HEAD
 			const el = await fixture(html`<d2l-insights-user-drill-view .user=${user} .data=${data}></d2l-insights-user-drill-view>`);
-=======
-			const el = await fixture(html`<d2l-insights-user-drill-view
-				.user=${user}
-				.userCourses=${userCourses}
-				.orgUnits=${orgUnits}
-			></d2l-insights-user-drill-view>`);
->>>>>>> bf02eaf25150bff750ae87aa57fab36303fb3ac7
 			await new Promise(res => setTimeout(res, 10));
 
 			const title = el.shadowRoot.querySelector('div.d2l-insights-user-drill-view-profile-name > div.d2l-heading-2').innerText;
@@ -107,8 +86,6 @@ describe('d2l-insights-user-drill-view', () => {
 		it('should render the users profile', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view
 				.user=${user}
-				.userCourses=${userCourses}
-				.orgUnits=${orgUnits}
 			></d2l-insights-user-drill-view>`);
 			const profile = el.shadowRoot.querySelector('d2l-profile-image');
 			await new Promise(res => setTimeout(res, 10));

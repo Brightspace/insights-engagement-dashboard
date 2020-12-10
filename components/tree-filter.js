@@ -12,6 +12,7 @@ export const ID = 0; // unique node identifier (Number)
 export const NAME = 1; // node name (String)
 export const TYPE = 2; // Number
 export const PARENTS = 3; // array of parent ids (Number); a node with parent 0 is the root
+export const ACTIVE_STATUS = 4; // boolean to represent whether the course is active or not
 
 export class Tree {
 	/**
@@ -260,6 +261,11 @@ export class Tree {
 	getType(id) {
 		const node = this._nodes.get(id);
 		return (node && node[TYPE]) || 0;
+	}
+
+	getActiveStatus(id) {
+		const node = this._nodes.get(id);
+		return (node && node[ACTIVE_STATUS]) || false;
 	}
 
 	/**
