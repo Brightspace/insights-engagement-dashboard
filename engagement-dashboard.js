@@ -139,7 +139,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				.d2l-insights-summary-container {
 					display: flex;
 					flex-wrap: wrap;
-					margin-right: 10px;
+					margin-right: 12px;
 					max-width: 594px;
 				}
 
