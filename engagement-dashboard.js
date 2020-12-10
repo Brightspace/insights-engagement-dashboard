@@ -6,7 +6,6 @@ import './components/ou-filter.js';
 import './components/results-card.js';
 import './components/debug-card.js';
 import './components/semester-filter.js';
-import './components/active-courses-table.js';
 import './components/users-table.js';
 import './components/table.js';
 import './components/current-final-grade-card.js';

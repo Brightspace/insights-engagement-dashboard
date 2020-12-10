@@ -108,7 +108,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	_handleColumnSort(e) {
 		this._sortOrder = e.detail.order;
 		this._sortColumn = e.detail.column;
-		this._currentPage = 0;
+		this._currentPage = 1;
 	}
 
 	_shouldDisplayinTable(record) {
