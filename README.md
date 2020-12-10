@@ -134,6 +134,22 @@ When the action fails the github bot will open a pr with new snapshots. Merging 
 
 Note: Place all visual tests in the ./test/visual-diff folder or they will be ignored by the Github Action.
 
+To run diff tests locally
+
+```
+# for powershell
+$Env:GITHUB_REPOSITORY=Brightspace/insights-engagement-dashboard
+
+# for bash
+export GITHUB_REPOSITORY=Brightspace/insights-engagement-dashboard
+
+
+npm run test:diff:golden
+# make some changes
+npm run test:diff
+```
+
+Once finished you can find the report in ./test/visual-diff/screenshots/current/\<test-name\>/report.html, VSCode users can use an html previewer extension for quick debugging.
 ## Versioning, Releasing & Deploying
 
 All version changes should obey [semantic versioning](https://semver.org/) rules.
