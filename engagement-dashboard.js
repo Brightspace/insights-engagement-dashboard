@@ -423,6 +423,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			<h2 class="d2l-heading-3">${this.localize('dashboard:resultsHeading')}</h2>
 			<d2l-action-button-group class="d2l-table-action-button-group" min-to-show="0" max-to-show="2" opener-type="more">
 				<d2l-button-subtle
+					aria-label="${this.localize('dashboard:emailButtonAriaLabel')}"
 					icon="d2l-tier1:email"
 					text="${this.localize('dashboard:emailButton')}"
 					@click="${this._handleEmailButtonPress}">
