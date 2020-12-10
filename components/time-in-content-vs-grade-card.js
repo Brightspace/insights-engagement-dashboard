@@ -130,7 +130,7 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 				border-style: solid;
 				border-width: 1.5px;
 				display: inline-block;
-				height: 275px;
+				height: 285px;
 				margin-right: 12px;
 				margin-top: 10px;
 				padding: 15px 4px;
