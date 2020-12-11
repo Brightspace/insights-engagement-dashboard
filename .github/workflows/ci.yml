@@ -10,6 +10,11 @@ jobs:
       - name: Install dependencies
         run: npm install
         # additional linting and testing steps here
+      - name: Lint
+        run: npm run lint
+      - name: Unit Tests
+        run: npm run test:headless
+        # vis diff
       - name: Visual Diff Tests
         uses: BrightspaceUI/actions/visual-diff@master
         with:
