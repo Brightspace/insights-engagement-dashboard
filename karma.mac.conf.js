@@ -4,10 +4,9 @@ const merge = require('deepmerge');
 
 module.exports = config => {
 	config.set(
-		merge(createDefaultConfig(config), {
+		{ ... merge(createDefaultConfig(config), {
 			// from https://support.saucelabs.com/hc/en-us/articles/225104707-Karma-Tests-Disconnect-Particularly-When-Running-Tests-on-Safari
 			// to avoid DISCONNECTED messages
-			browsers: ['Safari'],
 			browserDisconnectTimeout: 10000, // default 2000
 			browserDisconnectTolerance: 1, // default 0
 			browserNoActivityTimeout: 4 * 60 * 1000, //default 10000
@@ -31,6 +30,8 @@ module.exports = config => {
 				}
 			}
 		}),
+		browsers: ['Safari'] // only safari >:(
+	}
 	);
 	return config;
 };

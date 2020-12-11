@@ -26,7 +26,7 @@ jobs:
           TEST_PATH: ./test/visual-diff/**/*.visual-diff.js
 
   mac-test:
-    timeout-minutes: 5
+    timeout-minutes: 7
     runs-on: macos-latest
     steps:
       - uses: Brightspace/third-party-actions@actions/checkout
