@@ -1,0 +1,24 @@
+2020-12-11 14:57:24.969 [11072] Sauce Connect 4.6.2, build 5183 ad61662 
+2020-12-11 14:57:24.979 [11072] Trying to autodetect proxy settings
+2020-12-11 14:57:24.986 [11072] Starting up; pid 11072
+2020-12-11 14:57:24.986 [11072] Command line arguments: C:\Users\nhallman\d2l\insights-engagement-dashboard\node_modules\saucelabs\build\.sc-v4.6.2\bin\sc.exe --tunnel-identifier=karma-sauce-1607716636 --user=undefined --api-key=undefined --rest-url=https://api.us-west-1.saucelabs.com/rest/v1 
+2020-12-11 14:57:24.986 [11072] Log file: C:\Users\nhallman\d2l\insights-engagement-dashboard\sc-karma-sauce-1607716636.log
+2020-12-11 14:57:24.986 [11072] Pid file: C:\Users\nhallman\AppData\Roaming/sc_client-karma-sauce-1607716636.pid
+2020-12-11 14:57:24.986 [11072] Timezone: EST GMT offset: -5h
+2020-12-11 14:57:24.986 [11072] Using no proxy for connecting to Sauce Labs REST API.
+2020-12-11 14:57:25.375 [11072] ***********************************************************
+2020-12-11 14:57:25.375 [11072] A newer version of Sauce Connect (build 5283) is available!
+2020-12-11 14:57:25.375 [11072] Download it here:
+2020-12-11 14:57:25.375 [11072] https://saucelabs.com/downloads/sc-4.6.3-win32.zip
+2020-12-11 14:57:25.375 [11072] ***********************************************************
+2020-12-11 14:57:25.375 [11072] PROXY *** scproxy started ***
+2020-12-11 14:57:25.406 [11072] PROXY found DNS server 192.168.10.50
+2020-12-11 14:57:25.407 [11072] PROXY found DNS server 192.168.10.52
+2020-12-11 14:57:25.408 [11072] PROXY found DNS server 192.168.2.1
+2020-12-11 14:57:25.409 [11072] PROXY found DNS server 207.164.234.193
+2020-12-11 14:57:25.476 [11072] Started scproxy on port 65173.
+2020-12-11 14:57:25.476 [11072] Please wait for 'you may start your tests' to start your tests.
+2020-12-11 14:57:25.912 [11072] failed to check for existing tunnels
+2020-12-11 14:57:25.912 [11072] Sauce Connect could not establish a connection.
+2020-12-11 14:57:25.912 [11072] Please check your firewall and proxy settings.
+2020-12-11 14:57:25.912 [11072] Goodbye.

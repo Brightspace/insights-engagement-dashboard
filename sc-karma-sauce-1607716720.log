@@ -1,0 +1,24 @@
+2020-12-11 14:58:40.538 [10172] Sauce Connect 4.6.2, build 5183 ad61662 
+2020-12-11 14:58:40.543 [10172] Trying to autodetect proxy settings
+2020-12-11 14:58:40.548 [10172] Starting up; pid 10172
+2020-12-11 14:58:40.548 [10172] Command line arguments: C:\Users\nhallman\d2l\insights-engagement-dashboard\node_modules\saucelabs\build\.sc-v4.6.2\bin\sc.exe --tunnel-identifier=karma-sauce-1607716720 --user=Desire2Learn --api-key=undefined --rest-url=https://api.us-west-1.saucelabs.com/rest/v1 
+2020-12-11 14:58:40.548 [10172] Log file: C:\Users\nhallman\d2l\insights-engagement-dashboard\sc-karma-sauce-1607716720.log
+2020-12-11 14:58:40.548 [10172] Pid file: C:\Users\nhallman\AppData\Roaming/sc_client-karma-sauce-1607716720.pid
+2020-12-11 14:58:40.548 [10172] Timezone: EST GMT offset: -5h
+2020-12-11 14:58:40.548 [10172] Using no proxy for connecting to Sauce Labs REST API.
+2020-12-11 14:58:40.922 [10172] ***********************************************************
+2020-12-11 14:58:40.922 [10172] A newer version of Sauce Connect (build 5283) is available!
+2020-12-11 14:58:40.922 [10172] Download it here:
+2020-12-11 14:58:40.922 [10172] https://saucelabs.com/downloads/sc-4.6.3-win32.zip
+2020-12-11 14:58:40.922 [10172] ***********************************************************
+2020-12-11 14:58:40.923 [10172] PROXY *** scproxy started ***
+2020-12-11 14:58:40.947 [10172] PROXY found DNS server 192.168.10.50
+2020-12-11 14:58:40.950 [10172] PROXY found DNS server 192.168.10.52
+2020-12-11 14:58:40.952 [10172] PROXY found DNS server 192.168.2.1
+2020-12-11 14:58:40.952 [10172] PROXY found DNS server 207.164.234.193
+2020-12-11 14:58:40.973 [10172] Started scproxy on port 65368.
+2020-12-11 14:58:40.973 [10172] Please wait for 'you may start your tests' to start your tests.
+2020-12-11 14:58:41.511 [10172] failed to check for existing tunnels
+2020-12-11 14:58:41.511 [10172] Sauce Connect could not establish a connection.
+2020-12-11 14:58:41.511 [10172] Please check your firewall and proxy settings.
+2020-12-11 14:58:41.511 [10172] Goodbye.
