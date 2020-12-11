@@ -1,7 +1,7 @@
 name: CI
 on: pull_request
 jobs:
-  lint-chrometest-visdiff:
+  visdiff:
     timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
@@ -9,12 +9,6 @@ jobs:
       - uses: Brightspace/third-party-actions@actions/setup-node
       - name: Install dependencies
         run: npm install
-      # lint
-      - name: Lint
-        run: npm run lint
-      # test
-      - name: Test
-        run: npm run test:headless
       # vis diff
       - name: Visual Diff Tests
         uses: BrightspaceUI/actions/visual-diff@master
@@ -25,6 +19,18 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TEST_PATH: ./test/visual-diff/**/*.visual-diff.js
 
+  lint:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Brightspace/third-party-actions@actions/checkout
+      - uses: Brightspace/third-party-actions@actions/setup-node
+      - name: Install dependencies
+        run: npm install
+      # lint
+      - name: Lint
+        run: npm run lint
+
   mac-test:
     timeout-minutes: 7
     runs-on: macos-latest
@@ -33,6 +39,8 @@ jobs:
       - uses: Brightspace/third-party-actions@actions/setup-node
       - name: Install dependencies
         run: npm install
+      - name: Prep Safari
+        run: defaults write com.apple.Safari IncludeInternalDebugMenu 1
       - name: Unit Tests
         run: npm run test:headless:mac
 
