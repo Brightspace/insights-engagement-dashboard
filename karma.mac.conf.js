@@ -24,6 +24,7 @@ module.exports = config => {
 				// if you are using 'bare module imports' you will need this option
 				nodeResolve: true,
 			},
+			singleRun: true,
 			client: {
 				mocha: {
 					timeout: 20000 // 20 seconds
