@@ -15,6 +15,7 @@ import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton
 class SummaryCard extends SkeletonMixin(Localizer(LitElement)) {
 	static get properties() {
 		return {
+			wide: { type: Boolean, attribute: true },
 			title: { type: String, attribute: 'card-title' },
 			value: { type: String, attribute: 'card-value' },
 			message: { type: String, attribute: 'card-message' },
@@ -27,6 +28,8 @@ class SummaryCard extends SkeletonMixin(Localizer(LitElement)) {
 		return [super.styles, bodyStandardStyles, css`
 			:host {
 				display: inline-block;
+				height: 100%;
+				width: 100%;
 			}
 			:host([hidden]) {
 				display: none;
@@ -40,16 +43,20 @@ class SummaryCard extends SkeletonMixin(Localizer(LitElement)) {
 				border-width: 1.5px;
 				display: flex;
 				flex-direction: column;
-				height: 121px;
+				height: calc(100% - 30px - 3px);	/* 100% - 2 x padding - 2 x border */
 				padding: 15px 4px;
 				position: relative;
-				width: 280px;
+				width: calc(100% - 8px - 3px);		/* 100% - 2 x padding - 2 x border */
 			}
 
 			.d2l-insights-summary-card-body {
 				align-items: center;
 				display: flex;
 				height: 100%;
+			}
+
+			:host([wide]) .d2l-insights-summary-card-body {
+				justify-content: space-evenly;
 			}
 
 			.d2l-insights-summary-card-title {
@@ -92,6 +99,12 @@ class SummaryCard extends SkeletonMixin(Localizer(LitElement)) {
 				line-height: 1rem;
 				margin-inline-start: 2%;
 				max-width: 180px;
+			}
+
+			:host([wide]) .d2l-insights-summary-card-message {
+				justify-content: space-evenly;
+				max-width: 250px;
+				width: 250px;
 			}
 		`];
 	}

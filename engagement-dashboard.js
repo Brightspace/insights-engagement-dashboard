@@ -3,7 +3,6 @@ import 'd2l-button-group/d2l-action-button-group';
 
 import './components/histogram-card.js';
 import './components/ou-filter.js';
-import './components/results-card.js';
 import './components/debug-card.js';
 import './components/semester-filter.js';
 import './components/active-courses-table.js';
@@ -12,13 +11,12 @@ import './components/table.js';
 import './components/current-final-grade-card.js';
 import './components/applied-filters';
 import './components/aria-loading-progress';
-import './components/course-last-access-card.js';
-import './components/discussion-activity-card.js';
 import './components/message-container.js';
 import './components/default-view-popup.js';
 import './components/user-drill-view.js';
 import './components/immersive-nav.js';
 import './components/dashboard-settings';
+import './components/summary-cards-container.js';
 
 import { css, html } from 'lit-element/lit-element.js';
 import { DefaultViewState, ViewState } from './model/view-state';
@@ -123,24 +121,6 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 					display: flex;
 					flex-wrap: wrap;
 					max-width: 1300px;
-				}
-
-				d2l-insights-results-card,
-				d2l-insights-discussion-activity-card {
-					margin-right: 12px;
-					margin-top: 10px;
-				}
-
-				d2l-insights-overdue-assignments-card,
-				d2l-insights-last-access-card {
-					margin-top: 10px;
-				}
-
-				.d2l-insights-summary-container {
-					display: flex;
-					flex-wrap: wrap;
-					margin-right: 12px;
-					max-width: 594px;
 				}
 
 				.d2l-insights-summary-container-applied-filters {
@@ -356,12 +336,17 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				<d2l-insights-applied-filters .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-applied-filters>
 			</div>
 			<div class="d2l-insights-summary-chart-layout">
-				<div class="d2l-insights-summary-container">
-					${this._resultsCard}
-					${this._overdueAssignmentsCard}
-					${this._discussionsCard}
-					${this._lastAccessCard}
-				</div>
+				<d2l-summary-cards-container
+					.data="${this._data}"
+
+					?hidden="${this._isNoUserResults}"
+					?skeleton="${this._isLoading}"
+
+					?results-card="${this.showResultsCard}"
+					?overdue-card="${this.showOverdueCard}"
+					?system-access-card="${this.showSystemAccessCard}"
+					?discussions-card="${this.showDiscussionsCard}"
+				></d2l-summary-cards-container>
 				${this._gradesCard}
 				${this._ticGradesCard}
 				${this._courseAccessCard}
@@ -387,29 +372,9 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		return html`<div><d2l-insights-course-last-access-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-course-last-access-card></div>`;
 	}
 
-	get _discussionsCard() {
-		if (!this.showDiscussionsCard || this._isNoUserResults) return '';
-		return html`<d2l-insights-discussion-activity-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-discussion-activity-card>`;
-	}
-
 	get _gradesCard() {
 		if (!this.showGradesCard || this._isNoUserResults) return '';
 		return html`<div><d2l-insights-current-final-grade-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-current-final-grade-card></div>`;
-	}
-
-	get _lastAccessCard() {
-		if (!this.showSystemAccessCard || this._isNoUserResults) return '';
-		return html`<d2l-insights-last-access-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-last-access-card>`;
-	}
-
-	get _overdueAssignmentsCard() {
-		if (!this.showOverdueCard || this._isNoUserResults) return '';
-		return html`<d2l-insights-overdue-assignments-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-overdue-assignments-card>`;
-	}
-
-	get _resultsCard() {
-		if (!this.showResultsCard || this._isNoUserResults) return '';
-		return html`<d2l-insights-results-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-results-card>`;
 	}
 
 	get _ticGradesCard() {

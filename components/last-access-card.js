@@ -52,13 +52,15 @@ class LastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	static get properties() {
 		return {
-			data: { type: Object, attribute: false }
+			data: { type: Object, attribute: false },
+			wide: { type: Boolean, attribute: true }
 		};
 	}
 
 	constructor() {
 		super();
 		this.data = {};
+		this.wide = false;
 	}
 
 	get _cardMessage() {
@@ -93,6 +95,7 @@ class LastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				card-message="${this._cardMessage}"
 				@d2l-labs-summary-card-value-click=${this._valueClickHandler}
 				?skeleton="${this.skeleton}"
+				?wide="${this.wide}"
 			></d2l-labs-summary-card>
 		`;
 	}
