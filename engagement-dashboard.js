@@ -297,7 +297,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	_renderAppliedFilters() {
 		return html `
 			<d2l-insights-applied-filters .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-applied-filters>
-		`
+		`;
 	}
 
 	_renderSettingsView() {
