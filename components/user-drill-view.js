@@ -185,7 +185,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 				<slot name="filters"></slot>
 			</div>
 
-			<div class="d2l-insights-summary-container-applied-filters">
+			<div class="d2l-insights-view-filters-container">
 				<slot name="applied-filters"></slot>
 			</div>
 
