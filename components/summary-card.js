@@ -58,6 +58,12 @@ class SummaryCard extends SkeletonMixin(Localizer(LitElement)) {
 				height: calc(var(--big-card-height) - 30px - 3px);	/* 100% - 2 x padding - 2 x border */
 			}
 
+			@media screen and (max-width: 615px) {
+				:host([tall]) .d2l-insights-summary-card {
+					height: calc(var(--small-card-height) - 30px - 3px);	/* 100% - 2 x padding - 2 x border */
+				}
+			}
+
 			.d2l-insights-summary-card-body {
 				align-items: center;
 				display: flex;

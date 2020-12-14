@@ -80,6 +80,16 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 				margin-right: var(--card-margin-right);
 
 			}
+
+			@media screen and (max-width: 615px) {
+				.d2l-insights-summary-container-2 > * {
+					margin-right: 0;
+				}
+
+				.d2l-insights-summary-container-2 > :first-child {
+					margin-right: var(--card-margin-right);
+				}
+			}
 		`;
 	}
 
@@ -92,17 +102,7 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 		];
 		const summaryCardsCount = cards.filter(card => card.enabled || this.skeleton).length;
 
-		// const responsive = false;
-
-		const size = [
-			{
-				wide: summaryCardsCount === 1 || summaryCardsCount === 2 || summaryCardsCount === 3,
-				tall: summaryCardsCount === 1
-			},
-			{ wide: summaryCardsCount === 2, tall: false },
-			{ wide: false, tall: false },
-			{ wide: false, tall: false },
-		];
+		const sizes = this._sizes(summaryCardsCount);
 
 		const summaryCardsStyles = {
 			'd2l-insights-summary-container': true,
@@ -116,9 +116,33 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 		let cardIndex = 0;
 		return html`
 			<div class="${classMap(summaryCardsStyles)}">
-				${cards.filter(card => card.enabled || this.skeleton).map(card => card.htmlFn(size[cardIndex++]))}
+				${cards.filter(card => card.enabled || this.skeleton).map(card => card.htmlFn(sizes[cardIndex++]))}
 			</div>
 		`;
+	}
+
+	_sizes(summaryCardsCount) {
+		if (matchMedia('(max-width: 615px)').matches) {
+			return [
+				{
+					wide: summaryCardsCount === 1 || summaryCardsCount === 3,
+					tall: false
+				},
+				{ wide: false, tall: false },
+				{ wide: false, tall: false },
+				{ wide: false, tall: false },
+			];
+		}
+
+		return [
+			{
+				wide: summaryCardsCount === 1 || summaryCardsCount === 2 || summaryCardsCount === 3,
+				tall: summaryCardsCount === 1
+			},
+			{ wide: summaryCardsCount === 2, tall: false },
+			{ wide: false, tall: false },
+			{ wide: false, tall: false },
+		];
 	}
 
 	_resultsCard({ wide, tall }) {
@@ -133,8 +157,25 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 		return html`<d2l-insights-discussion-activity-card .data="${this.data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-discussion-activity-card>`;
 	}
 
-	_lastAccessCard({ wide }) {
-		return html`<d2l-insights-last-access-card .data="${this.data}" ?wide="${wide}" ?skeleton="${this.skeleton}"></d2l-insights-last-access-card>`;
+	_lastAccessCard({ wide, tall }) {
+		return html`<d2l-insights-last-access-card .data="${this.data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-last-access-card>`;
+	}
+
+	_handleResize() {
+		this.requestUpdate();
+	}
+
+	connectedCallback() {
+		super.connectedCallback();
+
+		this._resize = this._handleResize.bind(this);
+		window.addEventListener('resize', this._resize);
+	}
+
+	disconnectedCallback() {
+		window.removeEventListener('resize', this._resize);
+
+		super.disconnectedCallback();
 	}
 }
 customElements.define('d2l-summary-cards-container', SummaryCardsContainer);
