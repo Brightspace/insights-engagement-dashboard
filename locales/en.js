@@ -183,11 +183,13 @@ export default {
 	"activeCoursesTable:loadingPlaceholder": "Loading",
 	"activeCoursesTable:course": "Course Name",
 	"activeCoursesTable:currentGrade": "Current Grade",
+	"activeCoursesTable:grade": "Grade",
 	"activeCoursesTable:predictedGrade": "Predicted Grade",
 	"activeCoursesTable:timeInContent": "Time in Content (mins)",
 	"activeCoursesTable:discussions": "Discussion Activity",
 	"activeCoursesTable:courseLastAccess": "Course Last Access",
 	"activeCoursesTable:noGrade": "No grade",
+	"activeCoursesTable:isActive": "Is Active Course",
 
 	"inactiveCoursesTable:title": "Inactive Courses",
 	"inactiveCoursesTable:course": "Course Name",

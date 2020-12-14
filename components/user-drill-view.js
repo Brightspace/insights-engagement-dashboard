@@ -5,6 +5,7 @@ import 'd2l-users/components/d2l-profile-image';
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { createComposeEmailPopup } from './email-integration';
+import { ExportData } from '../model/exportData';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { until } from 'lit-html/directives/until';
@@ -111,7 +112,8 @@ class UserDrill extends Localizer(MobxLitElement) {
 	}
 
 	_exportToCsvHandler() {
-		// outside the scope of the story
+		const usersTable = this.shadowRoot.querySelector('d2l-insights-user-drill-courses-table');
+		ExportData.userDataToCsv(usersTable.dataForExport, usersTable.headersForExport);
 	}
 
 	_printHandler() {
@@ -186,7 +188,6 @@ class UserDrill extends Localizer(MobxLitElement) {
 			<div class="d2l-insights-user-drill-view-content">
 				<!-- put your tables here -->
 				<h2 class="d2l-heading-3">${this.localize('activeCoursesTable:title')}</h2>
-
 				<d2l-insights-user-drill-courses-table
 					.data="${this.data}"
 					.user="${this.user}"

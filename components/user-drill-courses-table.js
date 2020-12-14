@@ -18,6 +18,9 @@ export const ACTIVE_TABLE_COURSES = {
 	DISCUSSION_ACTIVITY: 4,
 	COURSE_LAST_ACCESS: 5
 };
+
+export const IS_ACTIVE_COURSE = 6;
+
 export const INACTIVE_TABLE_COURSES = {
 	COURSE_NAME: 0,
 	CURRENT_GRADE: 1,
@@ -180,25 +183,25 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_formatDataForDisplay(user) {
-		const lastSysAccessFormatted = user[ACTIVE_TABLE_COURSES.COURSE_LAST_ACCESS]
+		const courseLastAccess = user[ACTIVE_TABLE_COURSES.COURSE_LAST_ACCESS]
 			? formatDateTime(new Date(user[ACTIVE_TABLE_COURSES.COURSE_LAST_ACCESS]), { format: 'medium' })
 			: this.localize('usersTable:null');
 		if (this.isActiveTable) {
 			return [
 				user[ACTIVE_TABLE_COURSES.COURSE_NAME],
-				user[ACTIVE_TABLE_COURSES.CURRENT_GRADE] ? formatPercent(user[ACTIVE_TABLE_COURSES.CURRENT_GRADE] / 100, numberFormatOptions) : '',
+				user[ACTIVE_TABLE_COURSES.CURRENT_GRADE] ? formatPercent(user[ACTIVE_TABLE_COURSES.CURRENT_GRADE] / 100, numberFormatOptions) : this.localize('activeCoursesTable:noGrade'),
 				user[ACTIVE_TABLE_COURSES.PREDICTED_GRADE] ? formatPercent(user[ACTIVE_TABLE_COURSES.PREDICTED_GRADE], numberFormatOptions) : this.localize('activeCoursesTable:noPredictedGrade'),
 				formatNumber(user[ACTIVE_TABLE_COURSES.TIME_IN_CONTENT] / 60, numberFormatOptions),
 				user[ACTIVE_TABLE_COURSES.DISCUSSION_ACTIVITY],
-				lastSysAccessFormatted
+				courseLastAccess
 			];
 		} else {
 			return [
 				user[INACTIVE_TABLE_COURSES.COURSE_NAME],
-				user[INACTIVE_TABLE_COURSES.CURRENT_GRADE] ? formatPercent(user[INACTIVE_TABLE_COURSES.CURRENT_GRADE] / 100, numberFormatOptions) : '',
+				user[INACTIVE_TABLE_COURSES.CURRENT_GRADE] ? formatPercent(user[INACTIVE_TABLE_COURSES.CURRENT_GRADE] / 100, numberFormatOptions) : this.localize('activeCoursesTable:noGrade'),
 				formatNumber(user[INACTIVE_TABLE_COURSES.TIME_IN_CONTENT] / 60, numberFormatOptions),
 				user[INACTIVE_TABLE_COURSES.DISCUSSION_ACTIVITY],
-				lastSysAccessFormatted
+				courseLastAccess
 			];
 		}
 	}
@@ -269,6 +272,51 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		}
 	}
 
+	get headersForExport() {
+		return [
+			this.localize('activeCoursesTable:course'),
+			this.localize('activeCoursesTable:grade'),
+			this.localize('activeCoursesTable:predictedGrade'),
+			this.localize('activeCoursesTable:timeInContent'),
+			this.localize('discussionActivityCard:threads'),
+			this.localize('discussionActivityCard:reads'),
+			this.localize('discussionActivityCard:replies'),
+			this.localize('activeCoursesTable:courseLastAccess'),
+			this.localize('activeCoursesTable:isActive')
+		];
+	}
+
+	get dataForExport() {
+		const arrayOfHeaderColumnIndexes = Object.values(ACTIVE_TABLE_COURSES);
+		arrayOfHeaderColumnIndexes.push(IS_ACTIVE_COURSE);
+		const sortFunction = this._choseSortFunction(this._sortColumn, this._sortOrder);
+		const userData = this.data.records
+			.filter(record => record[RECORD.USER_ID] === this.user.userId)
+			//since function call will always be for the first active table, then the isActiveTable will equal true
+			.map(this._preProcessData, this)
+			.sort(sortFunction)
+			.map(this._formatDataForDisplay, this);
+
+		return userData
+			.map(user => arrayOfHeaderColumnIndexes.flatMap(column => {
+				const val = user[column];
+				if (column === IS_ACTIVE_COURSE) {
+					const isCourseActive = this._activeCourseById(Number(this._getOrgIdFromCourseNameString(user[ACTIVE_TABLE_COURSES.COURSE_NAME])));
+					return [isCourseActive];
+				}
+				return val;
+			}));
+	}
+
+	_activeCourseById(orgUnitId) {
+		return this.data.orgUnitTree.getActiveStatus(orgUnitId);
+	}
+
+	_getOrgIdFromCourseNameString(str) {
+		const result = str.match(/\(Id: ([0-9]+)\)/);
+		return result ? result[1] : 0;
+	}
+
 	_handlePageChange(event) {
 		this._currentPage = event.detail.page;
 	}
@@ -337,6 +385,8 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 }
 decorate(UserDrillCoursesTable, {
 	userDataForDisplay: computed,
+	headersForExport: computed,
+	dataForExport: computed,
 	_sortColumn: observable,
 	_sortOrder: observable,
 	_handleColumnSort: action
