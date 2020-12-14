@@ -67,7 +67,7 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				height: 121px;
 				padding: 15px 4px;
 				position: relative;
-				width: calc(var(--small-card-width) - 3px - 8px); /* width - 2 x border - 2 x padding */
+				width: calc(var(--d2l-insights-engagement-small-card-width) - 3px - 8px); /* width - 2 x border - 2 x padding */
 			}
 
 			.d2l-insights-discussion-activity-card-body {
@@ -85,7 +85,7 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			}
 
 			:host([wide]) .d2l-insights-summary-discussion-activity-card {
-				width: calc(var(--big-card-width) - 3px - 8px); /* width - 2 x border - 2 x padding */
+				width: calc(var(--d2l-insights-engagement-big-card-width) - 3px - 8px); /* width - 2 x border - 2 x padding */
 			}
 		`];
 	}

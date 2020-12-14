@@ -44,23 +44,23 @@ class SummaryCard extends SkeletonMixin(Localizer(LitElement)) {
 				border-width: 1.5px;
 				display: flex;
 				flex-direction: column;
-				height: calc(var(--small-card-height) - 30px - 3px);	/* 100% - 2 x padding - 2 x border */
+				height: calc(var(--d2l-insights-engagement-small-card-height) - 30px - 3px);	/* 100% - 2 x padding - 2 x border */
 				padding: 15px 4px;
 				position: relative;
-				width: calc(var(--small-card-width) - 8px - 3px);		/* 100% - 2 x padding - 2 x border */
+				width: calc(var(--d2l-insights-engagement-small-card-width) - 8px - 3px);		/* 100% - 2 x padding - 2 x border */
 			}
 
 			:host([wide]) .d2l-insights-summary-card {
-				width: calc(var(--big-card-width) - 8px - 3px);			/* 100% - 2 x padding - 2 x border */
+				width: calc(var(--d2l-insights-engagement-big-card-width) - 8px - 3px);			/* 100% - 2 x padding - 2 x border */
 			}
 
 			:host([tall]) .d2l-insights-summary-card {
-				height: calc(var(--big-card-height) - 30px - 3px);	/* 100% - 2 x padding - 2 x border */
+				height: calc(var(--d2l-insights-engagement-big-card-height) - 30px - 3px);	/* 100% - 2 x padding - 2 x border */
 			}
 
 			@media screen and (max-width: 615px) {
 				:host([tall]) .d2l-insights-summary-card {
-					height: calc(var(--small-card-height) - 30px - 3px);	/* 100% - 2 x padding - 2 x border */
+					height: calc(var(--d2l-insights-engagement-small-card-height) - 30px - 3px);	/* 100% - 2 x padding - 2 x border */
 				}
 			}
 

@@ -104,15 +104,15 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			heading3Styles,
 			css`
 				:host {
+					--d2l-insights-engagement-small-card-height: 154px;
+					--d2l-insights-engagement-small-card-width: 291px;
+					--d2l-insights-engagement-big-card-width: calc(var(--d2l-insights-engagement-small-card-width) * 2 + var(--d2l-insights-engagement-card-margin-right)); /* 594px; */
+					--d2l-insights-engagement-big-card-height: calc(var(--d2l-insights-engagement-small-card-height) * 2 + var(--d2l-insights-engagement-card-margin-top));	/* 318px; */
+					--d2l-insights-engagement-card-margin-top: 10px;
+					--d2l-insights-engagement-card-margin-right: 12px;
+
 					display: block;
 					padding: 0 30px;
-
-					--small-card-height: 154px;
-					--small-card-width: 291px;
-					--big-card-width: calc(var(--small-card-width) * 2 + var(--card-margin-right)); /* 594px; */
-					--big-card-height: calc(var(--small-card-height) * 2 + var(--card-margin-top));	/* 318px; */
-					--card-margin-top: 10px;
-					--card-margin-right: 12px;
 				}
 				:host([hidden]) {
 					display: none;
