@@ -19,7 +19,9 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 			showOverdueCard: { type: Boolean, attribute: 'overdue-card', reflect: true },
 			showResultsCard: { type: Boolean, attribute: 'results-card', reflect: true },
 			showSystemAccessCard: { type: Boolean, attribute: 'system-access-card', reflect: true },
-			showDiscussionsCard: { type: Boolean, attribute: 'discussions-card', reflect: true }
+			showDiscussionsCard: { type: Boolean, attribute: 'discussions-card', reflect: true },
+
+			_screenSize: { type: String, attribute: 'size', reflect: true}
 		};
 	}
 
@@ -30,6 +32,8 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 		this.showResultsCard = false;
 		this.showSystemAccessCard = false;
 		this.showDiscussionsCard = false;
+
+		this._screenSize = this._getScreenSize();
 	}
 
 	static get styles() {
@@ -121,8 +125,16 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 		`;
 	}
 
+	get _isSmallScreen() {
+		return matchMedia('(max-width: 615px)').matches;
+	}
+
+	_getScreenSize() {
+		return this._isSmallScreen ? 'small' : 'normal';
+	}
+
 	_sizes(summaryCardsCount) {
-		if (matchMedia('(max-width: 615px)').matches) {
+		if (this._isSmallScreen) {
 			return [
 				{
 					wide: summaryCardsCount === 1 || summaryCardsCount === 3,
@@ -162,7 +174,8 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 	}
 
 	_handleResize() {
-		this.requestUpdate();
+		// causes rendering only if the media-query breakpoint in _isSmallScreen is triggered
+		this._screenSize = this._getScreenSize();
 	}
 
 	connectedCallback() {
