@@ -1,6 +1,7 @@
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/button/button.js';
 import 'd2l-users/components/d2l-profile-image';
+import './summary-cards-selector';
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { createComposeEmailPopup } from './email-integration';
@@ -19,6 +20,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 	static get properties() {
 		return {
 			user: { type: Object, attribute: false },
+			data: { type: Object, attribute: false },
 			isDemo: { type: Boolean, attribute: 'demo' },
 			userCourses: { type: Object, attribute: false },
 			orgUnits: { type: Object, attribute: false },
@@ -183,6 +185,18 @@ class UserDrill extends Localizer(MobxLitElement) {
 			<div class="d2l-insights-view-filters-container">
 				<slot name="filters"></slot>
 			</div>
+
+			<d2l-summary-cards-selector
+				view="user"
+				.user="${this.user}"
+				.data="${this.data}"
+
+				show-top-left
+				show-top-right
+				show-bottom-left
+				show-bottom-right
+			></d2l-summary-cards-selector>
+
 
 			<h2 class="d2l-heading-3">${this.localize('activeCoursesTable:title')}</h2>
 

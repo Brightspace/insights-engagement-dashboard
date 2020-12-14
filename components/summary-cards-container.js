@@ -15,11 +15,7 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 	static get properties() {
 		return {
 			data: { type: Object, attribute: false },
-
-			showOverdueCard: { type: Boolean, attribute: 'overdue-card', reflect: true },
-			showResultsCard: { type: Boolean, attribute: 'results-card', reflect: true },
-			showSystemAccessCard: { type: Boolean, attribute: 'system-access-card', reflect: true },
-			showDiscussionsCard: { type: Boolean, attribute: 'discussions-card', reflect: true },
+			cards: { type: Array, attribute: false },
 
 			_screenSize: { type: String, attribute: 'size', reflect: true }
 		};
@@ -27,12 +23,6 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 
 	constructor() {
 		super();
-
-		this.showOverdueCard = false;
-		this.showResultsCard = false;
-		this.showSystemAccessCard = false;
-		this.showDiscussionsCard = false;
-
 		this._screenSize = this._getScreenSize();
 	}
 
@@ -98,12 +88,8 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 	}
 
 	render() {
-		const cards = [
-			{ enabled: this.showResultsCard, htmlFn: (w) => this._resultsCard(w) },
-			{ enabled: this.showOverdueCard, htmlFn: (w) => this._overdueAssignmentsCard(w) },
-			{ enabled: this.showDiscussionsCard, htmlFn: (w) => this._discussionsCard(w) },
-			{ enabled: this.showSystemAccessCard, htmlFn: (w) => this._lastAccessCard(w) }
-		];
+		const cards = this.cards;
+
 		const summaryCardsCount = cards.filter(card => card.enabled || this.skeleton).length;
 
 		const sizes = this._sizes(summaryCardsCount);
@@ -155,22 +141,6 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 			{ wide: false, tall: false },
 			{ wide: false, tall: false },
 		];
-	}
-
-	_resultsCard({ wide, tall }) {
-		return html`<d2l-insights-results-card .data="${this.data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-results-card>`;
-	}
-
-	_overdueAssignmentsCard({ wide, tall }) {
-		return html`<d2l-insights-overdue-assignments-card .data="${this.data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-overdue-assignments-card>`;
-	}
-
-	_discussionsCard({ wide, tall }) {
-		return html`<d2l-insights-discussion-activity-card .data="${this.data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-discussion-activity-card>`;
-	}
-
-	_lastAccessCard({ wide, tall }) {
-		return html`<d2l-insights-last-access-card .data="${this.data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-last-access-card>`;
 	}
 
 	_handleResize() {

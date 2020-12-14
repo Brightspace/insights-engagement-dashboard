@@ -16,7 +16,7 @@ import './components/default-view-popup.js';
 import './components/user-drill-view.js';
 import './components/immersive-nav.js';
 import './components/dashboard-settings';
-import './components/summary-cards-container.js';
+import './components/summary-cards-selector.js';
 
 import { css, html } from 'lit-element/lit-element.js';
 import { DefaultViewState, ViewState } from './model/view-state';
@@ -249,6 +249,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			<d2l-insights-user-drill-view
 				?demo="${this.isDemo}"
 				.user="${user}"
+				.data="${this._data}"
 				.userCourses="${this._data.recordsByUser.get(user.userId)}"
 				.orgUnits="${this._serverData.serverData.orgUnits}"
 				.isStudentSuccessSys="${this._serverData.serverData.isStudentSuccessSys}"
@@ -343,17 +344,18 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				<d2l-insights-applied-filters .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-applied-filters>
 			</div>
 			<div class="d2l-insights-summary-chart-layout">
-				<d2l-summary-cards-container
+				<d2l-summary-cards-selector
+					view="home"
 					.data="${this._data}"
 
 					?hidden="${this._isNoUserResults}"
 					?skeleton="${this._isLoading}"
 
-					?results-card="${this.showResultsCard}"
-					?overdue-card="${this.showOverdueCard}"
-					?system-access-card="${this.showSystemAccessCard}"
-					?discussions-card="${this.showDiscussionsCard}"
-				></d2l-summary-cards-container>
+					?show-top-left="${this.showResultsCard}"
+					?show-top-right="${this.showOverdueCard}"
+					?show-bottom-left="${this.showSystemAccessCard}"
+					?show-bottom-right="${this.showDiscussionsCard}"
+				></d2l-summary-cards-selector>
 				${this._gradesCard}
 				${this._ticGradesCard}
 				${this._courseAccessCard}
