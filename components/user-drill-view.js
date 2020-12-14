@@ -192,14 +192,14 @@ class UserDrill extends Localizer(MobxLitElement) {
 			<h2 class="d2l-heading-3">${this.localize('activeCoursesTable:title')}</h2>
 
 			<div class="d2l-insights-user-drill-view-content">
-
+				${ this.userCourses ? html`
 				<d2l-insights-active-courses-table
 					.userCourses="${this.userCourses}"
 					.orgUnits="${this.orgUnits}"
 					.isStudentSuccessSys="${this.isStudentSuccessSys}"
 				>
 				</d2l-insights-active-courses-table>
-
+				` : ''}
 			</div>
 
 
