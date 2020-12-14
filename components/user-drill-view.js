@@ -129,7 +129,6 @@ class UserDrill extends Localizer(MobxLitElement) {
 	}
 
 	get userEntity() {
-		if (this.isDemo) return 'https://example.com/';
 		return `/d2l/api/hm/users/${this.user.userId}`;
 	}
 
