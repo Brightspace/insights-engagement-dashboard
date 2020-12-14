@@ -36,13 +36,6 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 		return css`
 			:host {
 				display: block;
-
-				--small-card-height: 154px;
-				--small-card-width: 291px;
-				--big-card-width: calc(var(--small-card-width) * 2 + var(--card-margin-right)); /* 594px; */
-				--big-card-height: calc(var(--small-card-height) * 2 + var(--card-margin-top));	/* 318px; */
-				--card-margin-top: 10px;
-				--card-margin-right: 12px;
 			}
 
 			:host([hidden]) {
@@ -61,8 +54,6 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 			.d2l-insights-summary-container > * {
 				flex-shrink: 0;
 				margin-top: var(--card-margin-top);
-				height: var(--small-card-height);
-				width: var(--small-card-width);
 			}
 
 			.d2l-insights-summary-container-0 {
@@ -70,19 +61,15 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 			}
 
 			.d2l-insights-summary-container-1 > :first-child {
-				height: var(--big-card-height);
 				margin-right: var(--card-margin-right);
-				width: var(--big-card-width);
 			}
 
 			.d2l-insights-summary-container-2 > * {
 				margin-right: var(--card-margin-right);
-				width: var(--big-card-width);
 			}
 
 			.d2l-insights-summary-container-3 > :first-child {
 				margin-right: var(--card-margin-right);
-				width: var(--big-card-width);
 			}
 
 			.d2l-insights-summary-container-3 > :nth-child(2) {
@@ -107,11 +94,14 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 
 		// const responsive = false;
 
-		const isWide = [
-			summaryCardsCount === 1 || summaryCardsCount === 2 || summaryCardsCount === 3,
-			summaryCardsCount === 2,
-			false,
-			false
+		const size = [
+			{
+				wide: summaryCardsCount === 1 || summaryCardsCount === 2 || summaryCardsCount === 3,
+				tall: summaryCardsCount === 1
+			},
+			{ wide: summaryCardsCount === 2, tall: false },
+			{ wide: false, tall: false },
+			{ wide: false, tall: false },
 		];
 
 		const summaryCardsStyles = {
@@ -126,24 +116,24 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 		let cardIndex = 0;
 		return html`
 			<div class="${classMap(summaryCardsStyles)}">
-				${cards.filter(card => card.enabled || this.skeleton).map(card => card.htmlFn(isWide[cardIndex++]))}
+				${cards.filter(card => card.enabled || this.skeleton).map(card => card.htmlFn(size[cardIndex++]))}
 			</div>
 		`;
 	}
 
-	_resultsCard(wide) {
-		return html`<d2l-insights-results-card .data="${this.data}" ?wide="${wide}" ?skeleton="${this.skeleton}"></d2l-insights-results-card>`;
+	_resultsCard({ wide, tall }) {
+		return html`<d2l-insights-results-card .data="${this.data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-results-card>`;
 	}
 
-	_overdueAssignmentsCard(wide) {
-		return html`<d2l-insights-overdue-assignments-card .data="${this.data}" ?wide="${wide}" ?skeleton="${this.skeleton}"></d2l-insights-overdue-assignments-card>`;
+	_overdueAssignmentsCard({ wide, tall }) {
+		return html`<d2l-insights-overdue-assignments-card .data="${this.data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-overdue-assignments-card>`;
 	}
 
-	_discussionsCard(wide) {
-		return html`<d2l-insights-discussion-activity-card .data="${this.data}" ?wide="${wide}" ?skeleton="${this.skeleton}"></d2l-insights-discussion-activity-card>`;
+	_discussionsCard({ wide, tall }) {
+		return html`<d2l-insights-discussion-activity-card .data="${this.data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-discussion-activity-card>`;
 	}
 
-	_lastAccessCard(wide) {
+	_lastAccessCard({ wide }) {
 		return html`<d2l-insights-last-access-card .data="${this.data}" ?wide="${wide}" ?skeleton="${this.skeleton}"></d2l-insights-last-access-card>`;
 	}
 }

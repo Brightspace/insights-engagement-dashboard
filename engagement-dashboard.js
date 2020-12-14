@@ -106,6 +106,13 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				:host {
 					display: block;
 					padding: 0 30px;
+
+					--small-card-height: 154px;
+					--small-card-width: 291px;
+					--big-card-width: calc(var(--small-card-width) * 2 + var(--card-margin-right)); /* 594px; */
+					--big-card-height: calc(var(--small-card-height) * 2 + var(--card-margin-top));	/* 318px; */
+					--card-margin-top: 10px;
+					--card-margin-right: 12px;
 				}
 				:host([hidden]) {
 					display: none;

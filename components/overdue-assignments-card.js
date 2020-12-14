@@ -42,7 +42,8 @@ class OverdueAssignmentsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
 			data: { type: Object, attribute: false },
-			wide: { type: Boolean, attribute: true }
+			wide: { type: Boolean, attribute: true },
+			tall: { type: Boolean, attribute: true }
 		};
 	}
 
@@ -50,6 +51,7 @@ class OverdueAssignmentsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		super();
 		this.data = {};
 		this.wide = false;
+		this.tall = false;
 	}
 
 	get _cardMessage() {
@@ -85,6 +87,7 @@ class OverdueAssignmentsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				@d2l-labs-summary-card-value-click=${this._valueClickHandler}
 				?skeleton="${this.skeleton}"
 				?wide="${this.wide}"
+				?tall="${this.tall}"
 			></d2l-labs-summary-card>
 		`;
 	}

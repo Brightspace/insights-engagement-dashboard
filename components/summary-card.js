@@ -10,17 +10,20 @@ import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton
  * @property {string} title
  * @property {string} value
  * @property {string} message
+ * @property {Boolean} wide
+ * @property {Boolean} tall
  * @fires d2l-labs-summary-card-value-click
  */
 class SummaryCard extends SkeletonMixin(Localizer(LitElement)) {
 	static get properties() {
 		return {
-			wide: { type: Boolean, attribute: true },
 			title: { type: String, attribute: 'card-title' },
 			value: { type: String, attribute: 'card-value' },
 			message: { type: String, attribute: 'card-message' },
 			isValueClickable: { type: Boolean, attribute: 'value-clickable' },
-			isLive: { type: Boolean, attribute: 'live' }
+			isLive: { type: Boolean, attribute: 'live' },
+			wide: { type: Boolean, attribute: true },
+			tall: { type: Boolean, attribute: true }
 		};
 	}
 
@@ -28,8 +31,6 @@ class SummaryCard extends SkeletonMixin(Localizer(LitElement)) {
 		return [super.styles, bodyStandardStyles, css`
 			:host {
 				display: inline-block;
-				height: 100%;
-				width: 100%;
 			}
 			:host([hidden]) {
 				display: none;
@@ -43,10 +44,18 @@ class SummaryCard extends SkeletonMixin(Localizer(LitElement)) {
 				border-width: 1.5px;
 				display: flex;
 				flex-direction: column;
-				height: calc(100% - 30px - 3px);	/* 100% - 2 x padding - 2 x border */
+				height: calc(var(--small-card-height) - 30px - 3px);	/* 100% - 2 x padding - 2 x border */
 				padding: 15px 4px;
 				position: relative;
-				width: calc(100% - 8px - 3px);		/* 100% - 2 x padding - 2 x border */
+				width: calc(var(--small-card-width) - 8px - 3px);		/* 100% - 2 x padding - 2 x border */
+			}
+
+			:host([wide]) .d2l-insights-summary-card {
+				width: calc(var(--big-card-width) - 8px - 3px);			/* 100% - 2 x padding - 2 x border */
+			}
+
+			:host([tall]) .d2l-insights-summary-card {
+				height: calc(var(--big-card-height) - 30px - 3px);	/* 100% - 2 x padding - 2 x border */
 			}
 
 			.d2l-insights-summary-card-body {
