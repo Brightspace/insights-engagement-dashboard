@@ -21,7 +21,7 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 			showSystemAccessCard: { type: Boolean, attribute: 'system-access-card', reflect: true },
 			showDiscussionsCard: { type: Boolean, attribute: 'discussions-card', reflect: true },
 
-			_screenSize: { type: String, attribute: 'size', reflect: true}
+			_screenSize: { type: String, attribute: 'size', reflect: true }
 		};
 	}
 
