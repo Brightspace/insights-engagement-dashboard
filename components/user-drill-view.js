@@ -198,6 +198,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 				<d2l-insights-user-drill-courses-table
 					.data="${this.data}"
 					.user="${this.user}"
+					.isActiveTable=${Boolean(false)}
 				></d2l-insights-user-drill-courses-table>
 			</div>
 

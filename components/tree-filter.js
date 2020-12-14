@@ -263,7 +263,7 @@ export class Tree {
 		return (node && node[TYPE]) || 0;
 	}
 
-	getActiveStatus(id) {
+	isActive(id) {
 		const node = this._nodes.get(id);
 		return (node && node[ACTIVE_STATUS]) || false;
 	}
