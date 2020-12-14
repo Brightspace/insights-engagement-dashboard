@@ -96,7 +96,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		if (this._itemsCount) {
 			const start = this._pageSize * (this._currentPage - 1);
 			const end = this._pageSize * (this._currentPage); // it's ok if this goes over the end of the array
-			const numCols = this.isActiveTable ? Array.from(Array(6), (_, x) => x) : Array.from(Array(5), (_, x) => x);
+			const numCols = this.isActiveTable && this.isStudentSuccessSys ? Array.from(Array(6), (_, x) => x) : Array.from(Array(5), (_, x) => x);
 			return this.userDataForDisplay
 				.slice(start, end)
 				.map(user => numCols.map(column => user[column]));
@@ -179,7 +179,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 			? formatDateTime(new Date(course[lastSysAccessFormattedIndex]), { format: 'medium' })
 			: this.localize('usersTable:null');
 		if (this.isActiveTable) {
-			return [
+			const formattedColumns = [
 				course[ACTIVE_TABLE_COLUMNS.COURSE_NAME],
 				course[ACTIVE_TABLE_COLUMNS.CURRENT_GRADE] ? formatPercent(course[ACTIVE_TABLE_COLUMNS.CURRENT_GRADE] / 100, numberFormatOptions) : '',
 				course[ACTIVE_TABLE_COLUMNS.PREDICTED_GRADE] ? formatPercent(course[ACTIVE_TABLE_COLUMNS.PREDICTED_GRADE], numberFormatOptions) : this.localize('activeCoursesTable:noPredictedGrade'),
@@ -187,6 +187,8 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 				course[ACTIVE_TABLE_COLUMNS.DISCUSSION_ACTIVITY],
 				lastSysAccessFormatted
 			];
+			if (!this.isStudentSuccessSys) formattedColumns.splice(ACTIVE_TABLE_COLUMNS.PREDICTED_GRADE, 1);
+			return formattedColumns;
 		} else {
 			return [
 				course[INACTIVE_TABLE_COLUMNS.COURSE_NAME],
@@ -240,7 +242,6 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 			];
 			if (!this.isStudentSuccessSys) columnInfo.splice(ACTIVE_TABLE_COLUMNS.PREDICTED_GRADE, 1);
 			return columnInfo;
-
 		} else {
 			return [
 				{
