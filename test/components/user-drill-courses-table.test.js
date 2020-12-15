@@ -14,7 +14,7 @@ const data = {
 		// active courses
 		[101, USER_ID, ROLE_ID, 0, 80, 6600, 1607979700000, 3, 3, 3, 0.90],
 		[102, USER_ID, ROLE_ID, 0, 85, 5400, 1607979760000, 2, 2, 2, 0.60],
-		[103, USER_ID, ROLE_ID, 0, 75, 4200, 1607979820000, 5, 5, 5, 0.75],
+		[103, USER_ID, ROLE_ID, 0, null, 4200, 1607979820000, 5, 5, 5, 0.75],
 		[104, USER_ID, ROLE_ID, 0, 70, 4800, 1607979640000, 7, 7, 7], // no predicted grade
 		[105, USER_ID, ROLE_ID, 0, 88, null, 1607979880000, 4, 4, 4, 0.20],
 		[106, USER_ID, ROLE_ID, 0, 48, 7800, null, 9, 9, 9, 0.55],
@@ -25,7 +25,7 @@ const data = {
 		[11, USER_ID, ROLE_ID, 0, 80, 6600, 1607979700000, 3, 3, 3],
 		[12, USER_ID, ROLE_ID, 0, 85, 5400, null, 2, 2, 2],
 		[13, USER_ID, ROLE_ID, 0, 75, 4200, 1607979820000, 5, 5, 5],
-		[14, USER_ID, ROLE_ID, 0, 70, 4800, 1607979640000, 7, 7, 7],
+		[14, USER_ID, ROLE_ID, 0, null, 4800, 1607979640000, 7, 7, 7],
 		[15, USER_ID, ROLE_ID, 0, 88, 7200, 1607979880000, 4, 4, 4],
 
 		[99, 2, ROLE_ID, 0, 90, 6000, 1607979698265, 5, 6, 7], // should be ignored - not the current user
@@ -42,7 +42,7 @@ const expected = {
 	active: [
 		['Course 101 (Id: 101)', '80 %', '90 %', '110', [3, 3, 3], getLocalDateTime(1607979700000)],
 		['Course 102 (Id: 102)', '85 %', '60 %', '90', [2, 2, 2], getLocalDateTime(1607979760000)],
-		['Course 103 (Id: 103)', '75 %', '75 %', '70', [5, 5, 5], getLocalDateTime(1607979820000)],
+		['Course 103 (Id: 103)', 'No grade', '75 %', '70', [5, 5, 5], getLocalDateTime(1607979820000)],
 		['Course 104 (Id: 104)', '70 %', 'No predicted grade', '80', [7, 7, 7], getLocalDateTime(1607979640000)],
 		['Course 105 (Id: 105)', '88 %', '20 %', '0', [4, 4, 4], getLocalDateTime(1607979880000)],
 		['Course 106 (Id: 106)', '48 %', '55 %', '130', [9, 9, 9], 'NULL']
@@ -51,7 +51,7 @@ const expected = {
 		['Course 11 (Id: 11)', '80 %', '110', [3, 3, 3], getLocalDateTime(1607979700000)],
 		['Course 12 (Id: 12)', '85 %', '90', [2, 2, 2], 'NULL'],
 		['Course 13 (Id: 13)', '75 %', '70', [5, 5, 5], getLocalDateTime(1607979820000)],
-		['Course 14 (Id: 14)', '70 %', '80', [7, 7, 7], getLocalDateTime(1607979640000)],
+		['Course 14 (Id: 14)', 'No grade', '80', [7, 7, 7], getLocalDateTime(1607979640000)],
 		['Course 15 (Id: 15)', '88 %', '120', [4, 4, 4], getLocalDateTime(1607979880000)],
 	]
 };
