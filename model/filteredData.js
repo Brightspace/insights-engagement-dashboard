@@ -69,6 +69,10 @@ export class FilteredData {
 		return userIdsInView.map(userId => this.userDictionary.get(userId));
 	}
 
+	get orgUnitTree() {
+		return this._data.orgUnitTree;
+	}
+
 	clearFilters() {
 		this.filters.forEach(f => f.isApplied = false);
 	}

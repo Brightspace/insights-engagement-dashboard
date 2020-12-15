@@ -18,6 +18,7 @@ export const ACTIVE_TABLE_COLUMNS = {
 	DISCUSSION_ACTIVITY: 4,
 	COURSE_LAST_ACCESS: 5
 };
+
 export const INACTIVE_TABLE_COLUMNS = {
 	COURSE_NAME: 0,
 	CURRENT_GRADE: 1,
@@ -74,10 +75,6 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this._pageSize = DEFAULT_PAGE_SIZE;
 	}
 
-	get _serverData() {
-		return this.data._data;
-	}
-
 	get _itemsCount() {
 		return this.userDataForDisplay.length;
 	}
@@ -117,12 +114,12 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_shouldDisplayinTable(record) {
 		const orgUnitId = record[RECORD.ORG_UNIT_ID];
-		return record[RECORD.USER_ID] === this.user.userId && this.isActiveTable === this._serverData.orgUnitTree.isActive(orgUnitId);
+		return record[RECORD.USER_ID] === this.user.userId && this.isActiveTable === this.data.orgUnitTree.isActive(orgUnitId);
 	}
 
 	_preProcessData(record) {
 		const orgUnitId =  record[RECORD.ORG_UNIT_ID];
-		const orgUnitName = this._serverData.orgUnitTree.getName(orgUnitId);
+		const orgUnitName = this.data.orgUnitTree.getName(orgUnitId);
 		const finalGrade = record[RECORD.CURRENT_FINAL_GRADE];
 		const predictedGrade = record[RECORD.PREDICTED_GRADE];
 		const timeInContent = record[RECORD.TIME_IN_CONTENT];
@@ -185,7 +182,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		if (this.isActiveTable) {
 			const formattedColumns = [
 				course[ACTIVE_TABLE_COLUMNS.COURSE_NAME],
-				course[ACTIVE_TABLE_COLUMNS.CURRENT_GRADE] ? formatPercent(course[ACTIVE_TABLE_COLUMNS.CURRENT_GRADE] / 100, numberFormatOptions) : '',
+				course[ACTIVE_TABLE_COLUMNS.CURRENT_GRADE] ? formatPercent(course[ACTIVE_TABLE_COLUMNS.CURRENT_GRADE] / 100, numberFormatOptions) : this.localize('activeCoursesTable:noGrade'),
 				course[ACTIVE_TABLE_COLUMNS.PREDICTED_GRADE] ? formatPercent(course[ACTIVE_TABLE_COLUMNS.PREDICTED_GRADE], numberFormatOptions) : this.localize('activeCoursesTable:noPredictedGrade'),
 				formatNumber(course[ACTIVE_TABLE_COLUMNS.TIME_IN_CONTENT] / 60, numberFormatOptions),
 				course[ACTIVE_TABLE_COLUMNS.DISCUSSION_ACTIVITY],
@@ -196,7 +193,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		} else {
 			return [
 				course[INACTIVE_TABLE_COLUMNS.COURSE_NAME],
-				course[INACTIVE_TABLE_COLUMNS.CURRENT_GRADE] ? formatPercent(course[INACTIVE_TABLE_COLUMNS.CURRENT_GRADE] / 100, numberFormatOptions) : '',
+				course[INACTIVE_TABLE_COLUMNS.CURRENT_GRADE] ? formatPercent(course[INACTIVE_TABLE_COLUMNS.CURRENT_GRADE] / 100, numberFormatOptions) : this.localize('activeCoursesTable:noGrade'),
 				formatNumber(course[INACTIVE_TABLE_COLUMNS.TIME_IN_CONTENT] / 60, numberFormatOptions),
 				course[INACTIVE_TABLE_COLUMNS.DISCUSSION_ACTIVITY],
 				courseLastAccessFormatted
@@ -272,6 +269,31 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		}
 	}
 
+	get headersForExport() {
+		return [
+			this.localize('activeCoursesTable:course'),
+			this.localize('activeCoursesTable:grade'),
+			this.localize('activeCoursesTable:predictedGrade'),
+			this.localize('activeCoursesTable:timeInContent'),
+			this.localize('discussionActivityCard:threads'),
+			this.localize('discussionActivityCard:reads'),
+			this.localize('discussionActivityCard:replies'),
+			this.localize('activeCoursesTable:courseLastAccess'),
+			this.localize('activeCoursesTable:isActive')
+		];
+	}
+
+	get dataForExport() {
+		return this.userDataForDisplay
+			.map(user => {
+				if (!this.isActiveTable || (this.isActiveTable && !this.isStudentSuccessSys)) {
+					user.splice(2, 0, this.localize('activeCoursesTable:noPredictedGrade'));
+					return user;
+				} else return user;
+			})
+			.map(course => [...course.flat(), this.isActiveTable]);
+	}
+
 	_handlePageChange(event) {
 		this._currentPage = event.detail.page;
 	}
@@ -333,6 +355,8 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 decorate(UserDrillCoursesTable, {
 	userDataForDisplay: computed,
+	headersForExport: computed,
+	dataForExport: computed,
 	_sortColumn: observable,
 	_sortOrder: observable,
 	_handleColumnSort: action
