@@ -343,7 +343,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 				await new Promise(resolve => setTimeout(resolve, 200));
 				await el.updateComplete;
 				expect(el.dataForExport[0]).to.deep.equal(
-					['Course 11 (Id: 11)', '80 %', 'No predicted grade', '110', 3, 3, 3, 'Dec 14, 2020 11:01 PM', false]);
+					['Course 11 (Id: 11)', '80 %', 'No predicted grade', '110', 3, 3, 3, getLocalDateTime(1607979700000), false]);
 			});
 			it('should get dataForExport[0] for active course', async() => {
 				const el = await fixture(html`
@@ -357,7 +357,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 				await new Promise(resolve => setTimeout(resolve, 200));
 				await el.updateComplete;
 				expect(el.dataForExport[0]).to.deep.equal(
-					[ 'Course 101 (Id: 101)', '80 %', '90 %', '110', 3, 3, 3, 'Dec 14, 2020 11:01 PM', true]);
+					[ 'Course 101 (Id: 101)', '80 %', '90 %', '110', 3, 3, 3, getLocalDateTime(1607979700000), true]);
 			});
 			it('should get dataForExport[0] for active course when isStudentSuccessSys equals false', async() => {
 				const el = await fixture(html`
@@ -371,7 +371,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 				await new Promise(resolve => setTimeout(resolve, 200));
 				await el.updateComplete;
 				expect(el.dataForExport[0]).to.deep.equal(
-					[ 'Course 101 (Id: 101)', '80 %', 'No predicted grade', '110', 3, 3, 3, 'Dec 14, 2020 11:01 PM', true]);
+					[ 'Course 101 (Id: 101)', '80 %', 'No predicted grade', '110', 3, 3, 3, getLocalDateTime(1607979700000), true]);
 			});
 		});
 	});
