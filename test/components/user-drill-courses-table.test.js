@@ -1,6 +1,7 @@
 import '../../components/user-drill-courses-table';
 
 import { expect, fixture, html } from '@open-wc/testing';
+import { formatDateTimeFromTimestamp } from '@brightspace-ui/intl/lib/dateTime.js';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
 const USER_ID = 1;
@@ -22,7 +23,7 @@ const data = {
 
 		// inactive courses
 		[11, USER_ID, ROLE_ID, 0, 80, 6600, 1607979700000, 3, 3, 3],
-		[12, USER_ID, ROLE_ID, 0, 85, 5400, 1607979760000, 2, 2, 2],
+		[12, USER_ID, ROLE_ID, 0, 85, 5400, null, 2, 2, 2],
 		[13, USER_ID, ROLE_ID, 0, 75, 4200, 1607979820000, 5, 5, 5],
 		[14, USER_ID, ROLE_ID, 0, 70, 4800, 1607979640000, 7, 7, 7],
 		[15, USER_ID, ROLE_ID, 0, 88, 7200, 1607979880000, 4, 4, 4],
@@ -39,19 +40,19 @@ const user = { userId: 1 };
 
 const expected = {
 	active: [
-		['Course 101 (Id: 101)', '80 %', '90 %', '110', [3, 3, 3], 'Dec 14, 2020 4:01 PM'],
-		['Course 102 (Id: 102)', '85 %', '60 %', '90', [2, 2, 2], 'Dec 14, 2020 4:02 PM'],
-		['Course 103 (Id: 103)', '75 %', '75 %', '70', [5, 5, 5], 'Dec 14, 2020 4:03 PM'],
-		['Course 104 (Id: 104)', '70 %', 'No predicted grade', '80', [7, 7, 7], 'Dec 14, 2020 4:00 PM'],
-		['Course 105 (Id: 105)', '88 %', '20 %', '0', [4, 4, 4], 'Dec 14, 2020 4:04 PM'],
+		['Course 101 (Id: 101)', '80 %', '90 %', '110', [3, 3, 3], getLocalDateTime(1607979700000)],
+		['Course 102 (Id: 102)', '85 %', '60 %', '90', [2, 2, 2], getLocalDateTime(1607979760000)],
+		['Course 103 (Id: 103)', '75 %', '75 %', '70', [5, 5, 5], getLocalDateTime(1607979820000)],
+		['Course 104 (Id: 104)', '70 %', 'No predicted grade', '80', [7, 7, 7], getLocalDateTime(1607979640000)],
+		['Course 105 (Id: 105)', '88 %', '20 %', '0', [4, 4, 4], getLocalDateTime(1607979880000)],
 		['Course 106 (Id: 106)', '48 %', '55 %', '130', [9, 9, 9], 'NULL']
 	],
 	inactive: [
-		['Course 11 (Id: 11)', '80 %', '110', [3, 3, 3], 'Dec 14, 2020 4:01 PM'],
-		['Course 12 (Id: 12)', '85 %', '90', [2, 2, 2], 'Dec 14, 2020 4:02 PM'],
-		['Course 13 (Id: 13)', '75 %', '70', [5, 5, 5], 'Dec 14, 2020 4:03 PM'],
-		['Course 14 (Id: 14)', '70 %', '80', [7, 7, 7], 'Dec 14, 2020 4:00 PM'],
-		['Course 15 (Id: 15)', '88 %', '120', [4, 4, 4], 'Dec 14, 2020 4:04 PM'],
+		['Course 11 (Id: 11)', '80 %', '110', [3, 3, 3], getLocalDateTime(1607979700000)],
+		['Course 12 (Id: 12)', '85 %', '90', [2, 2, 2], 'NULL'],
+		['Course 13 (Id: 13)', '75 %', '70', [5, 5, 5], getLocalDateTime(1607979820000)],
+		['Course 14 (Id: 14)', '70 %', '80', [7, 7, 7], getLocalDateTime(1607979640000)],
+		['Course 15 (Id: 15)', '88 %', '120', [4, 4, 4], getLocalDateTime(1607979880000)],
 	]
 };
 
@@ -249,7 +250,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 
 			const expected = [
 				...Array.from({ length: 22 }).map((val, idx) => {
-					return [`Course ${idx + 10} (Id: ${idx + 10})`, `${100 - idx} %`, '0', [3, 3, 3], 'Dec 14, 2020 4:01 PM'];
+					return [`Course ${idx + 10} (Id: ${idx + 10})`, `${100 - idx} %`, '0', [3, 3, 3], getLocalDateTime(1607979700000)];
 				})
 			];
 
@@ -385,4 +386,8 @@ function datesWithTextSort(item1, item2) {
 	} else {
 		return time1 - time2;
 	}
+}
+
+function getLocalDateTime(timestamp) {
+	return formatDateTimeFromTimestamp(timestamp, { format: 'medium' });
 }
