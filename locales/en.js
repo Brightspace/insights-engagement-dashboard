@@ -18,6 +18,7 @@ export default {
 	"dashboard:learMore": "Learn More",
 	"dashboard:exportToCsv": "Export to CSV",
 	"dashboard:saveDefaultView": "Make this my default view",
+	"dashboard:emailButtonAriaLabel": "Table actions. Email selected users in a new window",
 	"dashboard:emailButton": "Email",
 	"dashboard:print": "Print",
 	"dashboard:noUsersSelectedDialogText": "Please select one or more users to email.",
@@ -58,7 +59,7 @@ export default {
 	"dropdownFilter:openerTextMultiple": "{filterName}: {selectedCount} selected",
 	"dropdownFilter:openerTextSingle": '{filterName}: {selectedItemName}',
 
-	"usersTable:title": "User Details",
+	"usersTable:title": "User Details table. This table lists the Users that satisfy the filtering criteria. Actions that may be applied to multiple items are available in the table actions.",
 	"usersTable:loadingPlaceholder": "Loading",
 	"usersTable:lastFirstName": "Name",
 	"usersTable:openUserPage": "Open user's page for {userName}",

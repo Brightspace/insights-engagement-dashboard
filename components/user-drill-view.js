@@ -136,14 +136,14 @@ class UserDrill extends Localizer(MobxLitElement) {
 	}
 
 	get userProfile() {
+		if (this.isDemo) return html`<d2l-icon class="d2l-insights-user-drill-view-profile-pic" icon="tier3:profile-pic"></d2l-icon>`;
 		return until(this.token.then(
 			token => html`
 				<d2l-profile-image
 					class="d2l-insights-user-drill-view-profile-pic"
 					href="${this.userEntity}"
 					token="${token}" x-large>
-				</d2l-profile-image>`), html`<d2l-icon class="d2l-insights-user-drill-view-profile-pic" icon="tier3:profile-pic"></d2l-icon>
-			`
+				</d2l-profile-image>`), html`<d2l-icon class="d2l-insights-user-drill-view-profile-pic" icon="tier3:profile-pic"></d2l-icon>`
 		);
 	}
 
@@ -185,6 +185,10 @@ class UserDrill extends Localizer(MobxLitElement) {
 
 			<div class="d2l-insights-view-filters-container">
 				<slot name="filters"></slot>
+			</div>
+
+			<div class="d2l-insights-view-filters-container">
+				<slot name="applied-filters"></slot>
 			</div>
 
 			<div class="d2l-insights-user-drill-view-content">

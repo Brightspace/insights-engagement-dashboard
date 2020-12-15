@@ -75,6 +75,10 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this._pageSize = DEFAULT_PAGE_SIZE;
 	}
 
+	get _serverData() {
+		return this.data._data;
+	}
+
 	get _itemsCount() {
 		return this.userDataForDisplay.length;
 	}
@@ -114,12 +118,12 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_shouldDisplayinTable(record) {
 		const orgUnitId = record[RECORD.ORG_UNIT_ID];
-		return record[RECORD.USER_ID] === this.user.userId && this.isActiveTable === this.data.orgUnitTree.isActive(orgUnitId);
+		return record[RECORD.USER_ID] === this.user.userId && this.isActiveTable === this._serverData.orgUnitTree.isActive(orgUnitId);
 	}
 
 	_preProcessData(record) {
 		const orgUnitId =  record[RECORD.ORG_UNIT_ID];
-		const orgUnitName = this.data.orgUnitTree.getName(orgUnitId);
+		const orgUnitName = this._serverData.orgUnitTree.getName(orgUnitId);
 		const finalGrade = record[RECORD.CURRENT_FINAL_GRADE];
 		const predictedGrade = record[RECORD.PREDICTED_GRADE];
 		const timeInContent = record[RECORD.TIME_IN_CONTENT];
