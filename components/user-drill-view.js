@@ -183,6 +183,10 @@ class UserDrill extends Localizer(MobxLitElement) {
 				<slot name="filters"></slot>
 			</div>
 
+			<div class="d2l-insights-view-filters-container">
+				<slot name="applied-filters"></slot>
+			</div>
+
 			<div class="d2l-insights-user-drill-view-content">
 				<!-- put your tables here -->
 				<h2 class="d2l-heading-3">${this.localize('activeCoursesTable:title')}</h2>
