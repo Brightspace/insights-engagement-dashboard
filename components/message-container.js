@@ -1,78 +1,85 @@
-import './error-message';
+import '@brightspace-ui/core/components/button/button';
+import { css, html, LitElement } from 'lit-element/lit-element';
 
-import { computed, decorate } from 'mobx';
-import { html } from 'lit-element/lit-element.js';
-import { ifDefined } from 'lit-html/directives/if-defined';
-import { Localizer } from '../locales/localizer';
-import { MobxLitElement } from '@adobe/lit-mobx';
-
-class MessageContainer extends Localizer(MobxLitElement) {
+class MessageContainer extends LitElement {
 
 	static get properties() {
 		return {
-			data: { type: Object, attribute: false },
-			isNoDataReturned: { type: Boolean, attribute: false }
+			// possible types: link, button, default
+			type: { type: String, attribute: true },
+			text: { type: String, attribute: true },
+			linkText: { type: String, attribute: 'link-text' },
+			href: { type: String, attribute: true },
+			buttonText: { type: String, attribute: 'button-text' }
 		};
 	}
 
-	constructor() {
-		super();
-		this.data = {};
-	}
+	static get styles() {
+		return [css`
+			:host {
+				display: inline-block;
+				padding-top: 20px;
+			}
 
-	// @computed
-	get _isRecordsTruncated() {
-		return this.data._data.serverData.isRecordsTruncated;
-	}
+			:host([hidden]) {
+				display: none;
+			}
 
-	// @computed
-	get _isQueryFails() {
-		return this.data._data.isQueryError;
+			.d2l-insights-message-container-body {
+				background-color: var(--d2l-color-regolith);
+				border: 1px solid var(--d2l-color-gypsum);
+				border-radius: 8px;
+				color: var(--d2l-color-ferrite);
+				display: flex;
+				margin-bottom: 20px;
+				padding: 40px;
+				width: 73vw;
+			}
+
+			.d2l-insights-message-container-body.d2l-insights-message-noResultsAvailable {
+				flex-direction: column;
+			}
+
+			.d2l-insights-message-container-value {
+				word-wrap: break-word;
+			}
+
+			.d2l-insights-message-container-body.d2l-insights-message-noResultsAvailable > d2l-button {
+				margin-top: 20px;
+				width: 200px;
+			}
+		`];
 	}
 
 	render() {
-		let messageType, text, linkText, href, buttonText;
-
-		// conditionally render message text and body
-		if (this._isQueryFails) {
-			messageType = 'link';
-			text = this.localize('dashboard:queryFailed');
-			linkText = this.localize('dashboard:queryFailedLink');
-			href = 'https://www.d2l.com/support/';
-
-		} else if (this.isNoDataReturned) { //overwrite too many results case
-			messageType = 'button';
-			text = this.localize('dashboard:noResultsAvailable');
-			buttonText = this.localize('dashboard:undoLastAction');
-
-		} else if (this._isRecordsTruncated) {
-			messageType = 'default';
-			text = this.localize('dashboard:tooManyResults');
-
-		} else {
-			return '';
+		switch (this.type) {
+			case 'link':
+				return html`
+					<div class="d2l-insights-message-container-body">
+						<span class="d2l-insights-message-container-value">
+							${this.text}
+							<a href="${this.href}" target="_blank">${this.linkText}</a>
+						</span>
+					</div>
+				`;
+			case 'button':
+				return html`
+					<div class="d2l-insights-message-container-body d2l-insights-message-noResultsAvailable">
+						<span class="d2l-insights-message-container-value">${this.text}</span>
+						<d2l-button primary slot="footer" @click="${this._handleButtonClick}">${this.buttonText}</d2l-button>
+					</div>
+				`;
+			default:
+				return html`
+					<div class="d2l-insights-message-container-body">
+						<span class="d2l-insights-message-container-value">${this.text}</span>
+					</div>
+				`;
 		}
-
-		return html`
-			<d2l-insights-error-message
-				type="${messageType}"
-				text="${text}"
-				link-text="${ifDefined(linkText)}"
-				href="${ifDefined(href)}"
-				button-text="${ifDefined(buttonText)}"
-				@d2l-insights-error-message-button-click="${this._handleClick}">
-			</d2l-insights-error-message>
-		`;
 	}
 
-	_handleClick() {
-		this.dispatchEvent(new Event('d2l-insights-undo-last-filter'));
+	_handleButtonClick() {
+		this.dispatchEvent(new Event('d2l-insights-message-container-button-click'));
 	}
 }
-
-decorate(MessageContainer, {
-	_isRecordsTruncated: computed,
-	_isQueryFails: computed
-});
-
 customElements.define('d2l-insights-message-container', MessageContainer);
