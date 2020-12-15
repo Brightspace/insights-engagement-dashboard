@@ -10,7 +10,7 @@ import { MobxLitElement } from '@adobe/lit-mobx';
 import { RECORD } from '../consts';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 
-export const ACTIVE_TABLE_COURSES = {
+export const ACTIVE_TABLE_COLUMNS = {
 	COURSE_NAME: 0,
 	CURRENT_GRADE: 1,
 	PREDICTED_GRADE: 2,
@@ -21,7 +21,7 @@ export const ACTIVE_TABLE_COURSES = {
 
 export const IS_ACTIVE_COURSE = 6;
 
-export const INACTIVE_TABLE_COURSES = {
+export const INACTIVE_TABLE_COLUMNS = {
 	COURSE_NAME: 0,
 	CURRENT_GRADE: 1,
 	TIME_IN_CONTENT: 2,
@@ -72,7 +72,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	constructor() {
 		super();
 		this._sortOrder = 'desc';
-		this._sortColumn = ACTIVE_TABLE_COURSES.COURSE_NAME;
+		this._sortColumn = ACTIVE_TABLE_COLUMNS.COURSE_NAME;
 		this._currentPage = 1;
 		this._pageSize = DEFAULT_PAGE_SIZE;
 	}
@@ -99,7 +99,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		if (this._itemsCount) {
 			const start = this._pageSize * (this._currentPage - 1);
 			const end = this._pageSize * (this._currentPage); // it's ok if this goes over the end of the array
-			const numCols = this.isActiveTable ? Array.from(Array(6), (_, x) => x) : Array.from(Array(5), (_, x) => x);
+			const numCols = this.isActiveTable && this.isStudentSuccessSys ? Array.from(Array(6), (_, x) => x) : Array.from(Array(5), (_, x) => x);
 			return this.userDataForDisplay
 				.slice(start, end)
 				.map(user => numCols.map(column => user[column]));
@@ -116,13 +116,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_shouldDisplayinTable(record) {
 		const orgUnitId = record[RECORD.ORG_UNIT_ID];
-		if (record[RECORD.USER_ID] === this.user.userId && this.isActiveTable) {
-			return this.data.orgUnitTree.getActiveStatus(orgUnitId);
-		}
-		if (record[RECORD.USER_ID] === this.user.userId && !this.isActiveTable) {
-			return !this.data.orgUnitTree.getActiveStatus(orgUnitId);
-		}
-		return false;
+		return record[RECORD.USER_ID] === this.user.userId && this.isActiveTable === this.data.orgUnitTree.isActive(orgUnitId);
 	}
 
 	_preProcessData(record) {
@@ -161,11 +155,11 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 			'asc': [-1, 1, 0],
 			'desc': [1, -1, 0]
 		};
-		if (column === ACTIVE_TABLE_COURSES.COURSE_NAME) {
+		if (column === ACTIVE_TABLE_COLUMNS.COURSE_NAME) {
 			// NB: "desc" and "asc" are inverted for course info: desc sorts a-z whereas asc sorts z-a
 			return (course1, course2) => {
-				const courseId1 = course1[ACTIVE_TABLE_COURSES.COURSE_NAME].toLowerCase();
-				const courseId2 = course2[ACTIVE_TABLE_COURSES.COURSE_NAME].toLowerCase();
+				const courseId1 = course1[ACTIVE_TABLE_COLUMNS.COURSE_NAME].toLowerCase();
+				const courseId2 = course2[ACTIVE_TABLE_COLUMNS.COURSE_NAME].toLowerCase();
 				return (courseId1 > courseId2 ? ORDER[order][0] :
 					courseId1 < courseId2 ? ORDER[order][1] :
 						ORDER[order][2]);
@@ -182,23 +176,29 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		};
 	}
 
-	_formatDataForDisplay(user) {
+	_formatDataForDisplay(course) {
+		const lastSysAccessFormattedIndex = this.isActiveTable ? ACTIVE_TABLE_COLUMNS.COURSE_LAST_ACCESS : INACTIVE_TABLE_COLUMNS.COURSE_LAST_ACCESS;
+		const lastSysAccessFormatted = course[lastSysAccessFormattedIndex]
+			? formatDateTime(new Date(course[lastSysAccessFormattedIndex]), { format: 'medium' })
+			: this.localize('usersTable:null');
 		if (this.isActiveTable) {
-			return [
-				user[ACTIVE_TABLE_COURSES.COURSE_NAME],
-				user[ACTIVE_TABLE_COURSES.CURRENT_GRADE] ? formatPercent(user[ACTIVE_TABLE_COURSES.CURRENT_GRADE] / 100, numberFormatOptions) : this.localize('activeCoursesTable:noGrade'),
-				user[ACTIVE_TABLE_COURSES.PREDICTED_GRADE] ? formatPercent(user[ACTIVE_TABLE_COURSES.PREDICTED_GRADE], numberFormatOptions) : this.localize('activeCoursesTable:noPredictedGrade'),
-				formatNumber(user[ACTIVE_TABLE_COURSES.TIME_IN_CONTENT] / 60, numberFormatOptions),
-				user[ACTIVE_TABLE_COURSES.DISCUSSION_ACTIVITY],
-				user[ACTIVE_TABLE_COURSES.COURSE_LAST_ACCESS] ? formatDateTime(new Date(user[ACTIVE_TABLE_COURSES.COURSE_LAST_ACCESS]), { format: 'medium' }) : this.localize('usersTable:null')
+			const formattedColumns = [
+				course[ACTIVE_TABLE_COLUMNS.COURSE_NAME],
+				course[ACTIVE_TABLE_COLUMNS.CURRENT_GRADE] ? formatPercent(course[ACTIVE_TABLE_COLUMNS.CURRENT_GRADE] / 100, numberFormatOptions) : this.localize('activeCoursesTable:noGrade'),
+				course[ACTIVE_TABLE_COLUMNS.PREDICTED_GRADE] ? formatPercent(course[ACTIVE_TABLE_COLUMNS.PREDICTED_GRADE], numberFormatOptions) : this.localize('activeCoursesTable:noPredictedGrade'),
+				formatNumber(course[ACTIVE_TABLE_COLUMNS.TIME_IN_CONTENT] / 60, numberFormatOptions),
+				course[ACTIVE_TABLE_COLUMNS.DISCUSSION_ACTIVITY],
+				lastSysAccessFormatted
 			];
+			if (!this.isStudentSuccessSys) formattedColumns.splice(ACTIVE_TABLE_COLUMNS.PREDICTED_GRADE, 1);
+			return formattedColumns;
 		} else {
 			return [
-				user[INACTIVE_TABLE_COURSES.COURSE_NAME],
-				user[INACTIVE_TABLE_COURSES.CURRENT_GRADE] ? formatPercent(user[INACTIVE_TABLE_COURSES.CURRENT_GRADE] / 100, numberFormatOptions) : this.localize('activeCoursesTable:noGrade'),
-				formatNumber(user[INACTIVE_TABLE_COURSES.TIME_IN_CONTENT] / 60, numberFormatOptions),
-				user[INACTIVE_TABLE_COURSES.DISCUSSION_ACTIVITY],
-				user[INACTIVE_TABLE_COURSES.COURSE_LAST_ACCESS] ? formatDateTime(new Date(user[INACTIVE_TABLE_COURSES.COURSE_LAST_ACCESS]), { format: 'medium' }) : this.localize('usersTable:null')
+				course[INACTIVE_TABLE_COLUMNS.COURSE_NAME],
+				course[INACTIVE_TABLE_COLUMNS.CURRENT_GRADE] ? formatPercent(course[INACTIVE_TABLE_COLUMNS.CURRENT_GRADE] / 100, numberFormatOptions) : this.localize('activeCoursesTable:noGrade'),
+				formatNumber(course[INACTIVE_TABLE_COLUMNS.TIME_IN_CONTENT] / 60, numberFormatOptions),
+				course[INACTIVE_TABLE_COLUMNS.DISCUSSION_ACTIVITY],
+				lastSysAccessFormatted
 			];
 		}
 	}
@@ -217,7 +217,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	get columnInfo() {
 		if (this.isActiveTable) {
-			return [
+			const columnInfo = [
 				{
 					headerText: this.localize('activeCoursesTable:course'),
 					columnType: COLUMN_TYPES.NORMAL_TEXT
@@ -243,6 +243,8 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 					columnType: COLUMN_TYPES.NORMAL_TEXT
 				}
 			];
+			if (!this.isStudentSuccessSys) columnInfo.splice(ACTIVE_TABLE_COLUMNS.PREDICTED_GRADE, 1);
+			return columnInfo;
 		} else {
 			return [
 				{
@@ -284,7 +286,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get dataForExport() {
-		const arrayOfHeaderColumnIndexes = Object.values(ACTIVE_TABLE_COURSES);
+		const arrayOfHeaderColumnIndexes = Object.values(ACTIVE_TABLE_COLUMNS);
 		arrayOfHeaderColumnIndexes.push(IS_ACTIVE_COURSE);
 		const sortFunction = this._choseSortFunction(this._sortColumn, this._sortOrder);
 		const userData = this.data.records
@@ -298,7 +300,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 			.map(user => arrayOfHeaderColumnIndexes.flatMap(column => {
 				const val = user[column];
 				if (column === IS_ACTIVE_COURSE) {
-					const isCourseActive = this._activeCourseById(Number(this._getOrgIdFromCourseNameString(user[ACTIVE_TABLE_COURSES.COURSE_NAME])));
+					const isCourseActive = this._activeCourseById(Number(this._getOrgIdFromCourseNameString(user[ACTIVE_TABLE_COLUMNS.COURSE_NAME])));
 					return [isCourseActive];
 				}
 				return val;
@@ -306,7 +308,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_activeCourseById(orgUnitId) {
-		return this.data.orgUnitTree.getActiveStatus(orgUnitId);
+		return this.data.orgUnitTree.isActive(orgUnitId);
 	}
 
 	_getOrgIdFromCourseNameString(str) {
@@ -337,15 +339,12 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	render() {
-		if (this._displayData.length !== 0 && this.isActiveTable) {
-			return this._renderActiveCoursesTable();
-		}
-		else if (this._displayData.length !== 0 && !this.isActiveTable) {
-			return this._renderInactiveCoursesTable();
+		if (this._displayData.length !== 0) {
+			return this._renderCoursesTable();
 		}
 	}
 
-	_renderActiveCoursesTable() {
+	_renderCoursesTable() {
 		return html`
 			<d2l-insights-table
 				title="${this.localize('activeCoursesTable:title')}"
@@ -355,31 +354,27 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 				.data="${this._displayData}"
 				?skeleton="${this.skeleton}"
 			></d2l-insights-table>
+			${this._renderInactiveCoursesTablePagination()}
 		`;
 	}
 
-	_renderInactiveCoursesTable() {
-		return html`
-			<d2l-insights-table
-				title="${this.localize('inactiveCoursesTable:title')}"
-				@d2l-insights-table-sort="${this._handleColumnSort}"
-				sort-column="0"
-				.columnInfo=${this.columnInfo}
-				.data="${this._displayData}"
-				?skeleton="${this.skeleton}"
-			></d2l-insights-table>
-			<d2l-labs-pagination
-				show-item-count-select
-				item-count-options="[10,20,50,100]"
-				page-number="${this._currentPage}"
-				max-page-number="${this._maxPages}"
-				selected-count-option="${this._pageSize}"
-				@pagination-page-change="${this._handlePageChange}"
-				@pagination-item-counter-change="${this._handlePageSizeChange}"
-			></d2l-labs-pagination>
+	_renderInactiveCoursesTablePagination() {
+		if (!this.isActiveTable) {
+			return html`
+				<d2l-labs-pagination
+					show-item-count-select
+					item-count-options="[10,20,50,100]"
+					page-number="${this._currentPage}"
+					max-page-number="${this._maxPages}"
+					selected-count-option="${this._pageSize}"
+					@pagination-page-change="${this._handlePageChange}"
+					@pagination-item-counter-change="${this._handlePageSizeChange}"
+				></d2l-labs-pagination>
 			`;
+		}
 	}
 }
+
 decorate(UserDrillCoursesTable, {
 	userDataForDisplay: computed,
 	headersForExport: computed,
