@@ -10,6 +10,11 @@ import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton
 
 /**
  * @property {Object} data
+ * @property {Boolean} showOverdueCard
+ * @property {Boolean} showResultsCard
+ * @property {Boolean} showSystemAccessCard
+ * @property {Boolean} showDiscussionsCard
+ * @property {String} _screenSize - private property that allows forcing rendering after hit of media-query breakpoint
  */
 class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 	static get properties() {
