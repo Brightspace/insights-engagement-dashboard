@@ -269,6 +269,10 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				<div slot="filters">
 					${this._renderFilters()}
 				</div>
+
+				<div slot="applied-filters">
+					${this._renderAppliedFilters()}
+				</div>
 			</d2l-insights-user-drill-view>
 		`;
 	}
@@ -285,6 +289,12 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			.preSelected="${this._serverData.selectedSemesterIds}"
 			@d2l-insights-semester-filter-change="${this._semesterFilterChange}"
 		></d2l-insights-semester-filter>
+		`;
+	}
+
+	_renderAppliedFilters() {
+		return html `
+			<d2l-insights-applied-filters .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-applied-filters>
 		`;
 	}
 
@@ -351,7 +361,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			</d2l-insights-message-container>
 			${this._summaryViewHeader}
 			<div class="d2l-insights-summary-container-applied-filters">
-				<d2l-insights-applied-filters .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-applied-filters>
+				${this._renderAppliedFilters()}
 			</div>
 			<div class="d2l-insights-summary-chart-layout">
 				<div class="d2l-insights-summary-container">
@@ -421,6 +431,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			<h2 class="d2l-heading-3">${this.localize('dashboard:resultsHeading')}</h2>
 			<d2l-action-button-group class="d2l-table-action-button-group" min-to-show="0" max-to-show="2" opener-type="more">
 				<d2l-button-subtle
+					aria-label="${this.localize('dashboard:emailButtonAriaLabel')}"
 					icon="d2l-tier1:email"
 					text="${this.localize('dashboard:emailButton')}"
 					@click="${this._handleEmailButtonPress}">

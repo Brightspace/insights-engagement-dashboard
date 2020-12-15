@@ -174,9 +174,9 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_formatDataForDisplay(course) {
-		const lastSysAccessFormattedIndex = this.isActiveTable ? ACTIVE_TABLE_COLUMNS.COURSE_LAST_ACCESS : INACTIVE_TABLE_COLUMNS.COURSE_LAST_ACCESS;
-		const lastSysAccessFormatted = course[lastSysAccessFormattedIndex]
-			? formatDateTime(new Date(course[lastSysAccessFormattedIndex]), { format: 'medium' })
+		const courseLastAccessFormattedIndex = this.isActiveTable ? ACTIVE_TABLE_COLUMNS.COURSE_LAST_ACCESS : INACTIVE_TABLE_COLUMNS.COURSE_LAST_ACCESS;
+		const courseLastAccessFormatted = course[courseLastAccessFormattedIndex]
+			? formatDateTime(new Date(course[courseLastAccessFormattedIndex]), { format: 'medium' })
 			: this.localize('usersTable:null');
 		if (this.isActiveTable) {
 			const formattedColumns = [
@@ -185,7 +185,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 				course[ACTIVE_TABLE_COLUMNS.PREDICTED_GRADE] ? formatPercent(course[ACTIVE_TABLE_COLUMNS.PREDICTED_GRADE], numberFormatOptions) : this.localize('activeCoursesTable:noPredictedGrade'),
 				formatNumber(course[ACTIVE_TABLE_COLUMNS.TIME_IN_CONTENT] / 60, numberFormatOptions),
 				course[ACTIVE_TABLE_COLUMNS.DISCUSSION_ACTIVITY],
-				lastSysAccessFormatted
+				courseLastAccessFormatted
 			];
 			if (!this.isStudentSuccessSys) formattedColumns.splice(ACTIVE_TABLE_COLUMNS.PREDICTED_GRADE, 1);
 			return formattedColumns;
@@ -195,7 +195,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 				course[INACTIVE_TABLE_COLUMNS.CURRENT_GRADE] ? formatPercent(course[INACTIVE_TABLE_COLUMNS.CURRENT_GRADE] / 100, numberFormatOptions) : '',
 				formatNumber(course[INACTIVE_TABLE_COLUMNS.TIME_IN_CONTENT] / 60, numberFormatOptions),
 				course[INACTIVE_TABLE_COLUMNS.DISCUSSION_ACTIVITY],
-				lastSysAccessFormatted
+				courseLastAccessFormatted
 			];
 		}
 	}

@@ -1,3 +1,4 @@
+/* eslint-disable lit-a11y/click-events-have-key-events */
 import '@brightspace-ui/core/components/expand-collapse/expand-collapse-content';
 import '@brightspace-ui/core/components/button/button-icon';
 

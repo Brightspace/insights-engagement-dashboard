@@ -1,7 +1,7 @@
 node_modules/
 package-lock.json
-test/screenshots/current/
-test/screenshots/golden/
+test/visual-diff/screenshots/current/
+test/visual-diff/screenshots/golden/
 /.idea/
 .vscode/
 debug.log
