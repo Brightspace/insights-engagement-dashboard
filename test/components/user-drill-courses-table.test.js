@@ -64,7 +64,6 @@ describe('d2l-insights-user-drill-courses-table', () => {
 	});
 
 	describe('active courses table', () => {
-
 		describe('accessibility', () => {
 			it('should pass all axe tests', async() => {
 				const [el] = await setupTable(html`
@@ -76,17 +75,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 					>
 					</d2l-insights-user-drill-courses-table>
 				`);
-				// the scroll wrapper table component has a button in an aria-hidden div
-				// so it technically breaks the accessibility test. To get around this
-				// we exclude that test from this element. Please check for this rule manually
-				// or disable this rule and make sure no other issues were introduced
-				// during future development.
-				await expect(el).to.be.accessible({
-					ignoredRules: [
-						'aria-hidden-focus',
-						'button-name' // d2l-scroll-wrapper draws button at the right edge of the table. This button does not have a label.
-					]
-				});
+
+				await expect(el).to.be.accessible();
 			});
 		});
 
@@ -113,26 +103,24 @@ describe('d2l-insights-user-drill-courses-table', () => {
 			});
 
 			it('should pass correct data to inner table if S3 disabled', async() => {
-				it('should pass correct data to inner table if S3 disabled', async() => {
-					const [, innerTable] = await setupTable(html`
-						<d2l-insights-user-drill-courses-table
-							.data="${data}"
-							.user="${user}"
-							.isActiveTable="${Boolean(true)}"
-							.isStudentSuccessSys="${Boolean(false)}">
-						</d2l-insights-user-drill-courses-table>
-					`);
+				const [, innerTable] = await setupTable(html`
+					<d2l-insights-user-drill-courses-table
+						.data="${data}"
+						.user="${user}"
+						.isActiveTable="${Boolean(true)}"
+						.isStudentSuccessSys="${Boolean(false)}">
+					</d2l-insights-user-drill-courses-table>
+				`);
 
-					const expectedWithoutPredictedGrade = expected.active.map(row => row.filter((val, idx) => idx !== 2));
-					expect(innerTable.data).to.deep.equal(expectedWithoutPredictedGrade);
-					expect(innerTable.columnInfo.map(info => info.headerText)).to.deep.equal([
-						'Course Name',
-						'Current Grade',
-						'Time in Content (mins)',
-						'Discussion Activity',
-						'Course Last Access'
-					]);
-				});
+				const expectedWithoutPredictedGrade = expected.active.map(row => row.filter((val, idx) => idx !== 2));
+				expect(innerTable.data).to.deep.equal(expectedWithoutPredictedGrade);
+				expect(innerTable.columnInfo.map(info => info.headerText)).to.deep.equal([
+					'Course Name',
+					'Current Grade',
+					'Time in Content (mins)',
+					'Discussion Activity',
+					'Course Last Access'
+				]);
 			});
 		});
 
@@ -155,7 +143,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 				['Course Last Access', datesWithTextSort]
 			];
 			testCases.forEach(([colName, sortFunction], colIdx) => {
-				verifySorted(tableHtml, expected.active, sortFunction, colIdx, colName);
+				verifySorting(tableHtml, expected.active, sortFunction, colIdx, colName);
 			});
 		});
 	});
@@ -163,27 +151,15 @@ describe('d2l-insights-user-drill-courses-table', () => {
 	describe('inactive courses table', () => {
 		describe('accessibility', () => {
 			it('should pass all axe tests', async() => {
-				const el = await fixture(html`
+				const [el] = await setupTable(html`
 					<d2l-insights-user-drill-courses-table
 						.data="${data}"
 						.user="${user}"
 						.isActiveTable="${Boolean(false)}">
 					</d2l-insights-user-drill-courses-table>
 				`);
-				// give it a second to make sure inner table and paging controls load in
-				await new Promise(resolve => setTimeout(resolve, 200));
-				await el.updateComplete;
-				// the scroll wrapper table component has a button in an aria-hidden div
-				// so it technically breaks the accessibility test. To get around this
-				// we exclude that test from this element. Please check for this rule manually
-				// or disable this rule and make sure no other issues were introduced
-				// during future development.
-				await expect(el).to.be.accessible({
-					ignoredRules: [
-						'aria-hidden-focus',
-						'button-name' // d2l-scroll-wrapper draws button at the right edge of the table. This button does not have a label.
-					]
-				});
+
+				await expect(el).to.be.accessible();
 			});
 		});
 
@@ -230,7 +206,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 				['Course Last Access', datesWithTextSort]
 			];
 			testCases.forEach(([colName, sortFunction], colIdx) => {
-				verifySorted(tableHtml, expected.inactive, sortFunction, colIdx, colName);
+				verifySorting(tableHtml, expected.inactive, sortFunction, colIdx, colName);
 			});
 		});
 
@@ -336,7 +312,7 @@ async function getInnerTable(el) {
 	return innerTable;
 }
 
-function verifySorted(tableHtml, expectedRecords, sortFunction, colIdx, colName) {
+function verifySorting(tableHtml, expectedRecords, sortFunction, colIdx, colName) {
 	it(`should sort by the ${colName} column`, async() => {
 		const [, innerTable, headers] = await setupTable(tableHtml);
 
@@ -344,7 +320,6 @@ function verifySorted(tableHtml, expectedRecords, sortFunction, colIdx, colName)
 
 		// first click to sort by descending order
 		headers.item(colIdx).click();
-		// await el.updateComplete;
 		await innerTable.updateComplete;
 		expect(innerTable.data.map(record => record[colIdx])).to.deep.equal(expectedDesc);
 
@@ -352,7 +327,6 @@ function verifySorted(tableHtml, expectedRecords, sortFunction, colIdx, colName)
 
 		// then click again to sort by ascending order
 		headers.item(colIdx).click();
-		// await el.updateComplete;
 		await innerTable.updateComplete;
 		expect(innerTable.data.map(record => record[colIdx])).to.deep.equal(expectedAsc);
 	});
