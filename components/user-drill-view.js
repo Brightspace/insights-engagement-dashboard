@@ -7,7 +7,6 @@ import { css, html } from 'lit-element/lit-element.js';
 import { createComposeEmailPopup } from './email-integration';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
-import { nothing } from 'lit-html';
 import { until } from 'lit-html/directives/until';
 
 /**
