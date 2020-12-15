@@ -229,6 +229,7 @@ class CoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 decorate(CoursesTable, {
 	userDataForDisplay: computed,
 	userDataForDisplayFormatted: computed,
+	userCourses: observable,
 	_sortColumn: observable,
 	_sortOrder: observable,
 	_handleColumnSort: action

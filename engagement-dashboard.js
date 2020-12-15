@@ -258,6 +258,10 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				<div slot="filters">
 					${this._renderFilters()}
 				</div>
+
+				<div slot="applied-filters">
+					${this._renderAppliedFilters()}
+				</div>
 			</d2l-insights-user-drill-view>
 		`;
 	}
@@ -274,6 +278,12 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			.preSelected="${this._serverData.selectedSemesterIds}"
 			@d2l-insights-semester-filter-change="${this._semesterFilterChange}"
 		></d2l-insights-semester-filter>
+		`;
+	}
+
+	_renderAppliedFilters() {
+		return html `
+			<d2l-insights-applied-filters .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-applied-filters>
 		`;
 	}
 
@@ -340,7 +350,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			</d2l-insights-message-container>
 			${this._summaryViewHeader}
 			<div class="d2l-insights-summary-container-applied-filters">
-				<d2l-insights-applied-filters .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-applied-filters>
+				${this._renderAppliedFilters()}
 			</div>
 			<div class="d2l-insights-summary-chart-layout">
 				<d2l-summary-cards-container
