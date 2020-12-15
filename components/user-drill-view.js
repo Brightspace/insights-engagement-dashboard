@@ -2,7 +2,7 @@ import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/button/button.js';
 import 'd2l-users/components/d2l-profile-image';
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
-import { css, html } from 'lit-element/lit-element.js';
+import { css, html, nothing } from 'lit-element/lit-element.js';
 import { createComposeEmailPopup } from './email-integration';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
@@ -198,7 +198,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 					.isStudentSuccessSys="${this.isStudentSuccessSys}"
 				>
 				</d2l-insights-active-courses-table>
-				` : ''}
+				` : nothing}
 			</div>
 
 
