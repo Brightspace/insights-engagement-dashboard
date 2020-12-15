@@ -76,7 +76,13 @@ describe('d2l-insights-user-drill-courses-table', () => {
 					</d2l-insights-user-drill-courses-table>
 				`);
 
-				await expect(el).to.be.accessible();
+				// see users-table a11y test for explanation
+				await expect(el).to.be.accessible({
+					ignoredRules: [
+						'aria-hidden-focus',
+						'button-name' // d2l-scroll-wrapper draws button at the right edge of the table. This button does not have a label.
+					]
+				});
 			});
 		});
 
@@ -159,7 +165,13 @@ describe('d2l-insights-user-drill-courses-table', () => {
 					</d2l-insights-user-drill-courses-table>
 				`);
 
-				await expect(el).to.be.accessible();
+				// see users-table a11y test for explanation
+				await expect(el).to.be.accessible({
+					ignoredRules: [
+						'aria-hidden-focus',
+						'button-name' // d2l-scroll-wrapper draws button at the right edge of the table. This button does not have a label.
+					]
+				});
 			});
 		});
 
