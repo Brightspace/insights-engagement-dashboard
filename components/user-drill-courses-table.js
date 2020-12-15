@@ -19,8 +19,6 @@ export const ACTIVE_TABLE_COLUMNS = {
 	COURSE_LAST_ACCESS: 5
 };
 
-export const IS_ACTIVE_COURSE = 6;
-
 export const INACTIVE_TABLE_COLUMNS = {
 	COURSE_NAME: 0,
 	CURRENT_GRADE: 1,
@@ -177,9 +175,9 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_formatDataForDisplay(course) {
-		const lastSysAccessFormattedIndex = this.isActiveTable ? ACTIVE_TABLE_COLUMNS.COURSE_LAST_ACCESS : INACTIVE_TABLE_COLUMNS.COURSE_LAST_ACCESS;
-		const lastSysAccessFormatted = course[lastSysAccessFormattedIndex]
-			? formatDateTime(new Date(course[lastSysAccessFormattedIndex]), { format: 'medium' })
+		const courseLastAccessFormattedIndex = this.isActiveTable ? ACTIVE_TABLE_COLUMNS.COURSE_LAST_ACCESS : INACTIVE_TABLE_COLUMNS.COURSE_LAST_ACCESS;
+		const courseLastAccessFormatted = course[courseLastAccessFormattedIndex]
+			? formatDateTime(new Date(course[courseLastAccessFormattedIndex]), { format: 'medium' })
 			: this.localize('usersTable:null');
 		if (this.isActiveTable) {
 			const formattedColumns = [
@@ -188,7 +186,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 				course[ACTIVE_TABLE_COLUMNS.PREDICTED_GRADE] ? formatPercent(course[ACTIVE_TABLE_COLUMNS.PREDICTED_GRADE], numberFormatOptions) : this.localize('activeCoursesTable:noPredictedGrade'),
 				formatNumber(course[ACTIVE_TABLE_COLUMNS.TIME_IN_CONTENT] / 60, numberFormatOptions),
 				course[ACTIVE_TABLE_COLUMNS.DISCUSSION_ACTIVITY],
-				lastSysAccessFormatted
+				courseLastAccessFormatted
 			];
 			if (!this.isStudentSuccessSys) formattedColumns.splice(ACTIVE_TABLE_COLUMNS.PREDICTED_GRADE, 1);
 			return formattedColumns;
@@ -198,7 +196,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 				course[INACTIVE_TABLE_COLUMNS.CURRENT_GRADE] ? formatPercent(course[INACTIVE_TABLE_COLUMNS.CURRENT_GRADE] / 100, numberFormatOptions) : this.localize('activeCoursesTable:noGrade'),
 				formatNumber(course[INACTIVE_TABLE_COLUMNS.TIME_IN_CONTENT] / 60, numberFormatOptions),
 				course[INACTIVE_TABLE_COLUMNS.DISCUSSION_ACTIVITY],
-				lastSysAccessFormatted
+				courseLastAccessFormatted
 			];
 		}
 	}
@@ -286,34 +284,14 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get dataForExport() {
-		const arrayOfHeaderColumnIndexes = Object.values(ACTIVE_TABLE_COLUMNS);
-		arrayOfHeaderColumnIndexes.push(IS_ACTIVE_COURSE);
-		const sortFunction = this._choseSortFunction(this._sortColumn, this._sortOrder);
-		const userData = this.data.records
-			.filter(record => record[RECORD.USER_ID] === this.user.userId)
-			//since function call will always be for the first active table, then the isActiveTable will equal true
-			.map(this._preProcessData, this)
-			.sort(sortFunction)
-			.map(this._formatDataForDisplay, this);
-
-		return userData
-			.map(user => arrayOfHeaderColumnIndexes.flatMap(column => {
-				const val = user[column];
-				if (column === IS_ACTIVE_COURSE) {
-					const isCourseActive = this._activeCourseById(Number(this._getOrgIdFromCourseNameString(user[ACTIVE_TABLE_COLUMNS.COURSE_NAME])));
-					return [isCourseActive];
-				}
-				return val;
-			}));
-	}
-
-	_activeCourseById(orgUnitId) {
-		return this.data.orgUnitTree.isActive(orgUnitId);
-	}
-
-	_getOrgIdFromCourseNameString(str) {
-		const result = str.match(/\(Id: ([0-9]+)\)/);
-		return result ? result[1] : 0;
+		return this.userDataForDisplay
+			.map(user => {
+				if (!this.isActiveTable || (this.isActiveTable && !this.isStudentSuccessSys)) {
+					user.splice(2, 0, this.localize('activeCoursesTable:noPredictedGrade'));
+					return user;
+				} else return user;
+			})
+			.map(course => [...course.flat(), this.isActiveTable]);
 	}
 
 	_handlePageChange(event) {

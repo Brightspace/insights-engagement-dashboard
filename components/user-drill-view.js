@@ -112,8 +112,10 @@ class UserDrill extends Localizer(MobxLitElement) {
 	}
 
 	_exportToCsvHandler() {
-		const usersTable = this.shadowRoot.querySelector('d2l-insights-user-drill-courses-table');
-		ExportData.userDataToCsv(usersTable.dataForExport, usersTable.headersForExport);
+		const usersTables = this.shadowRoot.querySelectorAll('d2l-insights-user-drill-courses-table');
+		const activeTable = usersTables[0];
+		const inactiveTable = usersTables[1];
+		ExportData.userDataToCsv([...activeTable.dataForExport, ...inactiveTable.dataForExport], activeTable.headersForExport);
 	}
 
 	_printHandler() {
