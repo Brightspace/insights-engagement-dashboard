@@ -43,7 +43,8 @@ export class DiscussionActivityFilter extends CategoryFilter {
 class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
-			data: { type: Object, attribute: false }
+			data: { type: Object, attribute: false },
+			wide: { type: Boolean, attribute: true }
 		};
 	}
 
@@ -66,7 +67,7 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				height: 121px;
 				padding: 15px 4px;
 				position: relative;
-				width: 280px;
+				width: calc(var(--d2l-insights-engagement-small-card-width) - 3px - 8px); /* width - 2 x border - 2 x padding */
 			}
 
 			.d2l-insights-discussion-activity-card-body {
@@ -81,6 +82,10 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				font-size: smaller;
 				font-weight: bold;
 				text-indent: 3%;
+			}
+
+			:host([wide]) .d2l-insights-summary-discussion-activity-card {
+				width: calc(var(--d2l-insights-engagement-big-card-width) - 3px - 8px); /* width - 2 x border - 2 x padding */
 			}
 		`];
 	}
@@ -153,7 +158,7 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			chart: {
 				type: 'pie',
 				height: 100,
-				width: 280
+				width: this.wide ? 583 : 280 // width - 2 x border - 2 x padding
 			},
 			title: {
 				text: this._cardTitle, // override default title
@@ -180,7 +185,8 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 						}
 					},
 					showInLegend: true,
-					slicedOffset: 7
+					slicedOffset: 7,
+					center: this.wide ? ['40%', '40%'] : [null, null]
 				},
 				series: {
 					point: {
@@ -206,7 +212,7 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			},
 			legend: {
 				layout: 'vertical',
-				align: 'right',
+				align: this.wide ? 'center' : 'right',
 				verticalAlign: 'middle',
 				itemMarginBottom: 15,
 				itemStyle: {
@@ -215,6 +221,7 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				},
 				symbolRadius: 0,
 				margin: 20,
+				x: this.wide ? 100 : 0,
 				navigation: {
 					enabled: false
 				}

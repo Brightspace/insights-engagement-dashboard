@@ -130,11 +130,11 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 				border-style: solid;
 				border-width: 1.5px;
 				display: inline-block;
-				height: 275px;
+				height: 285px;
 				margin-right: 12px;
 				margin-top: 10px;
 				padding: 15px 4px;
-				width: 581px;
+				width: 583px;
 			}
 
 			@media only screen and (max-width: 615px) {
@@ -204,7 +204,7 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 			chart: {
 				type: 'scatter',
 				height: 250,
-				width: 581,
+				width: 583,
 				events: {
 					click: function(event) {
 						that.filter.toggleQuadrant(that.filter.calculateQuadrant(Math.floor(event.xAxis[0].value), Math.floor(event.yAxis[0].value)));

@@ -76,6 +76,13 @@ describe('d2l-insights-engagement-dashboard', () => {
 			'time-in-content-vs-grade-card'
 		];
 
+		const smallCards = [
+			{ card: 'discussion-activity-card', property: 'discussions-card' },
+			{ card: 'overdue-assignments-card', property: 'overdue-card' },
+			{ card: 'results-card', property: 'results-card' },
+			{ card: 'last-access-card', property: 'system-access-card' }
+		];
+
 		[
 			allCards,
 			[],
@@ -99,7 +106,11 @@ describe('d2l-insights-engagement-dashboard', () => {
 					await new Promise(resolve => setTimeout(resolve, 100));
 
 					allCards.forEach(card => {
-						const renderedCard = el.shadowRoot.querySelector(`d2l-insights-${card}`);
+						let renderedCard = el.shadowRoot.querySelector(`d2l-insights-${card}`);
+						const smallCard = smallCards.find(c => c.card === card);
+						if (smallCard) {
+							renderedCard = el.shadowRoot.querySelector(`d2l-summary-cards-container[${smallCard.property}]`);
+						}
 						if (cards.includes(card)) {
 							expect(renderedCard, card).to.exist;
 						} else {

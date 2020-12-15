@@ -9,13 +9,17 @@ class ResultsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	static get properties() {
 		return {
-			data: { type: Object, attribute: false }
+			data: { type: Object, attribute: false },
+			wide: { type: Boolean, attribute: true },
+			tall: { type: Boolean, attribute: true }
 		};
 	}
 
 	constructor() {
 		super();
 		this.data = {};
+		this.wide = false;
+		this.tall = false;
 	}
 
 	get _cardMessage() {
@@ -40,6 +44,8 @@ class ResultsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				card-message="${this._cardMessage}"
 				?skeleton="${this.skeleton}"
 				live
+				?wide="${this.wide}"
+				?tall="${this.tall}"
 			></d2l-labs-summary-card>
 		`;
 	}
