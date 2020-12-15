@@ -1,3 +1,5 @@
+import '../../components/message-container';
+
 import { expect, fixture, html } from '@open-wc/testing';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
@@ -46,17 +48,31 @@ describe('d2l-insights-message-container', () => {
 	describe('render', () => {
 		it('should render as expected with truncated records', async() => {
 			const el = await fixture(html`<d2l-insights-message-container .data="${dataWithTruncatedRecords}" .isNoDataReturned="${Boolean(0)}"></d2l-insights-message-container>`);
-			expect(el.shadowRoot.querySelector('span.d2l-insights-message-container-value').innerText).to.equal('There are too many results in your filters. Please refine your selection.');
+			const innerMessageContainer = el.shadowRoot.querySelector('d2l-insights-error-message');
+			expect(innerMessageContainer.type).to.equal('default');
+			expect(innerMessageContainer.text).to.equal('There are too many results in your filters. Please refine your selection.');
 		});
 
 		it('should not render without truncated records', async() => {
-			const el = await fixture(html`<d2l-insights-message-container .data="${dataWithoutTruncatedRecords}" .isNoDataReturned=${Boolean(1)}></d2l-insights-message-container>`);
-			expect(el.shadowRoot.querySelector('.d2l-insights-message-container-value').innerText).to.equal('There are no results available that match your filters.');
+			const el = await fixture(html`<d2l-insights-message-container .data="${dataWithoutTruncatedRecords}" .isNoDataReturned="${Boolean(1)}"></d2l-insights-message-container>`);
+			const innerMessageContainer = el.shadowRoot.querySelector('d2l-insights-error-message');
+			expect(innerMessageContainer.type).to.equal('button');
+			expect(innerMessageContainer.text).to.equal('There are no results available that match your filters.');
+			expect(innerMessageContainer.buttonText).to.equal('Undo Last Action');
 		});
 
 		it('should render as expected with contact support message', async() => {
-			const el = await fixture(html`<d2l-insights-message-container .data="${dataWithQueryError}" .isNoDataReturned=${Boolean(0)}></d2l-insights-message-container>`);
-			expect(el.shadowRoot.querySelector('.d2l-insights-message-container-value').innerText).to.equal('Unable to load your results. If this problem persists, please contact D2L Support.');
+			const el = await fixture(html`<d2l-insights-message-container .data="${dataWithQueryError}" .isNoDataReturned="${Boolean(0)}"></d2l-insights-message-container>`);
+			const innerMessageContainer = el.shadowRoot.querySelector('d2l-insights-error-message');
+			expect(innerMessageContainer.type).to.equal('link');
+			expect(innerMessageContainer.text).to.equal('Unable to load your results. If this problem persists, please ');
+			expect(innerMessageContainer.linkText).to.equal('contact D2L Support.');
+		});
+
+		it('should render nothing if there are no issues', async() => {
+			const el = await fixture(html`<d2l-insights-message-container .data="${dataWithoutTruncatedRecords}" .isNoDataReturned="${Boolean(0)}"></d2l-insights-message-container>`);
+			const innerMessageContainer = el.shadowRoot.querySelector('d2l-insights-error-message');
+			expect(innerMessageContainer).to.be.null;
 		});
 	});
 });

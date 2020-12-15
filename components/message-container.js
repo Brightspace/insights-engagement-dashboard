@@ -1,6 +1,8 @@
-import '@brightspace-ui/core/components/button/button';
+import './error-message';
+
 import { computed, decorate } from 'mobx';
-import { css, html } from 'lit-element/lit-element.js';
+import { html } from 'lit-element/lit-element.js';
+import { ifDefined } from 'lit-html/directives/if-defined';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 
@@ -18,100 +20,53 @@ class MessageContainer extends Localizer(MobxLitElement) {
 		this.data = {};
 	}
 
-	static get styles() {
-		return css`
-			:host {
-				display: inline-block;
-				padding-top: 20px;
-			}
-
-			:host([hidden]) {
-				display: none;
-			}
-
-			.d2l-insights-message-container-body {
-				background-color: var(--d2l-color-regolith);
-				border: 1px solid var(--d2l-color-gypsum);
-				border-radius: 8px;
-				color: var(--d2l-color-ferrite);
-				display: flex;
-				margin-bottom: 20px;
-				padding: 40px;
-				width: 73vw;
-			}
-
-			.d2l-insights-message-container-body.d2l-insights-message-noResultsAvailable {
-				flex-direction: column;
-			}
-
-			.d2l-insights-message-container-value {
-				word-wrap: break-word;
-			}
-
-			.d2l-insights-message-container-body.d2l-insights-message-noResultsAvailable > d2l-button {
-				margin-top: 20px;
-				width: 200px;
-			}
-		`;
-	}
-
 	// @computed
 	get _isRecordsTruncated() {
 		return this.data._data.serverData.isRecordsTruncated;
 	}
 
+	// @computed
 	get _isQueryFails() {
 		return this.data._data.isQueryError;
 	}
 
-	get _messageContainerTextTooManyResults() {
-		return this.localize('dashboard:tooManyResults');
-	}
-
-	get _messageContainerTextNoResultsAvailable() {
-		return this.localize('dashboard:noResultsAvailable');
-	}
-
-	get _messageContainerTextQueryFails() {
-		return this.localize('dashboard:queryFailed');
-	}
-
-	get _messageContainerTextQueryFailsLink() {
-		return this.localize('dashboard:queryFailedLink');
-	}
-
-	get _undoButtonText() {
-		return this.localize('dashboard:undoLastAction');
-	}
-
-	_handleUndo() {
-		this.dispatchEvent(new Event('d2l-insights-undo-last-filter'));
-	}
-
 	render() {
-		// conditinally render message text and body
+		let messageType, text, linkText, href, buttonText;
+
+		// conditionally render message text and body
 		if (this._isQueryFails) {
-			return html`
-				<div class="d2l-insights-message-container-body">
-					<span class="d2l-insights-message-container-value">${this._messageContainerTextQueryFails}
-						<a href="https://www.d2l.com/support/" target="_blank">${this._messageContainerTextQueryFailsLink}</a>
-					</span>
-				</div>
-			`;
+			messageType = 'link';
+			text = this.localize('dashboard:queryFailed');
+			linkText = this.localize('dashboard:queryFailedLink');
+			href = 'https://www.d2l.com/support/';
+
 		} else if (this.isNoDataReturned) { //overwrite too many results case
-			return html`
-				<div class="d2l-insights-message-container-body d2l-insights-message-noResultsAvailable">
-					<span class="d2l-insights-message-container-value">${this._messageContainerTextNoResultsAvailable}</span>
-					<d2l-button primary slot="footer" @click="${this._handleUndo}">${this._undoButtonText}</d2l-button>
-				</div>
-			`;
+			messageType = 'button';
+			text = this.localize('dashboard:noResultsAvailable');
+			buttonText = this.localize('dashboard:undoLastAction');
+
 		} else if (this._isRecordsTruncated) {
-			return html`
-				<div class="d2l-insights-message-container-body">
-					<span class="d2l-insights-message-container-value">${this._messageContainerTextTooManyResults}</span>
-				</div>
-			`;
+			messageType = 'default';
+			text = this.localize('dashboard:tooManyResults');
+
+		} else {
+			return '';
 		}
+
+		return html`
+			<d2l-insights-error-message
+				type="${messageType}"
+				text="${text}"
+				link-text="${ifDefined(linkText)}"
+				href="${ifDefined(href)}"
+				button-text="${ifDefined(buttonText)}"
+				@d2l-insights-error-message-button-click="${this._handleClick}">
+			</d2l-insights-error-message>
+		`;
+	}
+
+	_handleClick() {
+		this.dispatchEvent(new Event('d2l-insights-undo-last-filter'));
 	}
 }
 
