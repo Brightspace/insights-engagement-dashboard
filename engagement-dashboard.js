@@ -5,7 +5,6 @@ import './components/histogram-card.js';
 import './components/ou-filter.js';
 import './components/debug-card.js';
 import './components/semester-filter.js';
-import './components/active-courses-table.js';
 import './components/users-table.js';
 import './components/table.js';
 import './components/current-final-grade-card.js';
@@ -247,10 +246,9 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 		return html`
 			<d2l-insights-user-drill-view
+				.data="${this._data}"
 				?demo="${this.isDemo}"
 				.user="${user}"
-				.userCourses="${this._data.recordsByUser.get(user.userId)}"
-				.orgUnits="${this._serverData.serverData.orgUnits}"
 				.isStudentSuccessSys="${this._serverData.serverData.isStudentSuccessSys}"
 				org-unit-id="${this.orgUnitId}"
 				@d2l-insights-user-drill-view-back="${this._backToHomeHandler}"
