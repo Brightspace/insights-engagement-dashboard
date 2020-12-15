@@ -303,6 +303,65 @@ describe('d2l-insights-user-drill-courses-table', () => {
 				expect(innerTable.data).to.deep.equal(expectedReversed.slice(20, 22));
 			});
 		});
+
+		describe('export', () => {
+			it('should get headersForExport', async() => {
+				const el = await fixture(html`
+					<d2l-insights-user-drill-courses-table
+						.data="${data}"
+						.user="${user}"
+						.isActiveTable="${Boolean(false)}"
+						.isStudentSuccessSys="${Boolean(true)}">
+					</d2l-insights-user-drill-courses-table>
+				`);
+				await new Promise(resolve => setTimeout(resolve, 200));
+				await el.updateComplete;
+				expect(el.headersForExport).to.deep.equal(
+					['Course Name', 'Grade', 'Predicted Grade', 'Time in Content (mins)', 'Threads', 'Reads', 'Replies', 'Course Last Access', 'Is Active Course']);
+			});
+			it('should get dataForExport[0] for inactive course', async() => {
+				const el = await fixture(html`
+					<d2l-insights-user-drill-courses-table
+						.data="${data}"
+						.user="${user}"
+						.isActiveTable="${Boolean(false)}"
+						.isStudentSuccessSys="${Boolean(true)}">
+					</d2l-insights-user-drill-courses-table>
+				`);
+				await new Promise(resolve => setTimeout(resolve, 200));
+				await el.updateComplete;
+				expect(el.dataForExport[0]).to.deep.equal(
+					['Course 11 (Id: 11)', '80 %', 'No predicted grade', '110', 3, 3, 3, getLocalDateTime(1607979700000), false]);
+			});
+			it('should get dataForExport[0] for active course', async() => {
+				const el = await fixture(html`
+					<d2l-insights-user-drill-courses-table
+						.data="${data}"
+						.user="${user}"
+						.isActiveTable="${Boolean(true)}"
+						.isStudentSuccessSys="${Boolean(true)}">
+					</d2l-insights-user-drill-courses-table>
+				`);
+				await new Promise(resolve => setTimeout(resolve, 200));
+				await el.updateComplete;
+				expect(el.dataForExport[0]).to.deep.equal(
+					[ 'Course 101 (Id: 101)', '80 %', '90 %', '110', 3, 3, 3, getLocalDateTime(1607979700000), true]);
+			});
+			it('should get dataForExport[0] for active course when isStudentSuccessSys equals false', async() => {
+				const el = await fixture(html`
+					<d2l-insights-user-drill-courses-table
+						.data="${data}"
+						.user="${user}"
+						.isActiveTable="${Boolean(true)}"
+						.isStudentSuccessSys="${Boolean(false)}">
+					</d2l-insights-user-drill-courses-table>
+				`);
+				await new Promise(resolve => setTimeout(resolve, 200));
+				await el.updateComplete;
+				expect(el.dataForExport[0]).to.deep.equal(
+					[ 'Course 101 (Id: 101)', '80 %', 'No predicted grade', '110', 3, 3, 3, getLocalDateTime(1607979700000), true]);
+			});
+		});
 	});
 });
 

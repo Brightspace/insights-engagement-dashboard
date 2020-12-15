@@ -1,12 +1,6 @@
 import exportFromJSON from 'export-from-json';
 import { toJS } from 'mobx';
 
-export const DISCUSSION = {
-	THREADS: 0,
-	READS: 1,
-	REPLIES: 2
-};
-
 export class ExportData {
 	static userDataToCsv(data, headers) {
 		return this.exportToCsv(toJS(data), headers);

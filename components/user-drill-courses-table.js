@@ -18,6 +18,7 @@ export const ACTIVE_TABLE_COLUMNS = {
 	DISCUSSION_ACTIVITY: 4,
 	COURSE_LAST_ACCESS: 5
 };
+
 export const INACTIVE_TABLE_COLUMNS = {
 	COURSE_NAME: 0,
 	CURRENT_GRADE: 1,
@@ -174,28 +175,28 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_formatDataForDisplay(course) {
-		const lastSysAccessFormattedIndex = this.isActiveTable ? ACTIVE_TABLE_COLUMNS.COURSE_LAST_ACCESS : INACTIVE_TABLE_COLUMNS.COURSE_LAST_ACCESS;
-		const lastSysAccessFormatted = course[lastSysAccessFormattedIndex]
-			? formatDateTime(new Date(course[lastSysAccessFormattedIndex]), { format: 'medium' })
+		const courseLastAccessFormattedIndex = this.isActiveTable ? ACTIVE_TABLE_COLUMNS.COURSE_LAST_ACCESS : INACTIVE_TABLE_COLUMNS.COURSE_LAST_ACCESS;
+		const courseLastAccessFormatted = course[courseLastAccessFormattedIndex]
+			? formatDateTime(new Date(course[courseLastAccessFormattedIndex]), { format: 'medium' })
 			: this.localize('usersTable:null');
 		if (this.isActiveTable) {
 			const formattedColumns = [
 				course[ACTIVE_TABLE_COLUMNS.COURSE_NAME],
-				course[ACTIVE_TABLE_COLUMNS.CURRENT_GRADE] ? formatPercent(course[ACTIVE_TABLE_COLUMNS.CURRENT_GRADE] / 100, numberFormatOptions) : '',
+				course[ACTIVE_TABLE_COLUMNS.CURRENT_GRADE] ? formatPercent(course[ACTIVE_TABLE_COLUMNS.CURRENT_GRADE] / 100, numberFormatOptions) : this.localize('activeCoursesTable:noGrade'),
 				course[ACTIVE_TABLE_COLUMNS.PREDICTED_GRADE] ? formatPercent(course[ACTIVE_TABLE_COLUMNS.PREDICTED_GRADE], numberFormatOptions) : this.localize('activeCoursesTable:noPredictedGrade'),
 				formatNumber(course[ACTIVE_TABLE_COLUMNS.TIME_IN_CONTENT] / 60, numberFormatOptions),
 				course[ACTIVE_TABLE_COLUMNS.DISCUSSION_ACTIVITY],
-				lastSysAccessFormatted
+				courseLastAccessFormatted
 			];
 			if (!this.isStudentSuccessSys) formattedColumns.splice(ACTIVE_TABLE_COLUMNS.PREDICTED_GRADE, 1);
 			return formattedColumns;
 		} else {
 			return [
 				course[INACTIVE_TABLE_COLUMNS.COURSE_NAME],
-				course[INACTIVE_TABLE_COLUMNS.CURRENT_GRADE] ? formatPercent(course[INACTIVE_TABLE_COLUMNS.CURRENT_GRADE] / 100, numberFormatOptions) : '',
+				course[INACTIVE_TABLE_COLUMNS.CURRENT_GRADE] ? formatPercent(course[INACTIVE_TABLE_COLUMNS.CURRENT_GRADE] / 100, numberFormatOptions) : this.localize('activeCoursesTable:noGrade'),
 				formatNumber(course[INACTIVE_TABLE_COLUMNS.TIME_IN_CONTENT] / 60, numberFormatOptions),
 				course[INACTIVE_TABLE_COLUMNS.DISCUSSION_ACTIVITY],
-				lastSysAccessFormatted
+				courseLastAccessFormatted
 			];
 		}
 	}
@@ -268,6 +269,31 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		}
 	}
 
+	get headersForExport() {
+		return [
+			this.localize('activeCoursesTable:course'),
+			this.localize('activeCoursesTable:grade'),
+			this.localize('activeCoursesTable:predictedGrade'),
+			this.localize('activeCoursesTable:timeInContent'),
+			this.localize('discussionActivityCard:threads'),
+			this.localize('discussionActivityCard:reads'),
+			this.localize('discussionActivityCard:replies'),
+			this.localize('activeCoursesTable:courseLastAccess'),
+			this.localize('activeCoursesTable:isActive')
+		];
+	}
+
+	get dataForExport() {
+		return this.userDataForDisplay
+			.map(user => {
+				if (!this.isActiveTable || (this.isActiveTable && !this.isStudentSuccessSys)) {
+					user.splice(2, 0, this.localize('activeCoursesTable:noPredictedGrade'));
+					return user;
+				} else return user;
+			})
+			.map(course => [...course.flat(), this.isActiveTable]);
+	}
+
 	_handlePageChange(event) {
 		this._currentPage = event.detail.page;
 	}
@@ -329,6 +355,8 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 decorate(UserDrillCoursesTable, {
 	userDataForDisplay: computed,
+	headersForExport: computed,
+	dataForExport: computed,
 	_sortColumn: observable,
 	_sortOrder: observable,
 	_handleColumnSort: action
