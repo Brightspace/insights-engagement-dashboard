@@ -5,7 +5,6 @@ import './components/histogram-card.js';
 import './components/ou-filter.js';
 import './components/debug-card.js';
 import './components/semester-filter.js';
-import './components/active-courses-table.js';
 import './components/users-table.js';
 import './components/table.js';
 import './components/current-final-grade-card.js';
@@ -247,9 +246,9 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 		return html`
 			<d2l-insights-user-drill-view
+				.data="${this._data}"
 				?demo="${this.isDemo}"
 				.user="${user}"
-				.data="${this._data}"
 				.userCourses="${this._data.recordsByUser.get(user.userId)}"
 				.orgUnits="${this._serverData.serverData.orgUnits}"
 				.isStudentSuccessSys="${this._serverData.serverData.isStudentSuccessSys}"
@@ -258,6 +257,10 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			>
 				<div slot="filters">
 					${this._renderFilters()}
+				</div>
+
+				<div slot="applied-filters">
+					${this._renderAppliedFilters()}
 				</div>
 			</d2l-insights-user-drill-view>
 		`;
@@ -275,6 +278,12 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			.preSelected="${this._serverData.selectedSemesterIds}"
 			@d2l-insights-semester-filter-change="${this._semesterFilterChange}"
 		></d2l-insights-semester-filter>
+		`;
+	}
+
+	_renderAppliedFilters() {
+		return html `
+			<d2l-insights-applied-filters .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-applied-filters>
 		`;
 	}
 
@@ -341,7 +350,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			</d2l-insights-message-container>
 			${this._summaryViewHeader}
 			<div class="d2l-insights-summary-container-applied-filters">
-				<d2l-insights-applied-filters .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-applied-filters>
+				${this._renderAppliedFilters()}
 			</div>
 			<div class="d2l-insights-summary-chart-layout">
 				<d2l-summary-cards-selector
