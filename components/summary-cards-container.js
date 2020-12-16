@@ -12,7 +12,6 @@ import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton
 class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 	static get properties() {
 		return {
-			data: { type: Object, attribute: false },
 			cards: { type: Array, attribute: false },
 
 			_screenSize: { type: String, attribute: 'size', reflect: true }
@@ -103,7 +102,7 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 
 		let cardIndex = 0;
 		return html`
-			<div class="${classMap(summaryCardsStyles)}">
+			<div id="summary-cards" class="${classMap(summaryCardsStyles)}">
 				${cards.filter(card => card.enabled || this.skeleton).map(card => card.htmlFn(sizes[cardIndex++]))}
 			</div>
 		`;
