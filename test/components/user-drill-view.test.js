@@ -3,6 +3,7 @@ import '../../components/user-drill-view';
 import { expect, fixture, html } from '@open-wc/testing';
 import fetchMock from 'fetch-mock/esm/client';
 import { flush } from '@polymer/polymer/lib/utils/render-status.js';
+import { mockOuTypes } from '../model/mocks';
 import noProfile from '../responses/no_profile';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
@@ -13,6 +14,20 @@ describe('d2l-insights-user-drill-view', () => {
 		username: 'username',
 		userId: 232
 	};
+
+	const data = {
+		_data: {
+			serverData: {
+				orgUnits: [
+					[1, 'Course 1', mockOuTypes.course, [1001], false],
+					[2, 'Course 2', mockOuTypes.course, [1001], false],
+					[3, 'Course 3', mockOuTypes.course, [1002], true]
+				]
+			}
+		},
+	};
+
+	data.recordsByUser = new Map();
 
 	afterEach(() => {
 		// d2l-action-button-group uses afterNextRender that causes
@@ -30,7 +45,7 @@ describe('d2l-insights-user-drill-view', () => {
 
 	describe('accessibility', () => {
 		it('should pass all axe tests', async() => {
-			const el = await fixture(html`<d2l-insights-user-drill-view .user=${user}></d2l-insights-user-drill-view>`);
+			const el = await fixture(html`<d2l-insights-user-drill-view .user=${user} .data=${data}></d2l-insights-user-drill-view>`);
 			await expect(el).to.be.accessible();
 		});
 	});
@@ -58,7 +73,7 @@ describe('d2l-insights-user-drill-view', () => {
 		});
 
 		it('should render proper title and sub-title', async() => {
-			const el = await fixture(html`<d2l-insights-user-drill-view .user=${user}></d2l-insights-user-drill-view>`);
+			const el = await fixture(html`<d2l-insights-user-drill-view .user=${user} .data=${data}></d2l-insights-user-drill-view>`);
 			await new Promise(res => setTimeout(res, 10));
 
 			const title = el.shadowRoot.querySelector('div.d2l-insights-user-drill-view-profile-name > div.d2l-heading-2').innerText;
@@ -69,7 +84,9 @@ describe('d2l-insights-user-drill-view', () => {
 		});
 
 		it('should render the users profile', async() => {
-			const el = await fixture(html`<d2l-insights-user-drill-view .user=${user}></d2l-insights-user-drill-view>`);
+			const el = await fixture(html`<d2l-insights-user-drill-view
+				.user=${user}
+			></d2l-insights-user-drill-view>`);
 			const profile = el.shadowRoot.querySelector('d2l-profile-image');
 			await new Promise(res => setTimeout(res, 10));
 

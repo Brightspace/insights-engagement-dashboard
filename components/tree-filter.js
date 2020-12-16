@@ -3,6 +3,7 @@ import './tree-selector.js';
 import 'array-flat-polyfill';
 import { action, computed, decorate, observable } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
+import { COURSE_OFFERING } from '../consts';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 
@@ -11,6 +12,7 @@ export const ID = 0; // unique node identifier (Number)
 export const NAME = 1; // node name (String)
 export const TYPE = 2; // Number
 export const PARENTS = 3; // array of parent ids (Number); a node with parent 0 is the root
+export const ACTIVE_STATUS = 4; // boolean to represent whether the course is active or not
 
 export class Tree {
 	/**
@@ -215,10 +217,16 @@ export class Tree {
 		return this._bookmarks.get(id);
 	}
 
-	getChildIdsForDisplay(id) {
-		return this.getChildIds(id)
-			.filter(x => this._isVisible(x))
-			.sort((a, b) => this._nameForSort(a).localeCompare(this._nameForSort(b)));
+	getChildIdsForDisplay(id, pruning) {
+		const children = this.getChildIds(id).filter(x => this._isVisible(x));
+
+		const isPruning = !this.isDynamic
+			&& (pruning || this._isRoot(id))
+			&& children.length === 1
+			&& this.getType(children[0]) !== COURSE_OFFERING;
+		if (isPruning) return this.getChildIdsForDisplay(children[0], true);
+
+		return children.sort((a, b) => this._nameForSort(a).localeCompare(this._nameForSort(b)));
 	}
 
 	getChildIds(id) {
@@ -253,6 +261,11 @@ export class Tree {
 	getType(id) {
 		const node = this._nodes.get(id);
 		return (node && node[TYPE]) || 0;
+	}
+
+	isActive(id) {
+		const node = this._nodes.get(id);
+		return (node && node[ACTIVE_STATUS]) || false;
 	}
 
 	/**

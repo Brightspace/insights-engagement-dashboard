@@ -195,6 +195,7 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 								?grade-col="${this.showGradeCol}"
 								?last-access-col="${this.showLastAccessCol}"
 								?tic-col="${this.showTicCol}"
+								?demo="${this.isDemo}"
 							></d2l-insights-engagement-column-configuration>
 						</d2l-tab-panel>
 					</d2l-tabs>

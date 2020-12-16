@@ -5,7 +5,8 @@
     },
     "extends": [
       "plugin:json/recommended",
-      "brightspace/lit-config"
+	  "brightspace/lit-config",
+	  "plugin:lit-a11y/recommended"
     ],
     "parserOptions": {
         "ecmaVersion": 2018,
@@ -13,7 +14,8 @@
     },
     "plugins": [
       "json",
-      "html"
+	  "html",
+	  "lit-a11y"
     ],
     "rules": {
         "no-console": ["warn"],
