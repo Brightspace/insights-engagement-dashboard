@@ -49,10 +49,10 @@ describe('d2l-insights-summary-cards', () => {
 							.data="${data}"
 							view="home"
 
-							?show-top-left="${testCase.cards.find(card => card.pos === 'show-top-left')}"
-							?show-top-right="${testCase.cards.find(card => card.pos ===  'show-top-right')}"
-							?show-bottom-left="${testCase.cards.find(card => card.pos ===  'show-bottom-left')}"
-							?show-bottom-right="${testCase.cards.find(card => card.pos ===  'show-bottom-right')}"
+							?show-top-left="${testCase.cards.find(card => card.pos === 'show-top-left') !== undefined}"
+							?show-top-right="${testCase.cards.find(card => card.pos ===  'show-top-right') !== undefined}"
+							?show-bottom-left="${testCase.cards.find(card => card.pos ===  'show-bottom-left') !== undefined}"
+							?show-bottom-right="${testCase.cards.find(card => card.pos ===  'show-bottom-right') !== undefined}"
 						>
 					</d2l-summary-cards-selector>`);
 					await new Promise(resolve => setTimeout(resolve, 100));

@@ -93,7 +93,7 @@ export class SummaryCardsSelector extends SkeletonMixin(Localizer(LitElement)) {
 	}
 
 	render() {
-		let cards;
+		let cards = [];
 		switch (this.view) {
 			case 'home':
 				cards = this.homeCards;
