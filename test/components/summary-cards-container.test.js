@@ -45,16 +45,14 @@ describe('d2l-insights-summary-cards', () => {
 			.forEach(testCase =>
 				it(`should show selected cards (${testCase.cards.map(card => card.name).join(', ')})`, async() => {
 					const el = await fixture(html`
-						<d2l-summary-cards-selector
-							.data="${data}"
-							view="home"
+						<d2l-summary-cards-container
 
 							?show-top-left="${testCase.cards.find(card => card.pos === 'show-top-left') !== undefined}"
 							?show-top-right="${testCase.cards.find(card => card.pos ===  'show-top-right') !== undefined}"
 							?show-bottom-left="${testCase.cards.find(card => card.pos ===  'show-bottom-left') !== undefined}"
 							?show-bottom-right="${testCase.cards.find(card => card.pos ===  'show-bottom-right') !== undefined}"
 						>
-					</d2l-summary-cards-selector>`);
+					</d2l-summary-cards-container>`);
 					await new Promise(resolve => setTimeout(resolve, 100));
 
 					allCards.forEach(card => {
@@ -64,8 +62,7 @@ describe('d2l-insights-summary-cards', () => {
 							cardProps = Object.assign({ wide: false, tall: false }, testCase.properties[cardIndex]);
 						}
 
-						const renderedCard = el.shadowRoot.querySelector('d2l-summary-cards-container')
-							.shadowRoot.querySelector(`${card.name}${getSelector('wide', cardProps.wide)}${getSelector('tall', cardProps.tall)}`);
+						const renderedCard = el.shadowRoot.querySelector(`${card.name}${getSelector('wide', cardProps.wide)}${getSelector('tall', cardProps.tall)}`);
 						console.log(el.shadowRoot.querySelector('d2l-summary-cards-container'));
 						if (cardIndex > -1) {
 							expect(renderedCard, card).to.exist;

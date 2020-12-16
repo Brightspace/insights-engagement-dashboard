@@ -107,7 +107,6 @@ describe('d2l-insights-engagement-dashboard', () => {
 
 					// find the summary-container el
 					const summaryContainerEl = el.shadowRoot
-						.querySelector('d2l-summary-cards-selector').shadowRoot
 						.querySelector('d2l-summary-cards-container');
 
 					allCards.forEach(card => {

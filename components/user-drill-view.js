@@ -2,7 +2,7 @@ import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/button/button.js';
 import './user-drill-courses-table.js';
 import 'd2l-users/components/d2l-profile-image';
-import './summary-cards-selector';
+import './summary-cards-container';
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html } from 'lit-element/lit-element.js';
 import { createComposeEmailPopup } from './email-integration';
@@ -148,6 +148,37 @@ class UserDrill extends Localizer(MobxLitElement) {
 		);
 	}
 
+	_coursesInView({ wide, tall }) {
+		return html`<d2l-labs-summary-card
+			card-title="Courses in View"
+			card-value="${this.data.recordsByUser.get(this.user.userId).length}"
+			card-message="Courses returned within results."
+			?wide="${wide}"
+			?tall="${tall}"
+			?skeleton="${this.skeleton}">
+		</d2l-labs-summary-card>`;
+	}
+
+	_placeholder({ wide, tall }) {
+		return html`<d2l-labs-summary-card
+			card-title="Placeholder"
+			card-value="0"
+			card-message="This is a placeholder for testing"
+			?wide="${wide}"
+			?tall="${tall}"
+			?skeleton="${this.skeleton}">
+		</d2l-labs-summary-card>`;
+	}
+
+	get summaryCards() {
+		return [
+			{ enabled: true, htmlFn: (w) => this._coursesInView(w) },
+			{ enabled: true, htmlFn: (w) => this._placeholder(w) },
+			{ enabled: true, htmlFn: (w) => this._placeholder(w) },
+			{ enabled: true, htmlFn: (w) => this._placeholder(w) }
+		];
+	}
+
 	render() {
 		return html`<div class="d2l-insights-user-drill-view-container">
 			<div class="d2l-insights-user-drill-view-header-panel">
@@ -192,16 +223,12 @@ class UserDrill extends Localizer(MobxLitElement) {
 				<slot name="applied-filters"></slot>
 			</div>
 
-			<d2l-summary-cards-selector
-				view="user"
-				.user="${this.user}"
-				.data="${this.data}"
+			<d2l-summary-cards-container
+				?hidden="${this.hidden}"
+				?skeleton="${this.skeleton}"
 
-				show-top-left
-				show-top-right
-				show-bottom-left
-				show-bottom-right
-			></d2l-summary-cards-selector>
+				.cards="${this.summaryCards}"
+			></d2l-summary-cards-container>
 
 			<div class="d2l-insights-user-drill-view-content">
 				<!-- put your tables here -->
