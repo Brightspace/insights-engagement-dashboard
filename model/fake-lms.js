@@ -1,10 +1,12 @@
+const oneDayMs = 86400000;
+
 // adding variables here to match signature of real LMS. The filters don't actually work though.
 // eslint-disable-next-line no-unused-vars
 export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView = false }) {
 	const demoData = {
 		records: [
 			[1, 100, 500, 1, 55, 1000, Date.now(), 0, 0, 0, null],
-			[1, 200, 600, 0, 33, 2000, 1607528563207, 0, 0, 0, null],
+			[1, 200, 600, 0, 33, 2000, Date.now() - 6 * oneDayMs, 0, 0, 0, null],
 			[1, 300, 500, 0, null, 1000, null, 0, 0, 0, null],
 			[1, 400, 500, 0, 30, 5000, null, 0, 0, 0, null],
 			[1, 500, 500, 0, 65, 5000, null, 2, 0, 40, null],
@@ -15,11 +17,11 @@ export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView 
 			[1, 100, 700, 1, 81, 1000, null, 3, 2, 1, null],
 			[2, 100, 700, 1, 91, 1200, null, 1, 33, 1, null],
 			[2, 300, 500, 0, 9, 7200, null, 1, 3, 5, null],
-			[2, 300, 700, 0, 3, 0, 289298332, 0, 0, 0, null],
-			[2, 400, 700, 0, 100, 7200, Date.now() - 432000001, 0, 0, 0, 0.9],
+			[2, 300, 700, 0, 3, 0, 289298332, 0, 0, 0, null], // far in the past
+			[2, 400, 700, 0, 100, 7200, Date.now() - 5 * oneDayMs, 0, 0, 0, 0.9],
 			[2, 500, 700, 0, 88, 4000, null, 4, 4, 1, null],
 			[8, 200, 700, 0, null, 0, null, 55, 2, 3, null],
-			[6, 600, 700, 0, 95, 2000, Date.now() - 8560938122, 0, 0, 0, null],
+			[6, 600, 700, 0, 95, 2000, Date.now() - 15 * oneDayMs, 0, 0, 0, null],
 			[1, 400, 700, 1, 75, 2000, null, 2, 1, 4, null]
 		],
 		orgUnits: [
