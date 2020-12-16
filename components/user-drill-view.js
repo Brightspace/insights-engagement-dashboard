@@ -10,6 +10,7 @@ import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { until } from 'lit-html/directives/until';
+import { computed, decorate, observable } from 'mobx';
 
 /**
  * @property {Object} data - an instance of Data from model/data.js
@@ -151,11 +152,9 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get token() {
-		// use the cached token so we don't call for it everytime the ui reloads
-		if (this._token) return this._token;
-
 		// set and return the fetch
 		// built in oauth isn't available outside the LMS
+		this.hasToken = false;
 		return this._token = !this.isDemo ? D2L.LP.Web.Authentication.OAuth2.GetToken('users:profile:read').then((token) => {
 			this.hasToken = true;
 			return token;
@@ -259,5 +258,11 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		</div>`;
 	}
 }
+
+decorate(UserDrill, {
+	hasToken: observable,
+	skeleton: observable,
+	isLoading: computed,
+});
 
 customElements.define('d2l-insights-user-drill-view', UserDrill);
