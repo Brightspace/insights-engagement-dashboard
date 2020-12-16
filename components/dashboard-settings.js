@@ -7,6 +7,7 @@ import '@brightspace-ui/core/components/inputs/input-number';
 import './card-selection-list';
 import './role-list.js';
 import './column-configuration';
+import './custom-toast-message';
 
 import { css, html, LitElement } from 'lit-element';
 import { heading1Styles, heading2Styles } from '@brightspace-ui/core/components/typography/styles.js';
@@ -167,7 +168,6 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 				<div class="d2l-insights-settings-page-main-content">
 						<h1 class="d2l-heading-1">${this.localize('settings:title')}</h1>
 						<h2 class="d2l-heading-2">${this.localize('settings:description')}</h2>
-
 					<d2l-tabs>
 						<d2l-tab-panel text="${this.localize('settings:tabTitleSummaryMetrics')}">
 
@@ -201,6 +201,7 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 					</d2l-tabs>
 				</div>
 			</div>
+			<d2l-insights-custom-toast-message></d2l-insights-custom-toast-message>
 			${this._renderFooter()}
 		`;
 	}
@@ -248,6 +249,11 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 			showLastAccessCol: columnConfig.showLastAccessCol,
 			includeRoles: this._selectedRoleIds
 		};
+
+		if (cardSelectionList.isInvalidSystemAccessValue()) {
+			this.shadowRoot.querySelector('d2l-insights-custom-toast-message').systemLastAccessError();
+			return;
+		}
 
 		const response = await saveSettings(settings);
 
