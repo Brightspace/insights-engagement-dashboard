@@ -93,7 +93,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 			.d2l-insights-user-drill-view-action-button-group {
 				flex-grow: 1;
 				margin: 0.7em;
-				max-width: 300px;
+				max-width: 160px;
 			}
 
 			.d2l-insights-view-filters-container {
@@ -157,7 +157,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 				<d2l-action-button-group
 						class="d2l-insights-user-drill-view-action-button-group"
 						min-to-show="0"
-						max-to-show="2"
+						max-to-show="1"
 						opener-type="more"
 					>
 					<d2l-button-subtle
