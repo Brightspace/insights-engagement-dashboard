@@ -10,7 +10,7 @@ import './components/table.js';
 import './components/current-final-grade-card.js';
 import './components/applied-filters';
 import './components/aria-loading-progress';
-import './components/message-container.js';
+import './components/engagement-dashboard-errors.js';
 import './components/default-view-popup.js';
 import './components/user-drill-view.js';
 import './components/immersive-nav.js';
@@ -341,11 +341,11 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			<div class="view-filters-container">
 				${this._renderFilters()}
 			</div>
-			<d2l-insights-message-container
+			<d2l-insights-engagement-dashboard-errors
 				.data="${this._data}"
 				.isNoDataReturned="${this._isNoUserResults}"
 				@d2l-insights-undo-last-filter="${this._handleUndo}">
-			</d2l-insights-message-container>
+			</d2l-insights-engagement-dashboard-errors>
 			${this._summaryViewHeader}
 			<div class="d2l-insights-summary-container-applied-filters">
 				${this._renderAppliedFilters()}
