@@ -77,7 +77,7 @@ describe('d2l-insights-user-drill-view', () => {
 			await new Promise(res => setTimeout(res, 10));
 
 			const title = el.shadowRoot.querySelector('div.d2l-insights-user-drill-view-profile-name > div.d2l-heading-2').innerText;
-			expect(title).to.equal('firstName, lastName');
+			expect(title).to.equal('lastName, firstName');
 
 			const subTitle = el.shadowRoot.querySelector('div.d2l-insights-user-drill-view-profile-name > div.d2l-body-small').innerText;
 			expect(subTitle).to.equal('username - 232');

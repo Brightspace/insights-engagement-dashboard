@@ -87,7 +87,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 			}
 
 			.d2l-insights-user-drill-view-content {
-				width: 100;
+				width: 100%;
 			}
 
 			.d2l-insights-user-drill-view-action-button-group {
@@ -116,10 +116,6 @@ class UserDrill extends Localizer(MobxLitElement) {
 		const activeTable = usersTables[0];
 		const inactiveTable = usersTables[1];
 		ExportData.userDataToCsv([...activeTable.dataForExport, ...inactiveTable.dataForExport], activeTable.headersForExport);
-	}
-
-	_printHandler() {
-		// outside the scope of the story
 	}
 
 	_composeEmailHandler() {
@@ -153,7 +149,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 				<div class="d2l-insights-user-drill-view-profile">
 					${this.userProfile}
 					<div class="d2l-insights-user-drill-view-profile-name">
-						<div class="d2l-heading-2">${this.user.firstName}, ${this.user.lastName}</div>
+						<div class="d2l-heading-2">${this.user.lastName}, ${this.user.firstName}</div>
 						<div class="d2l-body-small">${this.user.username} - ${this.user.userId}</div>
 					</div>
 				</div>
@@ -168,11 +164,6 @@ class UserDrill extends Localizer(MobxLitElement) {
 						icon="d2l-tier1:export"
 						text=${this.localize('dashboard:exportToCsv')}
 						@click="${this._exportToCsvHandler}">
-					</d2l-button-subtle>
-					<d2l-button-subtle
-						icon="d2l-tier1:print"
-						text=${this.localize('dashboard:print')}
-						@click="${this._printHandler}">
 					</d2l-button-subtle>
 				</d2l-action-button-group>
 
