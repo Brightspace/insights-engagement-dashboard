@@ -1,7 +1,3 @@
-import './discussion-activity-card.js';
-import './course-last-access-card.js';
-import './results-card.js';
-import './overdue-assignments-card.js';
 
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -10,10 +6,7 @@ import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton
 
 /**
  * @property {Object} data
- * @property {Boolean} showOverdueCard
- * @property {Boolean} showResultsCard
- * @property {Boolean} showSystemAccessCard
- * @property {Boolean} showDiscussionsCard
+ * @property {Object} cards
  * @property {String} _screenSize - private property that allows forcing rendering after hit of media-query breakpoint
  */
 class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {

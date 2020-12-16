@@ -362,8 +362,8 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 					?show-top-left="${this.showResultsCard}"
 					?show-top-right="${this.showOverdueCard}"
-					?show-bottom-left="${this.showSystemAccessCard}"
-					?show-bottom-right="${this.showDiscussionsCard}"
+					?show-bottom-right="${this.showSystemAccessCard}"
+					?show-bottom-left="${this.showDiscussionsCard}"
 				></d2l-summary-cards-selector>
 				${this._gradesCard}
 				${this._ticGradesCard}

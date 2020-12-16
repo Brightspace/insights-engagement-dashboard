@@ -1,8 +1,23 @@
 import './summary-cards-container';
+import './discussion-activity-card.js';
+import './course-last-access-card.js';
+import './results-card.js';
+import './overdue-assignments-card.js';
+
 import {  html, LitElement } from 'lit-element/lit-element.js';
 import { Localizer } from '../locales/localizer';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 
+/**
+ * @property {Object} user - only required when showing user view
+ * @property {Object} view - type: "user" | "home"
+ * @property {Object} data
+ * @property {Boolean} hidden
+ * @property {Boolean} show-top-left
+ * @property {Boolean} show-top-right
+ * @property {Boolean} show-bottom-left
+ * @property {Boolean} show-bottom-right
+ */
 export class SummaryCardsSelector extends SkeletonMixin(Localizer(LitElement)) {
 
 	static get properties() {
@@ -66,12 +81,15 @@ export class SummaryCardsSelector extends SkeletonMixin(Localizer(LitElement)) {
 	}
 
 	get userCards() {
-		return [
-			{ enabled: this.showTopLeft, htmlFn: (w) => this._coursesInView(w) },
-			{ enabled: this.showTopRight, htmlFn: (w) => this._placeholder(w) },
-			{ enabled: this.showBottomLeft, htmlFn: (w) => this._placeholder(w) },
-			{ enabled: this.showBottomRight, htmlFn: (w) => this._placeholder(w) }
-		];
+		if (this.user) {
+			return [
+				{ enabled: this.showTopLeft, htmlFn: (w) => this._coursesInView(w) },
+				{ enabled: this.showTopRight, htmlFn: (w) => this._placeholder(w) },
+				{ enabled: this.showBottomLeft, htmlFn: (w) => this._placeholder(w) },
+				{ enabled: this.showBottomRight, htmlFn: (w) => this._placeholder(w) }
+			];
+		}
+		throw ('Summary Card Selector requires the user object when showing the user view');
 	}
 
 	render() {

@@ -203,9 +203,6 @@ class UserDrill extends Localizer(MobxLitElement) {
 				show-bottom-right
 			></d2l-summary-cards-selector>
 
-			<h2 class="d2l-heading-3">${this.localize('activeCoursesTable:title')}</h2>
-
-
 			<div class="d2l-insights-user-drill-view-content">
 				<!-- put your tables here -->
 				<h2 class="d2l-heading-3">${this.localize('activeCoursesTable:title')}</h2>
