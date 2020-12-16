@@ -199,6 +199,7 @@ export default {
 	"inactiveCoursesTable:discussions": "Discussion Activity",
 	"inactiveCoursesTable:lastAccessedCourse": "Course Last Access",
 	"inactiveCoursesTable:loadingPlaceholder": "Loading",
+	"inactiveCoursesTable:semester": "Semester",
 
 	"activeCoursesTable:noPredictedGrade": "No predicted grade",
 };
