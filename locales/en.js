@@ -180,6 +180,8 @@ export default {
 	"settings:avgDiscussionActivityDescription": "The Average Discussion Participation indicator presents user statistics for how often the user creates a thread, reads a post or replies to a post across all the courses included in the applied filters.  This metric averages the total count per course.",
 	"settings:lastAccessedSystemDescription": "The System Last Access indicator displays the timestamp, in Brightspace local time, of the last time the user accessed the system in any way.",
 
+	"userDrill:noData": "No data in filtered ranges. Refine your selection.",
+
 	"activeCoursesTable:title": "Active Courses",
 	"activeCoursesTable:loadingPlaceholder": "Loading",
 	"activeCoursesTable:course": "Course Name",
@@ -190,7 +192,9 @@ export default {
 	"activeCoursesTable:discussions": "Discussion Activity",
 	"activeCoursesTable:courseLastAccess": "Course Last Access",
 	"activeCoursesTable:noGrade": "No grade",
+	"activeCoursesTable:noPredictedGrade": "No predicted grade",
 	"activeCoursesTable:isActive": "Is Active Course",
+	"activeCoursesTable:empty": "No active course data in filtered ranges.",
 
 	"inactiveCoursesTable:title": "Inactive Courses",
 	"inactiveCoursesTable:course": "Course Name",
@@ -199,6 +203,5 @@ export default {
 	"inactiveCoursesTable:discussions": "Discussion Activity",
 	"inactiveCoursesTable:lastAccessedCourse": "Course Last Access",
 	"inactiveCoursesTable:loadingPlaceholder": "Loading",
-
-	"activeCoursesTable:noPredictedGrade": "No predicted grade",
+	"inactiveCoursesTable:empty": "No inactive course data in filtered ranges.",
 };

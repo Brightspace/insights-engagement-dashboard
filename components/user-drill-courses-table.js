@@ -1,5 +1,8 @@
-import './table.js';
 import '@brightspace-ui-labs/pagination/pagination';
+
+import './table.js';
+import './message-container';
+
 import { action, computed, decorate, observable } from 'mobx';
 import { css, html } from 'lit-element';
 import { formatNumber, formatPercent } from '@brightspace-ui/intl';
@@ -318,15 +321,21 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	render() {
-		if (this._displayData.length !== 0) {
+		if (!this.skeleton && this._displayData.length === 0) {
+			const textKey = this.isActiveTable ? 'activeCoursesTable:empty' : 'inactiveCoursesTable:empty';
+			return html`
+				<d2l-insights-message-container type="default" text="${this.localize(textKey)}"></d2l-insights-message-container>
+			`;
+		} else {
 			return this._renderCoursesTable();
 		}
 	}
 
 	_renderCoursesTable() {
+		const titleKey = this.isActiveTable ? 'activeCoursesTable:title' : 'inactiveCoursesTable:title';
 		return html`
 			<d2l-insights-table
-				title="${this.localize('activeCoursesTable:title')}"
+				title="${this.localize(titleKey)}"
 				@d2l-insights-table-sort="${this._handleColumnSort}"
 				sort-column="0"
 				.columnInfo=${this.columnInfo}

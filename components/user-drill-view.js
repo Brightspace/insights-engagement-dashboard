@@ -1,13 +1,18 @@
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/button/button.js';
-import './user-drill-courses-table.js';
 import 'd2l-users/components/d2l-profile-image';
+
+import './user-drill-courses-table.js';
+import './message-container';
+
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
+import { computed, decorate } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
 import { createComposeEmailPopup } from './email-integration';
 import { ExportData } from '../model/exportData';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
+import { RECORD } from '../consts';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { until } from 'lit-html/directives/until';
 
@@ -20,7 +25,7 @@ import { until } from 'lit-html/directives/until';
 class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
-			data: { type: Object, attribute: {} },
+			data: { type: Object, attribute: false },
 			user: { type: Object, attribute: false },
 			isDemo: { type: Boolean, attribute: 'demo' },
 			isStudentSuccessSys: { type: Boolean, attribute: false },
@@ -183,6 +188,11 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		);
 	}
 
+	// @computed
+	get _userRecords() {
+		return this.data.records.filter(r => r[RECORD.USER_ID] === this.user.userId);
+	}
+
 	render() {
 
 		return html`<div class="d2l-insights-user-drill-view-container">
@@ -224,29 +234,41 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			</div>
 
 			<div class="d2l-insights-user-drill-view-content">
-				<!-- put your tables here -->
-				<h2 class="d2l-heading-3">${this.localize('activeCoursesTable:title')}</h2>
-				<d2l-insights-user-drill-courses-table
-					.data="${this.data}"
-					.user="${this.user}"
-					.isActiveTable=${Boolean(true)}
-					.isStudentSuccessSys="${this.isStudentSuccessSys}"
-					?skeleton="${this.skeleton}"
-				></d2l-insights-user-drill-courses-table>
-
-				<h2 class="d2l-heading-3">${this.localize('inactiveCoursesTable:title')}</h2>
-				<d2l-insights-user-drill-courses-table
-					.data="${this.data}"
-					.user="${this.user}"
-					.isActiveTable=${Boolean(false)}
-					?skeleton="${this.skeleton}"
-				></d2l-insights-user-drill-courses-table>
+				${this._renderContent()}
 			</div>
-
-			</div>
-
 		</div>`;
 	}
+
+	_renderContent() {
+		if (!this.skeleton && !this._userRecords.length) {
+			return html`
+				<d2l-insights-message-container type="default" text="${this.localize('userDrill:noData')}"></d2l-insights-message-container>
+			`;
+		}
+
+		return html`
+			<h2 class="d2l-heading-3">${this.localize('activeCoursesTable:title')}</h2>
+			<d2l-insights-user-drill-courses-table
+				.data="${this.data}"
+				.user="${this.user}"
+				.isActiveTable=${Boolean(true)}
+				.isStudentSuccessSys="${this.isStudentSuccessSys}"
+				?skeleton="${this.skeleton}">
+			</d2l-insights-user-drill-courses-table>
+
+			<h2 class="d2l-heading-3">${this.localize('inactiveCoursesTable:title')}</h2>
+			<d2l-insights-user-drill-courses-table
+				.data="${this.data}"
+				.user="${this.user}"
+				.isActiveTable=${Boolean(false)}
+				?skeleton="${this.skeleton}">
+			</d2l-insights-user-drill-courses-table>
+		`;
+	}
 }
+
+decorate(UserDrill, {
+	_userRecords: computed
+});
 
 customElements.define('d2l-insights-user-drill-view', UserDrill);
