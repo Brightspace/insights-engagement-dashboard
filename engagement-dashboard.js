@@ -10,7 +10,7 @@ import './components/table.js';
 import './components/current-final-grade-card.js';
 import './components/applied-filters';
 import './components/aria-loading-progress';
-import './components/message-container.js';
+import './components/engagement-dashboard-errors.js';
 import './components/default-view-popup.js';
 import './components/user-drill-view.js';
 import './components/immersive-nav.js';
@@ -100,6 +100,12 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		this.showTicGradesCard = false;
 		this.lastAccessThresholdDays = 14;
 		this.includeRoles = '';
+
+		this._viewState = new ViewState({});
+		// if current view is not provided in url
+		if (!this._viewState.currentView) {
+			this._viewState.setHomeView();
+		}
 	}
 
 	static get styles() {
@@ -195,12 +201,6 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	}
 
 	firstUpdated() {
-		this._viewState = new ViewState({});
-		// if current view is not provided in url
-		if (!this._viewState.currentView) {
-			this._viewState.setHomeView();
-		}
-
 		// moved loadData call here because its inderect call in render function via _data getter causes nested render call with exception
 		this._serverData.loadData({ defaultView: isDefault() });
 	}
@@ -234,24 +234,29 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	}
 
 	_renderUserDrillView() {
-		const userId = this._viewState.userViewUserId;
-		const userData = this._serverData.userDictionary.get(userId);
+		let user = {};
 
-		if (!userData) {
-			return;
+		if (!this._isLoading) {
+			const userId = this._viewState.userViewUserId;
+			const userData = this._serverData.userDictionary.get(userId);
+
+			if (!userData) {
+				return;
+			}
+
+			user = {
+				firstName: userData[USER.FIRST_NAME],
+				lastName: userData[USER.LAST_NAME],
+				username: userData[USER.USERNAME],
+				userId: userId
+			};
 		}
-
-		const user = {
-			firstName: userData[USER.FIRST_NAME],
-			lastName: userData[USER.LAST_NAME],
-			username: userData[USER.USERNAME],
-			userId: userId
-		};
 
 		return html`
 			<d2l-insights-user-drill-view
-				.data="${this._data}"
+				?skeleton="${this._isLoading}"
 				?demo="${this.isDemo}"
+				.data="${this._data}"
 				.user="${user}"
 				.isStudentSuccessSys="${this._serverData.serverData.isStudentSuccessSys}"
 				org-unit-id="${this.orgUnitId}"
@@ -345,11 +350,11 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			<div class="view-filters-container">
 				${this._renderFilters()}
 			</div>
-			<d2l-insights-message-container
+			<d2l-insights-engagement-dashboard-errors
 				.data="${this._data}"
 				.isNoDataReturned="${this._isNoUserResults}"
 				@d2l-insights-undo-last-filter="${this._handleUndo}">
-			</d2l-insights-message-container>
+			</d2l-insights-engagement-dashboard-errors>
 			${this._summaryViewHeader}
 			<div class="d2l-insights-summary-container-applied-filters">
 				${this._renderAppliedFilters()}
