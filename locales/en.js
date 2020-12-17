@@ -180,6 +180,8 @@ export default {
 	"settings:avgDiscussionActivityDescription": "The Average Discussion Participation indicator presents user statistics for how often the user creates a thread, reads a post or replies to a post across all the courses included in the applied filters.  This metric averages the total count per course.",
 	"settings:lastAccessedSystemDescription": "The System Last Access indicator displays the timestamp, in Brightspace local time, of the last time the user accessed the system in any way.",
 
+	"userDrill:noUser": "The user could not be loaded. Please return to the engagement dashboard to continue.",
+	"userDrill:return": "Return",
 	"userDrill:noData": "No data in filtered ranges. Refine your selection.",
 
 	"activeCoursesTable:title": "Active Courses",

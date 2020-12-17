@@ -29,7 +29,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			user: { type: Object, attribute: false },
 			isDemo: { type: Boolean, attribute: 'demo' },
 			isStudentSuccessSys: { type: Boolean, attribute: false },
-			orgUnitId: { type: Object, attribute: 'org-unit-id' }
+			orgUnitId: { type: Number, attribute: 'org-unit-id' },
+			viewState: { type: Object, attribute: false }
 		};
 	}
 
@@ -37,6 +38,16 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		super();
 		this.hasToken = false;
 		this._token = undefined;
+		this.data = null;
+		this.user = {
+			userId: null,
+			username: null,
+			firstName: null,
+			lastName: null
+		};
+		this.isStudentSuccessSys = false;
+		this.orgUnitId = 0;
+		this.viewState = null;
 	}
 
 	static get styles() {
@@ -194,14 +205,27 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	render() {
+		if (!this.skeleton && !this.user.userId) {
+			return html`
+				<d2l-insights-message-container
+					type="button"
+					text="${this.localize('userDrill:noUser')}"
+					button-text="${this.localize('userDrill:return')}"
+					@d2l-insights-message-container-button-click=${this._loadHomeView}>
+				</d2l-insights-message-container>
+			`;
+		}
+
+		const displayName = this.user.userId ? `${this.user.firstName} ${this.user.lastName}` : '';
+		const userInfo = this.user.userId ? `${this.user.username} - ${this.user.userId}` : '';
 
 		return html`<div class="d2l-insights-user-drill-view-container">
 			<div class="d2l-insights-user-drill-view-header-panel">
 				<div class="d2l-insights-user-drill-view-profile">
 					${this.userProfile}
 					<div class="d2l-insights-user-drill-view-profile-name">
-						<div class="d2l-heading-2">${this.user.firstName} ${this.user.lastName}</div>
-						<div class="d2l-body-small">${this.user.username} - ${this.user.userId}</div>
+						<div class="d2l-heading-2 ${this.skeletonClass}">${displayName}</div>
+						<div class="d2l-body-small ${this.skeletonClass}">${userInfo}</div>
 					</div>
 				</div>
 
@@ -264,6 +288,13 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				?skeleton="${this.skeleton}">
 			</d2l-insights-user-drill-courses-table>
 		`;
+	}
+
+	_loadHomeView(e) {
+		this.viewState.setHomeView();
+		// prevent href navigation
+		e.preventDefault();
+		return false;
 	}
 }
 
