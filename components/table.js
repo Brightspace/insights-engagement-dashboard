@@ -167,6 +167,7 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 			}
 
 			d2l-scroll-wrapper {
+				--d2l-scroll-wrapper-action-visible_-_top: 150px;
 				--d2l-scroll-wrapper-h-scroll: {
 					border-left: var(--d2l-table-border-overflow);
 					border-right: var(--d2l-table-border-overflow);
