@@ -10,7 +10,6 @@ import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { until } from 'lit-html/directives/until';
-import { computed, decorate, observable } from 'mobx';
 
 /**
  * @property {Object} data - an instance of Data from model/data.js
@@ -258,11 +257,5 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		</div>`;
 	}
 }
-
-decorate(UserDrill, {
-	hasToken: observable,
-	skeleton: observable,
-	isLoading: computed,
-});
 
 customElements.define('d2l-insights-user-drill-view', UserDrill);

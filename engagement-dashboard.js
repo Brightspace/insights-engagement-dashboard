@@ -231,6 +231,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 	_renderUserDrillView() {
 		let user = {};
+
 		if (!this._isLoading) {
 			const userId = this._viewState.userViewUserId;
 			const userData = this._serverData.userDictionary.get(userId);
