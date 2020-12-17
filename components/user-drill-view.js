@@ -211,7 +211,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				<d2l-insights-message-container
 					type="button"
 					text="${this.localize('userDrill:noUser')}"
-					button-text="${this.localize('userDrill:return')}"
+					button-text="${this.localize('dashboard:title')}"
 					@d2l-insights-message-container-button-click=${this._loadDefaultView}>
 				</d2l-insights-message-container>
 			`;

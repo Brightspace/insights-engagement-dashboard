@@ -106,7 +106,7 @@ describe('d2l-insights-user-drill-view', () => {
 
 			const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');
 			expect(errorMessage.type).to.equal('button');
-			expect(errorMessage.text).to.equal('The user could not be loaded. Please return to the engagement dashboard to continue.');
+			expect(errorMessage.text).to.equal('This user could not be loaded. Go to the Engagement Dashboard to view the list of users.');
 		});
 
 		it('should render no data error message if user exists but has no data', async() => {
