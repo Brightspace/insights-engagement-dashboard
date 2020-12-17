@@ -13,6 +13,7 @@ import { ExportData } from '../model/exportData';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { RECORD } from '../consts';
+import { resetUrlState } from '../model/urlState';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { until } from 'lit-html/directives/until';
 
@@ -211,7 +212,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 					type="button"
 					text="${this.localize('userDrill:noUser')}"
 					button-text="${this.localize('userDrill:return')}"
-					@d2l-insights-message-container-button-click=${this._loadHomeView}>
+					@d2l-insights-message-container-button-click=${this._loadDefaultView}>
 				</d2l-insights-message-container>
 			`;
 		}
@@ -290,8 +291,10 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		`;
 	}
 
-	_loadHomeView(e) {
-		this.viewState.setHomeView();
+	_loadDefaultView(e) {
+		// DE41776: likely this is an error state with no good exit options. Force a hard refresh of the default view.
+		resetUrlState();
+
 		// prevent href navigation
 		e.preventDefault();
 		return false;
