@@ -36,6 +36,17 @@ const data = {
 	}
 };
 
+const emptyData = {
+	records: [ // only records for the wrong user
+		[199, 2, ROLE_ID, 0, 90, 6000, 1607979698265, 1, 2, 3],
+		[99, 2, ROLE_ID, 0, 90, 6000, 1607979698265, 5, 6, 7]
+	],
+	orgUnitTree: {
+		isActive: (orgUnitId) => orgUnitId >= 100,
+		getName: (orgUnitId) => `Course ${orgUnitId}`
+	}
+};
+
 const user = { userId: 1 };
 
 const expected = {
@@ -128,6 +139,20 @@ describe('d2l-insights-user-drill-courses-table', () => {
 					'Course Last Access'
 				]);
 			});
+
+			it('should display no data error message if there was no data', async() => {
+				const el = await fixture(html`
+					<d2l-insights-user-drill-courses-table
+						.data="${emptyData}"
+						.user="${user}"
+						.isActiveTable="${Boolean(true)}"
+						.isStudentSuccessSys="${Boolean(false)}">
+					</d2l-insights-user-drill-courses-table>
+				`);
+
+				const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');
+				expect(errorMessage.text).to.equal('No active course data in filtered ranges.');
+			});
 		});
 
 		describe('sorting', () => {
@@ -209,6 +234,19 @@ describe('d2l-insights-user-drill-courses-table', () => {
 					'Discussion Activity',
 					'Course Last Access'
 				]);
+			});
+
+			it('should display no data error message if there was no data', async() => {
+				const el = await fixture(html`
+					<d2l-insights-user-drill-courses-table
+						.data="${emptyData}"
+						.user="${user}"
+						.isActiveTable="${Boolean(false)}">
+					</d2l-insights-user-drill-courses-table>
+				`);
+
+				const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');
+				expect(errorMessage.text).to.equal('No inactive course data in filtered ranges.');
 			});
 		});
 
