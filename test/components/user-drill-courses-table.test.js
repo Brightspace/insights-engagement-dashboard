@@ -359,7 +359,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 				await new Promise(resolve => setTimeout(resolve, 200));
 				await el.updateComplete;
 				expect(el.dataForExport[0]).to.deep.equal(
-					[ 'Course 101 (Id: 101)', '80 %', 'No predicted grade', '110', 3, 3, 3, getLocalDateTime(1607979700000), true]);
+					[ 'Course 101 (Id: 101)', '80 %', '110', 3, 3, 3, getLocalDateTime(1607979700000), true]);
+				expect(el.headersForExport).to.deep.equal(['Course Name', 'Grade', 'Time in Content (mins)', 'Threads', 'Reads', 'Replies', 'Course Last Access', 'Is Active Course']);
 			});
 		});
 	});
