@@ -1,6 +1,6 @@
 import './table.js';
 import '@brightspace-ui-labs/pagination/pagination';
-import { action, computed, decorate, observable, toJS } from 'mobx';
+import { action, computed, decorate, observable } from 'mobx';
 import { css, html } from 'lit-element';
 import { formatNumber, formatPercent } from '@brightspace-ui/intl';
 import { COLUMN_TYPES } from './table';
@@ -100,12 +100,10 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 			const start = this._pageSize * (this._currentPage - 1);
 			const end = this._pageSize * (this._currentPage); // it's ok if this goes over the end of the array
 
-			const dataForDisplay = JSON.parse(JSON.stringify(this.userDataForDisplay));
+			const dataForDisplay = this.userDataForDisplay;
 			if (this.isActiveTable) {
-				return dataForDisplay.map(data => {
-					data.pop();  // removed semester name column
-					return data;
-				}).slice(start, end);
+				return dataForDisplay.map(x => x.slice(0, x.length - 1)) // removed semester name column
+					.slice(start, end);
 			}
 			return dataForDisplay
 				.slice(start, end);
@@ -160,7 +158,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_getSemesterNameByOrgUnitId(orgUnitId) {
-		const ancestors = toJS(this.data.orgUnitTree.getAncestorIds(orgUnitId));
+		const ancestors = [...this.data.orgUnitTree.getAncestorIds(orgUnitId)];
 		const semesterTypeId =  this.data.semesterTypeId;
 		const firstSemesterOrgUnitId = ancestors.find(id => this.data.orgUnitTree.getType(id) === semesterTypeId);
 		const semesterOrgUnitName = this.data.orgUnitTree.getName(firstSemesterOrgUnitId);
