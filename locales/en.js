@@ -182,6 +182,9 @@ export default {
 	"settings:invalidSystemAccessValueToast": "Your settings could not be saved. System Access thresholds need to be between 1 and 30.",
 	"settings:serverSideErrorToast": "Something went wrong. Your settings could not be saved.",
 
+	"userDrill:noUser": "This user could not be loaded. Go to the Engagement Dashboard to view the list of users.",
+	"userDrill:noData": "No data in filtered ranges. Refine your selection.",
+
 	"activeCoursesTable:title": "Active Courses",
 	"activeCoursesTable:loadingPlaceholder": "Loading",
 	"activeCoursesTable:course": "Course Name",
@@ -192,7 +195,9 @@ export default {
 	"activeCoursesTable:discussions": "Discussion Activity",
 	"activeCoursesTable:courseLastAccess": "Course Last Access",
 	"activeCoursesTable:noGrade": "No grade",
+	"activeCoursesTable:noPredictedGrade": "No predicted grade",
 	"activeCoursesTable:isActive": "Is Active Course",
+	"activeCoursesTable:empty": "No active course data in filtered ranges.",
 
 	"inactiveCoursesTable:title": "Inactive Courses",
 	"inactiveCoursesTable:course": "Course Name",
@@ -201,6 +206,5 @@ export default {
 	"inactiveCoursesTable:discussions": "Discussion Activity",
 	"inactiveCoursesTable:lastAccessedCourse": "Course Last Access",
 	"inactiveCoursesTable:loadingPlaceholder": "Loading",
-
-	"activeCoursesTable:noPredictedGrade": "No predicted grade",
+	"inactiveCoursesTable:empty": "No inactive course data in filtered ranges.",
 };
