@@ -231,11 +231,11 @@ describe('d2l-insights-user-drill-courses-table', () => {
 			`;
 
 			const testCases = [
-				['Course name', undefined, 0],
-				['Final Grade', numsWithTextSort, 1],
-				['Total Time in Content (mins)', numsWithTextSort, 3],
-				['Discussion Activity', undefined, 4],
-				['Course Last Access', datesWithTextSort, 5]
+				['Course name', undefined],
+				['Final Grade', numsWithTextSort],
+				['Total Time in Content (mins)', numsWithTextSort],
+				['Discussion Activity', undefined],
+				['Course Last Access', datesWithTextSort]
 			];
 			testCases.forEach(([colName, sortFunction], colIdx) => {
 				verifySorting(true, tableHtml, expected.inactive, sortFunction, colIdx, colName);
