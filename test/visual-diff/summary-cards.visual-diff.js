@@ -5,7 +5,7 @@ describe('summary cards', () => {
 
 	const visualDiff = new VisualDiff('summary-cards', __dirname);
 
-	let browser, page;
+	let browser, page, rect, removeCard;
 
 	before(async() => {
 		browser = await puppeteer.launch();
@@ -23,13 +23,8 @@ describe('summary cards', () => {
 		await page.keyboard.press('Tab');
 		await page.keyboard.press('Enter');
 		await page.bringToFront();
-	});
 
-	after(() => browser.close());
-
-	it('Summary Container All', async function() {
-
-		const rect = await page.evaluate(() => {
+		rect = await page.evaluate(() => {
 			const elm = document.querySelector('d2l-insights-engagement-dashboard')
 				.shadowRoot.querySelector('d2l-summary-cards-container');
 			return {
@@ -40,7 +35,36 @@ describe('summary cards', () => {
 			};
 		});
 
-		console.log(rect);
+		removeCard = async(name) => {
+			await page.evaluate((name) => {
+				document.querySelector('d2l-insights-engagement-dashboard').removeAttribute(name);
+			}, name);
+		};
+	});
+
+	after(() => browser.close());
+
+
+	it('Summary Container All', async function() {
+
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	it('Summary Container (Overdue, Discussion, System Access)', async function() {
+
+		await removeCard('results-card');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	it('Summary Container (Discussion, System Access)', async function() {
+
+		await removeCard('overdue-card');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	it('Summary Container (System Access)', async function() {
+
+		await removeCard('discussions-card');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 });
