@@ -258,6 +258,7 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 		const response = await saveSettings(settings);
 
 		if (!response.ok) {
+			this.shadowRoot.querySelector('d2l-insights-custom-toast-message').failedServerResponseError();
 			console.error('Dashboard Settings View. Cannot save settings!');
 			return;
 		}

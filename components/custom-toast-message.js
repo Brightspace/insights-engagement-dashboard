@@ -15,6 +15,11 @@ class CustomToastMessage extends RtlMixin(Localizer(LitElement)) {
 		this.shadowRoot.querySelector('d2l-alert-toast').innerHTML = this.localize('settings:invalidSystemAccessValueToast');
 		this.shadowRoot.querySelector('d2l-alert-toast').open = true;
 	}
+
+	failedServerResponseError() {
+		this.shadowRoot.querySelector('d2l-alert-toast').innerHTML = this.localize('settings:serverSideErrorToast');
+		this.shadowRoot.querySelector('d2l-alert-toast').open = true;
+	}
 }
 
 customElements.define('d2l-insights-custom-toast-message', CustomToastMessage);
