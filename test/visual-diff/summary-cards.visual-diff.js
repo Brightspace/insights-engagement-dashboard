@@ -44,7 +44,6 @@ describe('summary cards', () => {
 
 	after(() => browser.close());
 
-
 	it('Summary Container All', async function() {
 
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });

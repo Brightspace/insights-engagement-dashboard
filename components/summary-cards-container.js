@@ -5,7 +5,6 @@ import { Localizer } from '../locales/localizer';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 
 /**
- * @property {Object} data
  * @property {Array} cards
  * @property {String} _screenSize - private property that allows forcing rendering after hit of media-query breakpoint
  */
