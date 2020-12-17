@@ -47,6 +47,10 @@ class MessageContainer extends LitElement {
 			.d2l-insights-message-container-button-container {
 				margin-top: 20px;
 			}
+
+			.d2l-insights-message-container-button-container > d2l-button {
+				min-width: 200px;
+			}
 		`];
 	}
 
