@@ -5,21 +5,22 @@ import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin';
 
 class CustomToastMessage extends RtlMixin(Localizer(LitElement)) {
 
+	static get properties() {
+		return {
+			toastMessageText: { type: String, attribute: false },
+		};
+	}
+
 	render() {
 		return html`
-			<d2l-alert-toast type="critical"></d2l-alert-toast>
+			<d2l-alert-toast type="critical" subtext="${this.toastMessageText}"></d2l-alert-toast>
 		`;
 	}
 
-	systemLastAccessError() {
-		this.shadowRoot.querySelector('d2l-alert-toast').innerHTML = this.localize('settings:invalidSystemAccessValueToast');
+	open() {
 		this.shadowRoot.querySelector('d2l-alert-toast').open = true;
 	}
 
-	failedServerResponseError() {
-		this.shadowRoot.querySelector('d2l-alert-toast').innerHTML = this.localize('settings:serverSideErrorToast');
-		this.shadowRoot.querySelector('d2l-alert-toast').open = true;
-	}
 }
 
 customElements.define('d2l-insights-custom-toast-message', CustomToastMessage);

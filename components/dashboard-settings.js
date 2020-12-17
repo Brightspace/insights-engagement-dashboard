@@ -36,7 +36,8 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 			showTicCol: { type: Boolean, attribute: 'tic-col', reflect: true },
 			showTicGradesCard: { type: Boolean, attribute: 'tic-grades-card', reflect: true },
 			lastAccessThresholdDays: { type: Number, attribute: 'last-access-threshold-days', reflect: true },
-			includeRoles: { type: Array, attribute: false }
+			includeRoles: { type: Array, attribute: false },
+			_toastMessagetext: { type: String, attribute: false }
 		};
 	}
 
@@ -201,7 +202,7 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 					</d2l-tabs>
 				</div>
 			</div>
-			<d2l-insights-custom-toast-message></d2l-insights-custom-toast-message>
+			<d2l-insights-custom-toast-message .toastMessageText="${this._toastMessagetext}"></d2l-insights-custom-toast-message>
 			${this._renderFooter()}
 		`;
 	}
@@ -251,15 +252,16 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 		};
 
 		if (cardSelectionList.isInvalidSystemAccessValue()) {
-			this.shadowRoot.querySelector('d2l-insights-custom-toast-message').systemLastAccessError();
+			this._toastMessagetext = this.localize('settings:invalidSystemAccessValueToast');
+			this._openToastMessage();
 			return;
 		}
 
 		const response = await saveSettings(settings);
 
 		if (!response.ok) {
-			this.shadowRoot.querySelector('d2l-insights-custom-toast-message').failedServerResponseError();
-			console.error('Dashboard Settings View. Cannot save settings!');
+			this._toastMessagetext = this.localize('settings:serverSideErrorToast');
+			this._openToastMessage();
 			return;
 		}
 
@@ -277,6 +279,10 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 		this.dispatchEvent(new CustomEvent('d2l-insights-settings-view-back', {
 			detail: settings
 		}));
+	}
+
+	_openToastMessage() {
+		this.shadowRoot.querySelector('d2l-insights-custom-toast-message').open();
 	}
 }
 customElements.define('d2l-insights-engagement-dashboard-settings', DashboardSettings);

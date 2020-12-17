@@ -3,6 +3,8 @@ import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-help
 
 describe('d2l-insights-custom-toast-message', () => {
 
+	const toastMessageText = 'toast message';
+
 	describe('constructor', () => {
 		it('should construct', () => {
 			runConstructor('d2l-insights-custom-toast-message');
@@ -20,16 +22,11 @@ describe('d2l-insights-custom-toast-message', () => {
 
 	describe('render', () => {
 		it('should render the toast message as expected', async() => {
-			const el = await fixture(html`<d2l-insights-custom-toast-message></d2l-insights-custom-toast-message>`);
+			const el = await fixture(html`<d2l-insights-custom-toast-message .toastMessageText="${toastMessageText}"></d2l-insights-custom-toast-message>`);
 			await new Promise(resolve => setTimeout(resolve, 200));
 			expect(el.shadowRoot.querySelector('d2l-alert-toast').innerHTML).to.equal('');
-			el.systemLastAccessError();
-			await new Promise(resolve => setTimeout(resolve, 200));
-			expect(el.shadowRoot.querySelector('d2l-alert-toast').innerHTML).to.deep.equal('Your settings could not be saved. System Access thresholds need to be between 1 and 30.');
-			expect(el.shadowRoot.querySelector('d2l-alert-toast').open).to.equal(true);
-			await new Promise(resolve => setTimeout(resolve, 500));
-			el.failedServerResponseError();
-			expect(el.shadowRoot.querySelector('d2l-alert-toast').innerHTML).to.deep.equal('Something went wrong. Your settings could not be saved.');
+			el.open();
+			expect(el.shadowRoot.querySelector('d2l-alert-toast').subtext).to.deep.equal('toast message');
 			expect(el.shadowRoot.querySelector('d2l-alert-toast').open).to.equal(true);
 		});
 	});
