@@ -92,9 +92,10 @@ describe('d2l-insights-engagement-card-selection-list', () => {
 				await thresholdInput.updateComplete;
 
 				expect(el.settings).to.deep.equal({ ...defaultSettingsTemplate, lastAccessThresholdDays: 21 });
+				expect(el.isInvalidSystemAccessValue()).to.equal(false);
 			});
 
-			it('should return original lastAccessThreshold if the new value is invalid', async() => {
+			it('should set isInvalidSystemAccessValue to true if the new value is invalid', async() => {
 				const el = await fixture(html`<d2l-insights-engagement-card-selection-list></d2l-insights-engagement-card-selection-list>`);
 				const thresholdInput = el.shadowRoot.querySelector('d2l-input-number');
 				await thresholdInput.updateComplete;
@@ -108,7 +109,7 @@ describe('d2l-insights-engagement-card-selection-list', () => {
 				innerInput.dispatchEvent(new Event('change'));
 				await thresholdInput.updateComplete;
 
-				expect(el.settings).to.deep.equal(defaultSettingsTemplate);
+				expect(el.isInvalidSystemAccessValue()).to.equal(true);
 
 				// less than valid range
 				innerInput.value = '0';
@@ -116,7 +117,7 @@ describe('d2l-insights-engagement-card-selection-list', () => {
 				innerInput.dispatchEvent(new Event('change'));
 				await thresholdInput.updateComplete;
 
-				expect(el.settings).to.deep.equal(defaultSettingsTemplate);
+				expect(el.isInvalidSystemAccessValue()).to.equal(true);
 
 				// more than valid range
 				innerInput.value = '31';
@@ -124,7 +125,7 @@ describe('d2l-insights-engagement-card-selection-list', () => {
 				innerInput.dispatchEvent(new Event('change'));
 				await thresholdInput.updateComplete;
 
-				expect(el.settings).to.deep.equal(defaultSettingsTemplate);
+				expect(el.isInvalidSystemAccessValue()).to.equal(true);
 			});
 		});
 	});
