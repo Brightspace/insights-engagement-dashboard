@@ -148,6 +148,10 @@ export class Data {
 		return this.serverData.isDefaultView;
 	}
 
+	get semesterTypeId() {
+		return this.serverData.semesterTypeId;
+	}
+
 	// @computed
 	get records() {
 		return this.serverData.records.filter(record => {
