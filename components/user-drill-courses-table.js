@@ -224,6 +224,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get userDataForDisplay() {
 		// map to a 2D userData array, with column 1 as a sub-array of [id, FirstName, LastName, UserName]
 		// then sort by the selected sorting function
+		if (this.skeleton) return [];
 		const sortFunction = this._choseSortFunction(this._sortColumn, this._sortOrder);
 		return this.data.records
 			.filter(this._shouldDisplayinTable, this)
@@ -329,12 +330,12 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	updated() {
 		if (this.skeleton) {
-			this._currentPage = 0;
+			this._currentPage = 1;
 			return;
 		}
 
 		if (this._itemsCount === 0) {
-			this._currentPage = 0;
+			this._currentPage = 1;
 		} else if (this._currentPage === 0) {
 			this._currentPage = 1;
 		}
@@ -381,6 +382,7 @@ decorate(UserDrillCoursesTable, {
 	userDataForDisplay: computed,
 	headersForExport: computed,
 	dataForExport: computed,
+	skeleton: observable,
 	_sortColumn: observable,
 	_sortOrder: observable,
 	_handleColumnSort: action

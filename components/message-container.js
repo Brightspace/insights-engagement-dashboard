@@ -1,25 +1,21 @@
 import '@brightspace-ui/core/components/button/button';
-import { computed, decorate } from 'mobx';
-import { css, html } from 'lit-element/lit-element.js';
-import { Localizer } from '../locales/localizer';
-import { MobxLitElement } from '@adobe/lit-mobx';
+import { css, html, LitElement } from 'lit-element/lit-element';
 
-class MessageContainer extends Localizer(MobxLitElement) {
+class MessageContainer extends LitElement {
 
 	static get properties() {
 		return {
-			data: { type: Object, attribute: false },
-			isNoDataReturned: { type: Boolean, attribute: false }
+			// possible types: link, button, default
+			type: { type: String, attribute: true },
+			text: { type: String, attribute: true },
+			linkText: { type: String, attribute: 'link-text' },
+			href: { type: String, attribute: true },
+			buttonText: { type: String, attribute: 'button-text' }
 		};
 	}
 
-	constructor() {
-		super();
-		this.data = {};
-	}
-
 	static get styles() {
-		return css`
+		return [css`
 			:host {
 				display: inline-block;
 				padding-top: 20px;
@@ -52,72 +48,38 @@ class MessageContainer extends Localizer(MobxLitElement) {
 				margin-top: 20px;
 				width: 200px;
 			}
-		`;
-	}
-
-	// @computed
-	get _isRecordsTruncated() {
-		return this.data._data.serverData.isRecordsTruncated;
-	}
-
-	get _isQueryFails() {
-		return this.data._data.isQueryError;
-	}
-
-	get _messageContainerTextTooManyResults() {
-		return this.localize('dashboard:tooManyResults');
-	}
-
-	get _messageContainerTextNoResultsAvailable() {
-		return this.localize('dashboard:noResultsAvailable');
-	}
-
-	get _messageContainerTextQueryFails() {
-		return this.localize('dashboard:queryFailed');
-	}
-
-	get _messageContainerTextQueryFailsLink() {
-		return this.localize('dashboard:queryFailedLink');
-	}
-
-	get _undoButtonText() {
-		return this.localize('dashboard:undoLastAction');
-	}
-
-	_handleUndo() {
-		this.dispatchEvent(new Event('d2l-insights-undo-last-filter'));
+		`];
 	}
 
 	render() {
-		// conditinally render message text and body
-		if (this._isQueryFails) {
-			return html`
-				<div class="d2l-insights-message-container-body">
-					<span class="d2l-insights-message-container-value">${this._messageContainerTextQueryFails}
-						<a href="https://www.d2l.com/support/" target="_blank">${this._messageContainerTextQueryFailsLink}</a>
-					</span>
-				</div>
-			`;
-		} else if (this.isNoDataReturned) { //overwrite too many results case
-			return html`
-				<div class="d2l-insights-message-container-body d2l-insights-message-noResultsAvailable">
-					<span class="d2l-insights-message-container-value">${this._messageContainerTextNoResultsAvailable}</span>
-					<d2l-button primary slot="footer" @click="${this._handleUndo}">${this._undoButtonText}</d2l-button>
-				</div>
-			`;
-		} else if (this._isRecordsTruncated) {
-			return html`
-				<div class="d2l-insights-message-container-body">
-					<span class="d2l-insights-message-container-value">${this._messageContainerTextTooManyResults}</span>
-				</div>
-			`;
+		switch (this.type) {
+			case 'link':
+				return html`
+					<div class="d2l-insights-message-container-body">
+						<span class="d2l-insights-message-container-value">
+							${this.text}
+							<a href="${this.href}" target="_blank">${this.linkText}</a>
+						</span>
+					</div>
+				`;
+			case 'button':
+				return html`
+					<div class="d2l-insights-message-container-body d2l-insights-message-noResultsAvailable">
+						<span class="d2l-insights-message-container-value">${this.text}</span>
+						<d2l-button primary slot="footer" @click="${this._handleButtonClick}">${this.buttonText}</d2l-button>
+					</div>
+				`;
+			default:
+				return html`
+					<div class="d2l-insights-message-container-body">
+						<span class="d2l-insights-message-container-value">${this.text}</span>
+					</div>
+				`;
 		}
 	}
+
+	_handleButtonClick() {
+		this.dispatchEvent(new Event('d2l-insights-message-container-button-click'));
+	}
 }
-
-decorate(MessageContainer, {
-	_isRecordsTruncated: computed,
-	_isQueryFails: computed
-});
-
 customElements.define('d2l-insights-message-container', MessageContainer);
