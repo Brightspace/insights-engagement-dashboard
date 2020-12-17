@@ -239,6 +239,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 					.data="${this.data}"
 					.user="${this.user}"
 					.isActiveTable=${Boolean(false)}
+					.isStudentSuccessSys="${this.isStudentSuccessSys}"
 					?skeleton="${this.skeleton}"
 				></d2l-insights-user-drill-courses-table>
 			</div>
