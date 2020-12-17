@@ -149,7 +149,7 @@ class UserDrill extends Localizer(MobxLitElement) {
 				<div class="d2l-insights-user-drill-view-profile">
 					${this.userProfile}
 					<div class="d2l-insights-user-drill-view-profile-name">
-						<div class="d2l-heading-2">${this.user.lastName}, ${this.user.firstName}</div>
+						<div class="d2l-heading-2">${this.user.firstName} ${this.user.lastName}</div>
 						<div class="d2l-body-small">${this.user.username} - ${this.user.userId}</div>
 					</div>
 				</div>
