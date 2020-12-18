@@ -96,7 +96,7 @@ describe('d2l-insights-user-drill-view', () => {
 				.user=${user} .data=${data}
 			></d2l-insights-user-drill-view>`);
 			const profile = el.shadowRoot.querySelector('d2l-profile-image');
-			await new Promise(res => setTimeout(res, 10));
+			await new Promise(res => setTimeout(res, 50));
 
 			const names = [profile._firstName, profile._lastName];
 			const results = ['First', 'Last'];
