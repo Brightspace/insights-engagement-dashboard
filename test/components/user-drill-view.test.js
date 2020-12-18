@@ -28,7 +28,11 @@ describe('d2l-insights-user-drill-view', () => {
 		records: [
 			[3, 232], // the rest of the records object isn't necessary (for now)
 			[2, 232]
-		]
+		],
+		orgUnitTree: {
+			isActive: () => true,
+			getName: () => '',
+		}
 	};
 
 	data.recordsByUser = new Map();
