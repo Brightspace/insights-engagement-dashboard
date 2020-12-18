@@ -39,6 +39,17 @@ const data = {
 	semesterTypeId : 25
 };
 
+const emptyData = {
+	records: [ // only records for the wrong user
+		[199, 2, ROLE_ID, 0, 90, 6000, 1607979698265, 1, 2, 3],
+		[99, 2, ROLE_ID, 0, 90, 6000, 1607979698265, 5, 6, 7]
+	],
+	orgUnitTree: {
+		isActive: (orgUnitId) => orgUnitId >= 100,
+		getName: (orgUnitId) => `Course ${orgUnitId}`
+	}
+};
+
 const user = { userId: 1 };
 
 const expected = {
@@ -131,6 +142,20 @@ describe('d2l-insights-user-drill-courses-table', () => {
 					'Course Last Access'
 				]);
 			});
+
+			it('should display no data error message if there was no data', async() => {
+				const el = await fixture(html`
+					<d2l-insights-user-drill-courses-table
+						.data="${emptyData}"
+						.user="${user}"
+						.isActiveTable="${Boolean(true)}"
+						.isStudentSuccessSys="${Boolean(false)}">
+					</d2l-insights-user-drill-courses-table>
+				`);
+
+				const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');
+				expect(errorMessage.text).to.equal('No active course data in filtered ranges.');
+			});
 		});
 
 		describe('sorting', () => {
@@ -142,17 +167,28 @@ describe('d2l-insights-user-drill-courses-table', () => {
 					.isStudentSuccessSys="${Boolean(true)}">
 				</d2l-insights-user-drill-courses-table>
 			`;
+			const noS3TableHtml = html`
+				<d2l-insights-user-drill-courses-table
+					.data="${data}"
+					.user="${user}"
+					.isActiveTable="${Boolean(true)}"
+					.isStudentSuccessSys="${Boolean(false)}">
+				</d2l-insights-user-drill-courses-table>
+			`;
 
 			const testCases = [
-				['Course name', undefined],
-				['Current Grade', numsWithTextSort],
-				['Predicted Grade', numsWithTextSort],
-				['Time in Content (mins)', numsWithTextSort],
-				['Discussion Activity', undefined],
-				['Course Last Access', datesWithTextSort]
+				['Course name', undefined, 0],
+				['Current Grade', numsWithTextSort, 1],
+				['Predicted Grade', numsWithTextSort, null],
+				['Time in Content (mins)', numsWithTextSort, 2],
+				['Discussion Activity', undefined, 3],
+				['Course Last Access', datesWithTextSort, 4]
 			];
-			testCases.forEach(([colName, sortFunction], colIdx) => {
-				verifySorting(tableHtml, expected.active, sortFunction, colIdx, colName);
+			testCases.forEach(([colName, sortFunction, noS3Index], colIdx) => {
+				verifySorting(true, tableHtml, expected.active, sortFunction, colIdx, colName);
+				if (noS3Index) {
+					verifySorting(false, noS3TableHtml, expected.active, sortFunction, colIdx, colName, noS3Index);
+				}
 			});
 		});
 	});
@@ -203,6 +239,19 @@ describe('d2l-insights-user-drill-courses-table', () => {
 					'Semester'
 				]);
 			});
+
+			it('should display no data error message if there was no data', async() => {
+				const el = await fixture(html`
+					<d2l-insights-user-drill-courses-table
+						.data="${emptyData}"
+						.user="${user}"
+						.isActiveTable="${Boolean(false)}">
+					</d2l-insights-user-drill-courses-table>
+				`);
+
+				const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');
+				expect(errorMessage.text).to.equal('No inactive course data in filtered ranges.');
+			});
 		});
 
 		describe('sorting', () => {
@@ -211,6 +260,15 @@ describe('d2l-insights-user-drill-courses-table', () => {
 					.data="${data}"
 					.user="${user}"
 					.isActiveTable="${Boolean(false)}">
+					.isStudentSuccessSys="${Boolean(true)}">
+				</d2l-insights-user-drill-courses-table>
+			`;
+			const noS3TableHtml = html`
+				<d2l-insights-user-drill-courses-table
+					.data="${data}"
+					.user="${user}"
+					.isActiveTable="${Boolean(false)}">
+					.isStudentSuccessSys="${Boolean(false)}">
 				</d2l-insights-user-drill-courses-table>
 			`;
 
@@ -222,7 +280,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 				['Course Last Access', datesWithTextSort]
 			];
 			testCases.forEach(([colName, sortFunction], colIdx) => {
-				verifySorting(tableHtml, expected.inactive, sortFunction, colIdx, colName);
+				verifySorting(true, tableHtml, expected.inactive, sortFunction, colIdx, colName);
+				verifySorting(false, noS3TableHtml, expected.inactive, sortFunction, colIdx, colName);
 			});
 		});
 
@@ -312,12 +371,12 @@ describe('d2l-insights-user-drill-courses-table', () => {
 		});
 
 		describe('export', () => {
-			it('should get headersForExport', async() => {
+			it('should get headersForExport for active course when isStudentSuccessSys equals true', async() => {
 				const el = await fixture(html`
 					<d2l-insights-user-drill-courses-table
 						.data="${data}"
 						.user="${user}"
-						.isActiveTable="${Boolean(false)}"
+						.isActiveTable="${Boolean(true)}"
 						.isStudentSuccessSys="${Boolean(true)}">
 					</d2l-insights-user-drill-courses-table>
 				`);
@@ -366,7 +425,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 				await new Promise(resolve => setTimeout(resolve, 200));
 				await el.updateComplete;
 				expect(el.dataForExport[0]).to.deep.equal(
-					[ 'Course 101 (Id: 101)', '80 %', 'No predicted grade', '110', 3, 3, 3, getLocalDateTime(1607979700000), 'Course 100 (Id: 100)', true]);
+					[ 'Course 101 (Id: 101)', '80 %', '110', 3, 3, 3, getLocalDateTime(1607979700000), 'Course 100 (Id: 100)', true]);
+				expect(el.headersForExport).to.deep.equal(['Course Name', 'Grade', 'Time in Content (mins)', 'Threads', 'Reads', 'Replies', 'Course Last Access', 'Semester', 'Is Active Course']);
 			});
 		});
 	});
@@ -390,23 +450,23 @@ async function getInnerTable(el) {
 	return innerTable;
 }
 
-function verifySorting(tableHtml, expectedRecords, sortFunction, colIdx, colName) {
-	it(`should sort by the ${colName} column`, async() => {
+function verifySorting(hasS3, tableHtml, expectedRecords, sortFunction, colIdx, colName, displayIndex = colIdx) {
+	it(`should sort by the ${colName} column with${hasS3 ? '' : 'out'} s3`, async() => {
 		const [, innerTable, headers] = await setupTable(tableHtml);
 
 		const expectedDesc = [...expectedRecords.map(record => record[colIdx])].sort(sortFunction).reverse();
 
 		// first click to sort by descending order
-		headers.item(colIdx).click();
+		headers.item(displayIndex).click();
 		await innerTable.updateComplete;
-		expect(innerTable.data.map(record => record[colIdx])).to.deep.equal(expectedDesc);
+		expect(innerTable.data.map(record => record[displayIndex])).to.deep.equal(expectedDesc);
 
 		const expectedAsc = [...expectedRecords.map(record => record[colIdx])].sort(sortFunction);
 
 		// then click again to sort by ascending order
-		headers.item(colIdx).click();
+		headers.item(displayIndex).click();
 		await innerTable.updateComplete;
-		expect(innerTable.data.map(record => record[colIdx])).to.deep.equal(expectedAsc);
+		expect(innerTable.data.map(record => record[displayIndex])).to.deep.equal(expectedAsc);
 	});
 }
 
