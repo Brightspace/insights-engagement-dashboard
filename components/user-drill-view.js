@@ -9,6 +9,7 @@ import { createComposeEmailPopup } from './email-integration';
 import { ExportData } from '../model/exportData';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
+import { RECORD } from '../consts';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { until } from 'lit-html/directives/until';
 
@@ -195,6 +196,23 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		</d2l-labs-summary-card>`;
 	}
 
+	_overdueAssignments({ wide, tall }) {
+		return html`<d2l-labs-summary-card
+			value-clickable
+			card-title="${this.localize('dashboard:overdueAssignmentsHeading')}"
+			card-value="${this.data.recordsByUser.get(this.user.userId).filter(record => record[RECORD.OVERDUE] !== 0).length}"
+			card-message="${this.localize('userOverdueAssignmentsCard:assignmentsCurrentlyOverdue')}"
+			@d2l-labs-summary-card-value-click=${this._valueClickHandlerOverdueAssignmentsCard}
+			?wide="${wide}"
+			?tall="${tall}"
+			?skeleton="${this.skeleton}">
+		</d2l-labs-summary-card>`;
+	}
+
+	_valueClickHandlerOverdueAssignmentsCard() {
+		//out of scope
+	}
+
 	_placeholder({ wide, tall }) {
 		return html`<d2l-labs-summary-card
 			card-title="Placeholder"
@@ -210,7 +228,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return [
 			{ enabled: true, htmlFn: (w) => this._coursesInView(w) },
 			{ enabled: true, htmlFn: (w) => this._placeholder(w) },
-			{ enabled: true, htmlFn: (w) => this._placeholder(w) },
+			{ enabled: true, htmlFn: (w) => this._overdueAssignments(w) },
 			{ enabled: true, htmlFn: (w) => this._placeholder(w) }
 		];
 	}

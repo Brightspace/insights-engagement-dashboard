@@ -199,6 +199,7 @@ export default {
 	"inactiveCoursesTable:discussions": "Discussion Activity",
 	"inactiveCoursesTable:lastAccessedCourse": "Course Last Access",
 	"inactiveCoursesTable:loadingPlaceholder": "Loading",
-
 	"activeCoursesTable:noPredictedGrade": "No predicted grade",
+
+	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "assignments are currently overdue."
 };
