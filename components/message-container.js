@@ -44,9 +44,12 @@ class MessageContainer extends LitElement {
 				word-wrap: break-word;
 			}
 
-			.d2l-insights-message-container-body.d2l-insights-message-noResultsAvailable > d2l-button {
+			.d2l-insights-message-container-button-container {
 				margin-top: 20px;
-				width: 200px;
+			}
+
+			.d2l-insights-message-container-button-container > d2l-button {
+				min-width: 200px;
 			}
 		`];
 	}
@@ -66,7 +69,9 @@ class MessageContainer extends LitElement {
 				return html`
 					<div class="d2l-insights-message-container-body d2l-insights-message-noResultsAvailable">
 						<span class="d2l-insights-message-container-value">${this.text}</span>
-						<d2l-button primary slot="footer" @click="${this._handleButtonClick}">${this.buttonText}</d2l-button>
+						<div class="d2l-insights-message-container-button-container">
+							<d2l-button primary slot="footer" @click="${this._handleButtonClick}">${this.buttonText}</d2l-button>
+						</div>
 					</div>
 				`;
 			default:

@@ -235,11 +235,11 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 
 	_handleThresholdFieldChange(event) {
 		const newValue = Number(event.target.value);
-		if (isNaN(newValue) || newValue < lastSysAccessThresholdMinDays || newValue > lastSysAccessThresholdMaxDays) {
-			return;
-		}
-
 		this.lastAccessThresholdDays = Math.floor(newValue);
+	}
+
+	isInvalidSystemAccessValue() {
+		return (isNaN(this.lastAccessThresholdDays) || this.lastAccessThresholdDays < lastSysAccessThresholdMinDays || this.lastAccessThresholdDays > lastSysAccessThresholdMaxDays);
 	}
 
 	get settings() {
