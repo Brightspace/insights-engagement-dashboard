@@ -150,7 +150,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const semesterTypeId =  this.data.semesterTypeId;
 		const firstSemesterOrgUnitId = ancestors.find(id => this.data.orgUnitTree.getType(id) === semesterTypeId);
 		const semesterOrgUnitName = this.data.orgUnitTree.getName(firstSemesterOrgUnitId);
-		return semesterOrgUnitName !== undefined ? this.localize('semesterFilter:semesterName', { orgUnitName: semesterOrgUnitName, orgUnitId: firstSemesterOrgUnitId }) : '';
+		return firstSemesterOrgUnitId !== undefined ? this.localize('semesterFilter:semesterName', { orgUnitName: semesterOrgUnitName, orgUnitId: firstSemesterOrgUnitId }) : '';
 	}
 
 	_choseSortFunction(column, order) {
