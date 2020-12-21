@@ -179,6 +179,11 @@ export default {
 	"settings:avgTimeInContentDescription": "The Average Time in Content indicator shows the average time spent in content, as an average of total time per course, for the user across all the courses included in the applied filters.  This metric is reported in minutes.",
 	"settings:avgDiscussionActivityDescription": "The Average Discussion Participation indicator presents user statistics for how often the user creates a thread, reads a post or replies to a post across all the courses included in the applied filters.  This metric averages the total count per course.",
 	"settings:lastAccessedSystemDescription": "The System Last Access indicator displays the timestamp, in Brightspace local time, of the last time the user accessed the system in any way.",
+	"settings:invalidSystemAccessValueToast": "Your settings could not be saved. System Access thresholds need to be between 1 and 30.",
+	"settings:serverSideErrorToast": "Something went wrong. Your settings could not be saved.",
+
+	"userDrill:noUser": "This user could not be loaded. Go to the Engagement Dashboard to view the list of users.",
+	"userDrill:noData": "No data in filtered ranges. Refine your selection.",
 
 	"activeCoursesTable:title": "Active Courses",
 	"activeCoursesTable:loadingPlaceholder": "Loading",
@@ -190,7 +195,9 @@ export default {
 	"activeCoursesTable:discussions": "Discussion Activity",
 	"activeCoursesTable:courseLastAccess": "Course Last Access",
 	"activeCoursesTable:noGrade": "No grade",
+	"activeCoursesTable:noPredictedGrade": "No predicted grade",
 	"activeCoursesTable:isActive": "Is Active Course",
+	"activeCoursesTable:empty": "No active course data in filtered ranges.",
 
 	"inactiveCoursesTable:title": "Inactive Courses",
 	"inactiveCoursesTable:course": "Course Name",
@@ -199,7 +206,7 @@ export default {
 	"inactiveCoursesTable:discussions": "Discussion Activity",
 	"inactiveCoursesTable:lastAccessedCourse": "Course Last Access",
 	"inactiveCoursesTable:loadingPlaceholder": "Loading",
-	"activeCoursesTable:noPredictedGrade": "No predicted grade",
 
-	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "assignments are currently overdue."
+	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "assignments are currently overdue.",
+	"inactiveCoursesTable:empty": "No inactive course data in filtered ranges."
 };

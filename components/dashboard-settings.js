@@ -7,6 +7,7 @@ import '@brightspace-ui/core/components/inputs/input-number';
 import './card-selection-list';
 import './role-list.js';
 import './column-configuration';
+import './custom-toast-message';
 
 import { css, html, LitElement } from 'lit-element';
 import { heading1Styles, heading2Styles } from '@brightspace-ui/core/components/typography/styles.js';
@@ -35,7 +36,8 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 			showTicCol: { type: Boolean, attribute: 'tic-col', reflect: true },
 			showTicGradesCard: { type: Boolean, attribute: 'tic-grades-card', reflect: true },
 			lastAccessThresholdDays: { type: Number, attribute: 'last-access-threshold-days', reflect: true },
-			includeRoles: { type: Array, attribute: false }
+			includeRoles: { type: Array, attribute: false },
+			_toastMessagetext: { type: String, attribute: false }
 		};
 	}
 
@@ -167,7 +169,6 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 				<div class="d2l-insights-settings-page-main-content">
 						<h1 class="d2l-heading-1">${this.localize('settings:title')}</h1>
 						<h2 class="d2l-heading-2">${this.localize('settings:description')}</h2>
-
 					<d2l-tabs>
 						<d2l-tab-panel text="${this.localize('settings:tabTitleSummaryMetrics')}">
 
@@ -201,6 +202,7 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 					</d2l-tabs>
 				</div>
 			</div>
+			<d2l-insights-custom-toast-message .toastMessageText="${this._toastMessagetext}"></d2l-insights-custom-toast-message>
 			${this._renderFooter()}
 		`;
 	}
@@ -249,10 +251,17 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 			includeRoles: this._selectedRoleIds
 		};
 
+		if (cardSelectionList.isInvalidSystemAccessValue()) {
+			this._toastMessagetext = this.localize('settings:invalidSystemAccessValueToast');
+			this._openToastMessage();
+			return;
+		}
+
 		const response = await saveSettings(settings);
 
 		if (!response.ok) {
-			console.error('Dashboard Settings View. Cannot save settings!');
+			this._toastMessagetext = this.localize('settings:serverSideErrorToast');
+			this._openToastMessage();
 			return;
 		}
 
@@ -270,6 +279,10 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 		this.dispatchEvent(new CustomEvent('d2l-insights-settings-view-back', {
 			detail: settings
 		}));
+	}
+
+	_openToastMessage() {
+		this.shadowRoot.querySelector('d2l-insights-custom-toast-message').open();
 	}
 }
 customElements.define('d2l-insights-engagement-dashboard-settings', DashboardSettings);

@@ -22,9 +22,17 @@ describe('d2l-insights-user-drill-view', () => {
 					[1, 'Course 1', mockOuTypes.course, [1001], false],
 					[2, 'Course 2', mockOuTypes.course, [1001], false],
 					[3, 'Course 3', mockOuTypes.course, [1002], true]
-				]
+				],
 			}
 		},
+		records: [
+			[3, 232], // the rest of the records object isn't necessary (for now)
+			[2, 232]
+		],
+		orgUnitTree: {
+			isActive: () => true,
+			getName: () => '',
+		}
 	};
 
 	data.recordsByUser = new Map();
@@ -45,7 +53,7 @@ describe('d2l-insights-user-drill-view', () => {
 
 	describe('accessibility', () => {
 		it('should pass all axe tests', async() => {
-			const el = await fixture(html`<d2l-insights-user-drill-view .user=${user} .data=${data}></d2l-insights-user-drill-view>`);
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user=${user} .data=${data}></d2l-insights-user-drill-view>`);
 			await expect(el).to.be.accessible();
 		});
 	});
@@ -73,7 +81,7 @@ describe('d2l-insights-user-drill-view', () => {
 		});
 
 		it('should render proper title and sub-title', async() => {
-			const el = await fixture(html`<d2l-insights-user-drill-view .user=${user} .data=${data}></d2l-insights-user-drill-view>`);
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user=${user} .data=${data}></d2l-insights-user-drill-view>`);
 			await new Promise(res => setTimeout(res, 10));
 
 			const title = el.shadowRoot.querySelector('div.d2l-insights-user-drill-view-profile-name > div.d2l-heading-2').innerText;
@@ -85,15 +93,36 @@ describe('d2l-insights-user-drill-view', () => {
 
 		it('should render the users profile', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view
-				.user=${user}
+				.user=${user} .data=${data}
 			></d2l-insights-user-drill-view>`);
 			const profile = el.shadowRoot.querySelector('d2l-profile-image');
-			await new Promise(res => setTimeout(res, 10));
+			await new Promise(res => setTimeout(res, 50));
 
 			const names = [profile._firstName, profile._lastName];
 			const results = ['First', 'Last'];
 
 			expect(names).to.eql(results);
+		});
+
+		it('should render no user error message if there is no user', async() => {
+			const el = await fixture(html`<d2l-insights-user-drill-view .data=${data}></d2l-insights-user-drill-view>`);
+			await new Promise(res => setTimeout(res, 10));
+
+			const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');
+			expect(errorMessage.type).to.equal('button');
+			expect(errorMessage.text).to.equal('This user could not be loaded. Go to the Engagement Dashboard to view the list of users.');
+		});
+
+		it('should render no data error message if user exists but has no data', async() => {
+			const dataNoRecords = { ...data };
+			dataNoRecords.records = [];
+
+			const el = await fixture(html`<d2l-insights-user-drill-view .user="${user}" .data=${dataNoRecords}></d2l-insights-user-drill-view>`);
+			await new Promise(res => setTimeout(res, 10));
+
+			const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');
+			expect(errorMessage.type).to.equal('default');
+			expect(errorMessage.text).to.equal('No data in filtered ranges. Refine your selection.');
 		});
 	});
 });

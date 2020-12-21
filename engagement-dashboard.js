@@ -240,16 +240,14 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			const userId = this._viewState.userViewUserId;
 			const userData = this._serverData.userDictionary.get(userId);
 
-			if (!userData) {
-				return;
+			if (userData) {
+				user = {
+					firstName: userData[USER.FIRST_NAME],
+					lastName: userData[USER.LAST_NAME],
+					username: userData[USER.USERNAME],
+					userId: userId
+				};
 			}
-
-			user = {
-				firstName: userData[USER.FIRST_NAME],
-				lastName: userData[USER.LAST_NAME],
-				username: userData[USER.USERNAME],
-				userId: userId
-			};
 		}
 
 		return html`
@@ -260,6 +258,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				.user="${user}"
 				.isStudentSuccessSys="${this._serverData.serverData.isStudentSuccessSys}"
 				org-unit-id="${this.orgUnitId}"
+				.viewState="${this._viewState}"
 				@d2l-insights-user-drill-view-back="${this._backToHomeHandler}"
 			>
 				<div slot="filters">
