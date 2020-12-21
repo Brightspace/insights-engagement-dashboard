@@ -206,5 +206,7 @@ export default {
 	"inactiveCoursesTable:discussions": "Discussion Activity",
 	"inactiveCoursesTable:lastAccessedCourse": "Course Last Access",
 	"inactiveCoursesTable:loadingPlaceholder": "Loading",
-	"inactiveCoursesTable:empty": "No inactive course data in filtered ranges.",
+
+	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "assignments are currently overdue.",
+	"inactiveCoursesTable:empty": "No inactive course data in filtered ranges."
 };

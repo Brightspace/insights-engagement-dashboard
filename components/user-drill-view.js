@@ -1,7 +1,7 @@
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/button/button.js';
 import 'd2l-users/components/d2l-profile-image';
-
+import './summary-cards-container';
 import './user-drill-courses-table.js';
 import './message-container';
 
@@ -26,8 +26,8 @@ import { until } from 'lit-html/directives/until';
 class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
-			data: { type: Object, attribute: false },
 			user: { type: Object, attribute: false },
+			data: { type: Object, attribute: false },
 			isDemo: { type: Boolean, attribute: 'demo' },
 			isStudentSuccessSys: { type: Boolean, attribute: false },
 			orgUnitId: { type: Number, attribute: 'org-unit-id' },
@@ -200,6 +200,54 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		);
 	}
 
+	_coursesInView({ wide, tall }) {
+		return html`<d2l-labs-summary-card
+			card-title="Courses in View"
+			card-value="${this.data.recordsByUser.get(this.user.userId).length}"
+			card-message="Courses returned within results."
+			?wide="${wide}"
+			?tall="${tall}"
+			?skeleton="${this.skeleton}">
+		</d2l-labs-summary-card>`;
+	}
+
+	_overdueAssignments({ wide, tall }) {
+		return html`<d2l-labs-summary-card
+			value-clickable
+			card-title="${this.localize('dashboard:overdueAssignmentsHeading')}"
+			card-value="${this.data.recordsByUser.get(this.user.userId).filter(record => record[RECORD.OVERDUE] !== 0).length}"
+			card-message="${this.localize('userOverdueAssignmentsCard:assignmentsCurrentlyOverdue')}"
+			@d2l-labs-summary-card-value-click=${this._valueClickHandlerOverdueAssignmentsCard}
+			?wide="${wide}"
+			?tall="${tall}"
+			?skeleton="${this.skeleton}">
+		</d2l-labs-summary-card>`;
+	}
+
+	_valueClickHandlerOverdueAssignmentsCard() {
+		//out of scope
+	}
+
+	_placeholder({ wide, tall }) {
+		return html`<d2l-labs-summary-card
+			card-title="Placeholder"
+			card-value="0"
+			card-message="This is a placeholder for testing"
+			?wide="${wide}"
+			?tall="${tall}"
+			?skeleton="${this.skeleton}">
+		</d2l-labs-summary-card>`;
+	}
+
+	get summaryCards() {
+		return [
+			{ enabled: true, htmlFn: (w) => this._coursesInView(w) },
+			{ enabled: true, htmlFn: (w) => this._placeholder(w) },
+			{ enabled: true, htmlFn: (w) => this._overdueAssignments(w) },
+			{ enabled: true, htmlFn: (w) => this._placeholder(w) }
+		];
+	}
+
 	// @computed
 	get _userRecords() {
 		return this.data.records.filter(r => r[RECORD.USER_ID] === this.user.userId);
@@ -257,6 +305,13 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			<div class="d2l-insights-view-filters-container">
 				<slot name="applied-filters"></slot>
 			</div>
+
+			<d2l-summary-cards-container
+				?hidden="${this.hidden}"
+				?skeleton="${this.skeleton}"
+
+				.cards="${this.summaryCards}"
+			></d2l-summary-cards-container>
 
 			<div class="d2l-insights-user-drill-view-content">
 				${this._renderContent()}

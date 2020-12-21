@@ -1,7 +1,3 @@
-import './discussion-activity-card.js';
-import './course-last-access-card.js';
-import './results-card.js';
-import './overdue-assignments-card.js';
 
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -9,22 +5,13 @@ import { Localizer } from '../locales/localizer';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 
 /**
- * @property {Object} data
- * @property {Boolean} showOverdueCard
- * @property {Boolean} showResultsCard
- * @property {Boolean} showSystemAccessCard
- * @property {Boolean} showDiscussionsCard
+ * @property {Array} cards
  * @property {String} _screenSize - private property that allows forcing rendering after hit of media-query breakpoint
  */
 class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 	static get properties() {
 		return {
-			data: { type: Object, attribute: false },
-
-			showOverdueCard: { type: Boolean, attribute: 'overdue-card', reflect: true },
-			showResultsCard: { type: Boolean, attribute: 'results-card', reflect: true },
-			showSystemAccessCard: { type: Boolean, attribute: 'system-access-card', reflect: true },
-			showDiscussionsCard: { type: Boolean, attribute: 'discussions-card', reflect: true },
+			cards: { type: Array, attribute: false },
 
 			_screenSize: { type: String, attribute: 'size', reflect: true }
 		};
@@ -32,12 +19,6 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 
 	constructor() {
 		super();
-
-		this.showOverdueCard = false;
-		this.showResultsCard = false;
-		this.showSystemAccessCard = false;
-		this.showDiscussionsCard = false;
-
 		this._screenSize = this._getScreenSize();
 	}
 
@@ -103,12 +84,8 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 	}
 
 	render() {
-		const cards = [
-			{ enabled: this.showResultsCard, htmlFn: (w) => this._resultsCard(w) },
-			{ enabled: this.showOverdueCard, htmlFn: (w) => this._overdueAssignmentsCard(w) },
-			{ enabled: this.showDiscussionsCard, htmlFn: (w) => this._discussionsCard(w) },
-			{ enabled: this.showSystemAccessCard, htmlFn: (w) => this._lastAccessCard(w) }
-		];
+		const cards = this.cards;
+
 		const summaryCardsCount = cards.filter(card => card.enabled || this.skeleton).length;
 
 		const sizes = this._sizes(summaryCardsCount);
@@ -124,7 +101,7 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 
 		let cardIndex = 0;
 		return html`
-			<div class="${classMap(summaryCardsStyles)}">
+			<div id="summary-cards" class="${classMap(summaryCardsStyles)}">
 				${cards.filter(card => card.enabled || this.skeleton).map(card => card.htmlFn(sizes[cardIndex++]))}
 			</div>
 		`;
@@ -160,22 +137,6 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 			{ wide: false, tall: false },
 			{ wide: false, tall: false },
 		];
-	}
-
-	_resultsCard({ wide, tall }) {
-		return html`<d2l-insights-results-card .data="${this.data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-results-card>`;
-	}
-
-	_overdueAssignmentsCard({ wide, tall }) {
-		return html`<d2l-insights-overdue-assignments-card .data="${this.data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-overdue-assignments-card>`;
-	}
-
-	_discussionsCard({ wide, tall }) {
-		return html`<d2l-insights-discussion-activity-card .data="${this.data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-discussion-activity-card>`;
-	}
-
-	_lastAccessCard({ wide, tall }) {
-		return html`<d2l-insights-last-access-card .data="${this.data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-last-access-card>`;
 	}
 
 	_handleResize() {

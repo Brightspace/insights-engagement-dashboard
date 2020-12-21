@@ -28,7 +28,11 @@ describe('d2l-insights-user-drill-view', () => {
 		records: [
 			[3, 232], // the rest of the records object isn't necessary (for now)
 			[2, 232]
-		]
+		],
+		orgUnitTree: {
+			isActive: () => true,
+			getName: () => '',
+		}
 	};
 
 	data.recordsByUser = new Map();
@@ -49,7 +53,7 @@ describe('d2l-insights-user-drill-view', () => {
 
 	describe('accessibility', () => {
 		it('should pass all axe tests', async() => {
-			const el = await fixture(html`<d2l-insights-user-drill-view .user=${user} .data=${data}></d2l-insights-user-drill-view>`);
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user=${user} .data=${data}></d2l-insights-user-drill-view>`);
 			await expect(el).to.be.accessible();
 		});
 	});
@@ -77,7 +81,7 @@ describe('d2l-insights-user-drill-view', () => {
 		});
 
 		it('should render proper title and sub-title', async() => {
-			const el = await fixture(html`<d2l-insights-user-drill-view .user=${user} .data=${data}></d2l-insights-user-drill-view>`);
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user=${user} .data=${data}></d2l-insights-user-drill-view>`);
 			await new Promise(res => setTimeout(res, 10));
 
 			const title = el.shadowRoot.querySelector('div.d2l-insights-user-drill-view-profile-name > div.d2l-heading-2').innerText;
@@ -92,7 +96,7 @@ describe('d2l-insights-user-drill-view', () => {
 				.user=${user} .data=${data}
 			></d2l-insights-user-drill-view>`);
 			const profile = el.shadowRoot.querySelector('d2l-profile-image');
-			await new Promise(res => setTimeout(res, 10));
+			await new Promise(res => setTimeout(res, 50));
 
 			const names = [profile._firstName, profile._lastName];
 			const results = ['First', 'Last'];

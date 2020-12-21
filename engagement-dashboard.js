@@ -16,6 +16,10 @@ import './components/user-drill-view.js';
 import './components/immersive-nav.js';
 import './components/dashboard-settings';
 import './components/summary-cards-container.js';
+import './components/discussion-activity-card.js';
+import './components/course-last-access-card.js';
+import './components/results-card.js';
+import './components/overdue-assignments-card.js';
 
 import { css, html } from 'lit-element/lit-element.js';
 import { DefaultViewState, ViewState } from './model/view-state';
@@ -356,15 +360,11 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			</div>
 			<div class="d2l-insights-summary-chart-layout">
 				<d2l-summary-cards-container
-					.data="${this._data}"
 
 					?hidden="${this._isNoUserResults}"
 					?skeleton="${this._isLoading}"
 
-					?results-card="${this.showResultsCard}"
-					?overdue-card="${this.showOverdueCard}"
-					?system-access-card="${this.showSystemAccessCard}"
-					?discussions-card="${this.showDiscussionsCard}"
+					.cards="${this.summaryCards}"
 				></d2l-summary-cards-container>
 				${this._gradesCard}
 				${this._ticGradesCard}
@@ -384,6 +384,30 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				</d2l-button>
 			</d2l-dialog-confirm>
 		`;
+	}
+
+	_resultsCard({ wide, tall }) {
+		return html`<d2l-insights-results-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-results-card>`;
+	}
+	_overdueAssignmentsCard({ wide, tall }) {
+		return html`<d2l-insights-overdue-assignments-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-overdue-assignments-card>`;
+	}
+
+	_discussionsCard({ wide, tall }) {
+		return html`<d2l-insights-discussion-activity-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-discussion-activity-card>`;
+	}
+
+	_lastAccessCard({ wide, tall }) {
+		return html`<d2l-insights-last-access-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-last-access-card>`;
+	}
+
+	get summaryCards() {
+		return [
+			{ enabled: this.showResultsCard, htmlFn: (w) => this._resultsCard(w) },
+			{ enabled: this.showOverdueCard, htmlFn: (w) => this._overdueAssignmentsCard(w) },
+			{ enabled: this.showDiscussionsCard, htmlFn: (w) => this._discussionsCard(w) },
+			{ enabled: this.showSystemAccessCard, htmlFn: (w) => this._lastAccessCard(w) }
+		];
 	}
 
 	get _courseAccessCard() {
