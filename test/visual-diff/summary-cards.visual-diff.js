@@ -39,6 +39,8 @@ describe('summary cards', () => {
 			await page.evaluate((name) => {
 				document.querySelector('d2l-insights-engagement-dashboard').removeAttribute(name);
 			}, name);
+			// wait for dashboard to render changes
+			await new Promise(res => setTimeout(res, 10));
 		};
 	});
 
