@@ -105,7 +105,6 @@ describe('d2l-insights-engagement-dashboard', () => {
 					></d2l-insights-engagement-dashboard>`);
 					await new Promise(resolve => setTimeout(resolve, 200));
 
-					// find the summary-container el
 					const summaryContainerEl = el.shadowRoot
 						.querySelector('d2l-summary-cards-container');
 
