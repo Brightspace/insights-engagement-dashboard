@@ -94,17 +94,9 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 			const start = this._pageSize * (this._currentPage - 1);
 			const end = this._pageSize * (this._currentPage); // it's ok if this goes over the end of the array
 
-			const visibleColumns = this._visibleColumns;
-			const dataForDisplay = this.userDataForDisplay;
-			if (this.isActiveTable) {
-				const columnsWithoutSemester = visibleColumns.slice(0, visibleColumns.length - 1);
-				return dataForDisplay.map(x => x.slice(0, x.length - 1))
-					.slice(start, end)
-					.map(course => columnsWithoutSemester.map(column => course[column]));
-			}
-			return dataForDisplay
+			return this.userDataForDisplay
 				.slice(start, end)
-				.map(course => visibleColumns.map(column => course[column]));
+				.map(course => this._visibleColumns.map(column => course[column]));
 		}
 
 		return [];
@@ -150,7 +142,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const semesterTypeId =  this.data.semesterTypeId;
 		const firstSemesterOrgUnitId = ancestors.find(id => this.data.orgUnitTree.getType(id) === semesterTypeId);
 		const semesterOrgUnitName = this.data.orgUnitTree.getName(firstSemesterOrgUnitId);
-		return firstSemesterOrgUnitId !== undefined ? this.localize('semesterFilter:semesterName', { orgUnitName: semesterOrgUnitName, orgUnitId: firstSemesterOrgUnitId }) : '';
+		return firstSemesterOrgUnitId ? this.localize('semesterFilter:semesterName', { orgUnitName: semesterOrgUnitName, orgUnitId: firstSemesterOrgUnitId }) : '';
 	}
 
 	_choseSortFunction(column, order) {
@@ -198,7 +190,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	// @computed
 	get userDataForDisplay() {
-		// map to a 2D userData array, with column 1 as a sub-array of [id, FirstName, LastName, UserName]
+		// map to a 2D userData array,
 		// then sort by the selected sorting function
 		if (this.skeleton) return [];
 		const sortFunction = this._choseSortFunction(this._sortColumn, this._sortOrder);
@@ -214,7 +206,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		if (!this.isActiveTable || !this.isStudentSuccessSys) columns.splice(TABLE_COLUMNS.PREDICTED_GRADE, 1);
 
-		return columns;
+		return this.isActiveTable ? columns.filter(x => x !== TABLE_COLUMNS.SEMESTER_NAME) : columns;
 	}
 
 	get columnInfo() {
