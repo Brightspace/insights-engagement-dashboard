@@ -19,7 +19,8 @@ const TABLE_COLUMNS = {
 	PREDICTED_GRADE: 2,
 	TIME_IN_CONTENT: 3,
 	DISCUSSION_ACTIVITY: 4,
-	COURSE_LAST_ACCESS: 5
+	COURSE_LAST_ACCESS: 5,
+	SEMESTER_NAME: 6 //not showing up
 };
 
 const numberFormatOptions = { maximumFractionDigits: 2 };
@@ -92,10 +93,10 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		if (this._itemsCount) {
 			const start = this._pageSize * (this._currentPage - 1);
 			const end = this._pageSize * (this._currentPage); // it's ok if this goes over the end of the array
-			const visibleColumns = this._visibleColumns;
+
 			return this.userDataForDisplay
 				.slice(start, end)
-				.map(course => visibleColumns.map(column => course[column]));
+				.map(course => this._visibleColumns.map(column => course[column]));
 		}
 
 		return [];
@@ -123,6 +124,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const reads = record[RECORD.DISCUSSION_ACTIVITY_READS];
 		const replies = record[RECORD.DISCUSSION_ACTIVITY_REPLIES];
 		const lastCourseAccess = record[RECORD.COURSE_LAST_ACCESS] ? new Date(record[RECORD.COURSE_LAST_ACCESS]) : undefined;
+		const semesterOrgUnitName = this._getSemesterNameByOrgUnitId(orgUnitId);
 
 		return [
 			this.localize('treeFilter:nodeName', { orgUnitName, id: orgUnitId }),
@@ -130,8 +132,17 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 			predictedGrade,
 			timeInContent,
 			[threads, reads, replies],
-			lastCourseAccess
+			lastCourseAccess,
+			semesterOrgUnitName
 		];
+	}
+
+	_getSemesterNameByOrgUnitId(orgUnitId) {
+		const ancestors = [...this.data.orgUnitTree.getAncestorIds(orgUnitId)];
+		const semesterTypeId =  this.data.semesterTypeId;
+		const firstSemesterOrgUnitId = ancestors.find(id => this.data.orgUnitTree.getType(id) === semesterTypeId);
+		const semesterOrgUnitName = this.data.orgUnitTree.getName(firstSemesterOrgUnitId);
+		return firstSemesterOrgUnitId ? this.localize('semesterFilter:semesterName', { orgUnitName: semesterOrgUnitName, orgUnitId: firstSemesterOrgUnitId }) : '';
 	}
 
 	_choseSortFunction(column, order) {
@@ -164,19 +175,22 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const courseLastAccessFormatted = course[TABLE_COLUMNS.COURSE_LAST_ACCESS]
 			? formatDateTime(new Date(course[TABLE_COLUMNS.COURSE_LAST_ACCESS]), { format: 'medium' })
 			: this.localize('usersTable:null');
+
 		return [
 			course[TABLE_COLUMNS.COURSE_NAME],
 			course[TABLE_COLUMNS.CURRENT_GRADE] ? formatPercent(course[TABLE_COLUMNS.CURRENT_GRADE] / 100, numberFormatOptions) : this.localize('activeCoursesTable:noGrade'),
 			course[TABLE_COLUMNS.PREDICTED_GRADE] ? formatPercent(course[TABLE_COLUMNS.PREDICTED_GRADE], numberFormatOptions) : this.localize('activeCoursesTable:noPredictedGrade'),
 			formatNumber(course[TABLE_COLUMNS.TIME_IN_CONTENT] / 60, numberFormatOptions),
 			course[TABLE_COLUMNS.DISCUSSION_ACTIVITY],
-			courseLastAccessFormatted
+			courseLastAccessFormatted,
+			course[TABLE_COLUMNS.SEMESTER_NAME]
 		];
+
 	}
 
 	// @computed
 	get userDataForDisplay() {
-		// map to a 2D userData array, with column 1 as a sub-array of [id, FirstName, LastName, UserName]
+		// map to a 2D userData array,
 		// then sort by the selected sorting function
 		if (this.skeleton) return [];
 		const sortFunction = this._choseSortFunction(this._sortColumn, this._sortOrder);
@@ -192,7 +206,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		if (!this.isActiveTable || !this.isStudentSuccessSys) columns.splice(TABLE_COLUMNS.PREDICTED_GRADE, 1);
 
-		return columns;
+		return this.isActiveTable ? columns.filter(x => x !== TABLE_COLUMNS.SEMESTER_NAME) : columns;
 	}
 
 	get columnInfo() {
@@ -246,6 +260,10 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 				{
 					headerText: this.localize('inactiveCoursesTable:lastAccessedCourse'),
 					columnType: COLUMN_TYPES.NORMAL_TEXT
+				},
+				{
+					headerText: this.localize('inactiveCoursesTable:semester'),
+					columnType: COLUMN_TYPES.NORMAL_TEXT
 				}
 			];
 		}
@@ -261,6 +279,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 			this.localize('discussionActivityCard:reads'),
 			this.localize('discussionActivityCard:replies'),
 			this.localize('activeCoursesTable:courseLastAccess'),
+			this.localize('inactiveCoursesTable:semester'),
 			this.localize('activeCoursesTable:isActive')
 		];
 

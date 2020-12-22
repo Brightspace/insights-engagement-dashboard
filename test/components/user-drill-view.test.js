@@ -26,13 +26,16 @@ describe('d2l-insights-user-drill-view', () => {
 			}
 		},
 		records: [
-			[3, 232], // the rest of the records object isn't necessary (for now)
-			[2, 232]
+			[3, 232, 0, 0, null, null, null, 0, 0, 0, 0],
+			[2, 232, 0, 0, null, null, null, 0, 0, 0, 0]
 		],
 		orgUnitTree: {
 			isActive: () => true,
 			getName: () => '',
-		}
+			getAncestorIds: () => [],
+			getType: () => 0
+		},
+		semesterTypeId : 0
 	};
 
 	data.recordsByUser = new Map();
