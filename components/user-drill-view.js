@@ -200,18 +200,18 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		);
 	}
 
-	_coursesInView({ wide, tall }) {
+	_coursesInView({ wide, tall, skeleton }) {
 		return html`<d2l-labs-summary-card
 			card-title="Courses in View"
 			card-value="${this.data.recordsByUser.get(this.user.userId).length}"
 			card-message="Courses returned within results."
 			?wide="${wide}"
 			?tall="${tall}"
-			?skeleton="${this.skeleton}">
+			?skeleton="${skeleton}">
 		</d2l-labs-summary-card>`;
 	}
 
-	_overdueAssignments({ wide, tall }) {
+	_overdueAssignments({ wide, tall, skeleton }) {
 		return html`<d2l-labs-summary-card
 			value-clickable
 			card-title="${this.localize('dashboard:overdueAssignmentsHeading')}"
@@ -220,7 +220,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			@d2l-labs-summary-card-value-click=${this._valueClickHandlerOverdueAssignmentsCard}
 			?wide="${wide}"
 			?tall="${tall}"
-			?skeleton="${this.skeleton}">
+			?skeleton="${skeleton}">
 		</d2l-labs-summary-card>`;
 	}
 
@@ -228,14 +228,14 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		//out of scope
 	}
 
-	_placeholder({ wide, tall }) {
+	_placeholder({ wide, tall, skeleton }) {
 		return html`<d2l-labs-summary-card
 			card-title="Placeholder"
 			card-value="0"
 			card-message="This is a placeholder for testing"
 			?wide="${wide}"
 			?tall="${tall}"
-			?skeleton="${this.skeleton}">
+			?skeleton="${skeleton}">
 		</d2l-labs-summary-card>`;
 	}
 

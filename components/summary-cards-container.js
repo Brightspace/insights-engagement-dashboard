@@ -102,7 +102,7 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 		let cardIndex = 0;
 		return html`
 			<div id="summary-cards" class="${classMap(summaryCardsStyles)}">
-				${cards.filter(card => card.enabled || this.skeleton).map(card => card.htmlFn(sizes[cardIndex++]))}
+				${cards.filter(card => card.enabled || this.skeleton).map(card => card.htmlFn({...sizes[cardIndex++], skeleton: this.skeleton }))}
 			</div>
 		`;
 	}
