@@ -103,13 +103,16 @@ describe('d2l-insights-engagement-dashboard', () => {
 						courses-col	discussions-col	grade-col last-access-col tic-col
 						demo
 					></d2l-insights-engagement-dashboard>`);
-					await new Promise(resolve => setTimeout(resolve, 100));
+					await new Promise(resolve => setTimeout(resolve, 200));
+
+					const summaryContainerEl = el.shadowRoot
+						.querySelector('d2l-summary-cards-container');
 
 					allCards.forEach(card => {
 						let renderedCard = el.shadowRoot.querySelector(`d2l-insights-${card}`);
 						const smallCard = smallCards.find(c => c.card === card);
 						if (smallCard) {
-							renderedCard = el.shadowRoot.querySelector(`d2l-summary-cards-container[${smallCard.property}]`);
+							renderedCard = summaryContainerEl.shadowRoot.querySelector(`d2l-insights-${card}`);
 						}
 						if (cards.includes(card)) {
 							expect(renderedCard, card).to.exist;
