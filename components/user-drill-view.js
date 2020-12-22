@@ -6,9 +6,9 @@ import './user-drill-courses-table.js';
 import './message-container';
 
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
-import { RECORD, USER } from '../consts';
 import { computed, decorate } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
+import { RECORD, USER } from '../consts';
 import { createComposeEmailPopup } from './email-integration';
 import { ExportData } from '../model/exportData';
 import { Localizer } from '../locales/localizer';
