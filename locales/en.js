@@ -209,5 +209,6 @@ export default {
 	"inactiveCoursesTable:semester": "Semester",
 	"inactiveCoursesTable:empty": "No inactive course data in filtered ranges.",
 
-	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "assignments are currently overdue."
+	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "assignments are currently overdue.",
+	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner has last accessed the system."
 };

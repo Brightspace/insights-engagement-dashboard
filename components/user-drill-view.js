@@ -6,13 +6,13 @@ import './user-drill-courses-table.js';
 import './message-container';
 
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
+import { RECORD, USER } from '../consts';
 import { computed, decorate } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
 import { createComposeEmailPopup } from './email-integration';
 import { ExportData } from '../model/exportData';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
-import { RECORD } from '../consts';
 import { resetUrlState } from '../model/urlState';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { until } from 'lit-html/directives/until';
@@ -228,6 +228,19 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		//out of scope
 	}
 
+	_lastSysAccess({ wide, tall }) {
+		const userData = this.data.users.filter(user => user[USER.ID] === this.user.userId).flat();
+
+		return html`<d2l-labs-summary-card
+			card-title="${this.localize('dashboard:lastSystemAccessHeading')}"
+			card-value="${userData[USER.LAST_SYS_ACCESS] ? Math.floor((Date.now() - userData[USER.LAST_SYS_ACCESS]) / (1000 * 60 * 60 * 24)) : 0}"
+			card-message="${this.localize('userSysAccessCard:daysSinceLearnerHasLastAccessedSystem')}"
+			?wide="${wide}"
+			?tall="${tall}"
+			?skeleton="${this.skeleton}">
+		</d2l-labs-summary-card>`;
+	}
+
 	_placeholder({ wide, tall }) {
 		return html`<d2l-labs-summary-card
 			card-title="Placeholder"
@@ -244,7 +257,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			{ enabled: true, htmlFn: (w) => this._coursesInView(w) },
 			{ enabled: true, htmlFn: (w) => this._placeholder(w) },
 			{ enabled: true, htmlFn: (w) => this._overdueAssignments(w) },
-			{ enabled: true, htmlFn: (w) => this._placeholder(w) }
+			{ enabled: true, htmlFn: (w) => this._lastSysAccess(w) }
 		];
 	}
 
