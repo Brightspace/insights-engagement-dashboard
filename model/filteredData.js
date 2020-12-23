@@ -80,6 +80,11 @@ export class FilteredData {
 	getFilter(id) {
 		return this.filters.find(f => f.id === id);
 	}
+
+	get semesterTypeId() {
+		return this._data.semesterTypeId;
+	}
+
 }
 decorate(FilteredData, {
 	_data: observable,
