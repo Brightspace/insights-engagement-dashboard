@@ -10,12 +10,15 @@ import { computed, decorate } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
 import { createComposeEmailPopup } from './email-integration';
 import { ExportData } from '../model/exportData';
+import { formatPercent } from '@brightspace-ui/intl';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { RECORD } from '../consts';
 import { resetUrlState } from '../model/urlState';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { until } from 'lit-html/directives/until';
+
+export const numberFormatOptions = { maximumFractionDigits: 2 };
 
 /**
  * @property {Object} data - an instance of Data from model/data.js
@@ -224,6 +227,23 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		</d2l-labs-summary-card>`;
 	}
 
+	_averageGrade({ wide, tall }) {
+		return html`<d2l-labs-summary-card
+			card-title="${this.localize('averageGradeSummaryCard:averageGrade')}"
+			card-value="${this.averageGradeForUser}"
+			card-message="${this.localize('averageGradeSummaryCard:averageGradeText')}"
+			?wide="${wide}"
+			?tall="${tall}"
+			?skeleton="${this.skeleton}">
+		</d2l-labs-summary-card>`;
+	}
+
+	get averageGradeForUser() {
+		const coursesWithGrades = this.data.recordsByUser.get(this.user.userId).filter(r => r[RECORD.CURRENT_FINAL_GRADE] !== null);
+		const averageFinalGrade = coursesWithGrades.reduce((sum, r) => sum + r[RECORD.CURRENT_FINAL_GRADE], 0) / coursesWithGrades.length;
+		return averageFinalGrade ? formatPercent(averageFinalGrade / 100, numberFormatOptions).replace(/\s/g, '') : 0;
+	}
+
 	_valueClickHandlerOverdueAssignmentsCard() {
 		//out of scope
 	}
@@ -242,7 +262,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get summaryCards() {
 		return [
 			{ enabled: true, htmlFn: (w) => this._coursesInView(w) },
-			{ enabled: true, htmlFn: (w) => this._placeholder(w) },
+			{ enabled: true, htmlFn: (w) => this._averageGrade(w) },
 			{ enabled: true, htmlFn: (w) => this._overdueAssignments(w) },
 			{ enabled: true, htmlFn: (w) => this._placeholder(w) }
 		];
