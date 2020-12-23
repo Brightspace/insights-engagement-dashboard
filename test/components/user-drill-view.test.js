@@ -9,11 +9,17 @@ import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-help
 
 describe('d2l-insights-user-drill-view', () => {
 	const user = {
+		userId: 232,
 		firstName: 'firstName',
 		lastName: 'lastName',
 		username: 'username',
-		userId: 232
+		lastSysAccess: Date.now() - 400000000
 	};
+
+	const userRecords = [
+		[3, 232, 0, 0, 0, 0, 0, 0, 0, 0, null],
+		[2, 232, 0, 1, 0, 0, 0, 0, 0, 0, null]
+	];
 
 	const data = {
 		_data: {
@@ -25,20 +31,18 @@ describe('d2l-insights-user-drill-view', () => {
 				],
 			}
 		},
-		records: [
-			[3, 232, 0, 0, null, null, null, 0, 0, 0, 0],
-			[2, 232, 0, 0, null, null, null, 0, 0, 0, 0]
-		],
+		records: userRecords,
 		orgUnitTree: {
 			isActive: () => true,
 			getName: () => '',
 			getAncestorIds: () => [],
 			getType: () => 0
 		},
-		semesterTypeId : 0
+		users: [Object.values(user)]
 	};
 
 	data.recordsByUser = new Map();
+	data.recordsByUser.set(232, userRecords);
 
 	afterEach(() => {
 		// d2l-action-button-group uses afterNextRender that causes
@@ -126,6 +130,21 @@ describe('d2l-insights-user-drill-view', () => {
 			const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');
 			expect(errorMessage.type).to.equal('default');
 			expect(errorMessage.text).to.equal('No data in filtered ranges. Refine your selection.');
+		});
+
+		it('should return correct data from cards', async() => {
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
+			await new Promise(res => setTimeout(res, 50));
+			await el.updateComplete;
+
+			const coursesInViewCardTemplate = el.summaryCards[0].htmlFn({ wide: false, tall: false });
+			const overdueAssignmentsCardTemplate = el.summaryCards[2].htmlFn({ wide: false, tall: false });
+			const systemAccessCardTemplate = el.summaryCards[3].htmlFn({ wide: false, tall: false });
+			await new Promise(res => setTimeout(res, 10));
+
+			expect(coursesInViewCardTemplate.values[0]).to.eql(2);
+			expect(overdueAssignmentsCardTemplate.values[1]).to.eql(1);
+			expect(systemAccessCardTemplate.values[1]).to.eql(4);
 		});
 	});
 });
