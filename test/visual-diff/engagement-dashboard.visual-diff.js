@@ -44,10 +44,9 @@ describe('engagement-dashboard', () => {
 
 	describe('skeleton', () => {
 
-		let browser, page;
+		let page;
 
 		before(async() => {
-			browser = await puppeteer.launch();
 			page = await visualDiff.createPage(browser);
 			page
 				.on('console', message => console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`))
@@ -60,7 +59,8 @@ describe('engagement-dashboard', () => {
 				deviceScaleFactor: 1
 			});
 			await page.goto(
-				`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-insights-engagement-dashboard.visual-diff.html#delay=3000`
+				`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-insights-engagement-dashboard.visual-diff.html#delay=3000`,
+				{ waitUntil: ['networkidle0', 'load'] }
 			);
 			await page.bringToFront();
 		});
