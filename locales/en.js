@@ -210,7 +210,6 @@ export default {
 	"inactiveCoursesTable:empty": "No inactive course data in filtered ranges.",
 
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "assignments are currently overdue.",
-	"inactiveCoursesTable:empty": "No inactive course data in filtered ranges.",
 	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
 	"averageGradeSummaryCard:averageGrade" : "Average Grade"
 };
