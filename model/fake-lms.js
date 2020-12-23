@@ -4,11 +4,8 @@ function parseHash() {
 	const hash = window.location.hash.substring(1);
 
 	return hash.split('&')
-		.map(s => ({ key: s.split('=')[0], value: s.split('=')[1] }))
-		.reduce((acc, val) => {
-			acc[val.key] = val.value;
-			return acc;
-		}, {});
+		.map(s => ({ [s.split('=')[0]]: s.split('=')[1] }))
+		.reduce((acc, val) => ({ ...acc, ...val }), {});
 }
 
 function getDelayFromUrlHash() {
