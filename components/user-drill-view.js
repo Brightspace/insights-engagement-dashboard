@@ -230,8 +230,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	_averageGrade({ wide, tall }) {
 		return html`<d2l-labs-summary-card
 			card-title="${this.localize('averageGradeSummaryCard:averageGrade')}"
-			card-value="${this.averageGradeForUser}"
-			card-message="${this.localize('averageGradeSummaryCard:averageGradeText')}"
+			card-value="${this.averageGradeForUser === null ? '' : this.averageGradeForUser}"
+			card-message="${this.averageGradeForUser === null ? this.localize('averageGradeSummaryCard:noGradeInfoAvailable') : this.localize('averageGradeSummaryCard:averageGradeText')}"
 			?wide="${wide}"
 			?tall="${tall}"
 			?skeleton="${this.skeleton}">
@@ -241,7 +241,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get averageGradeForUser() {
 		const coursesWithGrades = this.data.recordsByUser.get(this.user.userId).filter(r => r[RECORD.CURRENT_FINAL_GRADE] !== null);
 		const averageFinalGrade = coursesWithGrades.reduce((sum, r) => sum + r[RECORD.CURRENT_FINAL_GRADE], 0) / coursesWithGrades.length;
-		return averageFinalGrade ? formatPercent(averageFinalGrade / 100, numberFormatOptions).replace(/\s/g, '') : 0;
+		return averageFinalGrade ? formatPercent(averageFinalGrade / 100, numberFormatOptions).replace(/\s/g, '') : null;
 	}
 
 	_valueClickHandlerOverdueAssignmentsCard() {
