@@ -1,3 +1,21 @@
+function parseHash() {
+	if (!window.location.hash) return {};
+
+	const hash = window.location.hash.substring(1);
+
+	return hash.split('&')
+		.map(s => ({ key: s.split('=')[0], value: s.split('=')[1] }))
+		.reduce((acc, val) => {
+			acc[val.key] = val.value;
+			return acc;
+		}, {});
+}
+
+function getDelayFromUrlHash() {
+	const hash = parseHash();
+	return hash.delay;
+}
+
 // adding variables here to match signature of real LMS. The filters don't actually work though.
 // eslint-disable-next-line no-unused-vars
 export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView = false }) {
@@ -57,7 +75,8 @@ export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView 
 		isDefaultView: defaultView,
 		isStudentSuccessSys: true
 	};
-	return new Promise(resolve => setTimeout(() => resolve(demoData), 100));
+	const delay = getDelayFromUrlHash();
+	return new Promise(resolve => setTimeout(() => resolve(demoData), delay || 100));
 }
 
 /**
