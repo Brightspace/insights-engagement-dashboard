@@ -13,7 +13,7 @@ describe('d2l-insights-user-drill-view', () => {
 		firstName: 'firstName',
 		lastName: 'lastName',
 		username: 'username',
-		lastSysAccess: Date.now() - 400000000
+		lastSysAccess: 1606900000000
 	};
 
 	const userRecords = [
@@ -144,7 +144,7 @@ describe('d2l-insights-user-drill-view', () => {
 
 			expect(coursesInViewCardTemplate.values[0]).to.eql(2);
 			expect(overdueAssignmentsCardTemplate.values[1]).to.eql(1);
-			expect(systemAccessCardTemplate.values[1]).to.eql(4);
+			expect(systemAccessCardTemplate.values[1]).to.eql(12);
 		});
 	});
 });

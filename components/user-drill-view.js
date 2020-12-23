@@ -230,10 +230,15 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_lastSysAccess({ wide, tall }) {
 		const userData = this.data.users.filter(user => user[USER.ID] === this.user.userId).flat();
+		let currentDate = Date.now();
+		if (this.isDemo) {
+			currentDate = 1608000000000;
+		}
+		const daysSinceLearnerHasLastAccessedSystem = userData[USER.LAST_SYS_ACCESS] ? Math.floor((currentDate - userData[USER.LAST_SYS_ACCESS]) / (1000 * 60 * 60 * 24)) : 0;
 
 		return html`<d2l-labs-summary-card
 			card-title="${this.localize('dashboard:lastSystemAccessHeading')}"
-			card-value="${userData[USER.LAST_SYS_ACCESS] ? Math.floor((Date.now() - userData[USER.LAST_SYS_ACCESS]) / (1000 * 60 * 60 * 24)) : 0}"
+			card-value="${daysSinceLearnerHasLastAccessedSystem}"
 			card-message="${this.localize('userSysAccessCard:daysSinceLearnerHasLastAccessedSystem')}"
 			?wide="${wide}"
 			?tall="${tall}"
