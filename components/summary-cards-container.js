@@ -19,6 +19,7 @@ class SummaryCardsContainer extends SkeletonMixin(Localizer(LitElement)) {
 
 	constructor() {
 		super();
+		this.cards = [];
 		this._screenSize = this._getScreenSize();
 	}
 
