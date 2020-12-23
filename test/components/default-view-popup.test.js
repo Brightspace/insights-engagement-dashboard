@@ -32,7 +32,11 @@ describe('d2l-insights-default-view-popup', () => {
 
 		describe('accessibility', () => {
 			it('should pass all axe tests', async() => {
-				expect(el).to.be.accessible();
+				expect(el).to.be.accessible({
+					ignoredRules: [
+						'scrollable-region-focusable'
+					]
+				});
 			});
 		});
 
