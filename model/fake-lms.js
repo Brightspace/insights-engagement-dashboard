@@ -56,12 +56,12 @@ export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView 
 			[200,  'BTest', 'BStudent', 'BStudent', 1607528565300],
 			[400,  'DTest', 'DStudent', 'DStudent', null],
 			[500,  'ETest', 'EStudent', 'EStudent', 1546318800000],
-			[600,  'GTest', 'GStudent', 'GStudent', Date.now()],
-			[700,  'FTest', 'FStudent', 'FStudent', Date.now()],
-			[800,  'HTest', 'HStudent', 'HStudent', Date.now()],
-			[900,  'ITest', 'IStudent', 'IStudent', Date.now()],
-			[1000, 'KTest', 'KStudent', 'KStudent', Date.now()],
-			[1100, 'JTest', 'JStudent', 'JStudent', Date.now()]
+			[600,  'GTest', 'GStudent', 'GStudent', 1589998800000],
+			[700,  'FTest', 'FStudent', 'FStudent', 1599998800000],
+			[800,  'HTest', 'HStudent', 'HStudent', 1600008800000],
+			[900,  'ITest', 'IStudent', 'IStudent', 1604558800000],
+			[1000, 'KTest', 'KStudent', 'KStudent', 1604958800000],
+			[1100, 'JTest', 'JStudent', 'JStudent', 1594958800000]
 		],
 		semesterTypeId: 25,
 		numDefaultSemesters: 4,
