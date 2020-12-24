@@ -43,6 +43,8 @@ describe('d2l-insights-user-drill-view', () => {
 
 	data.recordsByUser = new Map();
 	data.recordsByUser.set(232, userRecords);
+	data.userDictionary = new Map();
+	data.userDictionary.set(232, Object.values(user));
 
 	afterEach(() => {
 		// d2l-action-button-group uses afterNextRender that causes
@@ -132,19 +134,45 @@ describe('d2l-insights-user-drill-view', () => {
 			expect(errorMessage.text).to.equal('No data in filtered ranges. Refine your selection.');
 		});
 
-		it('should return correct data from cards', async() => {
+		it('should return correct data from coursesInView user card', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
 			await new Promise(res => setTimeout(res, 50));
 			await el.updateComplete;
+			expect(el.coursesInViewForUser).to.eql(2);
+		});
 
-			const coursesInViewCardTemplate = el.summaryCards[0].htmlFn({ wide: false, tall: false });
-			const overdueAssignmentsCardTemplate = el.summaryCards[2].htmlFn({ wide: false, tall: false });
+		it('should return correct data from systemAccess user card', async() => {
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
+			await new Promise(res => setTimeout(res, 50));
+			await el.updateComplete;
+			expect(el.lastSysAccessForUser).to.eql(12);
+
 			const systemAccessCardTemplate = el.summaryCards[3].htmlFn({ wide: false, tall: false });
 			await new Promise(res => setTimeout(res, 10));
+			expect(systemAccessCardTemplate.values[2]).to.eql('days since the learner last accessed the system.');
+		});
 
-			expect(coursesInViewCardTemplate.values[0]).to.eql(2);
-			expect(overdueAssignmentsCardTemplate.values[1]).to.eql(1);
-			expect(systemAccessCardTemplate.values[1]).to.eql(12);
+		it('should return correct data from systemAccess user card if user never accessed the system', async() => {
+			data.userDictionary.set(232, [232, '', '', '', null]);
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
+			await new Promise(res => setTimeout(res, 50));
+			await el.updateComplete;
+			expect(el.lastSysAccessForUser).to.eql('');
+
+			const systemAccessCardTemplate = el.summaryCards[3].htmlFn({ wide: false, tall: false });
+			await new Promise(res => setTimeout(res, 10));
+			expect(systemAccessCardTemplate.values[2]).to.eql('User has never accessed the system.');
+		});
+
+		it('should return correct data from overdueAssignments user card', async() => {
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
+			await new Promise(res => setTimeout(res, 50));
+			await el.updateComplete;
+			expect(el.overdueAssignmentsForUser).to.eql(1);
+
+			const overdueAssignmentsCardTemplate = el.summaryCards[2].htmlFn({ wide: false, tall: false });
+			await new Promise(res => setTimeout(res, 10));
+			expect(overdueAssignmentsCardTemplate.values[2]).to.eql('assignments are currently overdue.');
 		});
 	});
 });

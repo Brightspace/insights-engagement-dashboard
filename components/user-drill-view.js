@@ -203,7 +203,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	_coursesInView({ wide, tall }) {
 		return html`<d2l-labs-summary-card
 			card-title="Courses in View"
-			card-value="${this.data.recordsByUser.get(this.user.userId).length}"
+			card-value="${this.coursesInViewForUser}"
 			card-message="Courses returned within results."
 			?wide="${wide}"
 			?tall="${tall}"
@@ -211,11 +211,15 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		</d2l-labs-summary-card>`;
 	}
 
+	get coursesInViewForUser() {
+		return this.data.recordsByUser.get(this.user.userId).length;
+	}
+
 	_overdueAssignments({ wide, tall }) {
 		return html`<d2l-labs-summary-card
 			value-clickable
 			card-title="${this.localize('dashboard:overdueAssignmentsHeading')}"
-			card-value="${this.data.recordsByUser.get(this.user.userId).filter(record => record[RECORD.OVERDUE] !== 0).length}"
+			card-value="${this.overdueAssignmentsForUser}"
 			card-message="${this.localize('userOverdueAssignmentsCard:assignmentsCurrentlyOverdue')}"
 			@d2l-labs-summary-card-value-click=${this._valueClickHandlerOverdueAssignmentsCard}
 			?wide="${wide}"
@@ -224,26 +228,29 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		</d2l-labs-summary-card>`;
 	}
 
+	get overdueAssignmentsForUser() {
+		return this.data.recordsByUser.get(this.user.userId).filter(record => record[RECORD.OVERDUE] !== 0).length;
+	}
+
 	_valueClickHandlerOverdueAssignmentsCard() {
 		//out of scope
 	}
 
 	_lastSysAccess({ wide, tall }) {
-		const userData = this.data.users.filter(user => user[USER.ID] === this.user.userId).flat();
-		let currentDate = Date.now();
-		if (this.isDemo) {
-			currentDate = 1608000000000;
-		}
-		const daysSinceLearnerHasLastAccessedSystem = userData[USER.LAST_SYS_ACCESS] ? Math.floor((currentDate - userData[USER.LAST_SYS_ACCESS]) / (1000 * 60 * 60 * 24)) : 0;
-
 		return html`<d2l-labs-summary-card
 			card-title="${this.localize('dashboard:lastSystemAccessHeading')}"
-			card-value="${daysSinceLearnerHasLastAccessedSystem}"
-			card-message="${this.localize('userSysAccessCard:daysSinceLearnerHasLastAccessedSystem')}"
+			card-value="${this.lastSysAccessForUser}"
+			card-message="${this.lastSysAccessForUser === '' ? this.localize('userSysAccessCard:userHasNeverAccessedSystem') : this.localize('userSysAccessCard:daysSinceLearnerHasLastAccessedSystem')}"
 			?wide="${wide}"
 			?tall="${tall}"
 			?skeleton="${this.skeleton}">
 		</d2l-labs-summary-card>`;
+	}
+
+	get lastSysAccessForUser() {
+		const userData = this.data.userDictionary.get(this.user.userId);
+		const currentDate = this.isDemo ? 1608000000000 : Date.now();
+		return userData[USER.LAST_SYS_ACCESS] ? Math.floor((currentDate - userData[USER.LAST_SYS_ACCESS]) / (1000 * 60 * 60 * 24)) : '';
 	}
 
 	_placeholder({ wide, tall }) {
@@ -376,7 +383,10 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 }
 
 decorate(UserDrill, {
-	_userRecords: computed
+	_userRecords: computed,
+	coursesInViewForUser: computed,
+	overdueAssignmentsForUser: computed,
+	lastSysAccessForUser: computed
 });
 
 customElements.define('d2l-insights-user-drill-view', UserDrill);
