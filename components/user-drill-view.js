@@ -14,6 +14,7 @@ import { createComposeEmailPopup } from './email-integration';
 import { ExportData } from '../model/exportData';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
+import { OVERDUE_ASSIGNMENTS_FILTER_ID } from './overdue-assignments-card';
 import { resetUrlState } from '../model/urlState';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { until } from 'lit-html/directives/until';
@@ -219,12 +220,15 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_overdueAssignments({ wide, tall, skeleton }) {
+		// `this` represents d2l-summary-cards-container in the event, thefore, we need bind-call
+		const _valueClickHandler = this._overdueAssignmentsValueClickHandler.bind(this);
+
 		return html`<d2l-labs-summary-card
 			value-clickable
 			card-title="${this.localize('dashboard:overdueAssignmentsHeading')}"
 			card-value="${this.overdueAssignmentsForUser}"
 			card-message="${this.localize('userOverdueAssignmentsCard:assignmentsCurrentlyOverdue')}"
-			@d2l-labs-summary-card-value-click=${this._valueClickHandlerOverdueAssignmentsCard}
+			@d2l-labs-summary-card-value-click=${_valueClickHandler}
 			?wide="${wide}"
 			?tall="${tall}"
 			?skeleton="${skeleton}">
@@ -235,8 +239,9 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this.data.recordsByUser.get(this.user.userId).filter(record => record[RECORD.OVERDUE] !== 0).length;
 	}
 
-	_valueClickHandlerOverdueAssignmentsCard() {
-		//out of scope
+	_overdueAssignmentsValueClickHandler() {
+		const overdueAssignmentsFilter = this.data.getFilter(OVERDUE_ASSIGNMENTS_FILTER_ID);
+		overdueAssignmentsFilter.isApplied = !overdueAssignmentsFilter.isApplied;
 	}
 
 	_lastSysAccess({ wide, tall, skeleton }) {
