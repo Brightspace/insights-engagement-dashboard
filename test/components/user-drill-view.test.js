@@ -105,7 +105,7 @@ describe('d2l-insights-user-drill-view', () => {
 				.user=${user} .data=${data}
 			></d2l-insights-user-drill-view>`);
 			const profile = el.shadowRoot.querySelector('d2l-profile-image');
-			await new Promise(res => setTimeout(res, 10));
+			await new Promise(res => setTimeout(res, 50));
 
 			const names = [profile._firstName, profile._lastName];
 			const results = ['First', 'Last'];
@@ -136,7 +136,7 @@ describe('d2l-insights-user-drill-view', () => {
 
 		it('should return correct data from coursesInView user card', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
-			await new Promise(res => setTimeout(res, 10));
+			await new Promise(res => setTimeout(res, 20));
 			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
 			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
 
@@ -147,7 +147,7 @@ describe('d2l-insights-user-drill-view', () => {
 
 		it('should return correct data from overdueAssignments user card', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
-			await new Promise(res => setTimeout(res, 10));
+			await new Promise(res => setTimeout(res, 20));
 			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
 			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
 
@@ -158,7 +158,7 @@ describe('d2l-insights-user-drill-view', () => {
 
 		it('should return correct data from systemAccess user card', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
-			await new Promise(res => setTimeout(res, 10));
+			await new Promise(res => setTimeout(res, 20));
 			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
 			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
 
@@ -170,7 +170,7 @@ describe('d2l-insights-user-drill-view', () => {
 		it('should return correct data from systemAccess user card if user never accessed the system', async() => {
 			data.userDictionary.set(232, [232, '', '', '', null]);
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
-			await new Promise(res => setTimeout(res, 10));
+			await new Promise(res => setTimeout(res, 20));
 			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
 			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
 
