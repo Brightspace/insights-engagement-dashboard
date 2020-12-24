@@ -39,6 +39,7 @@ describe('d2l-insights-user-drill-view', () => {
 	};
 
 	data.recordsByUser = new Map();
+	data.recordsByUser.set(user.userId, data.records);
 
 	afterEach(() => {
 		// d2l-action-button-group uses afterNextRender that causes
