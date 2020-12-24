@@ -10,9 +10,10 @@ import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton
 import { UrlState } from '../model/urlState';
 
 const filterId = 'd2l-insights-course-last-access-card';
+const demoDate = 1608700239822; //for Visual-Diff test
 
 function lastAccessDateBucket(record, isDemo) {
-	const currentDate = isDemo ? 1608700239822 : Date.now();
+	const currentDate = isDemo ? demoDate : Date.now();
 	const courseLastAccessDateRange = record[RECORD.COURSE_LAST_ACCESS] === null
 		? -1
 		: currentDate - record[RECORD.COURSE_LAST_ACCESS];

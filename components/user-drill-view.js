@@ -17,6 +17,8 @@ import { resetUrlState } from '../model/urlState';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { until } from 'lit-html/directives/until';
 
+const demoDate = 1608000000000; //for unit test
+
 /**
  * @property {Object} data - an instance of Data from model/data.js
  * @property {Object} user - {firstName, lastName, username, userId}
@@ -249,7 +251,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	get lastSysAccessForUser() {
 		const userData = this.data.userDictionary.get(this.user.userId);
-		const currentDate = this.isDemo ? 1608000000000 : Date.now();
+		const currentDate = this.isDemo ? demoDate : Date.now();
 		return userData[USER.LAST_SYS_ACCESS] ? Math.floor((currentDate - userData[USER.LAST_SYS_ACCESS]) / (1000 * 60 * 60 * 24)) : '';
 	}
 

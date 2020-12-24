@@ -8,6 +8,7 @@ import { UrlState } from '../model/urlState';
 
 export const filterId = 'd2l-insights-last-access-card';
 const oneDayMillis = 86400000;
+const demoDate = 16088300239822; //for Visual-Diff test
 
 export class LastAccessFilter {
 	constructor(thresholdDays, isDemo) {
@@ -40,7 +41,7 @@ export class LastAccessFilter {
 	}
 
 	isWithoutRecentAccess(user) {
-		const currentDate = this.isDemo ? 16088300239822 : Date.now();
+		const currentDate = this.isDemo ? demoDate : Date.now();
 		return !user[USER.LAST_SYS_ACCESS] ||
 			((currentDate - user[USER.LAST_SYS_ACCESS]) > this.thresholdDays * oneDayMillis);
 	}
