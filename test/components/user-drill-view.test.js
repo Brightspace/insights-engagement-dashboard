@@ -49,7 +49,7 @@ describe('d2l-insights-user-drill-view', () => {
 			getType: () => 0
 		},
 		users: [Object.values(user)],
-		getFilter: sinon.stub().returns(filter)
+		getFilter: () => filter
 	};
 
 	data.recordsByUser = new Map();

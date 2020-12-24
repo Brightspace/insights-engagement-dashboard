@@ -220,7 +220,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_overdueAssignments({ wide, tall, skeleton }) {
-		// `this` represents d2l-summary-cards-container in the event, thefore, we need bind-call
+		// `this` represents d2l-summary-cards-container in the event, thefore, we need to call bind
 		const _valueClickHandler = this._overdueAssignmentsValueClickHandler.bind(this);
 
 		return html`<d2l-labs-summary-card
