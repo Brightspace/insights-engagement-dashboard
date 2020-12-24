@@ -4,6 +4,7 @@ import 'd2l-users/components/d2l-profile-image';
 import './summary-cards-container';
 import './user-drill-courses-table.js';
 import './message-container';
+import './summary-card';
 
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { computed, decorate } from 'mobx';
