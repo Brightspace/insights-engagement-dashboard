@@ -412,7 +412,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 	get _courseAccessCard() {
 		if (!this.showCourseAccessCard || this._isNoUserResults) return '';
-		return html`<div><d2l-insights-course-last-access-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-course-last-access-card></div>`;
+		return html`<div><d2l-insights-course-last-access-card ?demo="${this.isDemo}" .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-course-last-access-card></div>`;
 	}
 
 	get _gradesCard() {
@@ -485,7 +485,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			const rowFilteredData = new FilteredData(this._serverData)
 				.withFilter(new OverdueAssignmentsFilter())
 				.withFilter(new LastAccessFilter(this.lastAccessThresholdDays))
-				.withFilter(new CourseLastAccessFilter())
+				.withFilter(new CourseLastAccessFilter(this.isDemo))
 				.withFilter(new CurrentFinalGradesFilter())
 				.withFilter(new DiscussionActivityFilter());
 

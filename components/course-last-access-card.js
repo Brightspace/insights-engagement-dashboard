@@ -11,10 +11,11 @@ import { UrlState } from '../model/urlState';
 
 const filterId = 'd2l-insights-course-last-access-card';
 
-function lastAccessDateBucket(record) {
+function lastAccessDateBucket(record, isDemo) {
+	const currentDate = isDemo ? 1608700239822 : Date.now();
 	const courseLastAccessDateRange = record[RECORD.COURSE_LAST_ACCESS] === null
 		? -1
-		: Date.now() - record[RECORD.COURSE_LAST_ACCESS];
+		: currentDate - record[RECORD.COURSE_LAST_ACCESS];
 	const fourteenDayMillis = 1209600000;
 	const sevenDayMillis = 604800000;
 	const fiveDayMillis = 432000000;
@@ -44,11 +45,11 @@ function lastAccessDateBucket(record) {
 }
 
 export class CourseLastAccessFilter extends CategoryFilter {
-	constructor() {
+	constructor(isDemo) {
 		super(
 			filterId,
 			'courseLastAccessCard:courseAccess',
-			record => this.selectedCategories.has(lastAccessDateBucket(record)),
+			record => this.selectedCategories.has(lastAccessDateBucket(record, isDemo)),
 			'caf'
 		);
 		this._urlState = new UrlState(this);
@@ -74,7 +75,8 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	static get properties() {
 		return {
-			data: { type: Object, attribute: false }
+			data: { type: Object, attribute: false },
+			isDemo: { type: Boolean, attribute: 'demo' }
 		};
 	}
 
@@ -144,7 +146,7 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this.data
 			.withoutFilter(filterId)
 			.records
-			.forEach(record => dateBucketCounts[ lastAccessDateBucket(record) ]++);
+			.forEach(record => dateBucketCounts[ lastAccessDateBucket(record, this.isDemo) ]++);
 		return dateBucketCounts;
 	}
 
