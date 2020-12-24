@@ -386,19 +386,19 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		`;
 	}
 
-	_resultsCard({ wide, tall }) {
-		return html`<d2l-insights-results-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-results-card>`;
+	_resultsCard({ wide, tall, skeleton }) {
+		return html`<d2l-insights-results-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${skeleton}"></d2l-insights-results-card>`;
 	}
-	_overdueAssignmentsCard({ wide, tall }) {
-		return html`<d2l-insights-overdue-assignments-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-overdue-assignments-card>`;
-	}
-
-	_discussionsCard({ wide, tall }) {
-		return html`<d2l-insights-discussion-activity-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-discussion-activity-card>`;
+	_overdueAssignmentsCard({ wide, tall, skeleton }) {
+		return html`<d2l-insights-overdue-assignments-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${skeleton}"></d2l-insights-overdue-assignments-card>`;
 	}
 
-	_lastAccessCard({ wide, tall }) {
-		return html`<d2l-insights-last-access-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${this.skeleton}"></d2l-insights-last-access-card>`;
+	_discussionsCard({ wide, tall, skeleton }) {
+		return html`<d2l-insights-discussion-activity-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${skeleton}"></d2l-insights-discussion-activity-card>`;
+	}
+
+	_lastAccessCard({ wide, tall, skeleton }) {
+		return html`<d2l-insights-last-access-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${skeleton}"></d2l-insights-last-access-card>`;
 	}
 
 	get summaryCards() {

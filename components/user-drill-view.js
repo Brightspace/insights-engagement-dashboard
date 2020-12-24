@@ -200,14 +200,14 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		);
 	}
 
-	_coursesInView({ wide, tall }) {
+	_coursesInView({ wide, tall, skeleton }) {
 		return html`<d2l-labs-summary-card
 			card-title="Courses in View"
 			card-value="${this.coursesInViewForUser}"
 			card-message="Courses returned within results."
 			?wide="${wide}"
 			?tall="${tall}"
-			?skeleton="${this.skeleton}">
+			?skeleton="${skeleton}">
 		</d2l-labs-summary-card>`;
 	}
 
@@ -215,7 +215,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this.data.recordsByUser.get(this.user.userId).length;
 	}
 
-	_overdueAssignments({ wide, tall }) {
+	_overdueAssignments({ wide, tall, skeleton }) {
 		return html`<d2l-labs-summary-card
 			value-clickable
 			card-title="${this.localize('dashboard:overdueAssignmentsHeading')}"
@@ -224,7 +224,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			@d2l-labs-summary-card-value-click=${this._valueClickHandlerOverdueAssignmentsCard}
 			?wide="${wide}"
 			?tall="${tall}"
-			?skeleton="${this.skeleton}">
+			?skeleton="${skeleton}">
 		</d2l-labs-summary-card>`;
 	}
 
@@ -236,14 +236,14 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		//out of scope
 	}
 
-	_lastSysAccess({ wide, tall }) {
+	_lastSysAccess({ wide, tall, skeleton }) {
 		return html`<d2l-labs-summary-card
 			card-title="${this.localize('dashboard:lastSystemAccessHeading')}"
 			card-value="${this.lastSysAccessForUser}"
 			card-message="${this.lastSysAccessForUser === '' ? this.localize('userSysAccessCard:userHasNeverAccessedSystem') : this.localize('userSysAccessCard:daysSinceLearnerHasLastAccessedSystem')}"
 			?wide="${wide}"
 			?tall="${tall}"
-			?skeleton="${this.skeleton}">
+			?skeleton="${skeleton}">
 		</d2l-labs-summary-card>`;
 	}
 
@@ -253,14 +253,14 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return userData[USER.LAST_SYS_ACCESS] ? Math.floor((currentDate - userData[USER.LAST_SYS_ACCESS]) / (1000 * 60 * 60 * 24)) : '';
 	}
 
-	_placeholder({ wide, tall }) {
+	_placeholder({ wide, tall, skeleton }) {
 		return html`<d2l-labs-summary-card
 			card-title="Placeholder"
 			card-value="0"
 			card-message="This is a placeholder for testing"
 			?wide="${wide}"
 			?tall="${tall}"
-			?skeleton="${this.skeleton}">
+			?skeleton="${skeleton}">
 		</d2l-labs-summary-card>`;
 	}
 

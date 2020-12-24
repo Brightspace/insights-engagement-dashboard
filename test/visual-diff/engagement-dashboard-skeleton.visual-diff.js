@@ -1,27 +1,30 @@
 const puppeteer = require('puppeteer');
 const VisualDiff = require('@brightspace-ui/visual-diff');
 
-describe('engagement-dashboard', () => {
+describe('engagement-dashboard-skeleton', () => {
 
-	const visualDiff = new VisualDiff('engagement-dashboard', __dirname);
+	// default value is 0.1 but VisualDiff overrides it to 0
+	const visualDiff = new VisualDiff('engagement-dashboard-skeleton', __dirname, { tolerance: 0.05 });
 
-	let browser, page;
+	let page, browser;
 
 	before(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
+		page
+			.on('console', message => console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`))
+			.on('pageerror', ({ message }) => console.log(message))
+			.on('requestfailed', request => console.log(`${request.failure().errorText} ${request.url()}`));
+
 		await page.setViewport({
 			width: 1275,
-			height: 2200,
+			height: 3500,
 			deviceScaleFactor: 1
 		});
 		await page.goto(
-			`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-insights-engagement-dashboard.visual-diff.html`,
+			`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-insights-engagement-dashboard.visual-diff.html#delay=3000`,
 			{ waitUntil: ['networkidle0', 'load'] }
 		);
-		// Accept the default view popup and close it.
-		await page.keyboard.press('Tab');
-		await page.keyboard.press('Enter');
 		await page.bringToFront();
 	});
 
@@ -35,7 +38,7 @@ describe('engagement-dashboard', () => {
 	it('Mobile', async function() {
 		await page.setViewport({
 			width: 682,
-			height: 3000,
+			height: 3500,
 			deviceScaleFactor: 1
 		});
 		const rect = await visualDiff.getRect(page, 'd2l-insights-engagement-dashboard');
