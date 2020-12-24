@@ -136,43 +136,55 @@ describe('d2l-insights-user-drill-view', () => {
 
 		it('should return correct data from coursesInView user card', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
-			await new Promise(res => setTimeout(res, 50));
-			await el.updateComplete;
-			expect(el.coursesInViewForUser).to.eql(2);
+			await new Promise(res => setTimeout(res, 20));
+			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
+			await new Promise(res => setTimeout(res, 5));
+			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
+			await new Promise(res => setTimeout(res, 5));
+
+			expect(summaryCards[0].value).to.eql('2');
+			expect(summaryCards[0].message).to.eql('Courses returned within results.');
+			expect(summaryCards[0].title).to.eql('Courses in View');
+		});
+
+		it('should return correct data from overdueAssignments user card', async() => {
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
+			await new Promise(res => setTimeout(res, 20));
+			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
+			await new Promise(res => setTimeout(res, 5));
+			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
+			await new Promise(res => setTimeout(res, 5));
+
+			expect(summaryCards[2].value).to.eql('1');
+			expect(summaryCards[2].message).to.eql('assignments are currently overdue.');
+			expect(summaryCards[2].title).to.eql('Overdue Assignments');
 		});
 
 		it('should return correct data from systemAccess user card', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
-			await new Promise(res => setTimeout(res, 50));
-			await el.updateComplete;
-			expect(el.lastSysAccessForUser).to.eql(12);
+			await new Promise(res => setTimeout(res, 20));
+			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
+			await new Promise(res => setTimeout(res, 5));
+			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
+			await new Promise(res => setTimeout(res, 5));
 
-			const systemAccessCardTemplate = el.summaryCards[3].htmlFn({ wide: false, tall: false });
-			await new Promise(res => setTimeout(res, 10));
-			expect(systemAccessCardTemplate.values[2]).to.eql('days since the learner last accessed the system.');
+			expect(summaryCards[3].value).to.eql('12');
+			expect(summaryCards[3].message).to.eql('days since the learner last accessed the system.');
+			expect(summaryCards[3].title).to.eql('System Access');
 		});
 
 		it('should return correct data from systemAccess user card if user never accessed the system', async() => {
 			data.userDictionary.set(232, [232, '', '', '', null]);
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
-			await new Promise(res => setTimeout(res, 50));
-			await el.updateComplete;
-			expect(el.lastSysAccessForUser).to.eql('');
+			await new Promise(res => setTimeout(res, 20));
+			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
+			await new Promise(res => setTimeout(res, 5));
+			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
+			await new Promise(res => setTimeout(res, 5));
 
-			const systemAccessCardTemplate = el.summaryCards[3].htmlFn({ wide: false, tall: false });
-			await new Promise(res => setTimeout(res, 10));
-			expect(systemAccessCardTemplate.values[2]).to.eql('User has never accessed the system.');
-		});
-
-		it('should return correct data from overdueAssignments user card', async() => {
-			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
-			await new Promise(res => setTimeout(res, 50));
-			await el.updateComplete;
-			expect(el.overdueAssignmentsForUser).to.eql(1);
-
-			const overdueAssignmentsCardTemplate = el.summaryCards[2].htmlFn({ wide: false, tall: false });
-			await new Promise(res => setTimeout(res, 10));
-			expect(overdueAssignmentsCardTemplate.values[2]).to.eql('assignments are currently overdue.');
+			expect(summaryCards[3].value).to.eql('');
+			expect(summaryCards[3].message).to.eql('User has never accessed the system.');
+			expect(summaryCards[3].title).to.eql('System Access');
 		});
 	});
 });
