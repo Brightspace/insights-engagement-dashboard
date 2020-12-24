@@ -140,7 +140,6 @@ describe('d2l-insights-user-drill-view', () => {
 			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
 			await new Promise(res => setTimeout(res, 5));
 			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
-			await new Promise(res => setTimeout(res, 5));
 
 			expect(summaryCards[0].value).to.eql('2');
 			expect(summaryCards[0].message).to.eql('Courses returned within results.');
@@ -153,7 +152,6 @@ describe('d2l-insights-user-drill-view', () => {
 			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
 			await new Promise(res => setTimeout(res, 5));
 			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
-			await new Promise(res => setTimeout(res, 5));
 
 			expect(summaryCards[2].value).to.eql('1');
 			expect(summaryCards[2].message).to.eql('assignments are currently overdue.');
@@ -166,7 +164,6 @@ describe('d2l-insights-user-drill-view', () => {
 			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
 			await new Promise(res => setTimeout(res, 5));
 			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
-			await new Promise(res => setTimeout(res, 5));
 
 			expect(summaryCards[3].value).to.eql('12');
 			expect(summaryCards[3].message).to.eql('days since the learner last accessed the system.');
@@ -180,7 +177,6 @@ describe('d2l-insights-user-drill-view', () => {
 			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
 			await new Promise(res => setTimeout(res, 5));
 			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
-			await new Promise(res => setTimeout(res, 5));
 
 			expect(summaryCards[3].value).to.eql('');
 			expect(summaryCards[3].message).to.eql('User has never accessed the system.');
