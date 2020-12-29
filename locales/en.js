@@ -212,5 +212,7 @@ export default {
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "assignments are currently overdue.",
 	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
 	"averageGradeSummaryCard:averageGrade" : "Average Grade",
-	"averageGradeSummaryCard:noGradeInfoAvailable" : "No grade information available."
+	"averageGradeSummaryCard:noGradeInfoAvailable" : "No grade information available.",
+	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner last accessed the system.",
+	"userSysAccessCard:userHasNeverAccessedSystem": "User has never accessed the system."
 };

@@ -8,17 +8,18 @@ import './message-container';
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { computed, decorate } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
+import { RECORD, USER } from '../consts';
 import { createComposeEmailPopup } from './email-integration';
 import { ExportData } from '../model/exportData';
 import { formatPercent } from '@brightspace-ui/intl';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
-import { RECORD } from '../consts';
 import { resetUrlState } from '../model/urlState';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { until } from 'lit-html/directives/until';
 
 export const numberFormatOptions = { maximumFractionDigits: 2 };
+const demoDate = 1608000000000; //for unit test
 
 /**
  * @property {Object} data - an instance of Data from model/data.js
@@ -203,27 +204,31 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		);
 	}
 
-	_coursesInView({ wide, tall }) {
+	_coursesInView({ wide, tall, skeleton }) {
 		return html`<d2l-labs-summary-card
 			card-title="Courses in View"
-			card-value="${this.data.recordsByUser.get(this.user.userId).length}"
+			card-value="${this.coursesInViewForUser}"
 			card-message="Courses returned within results."
 			?wide="${wide}"
 			?tall="${tall}"
-			?skeleton="${this.skeleton}">
+			?skeleton="${skeleton}">
 		</d2l-labs-summary-card>`;
 	}
 
-	_overdueAssignments({ wide, tall }) {
+	get coursesInViewForUser() {
+		return this.data.recordsByUser.get(this.user.userId).length;
+	}
+
+	_overdueAssignments({ wide, tall, skeleton }) {
 		return html`<d2l-labs-summary-card
 			value-clickable
 			card-title="${this.localize('dashboard:overdueAssignmentsHeading')}"
-			card-value="${this.data.recordsByUser.get(this.user.userId).filter(record => record[RECORD.OVERDUE] !== 0).length}"
+			card-value="${this.overdueAssignmentsForUser}"
 			card-message="${this.localize('userOverdueAssignmentsCard:assignmentsCurrentlyOverdue')}"
 			@d2l-labs-summary-card-value-click=${this._valueClickHandlerOverdueAssignmentsCard}
 			?wide="${wide}"
 			?tall="${tall}"
-			?skeleton="${this.skeleton}">
+			?skeleton="${skeleton}">
 		</d2l-labs-summary-card>`;
 	}
 
@@ -244,18 +249,39 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return averageFinalGrade ? formatPercent(averageFinalGrade / 100, numberFormatOptions).replace(/\s/g, '') : null;
 	}
 
+	get overdueAssignmentsForUser() {
+		return this.data.recordsByUser.get(this.user.userId).filter(record => record[RECORD.OVERDUE] !== 0).length;
+	}
+
 	_valueClickHandlerOverdueAssignmentsCard() {
 		//out of scope
 	}
 
-	_placeholder({ wide, tall }) {
+	_lastSysAccess({ wide, tall, skeleton }) {
+		return html`<d2l-labs-summary-card
+			card-title="${this.localize('dashboard:lastSystemAccessHeading')}"
+			card-value="${this.lastSysAccessForUser}"
+			card-message="${this.lastSysAccessForUser === '' ? this.localize('userSysAccessCard:userHasNeverAccessedSystem') : this.localize('userSysAccessCard:daysSinceLearnerHasLastAccessedSystem')}"
+			?wide="${wide}"
+			?tall="${tall}"
+			?skeleton="${skeleton}">
+		</d2l-labs-summary-card>`;
+	}
+
+	get lastSysAccessForUser() {
+		const userData = this.data.userDictionary.get(this.user.userId);
+		const currentDate = this.isDemo ? demoDate : Date.now();
+		return userData[USER.LAST_SYS_ACCESS] ? Math.floor((currentDate - userData[USER.LAST_SYS_ACCESS]) / (1000 * 60 * 60 * 24)) : '';
+	}
+
+	_placeholder({ wide, tall, skeleton }) {
 		return html`<d2l-labs-summary-card
 			card-title="Placeholder"
 			card-value="0"
 			card-message="This is a placeholder for testing"
 			?wide="${wide}"
 			?tall="${tall}"
-			?skeleton="${this.skeleton}">
+			?skeleton="${skeleton}">
 		</d2l-labs-summary-card>`;
 	}
 
@@ -264,7 +290,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			{ enabled: true, htmlFn: (w) => this._coursesInView(w) },
 			{ enabled: true, htmlFn: (w) => this._averageGrade(w) },
 			{ enabled: true, htmlFn: (w) => this._overdueAssignments(w) },
-			{ enabled: true, htmlFn: (w) => this._placeholder(w) }
+			{ enabled: true, htmlFn: (w) => this._lastSysAccess(w) }
 		];
 	}
 

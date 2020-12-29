@@ -1,3 +1,18 @@
+function parseHash() {
+	if (!window.location.hash) return {};
+
+	const hash = window.location.hash.substring(1);
+
+	return hash.split('&')
+		.map(s => ({ [s.split('=')[0]]: s.split('=')[1] }))
+		.reduce((acc, val) => ({ ...acc, ...val }), {});
+}
+
+function getDelayFromUrlHash() {
+	const hash = parseHash();
+	return hash.delay;
+}
+
 // adding variables here to match signature of real LMS. The filters don't actually work though.
 // eslint-disable-next-line no-unused-vars
 export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView = false }) {
@@ -41,12 +56,12 @@ export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView 
 			[200,  'BTest', 'BStudent', 'BStudent', 1607528565300],
 			[400,  'DTest', 'DStudent', 'DStudent', null],
 			[500,  'ETest', 'EStudent', 'EStudent', 1546318800000],
-			[600,  'GTest', 'GStudent', 'GStudent', Date.now()],
-			[700,  'FTest', 'FStudent', 'FStudent', Date.now()],
-			[800,  'HTest', 'HStudent', 'HStudent', Date.now()],
-			[900,  'ITest', 'IStudent', 'IStudent', Date.now()],
-			[1000, 'KTest', 'KStudent', 'KStudent', Date.now()],
-			[1100, 'JTest', 'JStudent', 'JStudent', Date.now()]
+			[600,  'GTest', 'GStudent', 'GStudent', 1589998800000],
+			[700,  'FTest', 'FStudent', 'FStudent', 1599998800000],
+			[800,  'HTest', 'HStudent', 'HStudent', 1600008800000],
+			[900,  'ITest', 'IStudent', 'IStudent', 1604558800000],
+			[1000, 'KTest', 'KStudent', 'KStudent', 1604958800000],
+			[1100, 'JTest', 'JStudent', 'JStudent', 1594958800000]
 		],
 		semesterTypeId: 25,
 		numDefaultSemesters: 4,
@@ -57,7 +72,7 @@ export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView 
 		isDefaultView: defaultView,
 		isStudentSuccessSys: true
 	};
-	return new Promise(resolve => setTimeout(() => resolve(demoData), 100));
+	return new Promise(resolve => setTimeout(() => resolve(demoData), getDelayFromUrlHash() || 100));
 }
 
 /**

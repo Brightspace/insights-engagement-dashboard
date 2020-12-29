@@ -9,11 +9,17 @@ import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-help
 
 describe('d2l-insights-user-drill-view', () => {
 	const user = {
+		userId: 232,
 		firstName: 'firstName',
 		lastName: 'lastName',
 		username: 'username',
-		userId: 232
+		lastSysAccess: 1606900000000
 	};
+
+	const userRecords = [
+		[3, 232, 0, 0, 0, 0, 0, 0, 0, 0, null],
+		[2, 232, 0, 1, 0, 0, 0, 0, 0, 0, null]
+	];
 
 	const data = {
 		_data: {
@@ -25,20 +31,20 @@ describe('d2l-insights-user-drill-view', () => {
 				],
 			}
 		},
-		records: [
-			[3, 232, 0, 0, null, null, null, 0, 0, 0, 0],
-			[2, 232, 0, 0, null, null, null, 0, 0, 0, 0]
-		],
+		records: userRecords,
 		orgUnitTree: {
 			isActive: () => true,
 			getName: () => '',
 			getAncestorIds: () => [],
 			getType: () => 0
 		},
-		semesterTypeId : 0
+		users: [Object.values(user)]
 	};
 
 	data.recordsByUser = new Map();
+	data.recordsByUser.set(user.userId, data.records);
+	data.userDictionary = new Map();
+	data.userDictionary.set(user.userId, Object.values(user));
 
 	afterEach(() => {
 		// d2l-action-button-group uses afterNextRender that causes
@@ -126,6 +132,51 @@ describe('d2l-insights-user-drill-view', () => {
 			const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');
 			expect(errorMessage.type).to.equal('default');
 			expect(errorMessage.text).to.equal('No data in filtered ranges. Refine your selection.');
+		});
+
+		it('should return correct data from coursesInView user card', async() => {
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
+			await new Promise(res => setTimeout(res, 20));
+			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
+			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
+
+			expect(summaryCards[0].value).to.eql('2');
+			expect(summaryCards[0].message).to.eql('Courses returned within results.');
+			expect(summaryCards[0].title).to.eql('Courses in View');
+		});
+
+		it('should return correct data from overdueAssignments user card', async() => {
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
+			await new Promise(res => setTimeout(res, 20));
+			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
+			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
+
+			expect(summaryCards[2].value).to.eql('1');
+			expect(summaryCards[2].message).to.eql('assignments are currently overdue.');
+			expect(summaryCards[2].title).to.eql('Overdue Assignments');
+		});
+
+		it('should return correct data from systemAccess user card', async() => {
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
+			await new Promise(res => setTimeout(res, 20));
+			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
+			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
+
+			expect(summaryCards[3].value).to.eql('12');
+			expect(summaryCards[3].message).to.eql('days since the learner last accessed the system.');
+			expect(summaryCards[3].title).to.eql('System Access');
+		});
+
+		it('should return correct data from systemAccess user card if user never accessed the system', async() => {
+			data.userDictionary.set(232, [232, '', '', '', null]);
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
+			await new Promise(res => setTimeout(res, 20));
+			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
+			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
+
+			expect(summaryCards[3].value).to.eql('');
+			expect(summaryCards[3].message).to.eql('User has never accessed the system.');
+			expect(summaryCards[3].title).to.eql('System Access');
 		});
 	});
 });
