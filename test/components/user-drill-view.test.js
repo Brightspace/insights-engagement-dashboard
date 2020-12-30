@@ -184,7 +184,7 @@ describe('d2l-insights-user-drill-view', () => {
 			await new Promise(res => setTimeout(res, 20));
 			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
 			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
-			expect(summaryCards[1].value).to.eql('61.5%');
+			expect(summaryCards[1].value).to.eql('61.5 %');
 			expect(summaryCards[1].message).to.eql('grade averaged from the courses in view.');
 			expect(summaryCards[1].title).to.eql('Average Grade');
 		});

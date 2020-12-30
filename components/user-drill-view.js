@@ -246,7 +246,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get averageGradeForUser() {
 		const coursesWithGrades = this.data.recordsByUser.get(this.user.userId).filter(r => r[RECORD.CURRENT_FINAL_GRADE] !== null);
 		const averageFinalGrade = coursesWithGrades.reduce((sum, r) => sum + r[RECORD.CURRENT_FINAL_GRADE], 0) / coursesWithGrades.length;
-		return averageFinalGrade ? formatPercent(averageFinalGrade / 100, numberFormatOptions).replace(/\s/g, '') : null;
+		return averageFinalGrade ? formatPercent(averageFinalGrade / 100, numberFormatOptions) : null;
 	}
 
 	get overdueAssignmentsForUser() {
