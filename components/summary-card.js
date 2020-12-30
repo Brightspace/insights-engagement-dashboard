@@ -91,8 +91,9 @@ class SummaryCard extends SkeletonMixin(Localizer(LitElement)) {
 				color: var(--d2l-color-ferrite);
 				font-size: 22px;
 				font-weight: bold;
-				margin: 10px;
+				margin: 12px;
 				margin-inline-start: 30px;
+				white-space: nowrap;
 			}
 
 			.d2l-insights-summary-card-button {
