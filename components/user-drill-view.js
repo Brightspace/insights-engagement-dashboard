@@ -206,9 +206,9 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_coursesInView({ wide, tall, skeleton }) {
 		return html`<d2l-labs-summary-card
-			card-title="Courses in View"
+			card-title="${this.localize('dashboard:coursesInViewHeader')}"
 			card-value="${this.coursesInViewForUser}"
-			card-message="Courses returned within results."
+			card-message="${this.localize('coursesInView:CoursesReturned')}"
 			?wide="${wide}"
 			?tall="${tall}"
 			?skeleton="${skeleton}">

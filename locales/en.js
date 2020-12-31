@@ -11,6 +11,8 @@ export default {
 	"dashboard:resultsReturned": "Users returned within results.",
 	"dashboard:overdueAssignments": "Users currently have one or more overdue assignments.",
 	"dashboard:overdueAssignmentsHeading": "Overdue Assignments",
+	"dashboard:coursesInViewHeader": "Courses in View",
+	"coursesInView:CoursesReturned": "courses returned within results.",
 	"dashboard:lastSystemAccessMessage": 'Users have no system access in the last {thresholdDays} days.',
 	"dashboard:lastSystemAccessMessageOneDay": 'Users have no system access in the last day.',
 	"dashboard:lastSystemAccessHeading": "System Access",
