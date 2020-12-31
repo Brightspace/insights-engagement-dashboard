@@ -141,7 +141,7 @@ describe('d2l-insights-user-drill-view', () => {
 			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
 
 			expect(summaryCards[0].value).to.eql('2');
-			expect(summaryCards[0].message).to.eql('Courses returned within results.');
+			expect(summaryCards[0].message).to.eql('courses returned within results.');
 			expect(summaryCards[0].title).to.eql('Courses in View');
 		});
 
