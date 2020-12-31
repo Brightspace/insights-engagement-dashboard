@@ -191,7 +191,7 @@ export default {
 	"activeCoursesTable:currentGrade": "Nota atual",
 	"activeCoursesTable:grade": "Nota",
 	"activeCoursesTable:predictedGrade": "Nota prevista",
-	"activeCoursesTable:timeInContent": "Tempo no conteúdo (min)",
+	"activeCoursesTable:timeInContent": "Tempo no conteúdo (minutos)",
 	"activeCoursesTable:discussions": "Atividade de discussão",
 	"activeCoursesTable:courseLastAccess": "Último acesso ao curso",
 	"activeCoursesTable:noGrade": "Nenhuma nota",

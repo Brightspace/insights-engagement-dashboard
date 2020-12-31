@@ -3,7 +3,7 @@
 export default {
 	"dashboard:title": "Dashboard Betrokkenheid",
 	"dashboard:userView:title": "Dashboard Betrokkenheid van cursist",
-	"dashboard:backToInsightsPortal": "Terug naar Insights™ Portal",
+	"dashboard:backToInsightsPortal": "Terug naar Insights-Portal",
 	"dashboard:backToEngagementDashboard": "Terug naar dashboard Betrokkenheid",
 	"dashboard:backLinkTextShort": "Terug",
 	"dashboard:summaryHeading": "Overzichtsweergave",
@@ -24,7 +24,7 @@ export default {
 	"dashboard:noUsersSelectedDialogText": "Selecteer een of meer gebruikers om te e-mailen.",
 	"dashboard:noResultsAvailable": "Er zijn geen resultaten beschikbaar die overeenkomen met uw filters.",
 	"dashboard:queryFailed": "Kan uw resultaten niet laden. Als dit probleem zich blijft voordoen,",
-	"dashboard:queryFailedLink": "neemt u contact op met D2L®-ondersteuning.",
+	"dashboard:queryFailedLink": "neemt u contact op met D2L-ondersteuning.",
 	"dashboard:undoLastAction": "Laatste actie ongedaan maken",
 
 	"settings:roleListTitle": "Rollenfilter",
@@ -56,7 +56,7 @@ export default {
 
 	"dropdownFilter:loadMore": "Meer laden",
 	"dropdownFilter:openerTextAll": "{filterName}: Alle",
-	"dropdownFilter:openerTextMultiple": "{filtername}: {selectedCount} geselecteerd",
+	"dropdownFilter:openerTextMultiple": "{filterName}: {selectedCount} geselecteerd",
 	"dropdownFilter:openerTextSingle": '{filterName}: {selectedItemName}',
 
 	"usersTable:title": "Tabel gebruikerdetails. In deze tabel staan de gebruikers die voldoen aan de filtercriteria. Acties die kunnen worden toegepast op meerdere items, zijn beschikbaar in de tabelacties.",
@@ -178,7 +178,7 @@ export default {
 	"settings:avgGradeDescription": "De indicator Gemiddelde score geeft de huidige gemiddelde score weer voor de gebruiker van alle cursussen die zijn opgenomen in de toegepaste filters.",
 	"settings:avgTimeInContentDescription": "De indicator Gemiddelde tijd besteed aan de inhoud toont de gemiddelde tijd die per cursus aan inhoud wordt besteed, als gemiddelde van de totale tijd per cursus, voor de gebruiker in alle cursussen die zijn opgenomen in de toegepaste filters. Dit cijfer wordt weergegeven in minuten.",
 	"settings:avgDiscussionActivityDescription": "De indicator Gemiddelde discussiedeelname bevat gebruikersstatistieken die aangeven hoe vaak de gebruiker een thread aanmaakt, een bericht leest of een bericht beantwoordt in alle cursussen die zijn opgenomen in de toegepaste filters. Dit cijfer vertegenwoordigt het gemiddelde van de totale telling per cursus.",
-	"settings:lastAccessedSystemDescription": "De indicator Laatste bezoek aan systeem geeft de tijdstempel weer, in de lokale tijd van Brightspace®, van de laatste keer dat de gebruiker het systeem op welke manier dan ook heeft benaderd.",
+	"settings:lastAccessedSystemDescription": "De indicator Laatste bezoek aan systeem geeft de tijdstempel weer, in de lokale tijd van Brightspace, van de laatste keer dat de gebruiker het systeem op welke manier dan ook heeft benaderd.",
 	"settings:invalidSystemAccessValueToast": "Uw instellingen kunnen niet worden opgeslagen. Drempelwaarde voor Systeemaanmelding moet tussen 1 en 30 liggen.",
 	"settings:serverSideErrorToast": "Er is iets misgegaan. Uw instellingen kunnen niet worden opgeslagen.",
 
