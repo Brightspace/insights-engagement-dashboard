@@ -130,7 +130,7 @@ export default {
 
 	"discussionActivityCard:cardTitle": "Diskussionsaktivitet",
 	"discussionActivityCard:threads": "Trådar",
-	"discussionActivityCard:replies": "svar",
+	"discussionActivityCard:replies": "Svar",
 	"discussionActivityCard:reads": "Läsningar",
 	"discussionActivityCard:textLabel": "I det här diagrammet visas totalt antal trådar, svar och läsningar i diskussionsforum för alla användare i de valda kurserna",
 	"discussionActivityCard:toolTipThreads": "{numberOfUsers} trådar har skapats av de returnerade användarna",

@@ -129,7 +129,7 @@ export default {
 	"courseLastAccessCard:toolTipLessThanOneDaySingleUser": "1 Benutzer hat vor weniger als 1 Tag zuletzt auf diesen Kurs zugegriffen.",
 
 	"discussionActivityCard:cardTitle": "Diskussionsaktivität",
-	"discussionActivityCard:threads": "Threads",
+	"discussionActivityCard:threads": "Unterhaltungen",
 	"discussionActivityCard:replies": "Antworten",
 	"discussionActivityCard:reads": "Gelesene Beiträge",
 	"discussionActivityCard:textLabel": "Dieses Diagramm zeigt die Gesamtzahl der Unterhaltungen, Antworten, und gelesenen Beiträge in Diskussionsforen für alle Benutzer in den ausgewählten Kursen an",

@@ -130,7 +130,7 @@ export default {
 
 	"discussionActivityCard:cardTitle": "Actividad de debate",
 	"discussionActivityCard:threads": "Cadenas de mensajes",
-	"discussionActivityCard:replies": "respuesta(s)",
+	"discussionActivityCard:replies": "Respuesta(s)",
 	"discussionActivityCard:reads": "Lecturas",
 	"discussionActivityCard:textLabel": "Este gráfico muestra el número total de cadenas, respuestas y lecturas en foros de debate de todos los usuarios de los cursos seleccionados",
 	"discussionActivityCard:toolTipThreads": "Los usuarios obtenidos han creado {numberOfUsers} cadenas",

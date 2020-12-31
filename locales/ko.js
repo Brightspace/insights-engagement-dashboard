@@ -62,7 +62,7 @@ export default {
 	"usersTable:title": "사용자 상세 정보 표. 이 표에는 필터링 기준을 충족하는 사용자가 나열됩니다. 여러 항목에 적용 가능한 작업이 테이블 작업에 나열됩니다.",
 	"usersTable:loadingPlaceholder": "로드 중...",
 	"usersTable:lastFirstName": "이름",
-	"usersTable:openUserPage": "{username}님의 사용자 페이지를 엽니다.",
+	"usersTable:openUserPage": "{userName}님의 사용자 페이지를 엽니다.",
 	"usersTable:lastAccessedSystem": "최근 접근한 시스템",
 	"usersTable:courses": "강의",
 	"usersTable:avgGrade": "평균 평점",

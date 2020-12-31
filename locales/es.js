@@ -130,7 +130,7 @@ export default {
 
 	"discussionActivityCard:cardTitle": "Actividad de debate",
 	"discussionActivityCard:threads": "Cadenas",
-	"discussionActivityCard:replies": "respuestas",
+	"discussionActivityCard:replies": "Respuestas",
 	"discussionActivityCard:reads": "Lecturas",
 	"discussionActivityCard:textLabel": "En este gráfico se muestra la cantidad total de cadenas, respuestas y lecturas en foros de debate para todos los usuarios de los cursos seleccionados",
 	"discussionActivityCard:toolTipThreads": "Los usuarios que volvieron a visitar el sitio crearon {numberOfUsers} cadenas",
@@ -202,7 +202,7 @@ export default {
 	"inactiveCoursesTable:title": "Cursos inactivos",
 	"inactiveCoursesTable:course": "Nombre del curso",
 	"inactiveCoursesTable:grade": "Calificación final",
-	"inactiveCoursesTable:content": "Tiempo total en el contenido (en minutos)",
+	"inactiveCoursesTable:content": "Tiempo total en el contenido (en min)",
 	"inactiveCoursesTable:discussions": "Actividad de debate",
 	"inactiveCoursesTable:lastAccessedCourse": "Último acceso al curso",
 	"inactiveCoursesTable:loadingPlaceholder": "Cargando",

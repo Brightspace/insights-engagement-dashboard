@@ -62,7 +62,7 @@ export default {
 	"usersTable:title": "Brugeroplysningstabel. Denne tabel indeholder de brugere, der opfylder filtreringskriterierne. Handlinger, der kan anvendes på flere elementer, er tilgængelige i tabelhandlinger.",
 	"usersTable:loadingPlaceholder": "Indlæser",
 	"usersTable:lastFirstName": "Navn",
-	"usersTable:openUserPage": "Åbn brugers side for {username}",
+	"usersTable:openUserPage": "Åbn brugers side for {userName}",
 	"usersTable:lastAccessedSystem": "Senest åbnet system",
 	"usersTable:courses": "Kurser",
 	"usersTable:avgGrade": "Gennemsnitskarakter",
