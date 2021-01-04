@@ -6,7 +6,7 @@ import { RECORD } from '../consts';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 import { UrlState } from '../model/urlState';
 
-const filterId = 'd2l-insights-overdue-assignments-card';
+export const OVERDUE_ASSIGNMENTS_FILTER_ID = 'd2l-insights-overdue-assignments-card';
 
 export class OverdueAssignmentsFilter {
 	constructor() {
@@ -14,7 +14,7 @@ export class OverdueAssignmentsFilter {
 		this._urlState = new UrlState(this);
 	}
 
-	get id() { return filterId; }
+	get id() { return OVERDUE_ASSIGNMENTS_FILTER_ID; }
 
 	get title() { return 'dashboard:overdueAssignmentsHeading'; }
 
@@ -63,7 +63,7 @@ class OverdueAssignmentsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _cardValue() {
-		return this.data.withoutFilter(filterId).records
+		return this.data.withoutFilter(OVERDUE_ASSIGNMENTS_FILTER_ID).records
 			.reduce((acc, record) => {
 				if (!acc.has(record[RECORD.USER_ID]) && record[RECORD.OVERDUE] !== 0) {
 					acc.add(record[RECORD.USER_ID]);
@@ -73,7 +73,7 @@ class OverdueAssignmentsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get filter() {
-		return this.data.getFilter(filterId);
+		return this.data.getFilter(OVERDUE_ASSIGNMENTS_FILTER_ID);
 	}
 
 	render() {
