@@ -18,8 +18,8 @@ describe('d2l-insights-user-drill-view', () => {
 	};
 
 	const userRecords = [
-		[3, 232, 0, 0, 0, 0, 0, 0, 0, 0, null],
-		[2, 232, 0, 1, 0, 0, 0, 0, 0, 0, null]
+		[3, 232, 0, 0, 45, 0, 0, 0, 0, 0, null],
+		[2, 232, 0, 1, 78, 0, 0, 0, 0, 0, null]
 	];
 
 	const filter = {
@@ -152,7 +152,7 @@ describe('d2l-insights-user-drill-view', () => {
 			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
 
 			expect(summaryCards[0].value).to.eql('2');
-			expect(summaryCards[0].message).to.eql('Courses returned within results.');
+			expect(summaryCards[0].message).to.eql('courses returned within results.');
 			expect(summaryCards[0].title).to.eql('Courses in View');
 		});
 
@@ -188,6 +188,27 @@ describe('d2l-insights-user-drill-view', () => {
 			expect(summaryCards[3].value).to.eql('');
 			expect(summaryCards[3].message).to.eql('User has never accessed the system.');
 			expect(summaryCards[3].title).to.eql('System Access');
+		});
+
+		it('should return correct data from average grades card', async() => {
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
+			await new Promise(res => setTimeout(res, 20));
+			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
+			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
+			expect(summaryCards[1].value).to.eql('61.5 %');
+			expect(summaryCards[1].message).to.eql('grade averaged from the courses in view.');
+			expect(summaryCards[1].title).to.eql('Average Grade');
+		});
+
+		it('should render the proper message in average grades card if no grades available', async() => {
+			data.recordsByUser.set(232, []);
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
+			await new Promise(res => setTimeout(res, 20));
+			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
+			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
+			expect(summaryCards[1].value).to.eql('');
+			expect(summaryCards[1].message).to.eql('No grade information available.');
+			expect(summaryCards[1].title).to.eql('Average Grade');
 		});
 	});
 

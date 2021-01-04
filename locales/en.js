@@ -11,6 +11,8 @@ export default {
 	"dashboard:resultsReturned": "Users returned within results.",
 	"dashboard:overdueAssignments": "Users currently have one or more overdue assignments.",
 	"dashboard:overdueAssignmentsHeading": "Overdue Assignments",
+	"dashboard:coursesInViewHeader": "Courses in View",
+	"coursesInView:CoursesReturned": "courses returned within results.",
 	"dashboard:lastSystemAccessMessage": 'Users have no system access in the last {thresholdDays} days.',
 	"dashboard:lastSystemAccessMessageOneDay": 'Users have no system access in the last day.',
 	"dashboard:lastSystemAccessHeading": "System Access",
@@ -210,6 +212,9 @@ export default {
 	"inactiveCoursesTable:empty": "No inactive course data in filtered ranges.",
 
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "assignments are currently overdue.",
+	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
+	"averageGradeSummaryCard:averageGrade" : "Average Grade",
+	"averageGradeSummaryCard:noGradeInfoAvailable" : "No grade information available.",
 	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner last accessed the system.",
 	"userSysAccessCard:userHasNeverAccessedSystem": "User has never accessed the system."
 };
