@@ -191,8 +191,8 @@ DO NOT ship this change.
    and create a PR to merge that change into master. (To expedite this process, run the "BSI Update" Github action
    in the BSI repo).
 
-7. Create a new branch off the 20.xx.xx branch of BSI. Copy the relevant changes to the new branch and create a PR
-   against the BSI 20.xx.xx branch.
+7. Create a new branch off the 20.xx.xx branch of BSI. Copy the relevant changes from the auto-generated PR to the new
+   branch and create a PR against the BSI 20.xx.xx branch.
 
 8. After approval / merge, wait for the new BSI release to be created. It will be called something like "v20.xx.xx-xxx"
    and should correspond to the LMS version you're deploying to.
