@@ -8,7 +8,7 @@ import './summary-card';
 import './courses-legend';
 
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
-import { computed, decorate } from 'mobx';
+import { action, computed, decorate, observable } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
 import { RECORD, USER } from '../consts';
 import { createComposeEmailPopup } from './email-integration';
@@ -24,6 +24,30 @@ import { until } from 'lit-html/directives/until';
 export const numberFormatOptions = { maximumFractionDigits: 2 };
 const demoDate = 1608000000000; //for unit test
 
+class SelectedCourses {
+	constructor() {
+		this.selected = new Set();
+	}
+
+	filter(record) {
+		return !this.selected.has(record[RECORD.ORG_UNIT_ID]);
+	}
+
+	toggle(value) {
+		if (this.selected.has(value)) {
+			this.selected.delete(value);
+		}
+		else {
+			this.selected.add(value);
+		}
+	}
+}
+
+decorate(SelectedCourses, {
+	selected: observable,
+	toggle: action,
+});
+
 /**
  * @property {Object} data - an instance of Data from model/data.js
  * @property {Object} user - {firstName, lastName, username, userId}
@@ -38,7 +62,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			isDemo: { type: Boolean, attribute: 'demo' },
 			isStudentSuccessSys: { type: Boolean, attribute: false },
 			orgUnitId: { type: Number, attribute: 'org-unit-id' },
-			viewState: { type: Object, attribute: false }
+			viewState: { type: Object, attribute: false },
+			selectedCourses: { type: Object, attribute: false }
 		};
 	}
 
@@ -56,6 +81,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this.isStudentSuccessSys = false;
 		this.orgUnitId = 0;
 		this.viewState = null;
+
+		this.selectedCourses = new SelectedCourses();
 	}
 
 	static get styles() {
@@ -375,6 +402,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				<d2l-insights-courses-legend
 					.data="${this.data}"
 					.user="${this.user}"
+					.selectedCourses="${this.selectedCourses}"
 					?skeleton="${this.skeleton}"
 				>
 				</d2l-insights-courses-legend>

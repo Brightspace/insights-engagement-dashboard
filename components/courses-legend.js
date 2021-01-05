@@ -2,54 +2,16 @@ import { computed, decorate, observable } from 'mobx';
 import { css, html } from 'lit-element';
 import { ORG_UNIT, RECORD, UserTrendColorsIterator } from '../consts';
 import { bodySmallStyles } from '@brightspace-ui/core/components/typography/styles.js';
-import { CategoryFilter } from '../model/categoryFilter';
 import { classMap } from 'lit-html/directives/class-map';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
-import { UrlState } from '../model/urlState';
-
-const filterId = 'd2l-insights-course-legend';
-
-export class CoursesLegendFilter extends CategoryFilter {
-	constructor() {
-		super(
-			filterId,
-			'coursesLegend:coursesLegendFilter',
-			record => !this.selectedCategories.has(record[RECORD.ORG_UNIT_ID]),
-			'clf'
-		);
-		this._urlState = new UrlState(this);
-	}
-
-	toggle(value) {
-		if (this.selectedCategories.has(value)) {
-			this.selectedCategories.delete(value);
-			return;
-		}
-		this.selectedCategories.add(value);
-	}
-
-	//for Urlstate
-	get persistenceValue() {
-		if (this.selectedCategories.size === 0) return '';
-		return [...this.selectedCategories].join(',');
-	}
-
-	set persistenceValue(value) {
-		if (value === '') {
-			this.selectedCategories.clear();
-			return;
-		}
-		const categories = value.split(',').map(category => Number(category));
-		this.setCategories(categories);
-	}
-}
 class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
 			data: { type: Object, attribute: false },
-			user: { type: Object, attribute: false }
+			user: { type: Object, attribute: false },
+			selectedCourses: { type: Object, attribute: false }
 		};
 	}
 
@@ -122,10 +84,6 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 		];
 	}
 
-	get filter() {
-		return this.data.getFilter(filterId);
-	}
-
 	get serverData() {
 		return this.data._data.serverData;
 	}
@@ -137,7 +95,6 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 		// get a unique set of orgId's then get the name of those org units.
 		return Array.from(
 			new Set(this.data
-				.withoutFilter(filterId)
 				.records
 				.filter(isUsersRecord)
 				.map(recordOrgUnitId)))
@@ -155,7 +112,7 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 	_renderCourse(course, color) {
 		const containerStyles = classMap({
 			'd2l-insights-user-course-legend-item': true,
-			'd2l-insights-user-course-legend-item-filtered': this.filter.selectedCategories.has(course.orgUnitId)
+			'd2l-insights-user-course-legend-item-filtered': this.selectedCourses.selected.has(course.orgUnitId)
 		});
 		return html`
 		<div tabindex="0" ouid="${course.orgUnitId}" class="${containerStyles}">
@@ -179,7 +136,7 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 		if (e.target.parentElement === null) return;
 		const orgUnitId = e.target.getAttribute('ouid') | e.target.parentElement.getAttribute('ouid');
 
-		this.filter.toggle(orgUnitId);
+		this.selectedCourses.toggle(orgUnitId);
 	}
 
 	render() {
@@ -196,7 +153,6 @@ decorate(CoursesLegend,
 	{
 		courses: computed,
 		data: observable,
-		filter: computed
 	}
 );
 

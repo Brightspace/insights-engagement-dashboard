@@ -38,7 +38,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const filters = this.data.filters.map(f => ({
 			id: f.id,
 			title: this.localize(f.title),
-			isApplied: f.isApplied
+			isApplied: f.isApplied,
 		}));
 
 		if (filters.filter(f => f.isApplied).length < 1) {
