@@ -237,10 +237,12 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			accessibility: {
 				screenReaderSection: {
 					beforeChartFormat: BEFORE_CHART_FORMAT
-				},
+				}/*,
+				TODO should we replace description?
+				`System Access, series 1 of 3 with 8 data points.`
 				series: {
 					descriptionFormatter: () => this._cardTitle
-				}
+				}*/
 			},
 
 			series: this._series
