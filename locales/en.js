@@ -219,5 +219,6 @@ export default {
 	"userSysAccessCard:userHasNeverAccessedSystem": "User has never accessed the system.",
 
 	"contentViewsCard:contentViewOverTime": "Content view over time",
-	"contentViewsCard:viewCount": "View Count"
+	"contentViewsCard:viewCount": "View Count",
+	"contentViewsCard:date": "Date"
 };

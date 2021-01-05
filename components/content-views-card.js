@@ -62,6 +62,10 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this.localize('contentViewsCard:viewCount');
 	}
 
+	get _dateText() {
+		return this.localize('contentViewsCard:date');
+	}
+
 	render() {
 		// NB: relying on mobx rather than lit-element properties to handle update detection: it will trigger a redraw for
 		// any change to a relevant observed property of the Data object
@@ -74,7 +78,8 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return {
 			chart: {
 				height: 250,
-				width: 583
+				width: 583,
+				zoomType: 'x'
 			},
 			title: {
 				text: this._cardTitle,
@@ -92,10 +97,22 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				enabled: false
 			},
 			xAxis: {
+				tickInterval:  7 * 24 * 3600 * 1000, //week
 				type: 'datetime',
 				labels: {
 					format: '{value:%b %e/%y}',
-					rotation: -60
+					rotation: -60,
+					y: 30,
+					align: 'center'
+				},
+				title: {
+					text: this._dateText,
+					style: {
+						color: 'var(--d2l-color-ferrite)',
+						fontSize: '9px',
+						fontWeight: 'bold',
+						fontFamily: 'Lato'
+					}
 				}
 			},
 			yAxis: {
@@ -132,15 +149,17 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			series: [{
 				//test data
 				data: [
-					{ x: Date.UTC(2019, 1, 24), y: 10 },
-					{ x: Date.UTC(2019, 2, 23), y: 40 },
-					{ x: Date.UTC(2019, 5, 23), y: 30 }
+					{ x: Date.UTC(2019, 1, 1), y: 50 },
+					{ x: Date.UTC(2019, 1, 7), y: 60 },
+					{ x: Date.UTC(2019, 1, 14), y: 45 },
+					{ x: Date.UTC(2019, 1, 21), y: 65 }
 				]
 			}, {
 				data:  [
-					{ x: Date.UTC(2019, 2, 10), y: 50 },
-					{ x: Date.UTC(2019, 5, 21), y: 70 },
-					{ x: Date.UTC(2019, 6, 11), y: 90 }
+					{ x: Date.UTC(2019, 2, 1), y: 20 },
+					{ x: Date.UTC(2019, 2, 7), y: 50 },
+					{ x: Date.UTC(2019, 2, 14), y: 25 },
+					{ x: Date.UTC(2019, 2, 21), y: 50 }
 				]
 			}]
 		};
