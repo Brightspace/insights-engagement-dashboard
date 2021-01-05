@@ -42,6 +42,7 @@ import { OverdueAssignmentsFilter } from './components/overdue-assignments-card'
 import { TimeInContentVsGradeFilter } from './components/time-in-content-vs-grade-card';
 import { toJS } from 'mobx';
 import { USER } from './consts.js';
+import { CoursesLegendFilter } from './components/courses-legend.js';
 
 /**
  * @property {Boolean} isDemo - if true, use canned data; otherwise call the LMS
@@ -487,7 +488,8 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				.withFilter(new LastAccessFilter(this.lastAccessThresholdDays, this.isDemo))
 				.withFilter(new CourseLastAccessFilter(this.isDemo))
 				.withFilter(new CurrentFinalGradesFilter())
-				.withFilter(new DiscussionActivityFilter());
+				.withFilter(new DiscussionActivityFilter())
+				.withFilter(new CoursesLegendFilter());
 
 			this.__data = rowFilteredData.withFilter(new TimeInContentVsGradeFilter(rowFilteredData));
 		}
