@@ -211,6 +211,10 @@ export default {
 	"inactiveCoursesTable:semester": "Semester",
 	"inactiveCoursesTable:empty": "No inactive course data in filtered ranges.",
 
+	"accessTrendCard:title": "Access Over Time",
+	"accessTrendCard:xAxisTitle": "Date",
+	"accessTrendCard:yAxisTitle": "Access count",
+
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "assignments are currently overdue.",
 	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
 	"averageGradeSummaryCard:averageGrade" : "Average Grade",

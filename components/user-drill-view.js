@@ -5,6 +5,7 @@ import './summary-cards-container';
 import './user-drill-courses-table.js';
 import './message-container';
 import './summary-card';
+import './access-trend-card';
 
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { computed, decorate } from 'mobx';
@@ -364,6 +365,13 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 				.cards="${this.summaryCards}"
 			></d2l-summary-cards-container>
+
+			<d2l-insights-access-trend-card
+				?hidden="${this.hidden}"
+				?skeleton="${this.skeleton}"
+
+				.data="${this.data}"
+			></d2l-insights-access-trend-card>
 
 			<div class="d2l-insights-user-drill-view-content">
 				${this._renderContent()}
