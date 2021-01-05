@@ -16,7 +16,7 @@ export class CoursesLegendFilter extends CategoryFilter {
 		super(
 			filterId,
 			'coursesLegend:coursesLegendFilter',
-			record => this.selectedCategories.has(record[RECORD.ORG_UNIT_ID]),
+			record => !this.selectedCategories.has(record[RECORD.ORG_UNIT_ID]),
 			'clf'
 		);
 		this._urlState = new UrlState(this);
@@ -28,7 +28,7 @@ export class CoursesLegendFilter extends CategoryFilter {
 			return;
 		}
 		this.selectedCategories.add(value);
-	};
+	}
 
 	//for Urlstate
 	get persistenceValue() {
@@ -131,12 +131,16 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get courses() {
+
+		const isUsersRecord = record => record[RECORD.USER_ID] === this.user.userId;
+		const recordOrgUnitId = record => record[RECORD.ORG_UNIT_ID];
 		// get a unique set of orgId's then get the name of those org units.
 		return Array.from(
 			new Set(this.data
 				.withoutFilter(filterId)
 				.records
-				.map(record => record[RECORD.ORG_UNIT_ID])))
+				.filter(isUsersRecord)
+				.map(recordOrgUnitId)))
 			.map(this._orgUnitInfo.bind(this));
 	}
 
