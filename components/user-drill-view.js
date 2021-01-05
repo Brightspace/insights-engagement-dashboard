@@ -4,6 +4,7 @@ import 'd2l-users/components/d2l-profile-image';
 import './summary-cards-container';
 import './user-drill-courses-table.js';
 import './message-container';
+import './content-views-card.js';
 
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { computed, decorate } from 'mobx';
@@ -358,6 +359,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 				.cards="${this.summaryCards}"
 			></d2l-summary-cards-container>
+			<div><d2l-insights-content-views-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-content-views-card></div>
 
 			<div class="d2l-insights-user-drill-view-content">
 				${this._renderContent()}
