@@ -77,7 +77,7 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get chartOptions() {
 		return {
 			chart: {
-				height: 250,
+				height: 270,
 				width: 583,
 				zoomType: 'x'
 			},
@@ -112,7 +112,8 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 						fontSize: '9px',
 						fontWeight: 'bold',
 						fontFamily: 'Lato'
-					}
+					},
+					margin: -10
 				}
 			},
 			yAxis: {
