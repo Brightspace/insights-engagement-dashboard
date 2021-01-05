@@ -41,6 +41,10 @@ class SelectedCourses {
 			this.selected.add(value);
 		}
 	}
+
+	has(value) {
+		return this.selected.has(value);
+	}
 }
 
 decorate(SelectedCourses, {

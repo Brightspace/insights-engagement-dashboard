@@ -112,7 +112,7 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 	_renderCourse(course, color) {
 		const containerStyles = classMap({
 			'd2l-insights-user-course-legend-item': true,
-			'd2l-insights-user-course-legend-item-filtered': this.selectedCourses.selected.has(course.orgUnitId)
+			'd2l-insights-user-course-legend-item-filtered': this.selectedCourses.has(course.orgUnitId)
 		});
 		return html`
 		<div tabindex="0" ouid="${course.orgUnitId}" class="${containerStyles}">
