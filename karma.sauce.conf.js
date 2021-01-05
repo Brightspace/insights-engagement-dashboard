@@ -49,7 +49,8 @@ module.exports = config => {
 				nodeResolve: true,
 			},
 			sauceLabs: {
-				testName: 'Unit Tests'
+				testName: 'Unit Tests',
+				idleTimeout: 300 // 5 minutes
 			},
 			customLaunchers: customLaunchers,
 			browsers: Object.keys(customLaunchers),
