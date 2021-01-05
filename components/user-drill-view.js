@@ -5,6 +5,7 @@ import './summary-cards-container';
 import './user-drill-courses-table.js';
 import './message-container';
 import './summary-card';
+import './courses-legend';
 
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { computed, decorate } from 'mobx';
@@ -218,7 +219,9 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get coursesInViewForUser() {
-		return this.data.recordsByUser.get(this.user.userId).length;
+		// when loading or refreshing data the user record may not exist
+		const userRecords = this.data.recordsByUser.get(this.user.userId);
+		return userRecords ? userRecords.length : 0;
 	}
 
 	_overdueAssignments({ wide, tall, skeleton }) {
@@ -249,7 +252,10 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get averageGradeForUser() {
-		const coursesWithGrades = this.data.recordsByUser.get(this.user.userId).filter(r => r[RECORD.CURRENT_FINAL_GRADE] !== null);
+		const userRecords = this.data.recordsByUser.get(this.user.userId);
+		if (!userRecords) return undefined;
+
+		const coursesWithGrades = userRecords.filter(r => r[RECORD.CURRENT_FINAL_GRADE] !== null);
 		const averageFinalGrade = coursesWithGrades.reduce((sum, r) => sum + r[RECORD.CURRENT_FINAL_GRADE], 0) / coursesWithGrades.length;
 		return averageFinalGrade ? formatPercent(averageFinalGrade / 100, numberFormatOptions) : null;
 	}
@@ -366,6 +372,12 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			></d2l-summary-cards-container>
 
 			<div class="d2l-insights-user-drill-view-content">
+				<d2l-insights-courses-legend
+					.data="${this.data}"
+					.user="${this.user}"
+					?skeleton="${this.skeleton}"
+				>
+				</d2l-insights-courses-legend>
 				${this._renderContent()}
 			</div>
 		</div>`;
