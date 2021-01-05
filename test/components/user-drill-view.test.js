@@ -1,11 +1,12 @@
 import '../../components/user-drill-view';
 
-import { expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import fetchMock from 'fetch-mock/esm/client';
 import { flush } from '@polymer/polymer/lib/utils/render-status.js';
 import { mockOuTypes } from '../model/mocks';
 import noProfile from '../responses/no_profile';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
+import sinon from 'sinon/pkg/sinon-esm.js';
 
 describe('d2l-insights-user-drill-view', () => {
 	const user = {
@@ -20,6 +21,15 @@ describe('d2l-insights-user-drill-view', () => {
 		[3, 232, 0, 0, 45, 0, 0, 0, 0, 0, null],
 		[2, 232, 0, 1, 78, 0, 0, 0, 0, 0, null]
 	];
+
+	const filter = {
+		get isApplied() {
+			return this._isApplied;
+		},
+		set isApplied(value) {
+			this._isApplied = value;
+		}
+	};
 
 	const data = {
 		_data: {
@@ -38,7 +48,8 @@ describe('d2l-insights-user-drill-view', () => {
 			getAncestorIds: () => [],
 			getType: () => 0
 		},
-		users: [Object.values(user)]
+		users: [Object.values(user)],
+		getFilter: () => filter
 	};
 
 	data.recordsByUser = new Map();
@@ -198,6 +209,27 @@ describe('d2l-insights-user-drill-view', () => {
 			expect(summaryCards[1].value).to.eql('');
 			expect(summaryCards[1].message).to.eql('No grade information available.');
 			expect(summaryCards[1].title).to.eql('Average Grade');
+		});
+	});
+
+	describe('interactions/eventing', () => {
+
+		it('should set filter after click on overdue assignment card', async() => {
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
+			await new Promise(res => setTimeout(res, 20));
+
+			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
+			const overdueAssignmentsCard = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card')[2];
+
+			const listener = oneEvent(overdueAssignmentsCard, 'd2l-labs-summary-card-value-click');
+
+			const isAppliedSpy = sinon.spy(filter, 'isApplied', ['set']);
+			const button = overdueAssignmentsCard.shadowRoot.querySelector('.d2l-insights-summary-card-button');
+			button.click();
+
+			const event = await listener;
+			expect(event).exist;
+			expect(isAppliedSpy.set.calledWith(true)).to.be.true;
 		});
 	});
 });
