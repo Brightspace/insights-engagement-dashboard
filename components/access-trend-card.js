@@ -208,12 +208,13 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			},
 
 			plotOptions: {
-				series: {
+				area: {
 					trackByArea: true,
 
 					events: {
 						click: function(e) {
 							// TODO change color
+							console.log(e);
 							console.log(`Series ${e.point.series.name} clicked.`);
 							const orgUnitId = parseInt(e.point.series.name, 10);
 							if (Number.isInteger(orgUnitId)) {
@@ -225,11 +226,15 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 					states: {
 						hover: {
-							enabled: false
+							enabled: true
 						},
 						inactive: {
 							enabled: false
 						}
+					},
+
+					marker: {
+						enabled: false
 					}
 				}
 			},
@@ -252,7 +257,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get _series() {
 		// TODO get real data
 		return [{
-			name: 'System Access',
+			name: '1',
 			data: [
 				{ x: Date.UTC(2020, 1, 1), y: 43934 },
 				{ x: Date.UTC(2020, 1, 3), y: 52503 },
@@ -264,7 +269,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				{ x: Date.UTC(2020, 1, 15), y: 154175 }
 			]
 		}, {
-			name: '1',
+			name: '2',
 			data: [
 				{ x: Date.UTC(2020, 1, 1), y:24916 },
 				{ x: Date.UTC(2020, 1, 3), y: 24064 },
@@ -276,7 +281,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				{ x: Date.UTC(2020, 1, 15), y: 40434 }
 			]
 		}, {
-			name: '2',
+			name: '3',
 			data: [
 				{ x: Date.UTC(2020, 1, 1), y: 12908 },
 				{ x: Date.UTC(2020, 1, 3), y: 5948 },
