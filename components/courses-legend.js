@@ -6,10 +6,12 @@ import { classMap } from 'lit-html/directives/class-map';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
+import { UrlState } from '../model/urlState';
 
 export class SelectedCourses {
 	constructor() {
 		this.selected = new Set();
+		this.urlState = new UrlState(this);
 	}
 
 	filter(record) {
@@ -31,6 +33,30 @@ export class SelectedCourses {
 
 	size() {
 		return this.selected.size();
+	}
+
+	set(values) {
+		this.selected = new Set();
+		values.forEach(value => this.selected.add(value));
+	}
+
+	//for Urlstate
+	get persistenceKey() {
+		return 'clf';
+	}
+
+	get persistenceValue() {
+		if (this.selected.size === 0) return '';
+		return [...this.selected].join(',');
+	}
+
+	set persistenceValue(value) {
+		if (value === '') {
+			this.selected.clear();
+			return;
+		}
+		const newValues = value.split(',').map(category => Number(category));
+		this.set(newValues);
 	}
 }
 decorate(SelectedCourses, {
