@@ -408,6 +408,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				?skeleton="${this.skeleton}"
 
 				.data="${this.data}"
+				.user="${this.user}"
+				.selectedCourses="${this.selectedCourses}"
 			></d2l-insights-access-trend-card>
 
 			<div class="d2l-insights-user-drill-view-content">

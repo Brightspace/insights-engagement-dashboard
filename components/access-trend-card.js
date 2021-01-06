@@ -9,65 +9,21 @@ import { RECORD } from '../consts';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 import { UrlState } from '../model/urlState';
 
-const filterId = 'd2l-insights-access-trend-card';
-
-export class CourseFilter {
-	constructor() {
-		this.isApplied = false;
-		this.orgUnitId = null;
-		this._urlState = new UrlState(this);
-	}
-
-	get id() { return filterId; }
-
-	get title() { return 'accessTrendCard:title'; }
-
-	get isApplied() {
-		return this.orgUnitId !== null;
-	}
-
-	set isApplied(isApplied) {
-		if (!isApplied) this.orgUnitId = null;
-	}
-
-	filter(record) {
-		return record[RECORD.ORG_UNIT_ID] === this.orgUnitId;
-	}
-
-	toggleCourse(orgUnitId) {
-		if (this.orgUnitId === orgUnitId) {
-			this.orgUnitId = null;
-		} else {
-			this.orgUnitId = orgUnitId;
-		}
-	}
-
-	get persistenceKey() { return 'c'; }
-
-	get persistenceValue() {
-		return this.isApplied ? this.orgUnitId : '';
-	}
-
-	set persistenceValue(value) {
-		this.orgUnitId = value === '' ? null : value;
-	}
-}
-decorate(CourseFilter, {
-	orgUnitId: observable,
-	isApplied: computed
-});
-
 class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	static get properties() {
 		return {
-			data: { type: Object, attribute: false }
+			data: { type: Object, attribute: false },
+			user: { type: Object, attribute: false },
+			selectedCourses: { type: Object, attribute: false }
 		};
 	}
 
 	constructor() {
 		super();
 		this.data = {};
+		this.user = {};
+		this.selectedCourses = new Set();
 	}
 
 	static get styles() {
@@ -128,8 +84,8 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			></d2l-labs-chart>`;
 	}
 
-	get filter() {
-		return this.data.getFilter(filterId);
+	_toggleFilter(orgUnitId) {
+		this.selectedCourses.toggle(orgUnitId);
 	}
 
 	get _chartOptions() {
@@ -219,7 +175,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 							const orgUnitId = parseInt(e.point.series.name, 10);
 							if (Number.isInteger(orgUnitId)) {
 								console.log('Toggle filter');
-								that.filter.toggleCourse(orgUnitId);
+								that._toggleFilter(orgUnitId);
 							}
 						}
 					},
