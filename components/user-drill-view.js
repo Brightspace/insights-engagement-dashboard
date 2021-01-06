@@ -5,7 +5,6 @@ import './summary-cards-container';
 import './user-drill-courses-table.js';
 import './message-container';
 import './summary-card';
-import './courses-legend';
 
 import { action, computed, decorate, observable } from 'mobx';
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
@@ -18,39 +17,12 @@ import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { OVERDUE_ASSIGNMENTS_FILTER_ID } from './overdue-assignments-card';
 import { resetUrlState } from '../model/urlState';
+import { SelectedCourses } from './courses-legend';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { until } from 'lit-html/directives/until';
 
 export const numberFormatOptions = { maximumFractionDigits: 2 };
 const demoDate = 1608000000000; //for unit test
-
-class SelectedCourses {
-	constructor() {
-		this.selected = new Set();
-	}
-
-	filter(record) {
-		return !this.selected.has(record[RECORD.ORG_UNIT_ID]);
-	}
-
-	toggle(value) {
-		if (this.selected.has(value)) {
-			this.selected.delete(value);
-		}
-		else {
-			this.selected.add(value);
-		}
-	}
-
-	has(value) {
-		return this.selected.has(value);
-	}
-}
-
-decorate(SelectedCourses, {
-	selected: observable,
-	toggle: action,
-});
 
 /**
  * @property {Object} data - an instance of Data from model/data.js

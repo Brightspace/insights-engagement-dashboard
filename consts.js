@@ -73,11 +73,8 @@ export const USER_TREND_COLORS = [
 	'#FFAB61',
 ];
 
-export function* UserTrendColorsIterator(start = 0, end = 40, step = 1) {
-	let iterationCount = 0;
+export function* UserTrendColorsIterator(start = 0, step = 1, end = 40) {
 	for (let i = start; i < end; i += step) {
-		iterationCount += 1;
-		yield USER_TREND_COLORS[i];
+		yield USER_TREND_COLORS[i % USER_TREND_COLORS.length];
 	}
-	return iterationCount;
 }

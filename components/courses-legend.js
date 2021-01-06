@@ -1,4 +1,4 @@
-import { computed, decorate, observable } from 'mobx';
+import { action, computed, decorate, observable } from 'mobx';
 import { css, html } from 'lit-element';
 import { ORG_UNIT, RECORD, UserTrendColorsIterator } from '../consts';
 import { bodySmallStyles } from '@brightspace-ui/core/components/typography/styles.js';
@@ -6,6 +6,37 @@ import { classMap } from 'lit-html/directives/class-map';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
+
+export class SelectedCourses {
+	constructor() {
+		this.selected = new Set();
+	}
+
+	filter(record) {
+		return !this.selected.has(record[RECORD.ORG_UNIT_ID]);
+	}
+
+	toggle(value) {
+		if (this.selected.has(value)) {
+			this.selected.delete(value);
+		}
+		else {
+			this.selected.add(value);
+		}
+	}
+
+	has(value) {
+		return this.selected.has(value);
+	}
+
+	size() {
+		return this.selected.size();
+	}
+}
+decorate(SelectedCourses, {
+	selected: observable,
+	toggle: action,
+});
 class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
@@ -90,23 +121,20 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	get courses() {
 
-		const isUsersRecord = record => record[RECORD.USER_ID] === this.user.userId;
 		const recordOrgUnitId = record => record[RECORD.ORG_UNIT_ID];
+		const orgUnitInfo = orgUnitId => {
+			const orgUnit = this.serverData.orgUnits.find(unit => unit[ORG_UNIT.ID] === orgUnitId);
+			return {
+				name: `${orgUnit[ORG_UNIT.NAME]} (Id: ${orgUnitId})`,
+				orgUnitId
+			};
+		};
+
 		// get a unique set of orgId's then get the name of those org units.
 		return Array.from(
-			new Set(this.data
-				.records
-				.filter(isUsersRecord)
+			new Set(this.data.recordsByUser.get(this.user.userId)
 				.map(recordOrgUnitId)))
-			.map(this._orgUnitInfo.bind(this));
-	}
-
-	_orgUnitInfo(orgUnitId) {
-		const orgUnit = this.serverData.orgUnits.find(unit => unit[ORG_UNIT.ID] === orgUnitId);
-		return {
-			name: `${orgUnit[ORG_UNIT.NAME]} (Id: ${orgUnitId})`,
-			orgUnitId
-		};
+			.map(orgUnitInfo);
 	}
 
 	_renderCourse(course, color) {
@@ -115,7 +143,7 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 			'd2l-insights-user-course-legend-item-filtered': this.selectedCourses.has(course.orgUnitId)
 		});
 		return html`
-		<div tabindex="0" ouid="${course.orgUnitId}" class="${containerStyles}">
+		<div tabindex="0" data-ouid="${course.orgUnitId}" class="${containerStyles}">
 			<div class="d2l-insights-user-course-legend-color" style="background-color: ${color};"></div>
 			<p class="d2l-insights-user-sourse-legend-name">${course.name}</p>
 		</div>
@@ -123,7 +151,7 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_renderCourses() {
-		const colors = UserTrendColorsIterator();
+		const colors = UserTrendColorsIterator(0, 1, this.courses.length);
 		return this.courses.map(course => this._renderCourse(course, colors.next().value));
 	}
 
@@ -134,9 +162,8 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 		// interaction out of scope, but this will get ya started
 
 		if (e.target.parentElement === null) return;
-		const orgUnitId = e.target.getAttribute('ouid') | e.target.parentElement.getAttribute('ouid');
-
-		this.selectedCourses.toggle(orgUnitId);
+		const orgUnitId = e.target.getAttribute('data-ouid') || e.target.parentElement.getAttribute('data-ouid');
+		this.selectedCourses.toggle(Number(orgUnitId));
 	}
 
 	render() {
