@@ -5,10 +5,11 @@ import './summary-cards-container';
 import './user-drill-courses-table.js';
 import './message-container';
 import './summary-card';
+import './courses-legend';
 import './access-trend-card';
 
+import { action, computed, decorate, observable } from 'mobx';
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
-import { computed, decorate } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
 import { RECORD, USER } from '../consts';
 import { createComposeEmailPopup } from './email-integration';
@@ -24,6 +25,34 @@ import { until } from 'lit-html/directives/until';
 export const numberFormatOptions = { maximumFractionDigits: 2 };
 const demoDate = 1608000000000; //for unit test
 
+class SelectedCourses {
+	constructor() {
+		this.selected = new Set();
+	}
+
+	filter(record) {
+		return !this.selected.has(record[RECORD.ORG_UNIT_ID]);
+	}
+
+	toggle(value) {
+		if (this.selected.has(value)) {
+			this.selected.delete(value);
+		}
+		else {
+			this.selected.add(value);
+		}
+	}
+
+	has(value) {
+		return this.selected.has(value);
+	}
+}
+
+decorate(SelectedCourses, {
+	selected: observable,
+	toggle: action,
+});
+
 /**
  * @property {Object} data - an instance of Data from model/data.js
  * @property {Object} user - {firstName, lastName, username, userId}
@@ -38,7 +67,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			isDemo: { type: Boolean, attribute: 'demo' },
 			isStudentSuccessSys: { type: Boolean, attribute: false },
 			orgUnitId: { type: Number, attribute: 'org-unit-id' },
-			viewState: { type: Object, attribute: false }
+			viewState: { type: Object, attribute: false },
+			selectedCourses: { type: Object, attribute: false }
 		};
 	}
 
@@ -56,6 +86,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this.isStudentSuccessSys = false;
 		this.orgUnitId = 0;
 		this.viewState = null;
+
+		this.selectedCourses = new SelectedCourses();
 	}
 
 	static get styles() {
@@ -219,7 +251,9 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get coursesInViewForUser() {
-		return this.data.recordsByUser.get(this.user.userId).length;
+		// when loading or refreshing data the user record may not exist
+		const userRecords = this.data.recordsByUser.get(this.user.userId);
+		return userRecords ? userRecords.length : 0;
 	}
 
 	_overdueAssignments({ wide, tall, skeleton }) {
@@ -250,7 +284,10 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get averageGradeForUser() {
-		const coursesWithGrades = this.data.recordsByUser.get(this.user.userId).filter(r => r[RECORD.CURRENT_FINAL_GRADE] !== null);
+		const userRecords = this.data.recordsByUser.get(this.user.userId);
+		if (!userRecords) return undefined;
+
+		const coursesWithGrades = userRecords.filter(r => r[RECORD.CURRENT_FINAL_GRADE] !== null);
 		const averageFinalGrade = coursesWithGrades.reduce((sum, r) => sum + r[RECORD.CURRENT_FINAL_GRADE], 0) / coursesWithGrades.length;
 		return averageFinalGrade ? formatPercent(averageFinalGrade / 100, numberFormatOptions) : null;
 	}
@@ -374,6 +411,13 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			></d2l-insights-access-trend-card>
 
 			<div class="d2l-insights-user-drill-view-content">
+				<d2l-insights-courses-legend
+					.data="${this.data}"
+					.user="${this.user}"
+					.selectedCourses="${this.selectedCourses}"
+					?skeleton="${this.skeleton}"
+				>
+				</d2l-insights-courses-legend>
 				${this._renderContent()}
 			</div>
 		</div>`;
