@@ -1,13 +1,11 @@
 import 'highcharts';
-import { computed, decorate, observable } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
+import { ORG_UNIT, USER_TREND_COLORS } from '../consts';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
 import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
-import { RECORD } from '../consts';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
-import { UrlState } from '../model/urlState';
 
 class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
@@ -23,7 +21,10 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		super();
 		this.data = {};
 		this.user = {};
-		this.selectedCourses = new Set();
+		this.selectedCourses = {
+			size: 0,
+			has: () => false
+		};
 	}
 
 	static get styles() {
@@ -128,7 +129,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				},
 
 				labels: {
-					format: '{value:%b %e/%y}', // TODO localization
+					format: '{value:%b %e/%y}',
 					rotation: -60,
 
 					style: {
@@ -169,12 +170,8 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 					events: {
 						click: function(e) {
-							// TODO change color
-							console.log(e);
-							console.log(`Series ${e.point.series.name} clicked.`);
 							const orgUnitId = parseInt(e.point.series.name, 10);
 							if (Number.isInteger(orgUnitId)) {
-								console.log('Toggle filter');
 								that._toggleFilter(orgUnitId);
 							}
 						}
@@ -198,22 +195,16 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			accessibility: {
 				screenReaderSection: {
 					beforeChartFormat: BEFORE_CHART_FORMAT
-				}/*,
-				TODO should we replace description?
-				`System Access, series 1 of 3 with 8 data points.`
-				series: {
-					descriptionFormatter: () => this._cardTitle
-				}*/
+				}
 			},
 
 			series: this._series
 		};
 	}
 
-	get _series() {
-		// TODO get real data
-		return [{
-			name: '1',
+	get _trendData() {
+		const courses = [{
+			orgUnitId: 1,
 			data: [
 				{ x: Date.UTC(2020, 1, 1), y: 43934 },
 				{ x: Date.UTC(2020, 1, 3), y: 52503 },
@@ -225,7 +216,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				{ x: Date.UTC(2020, 1, 15), y: 154175 }
 			]
 		}, {
-			name: '2',
+			orgUnitId: 2,
 			data: [
 				{ x: Date.UTC(2020, 1, 1), y:24916 },
 				{ x: Date.UTC(2020, 1, 3), y: 24064 },
@@ -237,7 +228,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				{ x: Date.UTC(2020, 1, 15), y: 40434 }
 			]
 		}, {
-			name: '3',
+			orgUnitId: 3,
 			data: [
 				{ x: Date.UTC(2020, 1, 1), y: 12908 },
 				{ x: Date.UTC(2020, 1, 3), y: 5948 },
@@ -249,6 +240,26 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				{ x: Date.UTC(2020, 1, 15), y: 18111 }
 			]
 		}];
+
+		return courses;
+	}
+
+	get _serverData() {
+		return this.data._data.serverData;
+	}
+
+	_orgUnitName(orgUnitId) {
+		return this._serverData.orgUnits.find(unit => unit[ORG_UNIT.ID] === orgUnitId)[ORG_UNIT.NAME];
+	}
+
+	get _series() {
+		return this._trendData
+			.map((course, idx) => ({
+				...course,
+				// It is read as `Course 1, series 1 of 3 with 8 data points.`
+				name: this._orgUnitName(course.orgUnitId),
+				color: USER_TREND_COLORS[idx % USER_TREND_COLORS.length] }))
+			.filter(course => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0);
 	}
 }
 customElements.define('d2l-insights-access-trend-card', AccessTrendCard);

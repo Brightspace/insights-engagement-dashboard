@@ -46,6 +46,10 @@ class SelectedCourses {
 	has(value) {
 		return this.selected.has(value);
 	}
+
+	get size() {
+		return this.selected.size;
+	}
 }
 
 decorate(SelectedCourses, {
