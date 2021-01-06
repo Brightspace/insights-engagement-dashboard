@@ -249,7 +249,9 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_orgUnitName(orgUnitId) {
-		return this._serverData.orgUnits.find(unit => unit[ORG_UNIT.ID] === orgUnitId)[ORG_UNIT.NAME];
+		const orgUnit = this._serverData.orgUnits.find(unit => unit[ORG_UNIT.ID] === orgUnitId);
+
+		return orgUnit ? orgUnit[ORG_UNIT.NAME] : '';
 	}
 
 	get _series() {
