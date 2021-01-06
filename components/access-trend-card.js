@@ -19,7 +19,13 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	constructor() {
 		super();
-		this.data = {};
+		this.data = {
+			_data: {
+				serverData: {
+					orgUnits: []
+				}
+			}
+		};
 		this.user = {};
 		this.selectedCourses = {
 			size: 0,

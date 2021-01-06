@@ -1,11 +1,15 @@
 import '../../components/access-trend-card';
-import { elementUpdated, expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html } from '@open-wc/testing';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
-describe('access-trend-card', () => {
-	const data = {};
-	//const filter = new AccessTrendCard(data);
-	//data.getFilter = id => (id === filter.id ? filter : null);
+describe('d2l-insights-access-trend-card', () => {
+	const data = {
+		_data: {
+			serverData: {
+				orgUnits: []
+			}
+		}
+	};
 
 	describe('constructor', () => {
 		it('should construct', () => {
@@ -23,7 +27,7 @@ describe('access-trend-card', () => {
 	describe('render', () => {
 		it('should render Access Over Time chart', async() => {
 			const el = await fixture(html`<d2l-insights-access-trend-card .data="${data}"></d2l-insights-access-trend-card>`);
-			const title = (el.shadowRoot.querySelectorAll('div.d2l-insights-access-trend-title'));
+			const title = el.shadowRoot.querySelectorAll('div.d2l-insights-access-trend-title');
 			expect(title[0].innerText).to.equal('Access Over Time');
 		});
 	});
