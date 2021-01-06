@@ -170,7 +170,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 					events: {
 						click: function(e) {
-							const orgUnitId = parseInt(e.point.series.name, 10);
+							const orgUnitId = parseInt(e.point.series.userOptions.orgUnitId, 10);
 							if (Number.isInteger(orgUnitId)) {
 								that._toggleFilter(orgUnitId);
 							}
