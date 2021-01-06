@@ -216,7 +216,7 @@ describe('d2l-insights-user-drill-view', () => {
 
 		it('should set filter after click on overdue assignment card', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
-			await new Promise(res => setTimeout(res, 20));
+			await new Promise(res => setTimeout(res, 80));
 
 			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
 			const overdueAssignmentsCard = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card')[2];
