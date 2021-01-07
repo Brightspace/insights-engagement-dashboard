@@ -39,7 +39,7 @@ describe('d2l-insights-dropdown-filter', () => {
 
 	describe('render', () => {
 		it('should render the dropdown opener with the correct name if none are selected', async() => {
-			const filter = el.shadowRoot.querySelector('d2l-filter-dropdown');
+			const filter = el.shadowRoot.querySelector('d2l-labs-filter-dropdown');
 			expect(filter.openerText).to.equal(`${name}: All`);
 			expect(filter.openerTextSingle).to.equal(`${name}: 0 selected`);
 			expect(filter.openerTextMultiple).to.equal(`${name}: 0 selected`);
@@ -53,7 +53,7 @@ describe('d2l-insights-dropdown-filter', () => {
 			await new Promise(resolve => setTimeout(resolve, 0)); // allow fetch to run
 			await el.updateComplete;
 
-			const filter = el.shadowRoot.querySelector('d2l-filter-dropdown');
+			const filter = el.shadowRoot.querySelector('d2l-labs-filter-dropdown');
 			expect(filter.openerText).to.equal(`${name}: All`);
 			expect(filter.openerTextSingle).to.equal(`${name}: ${data[0].name}`);
 			expect(filter.openerTextMultiple).to.equal(`${name}: ${data[0].name}`);
@@ -68,14 +68,14 @@ describe('d2l-insights-dropdown-filter', () => {
 			await new Promise(resolve => setTimeout(resolve, 0)); // allow fetch to run
 			await el.updateComplete;
 
-			const filter = el.shadowRoot.querySelector('d2l-filter-dropdown');
+			const filter = el.shadowRoot.querySelector('d2l-labs-filter-dropdown');
 			expect(filter.openerText).to.equal(`${name}: All`);
 			expect(filter.openerTextSingle).to.equal(`${name}: 2 selected`);
 			expect(filter.openerTextMultiple).to.equal(`${name}: 2 selected`);
 		});
 
 		it('should render with the correct checkbox elements', () => {
-			const checkboxList = Array.from(el.shadowRoot.querySelectorAll('d2l-filter-dropdown-option'));
+			const checkboxList = Array.from(el.shadowRoot.querySelectorAll('d2l-labs-filter-dropdown-option'));
 			expect(checkboxList.length).to.equal(2);
 			checkboxList.forEach((checkbox, idx) => {
 				expect(checkbox.value).to.equal(testData[idx].id);
@@ -85,7 +85,7 @@ describe('d2l-insights-dropdown-filter', () => {
 		});
 
 		it('should render search panel', () => {
-			const category = el.shadowRoot.querySelector('d2l-filter-dropdown-category');
+			const category = el.shadowRoot.querySelector('d2l-labs-filter-dropdown-category');
 			expect(category.disableSearch).to.be.false;
 		});
 
@@ -94,7 +94,7 @@ describe('d2l-insights-dropdown-filter', () => {
 			await new Promise(resolve => setTimeout(resolve, 0)); // allow fetch to run
 			await el.updateComplete;
 
-			const category = el.shadowRoot.querySelector('d2l-filter-dropdown-category');
+			const category = el.shadowRoot.querySelector('d2l-labs-filter-dropdown-category');
 			expect(category.disableSearch).to.be.true;
 		});
 
@@ -102,7 +102,7 @@ describe('d2l-insights-dropdown-filter', () => {
 			// everything should be deselected initially
 			expect(el.selected).to.deep.equal([]);
 
-			const checkboxes = Array.from(el.shadowRoot.querySelectorAll('d2l-filter-dropdown-option'));
+			const checkboxes = Array.from(el.shadowRoot.querySelectorAll('d2l-labs-filter-dropdown-option'));
 
 			checkboxes.find(checkbox => checkbox.value === '1').click();
 			checkboxes.find(checkbox => checkbox.value === '2').click();
@@ -116,19 +116,19 @@ describe('d2l-insights-dropdown-filter', () => {
 	});
 
 	describe('search', () => {
-		it('should filter the items when d2l-filter-dropdown-category-searched is handled', async() => {
+		it('should filter the items when d2l-labs-filter-dropdown-category-searched is handled', async() => {
 			const dropdownCategorySearchedEvent = { detail: { value: '2' } };
 
 			el._handleSearchedClick(dropdownCategorySearchedEvent);
 			await el.updateComplete;
 
-			const checkboxList = [...el.shadowRoot.querySelectorAll('d2l-filter-dropdown-option')];
+			const checkboxList = [...el.shadowRoot.querySelectorAll('d2l-labs-filter-dropdown-option')];
 			expect(checkboxList[0].hidden).to.be.true;
 			expect(checkboxList[1].hidden).to.be.not.true;
 		});
 
 		it('should maintain selected state across searches', async() => {
-			const checkboxList = [...el.shadowRoot.querySelectorAll('d2l-filter-dropdown-option')];
+			const checkboxList = [...el.shadowRoot.querySelectorAll('d2l-labs-filter-dropdown-option')];
 
 			el._handleSearchedClick({ detail: { value: '2' } });
 			await el.updateComplete;
@@ -152,7 +152,7 @@ describe('d2l-insights-dropdown-filter', () => {
 			el._handleSearchedClick(dropdownCategorySearchedEvent);
 			await el.updateComplete;
 
-			const checkboxList = [...el.shadowRoot.querySelectorAll('d2l-filter-dropdown-option')];
+			const checkboxList = [...el.shadowRoot.querySelectorAll('d2l-labs-filter-dropdown-option')];
 			expect(checkboxList[0].hidden).to.be.true;
 			expect(checkboxList[1].hidden).to.be.not.true;
 		});
@@ -161,7 +161,7 @@ describe('d2l-insights-dropdown-filter', () => {
 	describe('eventing', () => {
 		it('should fire a `selected` event whenever one of the checkboxes is clicked', async() => {
 			let listener = oneEvent(el, 'd2l-insights-dropdown-filter-selected');
-			const checkboxList = Array.from(el.shadowRoot.querySelectorAll('d2l-filter-dropdown-option'));
+			const checkboxList = Array.from(el.shadowRoot.querySelectorAll('d2l-labs-filter-dropdown-option'));
 
 			checkboxList[0].click();
 
@@ -174,7 +174,7 @@ describe('d2l-insights-dropdown-filter', () => {
 			expect(el.selected[0]).to.equal('1');
 
 			//  verify opener textes are changed
-			let filter = el.shadowRoot.querySelector('d2l-filter-dropdown');
+			let filter = el.shadowRoot.querySelector('d2l-labs-filter-dropdown');
 			expect(filter.openerText).to.equal(`${name}: All`);
 			expect(filter.openerTextSingle).to.equal(`${name}: ${testData[0].name}`);
 			expect(filter.openerTextMultiple).to.equal(`${name}: ${testData[0].name}`);
@@ -191,7 +191,7 @@ describe('d2l-insights-dropdown-filter', () => {
 			expect(el.selected.length).to.equal(0);
 
 			// verify opener texts are changed
-			filter = el.shadowRoot.querySelector('d2l-filter-dropdown');
+			filter = el.shadowRoot.querySelector('d2l-labs-filter-dropdown');
 			expect(filter.openerText).to.equal(`${name}: All`);
 			expect(filter.openerTextSingle).to.equal(`${name}: 0 selected`);
 			expect(filter.openerTextMultiple).to.equal(`${name}: 0 selected`);
