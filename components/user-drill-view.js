@@ -385,7 +385,6 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				></d2l-insights-courses-legend>
 			` : nothing }
 
-				</d2l-insights-courses-legend>
 				${this._renderContent()}
 			</div>
 		</div>`;
