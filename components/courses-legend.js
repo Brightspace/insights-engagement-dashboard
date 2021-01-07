@@ -156,11 +156,26 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 			};
 		};
 
+		const userRecords = this.data.recordsByUser.get(this.user.userId);
+		if (!userRecords) return [];
 		// get a unique set of orgId's then get the name of those org units.
 		return Array.from(
-			new Set(this.data.recordsByUser.get(this.user.userId)
-				.map(recordOrgUnitId)))
-			.map(orgUnitInfo);
+			new Set(userRecords.map(recordOrgUnitId))
+		).map(orgUnitInfo);
+	}
+
+	//EVENTS
+
+	_handleInteraction(e) {
+		if (e.target.parentElement === null) return;
+		const orgUnitId = e.target.getAttribute('data-ouid') || e.target.parentElement.getAttribute('data-ouid');
+		this.selectedCourses.toggle(Number(orgUnitId));
+	}
+
+	// RENDERERS
+
+	_isEnabled(orgUnitId) {
+		return this.selectedCourses.has(orgUnitId);
 	}
 
 	_renderCourse(course, color) {
@@ -169,7 +184,13 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 			'd2l-insights-user-course-legend-item-filtered': this.selectedCourses.has(course.orgUnitId)
 		});
 		return html`
-		<div tabindex="0" data-ouid="${course.orgUnitId}" class="${containerStyles}">
+		<div
+			role="button"
+			aria-pressed=${this._isEnabled(course.orgUnitId)}
+			tabindex="0"
+			data-ouid="${course.orgUnitId}"
+			class="${containerStyles}"
+		>
 			<div class="d2l-insights-user-course-legend-color" style="background-color: ${color};"></div>
 			<p class="d2l-insights-user-sourse-legend-name">${course.name}</p>
 		</div>
@@ -179,17 +200,6 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 	_renderCourses() {
 		const colors = UserTrendColorsIterator(0, 1, this.courses.length);
 		return this.courses.map(course => this._renderCourse(course, colors.next().value));
-	}
-
-	//EVENTS
-
-	_handleInteraction(e) {
-
-		// interaction out of scope, but this will get ya started
-
-		if (e.target.parentElement === null) return;
-		const orgUnitId = e.target.getAttribute('data-ouid') || e.target.parentElement.getAttribute('data-ouid');
-		this.selectedCourses.toggle(Number(orgUnitId));
 	}
 
 	render() {
@@ -206,6 +216,7 @@ decorate(CoursesLegend,
 	{
 		courses: computed,
 		data: observable,
+		user: observable,
 	}
 );
 

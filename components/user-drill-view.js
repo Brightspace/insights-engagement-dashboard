@@ -15,6 +15,7 @@ import { ExportData } from '../model/exportData';
 import { formatPercent } from '@brightspace-ui/intl';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
+import { nothing } from 'lit-html';
 import { OVERDUE_ASSIGNMENTS_FILTER_ID } from './overdue-assignments-card';
 import { resetUrlState } from '../model/urlState';
 import { SelectedCourses } from './courses-legend';
@@ -375,12 +376,15 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			></d2l-summary-cards-container>
 
 			<div class="d2l-insights-user-drill-view-content">
+			${ this.isDemo ? html`
 				<d2l-insights-courses-legend
 					.data="${this.data}"
 					.user="${this.user}"
 					.selectedCourses="${this.selectedCourses}"
 					?skeleton="${this.skeleton}"
-				>
+				></d2l-insights-courses-legend>
+			` : nothing }
+
 				</d2l-insights-courses-legend>
 				${this._renderContent()}
 			</div>
