@@ -36,11 +36,11 @@ class TreeSelector extends Localizer(LitElement) {
 					display: none;
 				}
 
-				.d2l-filter-dropdown-content-header {
+				.d2l-labs-filter-dropdown-content-header {
 					display: flex;
 					justify-content: space-between;
 				}
-				.d2l-filter-dropdown-content-header > span {
+				.d2l-labs-filter-dropdown-content-header > span {
 					align-self: center;
 				}
 
@@ -88,7 +88,7 @@ class TreeSelector extends Localizer(LitElement) {
 			<d2l-dropdown>
 				<d2l-dropdown-button-subtle text="${this.name}">
 					<d2l-dropdown-content align="start" no-auto-fit>
-						<div class="d2l-filter-dropdown-content-header" slot="header">
+						<div class="d2l-labs-filter-dropdown-content-header" slot="header">
 							<span>${this.localize('treeSelector:filterBy')}</span>
 							<d2l-button-subtle
 							 	text="${this.localize('treeSelector:clearLabel')}"
