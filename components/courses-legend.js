@@ -186,7 +186,7 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return html`
 		<div
 			role="button"
-			aria-pressed=${this._isEnabled(course.orgUnitId)}
+			aria-pressed=${!this._isEnabled(course.orgUnitId)}
 			tabindex="0"
 			data-ouid="${course.orgUnitId}"
 			class="${containerStyles}"
