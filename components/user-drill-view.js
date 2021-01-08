@@ -316,10 +316,11 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this.data.records.filter(r => r[RECORD.USER_ID] === this.user.userId);
 	}
 
-	get showCourseAlert() {
+	get hideCourseAlert() {
 		const userRecords = this.data.recordsByUser.get(this.user.userId);
-		if (!userRecords) return false;
-		return userRecords.length < 10;
+		if (!userRecords) return true;
+		const numCourses = new Set(userRecords.map(record => record[RECORD.ORG_UNIT_ID])).size;
+		return numCourses < 10;
 	}
 
 	render() {
@@ -379,7 +380,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 			<d2l-alert
 				has-close-button
-				?hidden=${this.showCourseAlert}
+				?hidden=${this.hideCourseAlert}
 			>
 				${this.localize('userDrill:manyCoursesAlert')}
 			</d2l-alert>
