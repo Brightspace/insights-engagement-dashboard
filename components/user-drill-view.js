@@ -1,5 +1,6 @@
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/button/button.js';
+import '@brightspace-ui/core/components/alert/alert.js';
 import 'd2l-users/components/d2l-profile-image';
 import './summary-cards-container';
 import './user-drill-courses-table.js';
@@ -315,6 +316,12 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this.data.records.filter(r => r[RECORD.USER_ID] === this.user.userId);
 	}
 
+	get showCourseAlert() {
+		const userRecords = this.data.recordsByUser.get(this.user.userId);
+		if (!userRecords) return false;
+		return userRecords.length < 10;
+	}
+
 	render() {
 		if (!this.skeleton && !this.user.userId) {
 			return html`
@@ -367,6 +374,15 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			<div class="d2l-insights-view-filters-container">
 				<slot name="applied-filters"></slot>
 			</div>
+
+			<h3>Summary View</h3>
+
+			<d2l-alert
+				has-close-button
+				?hidden=${this.showCourseAlert}
+			>
+				${this.localize('userDrill:manyCoursesAlert')}
+			</d2l-alert>
 
 			<d2l-summary-cards-container
 				?hidden="${this.hidden}"
