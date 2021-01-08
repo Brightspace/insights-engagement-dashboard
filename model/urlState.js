@@ -31,6 +31,14 @@ export function clearUrlState() {
 	window.history.replaceState({}, '', '');
 }
 
+export function removeState(key) {
+	const searchParams = new URLSearchParams(window.location.search);
+	searchParams.delete(key);
+	const url = new URL(window.location.href);
+	url.search = searchParams.toString();
+	window.history.pushState({}, '', url.toString());
+}
+
 // plan: store various filter settings in the url query (handled by each component); then add a button
 // "make this my default view" that stores the current query in local storage
 /**

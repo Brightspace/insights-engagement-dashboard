@@ -15,8 +15,10 @@ import { ExportData } from '../model/exportData';
 import { formatPercent } from '@brightspace-ui/intl';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
+import { nothing } from 'lit-html';
 import { OVERDUE_ASSIGNMENTS_FILTER_ID } from './overdue-assignments-card';
 import { resetUrlState } from '../model/urlState';
+import { SelectedCourses } from './courses-legend';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { until } from 'lit-html/directives/until';
 
@@ -37,7 +39,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			isDemo: { type: Boolean, attribute: 'demo' },
 			isStudentSuccessSys: { type: Boolean, attribute: false },
 			orgUnitId: { type: Number, attribute: 'org-unit-id' },
-			viewState: { type: Object, attribute: false }
+			viewState: { type: Object, attribute: false },
+			selectedCourses: { type: Object, attribute: false }
 		};
 	}
 
@@ -55,6 +58,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this.isStudentSuccessSys = false;
 		this.orgUnitId = 0;
 		this.viewState = null;
+
+		this.selectedCourses = new SelectedCourses();
 	}
 
 	static get styles() {
@@ -218,7 +223,9 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get coursesInViewForUser() {
-		return this.data.recordsByUser.get(this.user.userId).length;
+		// when loading or refreshing data the user record may not exist
+		const userRecords = this.data.recordsByUser.get(this.user.userId);
+		return userRecords ? userRecords.length : 0;
 	}
 
 	_overdueAssignments({ wide, tall, skeleton }) {
@@ -249,7 +256,10 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get averageGradeForUser() {
-		const coursesWithGrades = this.data.recordsByUser.get(this.user.userId).filter(r => r[RECORD.CURRENT_FINAL_GRADE] !== null);
+		const userRecords = this.data.recordsByUser.get(this.user.userId);
+		if (!userRecords) return undefined;
+
+		const coursesWithGrades = userRecords.filter(r => r[RECORD.CURRENT_FINAL_GRADE] !== null);
 		const averageFinalGrade = coursesWithGrades.reduce((sum, r) => sum + r[RECORD.CURRENT_FINAL_GRADE], 0) / coursesWithGrades.length;
 		return averageFinalGrade ? formatPercent(averageFinalGrade / 100, numberFormatOptions) : null;
 	}
@@ -366,6 +376,15 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			></d2l-summary-cards-container>
 
 			<div class="d2l-insights-user-drill-view-content">
+			${ this.isDemo ? html`
+				<d2l-insights-courses-legend
+					.data="${this.data}"
+					.user="${this.user}"
+					.selectedCourses="${this.selectedCourses}"
+					?skeleton="${this.skeleton}"
+				></d2l-insights-courses-legend>
+			` : nothing }
+
 				${this._renderContent()}
 			</div>
 		</div>`;

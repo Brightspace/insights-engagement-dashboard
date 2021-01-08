@@ -5,7 +5,8 @@ import { css, html } from 'lit-element/lit-element';
 import { DefaultViewState } from '../model/view-state';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
-
+import { removeState } from '../model/urlState';
+import { SelectedCourses } from './courses-legend';
 const insightsPortalEndpoint = '/d2l/ap/insightsPortal/main.d2l';
 
 // Extends the standard immersive nav to resize the back link on small screens
@@ -108,6 +109,10 @@ class InsightsImmersiveNav extends Localizer(MobxLitElement) {
 	_backLinkClickHandler(e) {
 		if (this.view === 'home') {
 			return true;
+		}
+
+		if (this.view === 'user') {
+			removeState((new SelectedCourses()).persistenceKey);
 		}
 
 		this.viewState.setHomeView();
