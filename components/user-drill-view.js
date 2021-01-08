@@ -287,7 +287,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get lastSysAccessForUser() {
-		if (!this.data.userDictionary) return [];
+		if (!this.data.userDictionary) return 0;
 		const userData = this.data.userDictionary.get(this.user.userId);
 		const currentDate = this.isDemo ? demoDate : Date.now();
 		return userData[USER.LAST_SYS_ACCESS] ? Math.floor((currentDate - userData[USER.LAST_SYS_ACCESS]) / (1000 * 60 * 60 * 24)) : '';
