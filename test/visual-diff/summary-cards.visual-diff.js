@@ -3,7 +3,7 @@ const VisualDiff = require('@brightspace-ui/visual-diff');
 
 describe('summary cards', () => {
 
-	const visualDiff = new VisualDiff('summary-cards', __dirname);
+	const visualDiff = new VisualDiff('summary-cards', __dirname, { tolerance: 0.05 });
 
 	let browser, page, rect, removeCard;
 

@@ -216,5 +216,9 @@ export default {
 	"averageGradeSummaryCard:averageGrade" : "Average Grade",
 	"averageGradeSummaryCard:noGradeInfoAvailable" : "No grade information available.",
 	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner last accessed the system.",
-	"userSysAccessCard:userHasNeverAccessedSystem": "User has never accessed the system."
+	"userSysAccessCard:userHasNeverAccessedSystem": "User has never accessed the system.",
+
+	"contentViewsCard:contentViewOverTime": "Content view over time",
+	"contentViewsCard:viewCount": "View Count",
+	"contentViewsCard:date": "Date"
 };

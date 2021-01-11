@@ -4,6 +4,7 @@ import 'd2l-users/components/d2l-profile-image';
 import './summary-cards-container';
 import './user-drill-courses-table.js';
 import './message-container';
+import './content-views-card.js';
 import './summary-card';
 
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
@@ -364,11 +365,19 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 				.cards="${this.summaryCards}"
 			></d2l-summary-cards-container>
+			${this._contentViewsCard()}
 
 			<div class="d2l-insights-user-drill-view-content">
 				${this._renderContent()}
 			</div>
 		</div>`;
+	}
+
+	_contentViewsCard() {
+		if (!this.isDemo) return ''; //need to remove this condition when we get access to the card data
+		return html`
+			<d2l-insights-content-views-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-content-views-card>
+			`;
 	}
 
 	_renderContent() {
