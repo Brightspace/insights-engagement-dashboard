@@ -96,7 +96,7 @@ describe('d2l-insights-semester-filter', () => {
 			const checkboxes = Array.from(
 				el
 					.shadowRoot.querySelector('d2l-insights-dropdown-filter')
-					.shadowRoot.querySelectorAll('d2l-filter-dropdown-option')
+					.shadowRoot.querySelectorAll('d2l-labs-filter-dropdown-option')
 			);
 
 			checkboxes.find(checkbox => checkbox.value === '10007').click();
