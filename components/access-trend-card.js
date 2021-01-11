@@ -12,7 +12,6 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
 			data: { type: Object, attribute: false },
-			user: { type: Object, attribute: false },
 			selectedCourses: { type: Object, attribute: false }
 		};
 	}
@@ -20,7 +19,6 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	constructor() {
 		super();
 		this.data = {};
-		this.user = {};
 		this.selectedCourses = {
 			size: 0,
 			has: () => false
