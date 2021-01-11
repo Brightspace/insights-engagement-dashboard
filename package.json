@@ -1,6 +1,6 @@
 {
   "name": "d2l-engagement-dashboard",
-  "version": "1.2101.0",
+  "version": "1.2102.0",
   "description": "D2L Insights Engagement Dashboard",
   "repository": "https://github.com/Brightspace/insights-engagement-dashboard.git",
   "private": true,
@@ -46,13 +46,13 @@
   },
   "dependencies": {
     "@adobe/lit-mobx": "0.0.x",
+    "@brightspace-ui-labs/facet-filter-sort": "^4",
     "@brightspace-ui-labs/pagination": "^1",
     "@brightspace-ui/core": "^1.102.8",
     "@brightspace-ui/intl": "^3.2.0",
     "@webcomponents/webcomponentsjs": "^2",
     "array-flat-polyfill": "^1.0.1",
     "d2l-button-group": "BrightspaceUI/button-group#semver:^3",
-    "d2l-facet-filter-sort": "BrightspaceUI/facet-filter-sort#semver:^3",
     "d2l-fetch": "Brightspace/d2l-fetch.git#semver:^2",
     "d2l-fetch-auth": "^1",
     "d2l-navigation": "BrightspaceUI/navigation#semver:^4",

@@ -29,7 +29,7 @@ describe('d2l-insights-applied-filters', () => {
 		it('should not render if there are no card filters', async function() {
 			this.timeout(3000);
 			const el = await fixture(html`<d2l-insights-applied-filters .data="${data}"></d2l-insights-applied-filters>`);
-			const appliedFilters = el.shadowRoot.querySelector('d2l-applied-filters');
+			const appliedFilters = el.shadowRoot.querySelector('d2l-labs-applied-filters');
 			expect(appliedFilters).to.be.null;
 		});
 
@@ -39,7 +39,7 @@ describe('d2l-insights-applied-filters', () => {
 				{ id: 'filter-key-1', title: 'filter 1', isApplied: false }
 			];
 			const el = await fixture(html`<d2l-insights-applied-filters .data="${data}"></d2l-insights-applied-filters>`);
-			const appliedFilters = el.shadowRoot.querySelector('d2l-applied-filters');
+			const appliedFilters = el.shadowRoot.querySelector('d2l-labs-applied-filters');
 			expect(appliedFilters).to.be.null;
 		});
 
@@ -49,7 +49,7 @@ describe('d2l-insights-applied-filters', () => {
 				{ id: 'filter-key-2', title: 'dashboard:title', isApplied: true }
 			];
 			const el = await fixture(html`<d2l-insights-applied-filters .data="${data}"></d2l-insights-applied-filters>`);
-			const appliedFilters = el.shadowRoot.querySelector('d2l-applied-filters');
+			const appliedFilters = el.shadowRoot.querySelector('d2l-labs-applied-filters');
 			expect(appliedFilters).to.exist;
 
 			const filters = appliedFilters.shadowRoot.querySelectorAll('d2l-labs-multi-select-list-item');
@@ -64,7 +64,7 @@ describe('d2l-insights-applied-filters', () => {
 				{ id: 'filter-key-2', title: 'filter 2', isApplied: false }
 			];
 			const el = await fixture(html`<d2l-insights-applied-filters .data="${data}"></d2l-insights-applied-filters>`);
-			const appliedFilters = el.shadowRoot.querySelector('d2l-applied-filters');
+			const appliedFilters = el.shadowRoot.querySelector('d2l-labs-applied-filters');
 			expect(appliedFilters).to.exist;
 
 			const filters = appliedFilters.shadowRoot.querySelectorAll('d2l-labs-multi-select-list-item');
@@ -78,7 +78,7 @@ describe('d2l-insights-applied-filters', () => {
 				{ id: 'filter-key-2', title: 'filter 2', isApplied: true }
 			];
 			const el = await fixture(html`<d2l-insights-applied-filters .data="${data}"></d2l-insights-applied-filters>`);
-			const appliedFilters = el.shadowRoot.querySelector('d2l-applied-filters');
+			const appliedFilters = el.shadowRoot.querySelector('d2l-labs-applied-filters');
 			expect(appliedFilters).to.exist;
 
 			const filters = appliedFilters.shadowRoot.querySelectorAll('d2l-labs-multi-select-list-item');
