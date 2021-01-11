@@ -365,12 +365,19 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 				.cards="${this.summaryCards}"
 			></d2l-summary-cards-container>
-			<d2l-insights-content-views-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-content-views-card>
+			${this._contentViewsCard()}
 
 			<div class="d2l-insights-user-drill-view-content">
 				${this._renderContent()}
 			</div>
 		</div>`;
+	}
+
+	_contentViewsCard() {
+		if (!this.isDemo) return ''; //need to remove this condition when we get access to the card data
+		return html`
+			<d2l-insights-content-views-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-content-views-card>
+			`;
 	}
 
 	_renderContent() {
