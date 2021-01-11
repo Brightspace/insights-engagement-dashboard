@@ -213,7 +213,7 @@ export default {
 
 	"accessTrendCard:title": "Course Access Over Time",
 	"accessTrendCard:xAxisTitle": "Date",
-	"accessTrendCard:yAxisTitle": "Course Access count",
+	"accessTrendCard:yAxisTitle": "Course Access Count",
 
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "assignments are currently overdue.",
 	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
