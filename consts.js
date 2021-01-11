@@ -31,53 +31,50 @@ export const ORG_UNIT = {
 export const TiCVsGradesFilterId = 'd2l-insights-time-in-content-vs-grade-card';
 
 export const USER_TREND_COLORS = [
-	'#D3E24A',
-	'#99CB5F',
-	'#6CD36B',
-	'#2CBA9A',
-	'#14C5DB',
 	'#4885DC',
-	'#5D5BC0',
-	'#86509E',
+	'#D3E24A',
 	'#D66DAC',
-	'#E9428D',
-	'#EE7030',
 	'#FF9802',
-	'#FFC102',
+	'#9D1FD4',
+	'#14C5DB',
 	'#FFEF48',
+	'#F5318F',
+	'#6CD36B',
+	'#FF70B0',
+	'#FFC102',
+	'#E6ABFF',
+	'#86509E',
+	'#EE7030',
 	'#60C46F',
 	'#2DE2C0',
 	'#00B4D9',
-	'#D40067',
+	'#5D5BC0',
 	'#F59036',
-	'#9D1FD4',
+	'#99CB5F',
 	'#5211FA',
 	'#004489',
-	'#036A8A',
+	'#00D2ED',
 	'#00A490',
 	'#2B8F44',
 	'#8CDE8A',
 	'#70FAE0',
 	'#8FD1FF',
-	'#E6ABFF',
+	'#2CBA9A',
 	'#FF9EA0',
 	'#FFDB8A',
-	'#4A8F00',
+	'#D40067',
 	'#E1FFB5',
 	'#A7FAE7',
 	'#C7FDFF',
 	'#E9E6FF',
 	'#6900A0',
-	'#990056',
+	'#E9428D',
 	'#FFE2DB',
 	'#FFAB61',
 ];
 
-export function* UserTrendColorsIterator(start = 0, end = 40, step = 1) {
-	let iterationCount = 0;
+export function* UserTrendColorsIterator(start = 0, step = 1, end = 40) {
 	for (let i = start; i < end; i += step) {
-		iterationCount += 1;
-		yield USER_TREND_COLORS[i];
+		yield USER_TREND_COLORS[i % USER_TREND_COLORS.length];
 	}
-	return iterationCount;
 }

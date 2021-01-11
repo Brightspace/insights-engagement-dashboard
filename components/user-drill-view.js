@@ -5,11 +5,10 @@ import './summary-cards-container';
 import './user-drill-courses-table.js';
 import './message-container';
 import './summary-card';
-import './courses-legend';
 import './access-trend-card';
 
-import { action, computed, decorate, observable } from 'mobx';
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
+import { computed, decorate } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
 import { RECORD, USER } from '../consts';
 import { createComposeEmailPopup } from './email-integration';
@@ -17,45 +16,15 @@ import { ExportData } from '../model/exportData';
 import { formatPercent } from '@brightspace-ui/intl';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
+import { nothing } from 'lit-html';
 import { OVERDUE_ASSIGNMENTS_FILTER_ID } from './overdue-assignments-card';
 import { resetUrlState } from '../model/urlState';
+import { SelectedCourses } from './courses-legend';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { until } from 'lit-html/directives/until';
 
 export const numberFormatOptions = { maximumFractionDigits: 2 };
 const demoDate = 1608000000000; //for unit test
-
-class SelectedCourses {
-	constructor() {
-		this.selected = new Set();
-	}
-
-	filter(record) {
-		return !this.selected.has(record[RECORD.ORG_UNIT_ID]);
-	}
-
-	toggle(value) {
-		if (this.selected.has(value)) {
-			this.selected.delete(value);
-		}
-		else {
-			this.selected.add(value);
-		}
-	}
-
-	has(value) {
-		return this.selected.has(value);
-	}
-
-	get size() {
-		return this.selected.size;
-	}
-}
-
-decorate(SelectedCourses, {
-	selected: observable,
-	toggle: action,
-});
 
 /**
  * @property {Object} data - an instance of Data from model/data.js
@@ -297,7 +266,9 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get overdueAssignmentsForUser() {
-		return this.data.recordsByUser.get(this.user.userId).filter(record => record[RECORD.OVERDUE] !== 0).length;
+		const userRecords = this.data.recordsByUser.get(this.user.userId);
+		if (!userRecords) return [];
+		return userRecords.filter(record => record[RECORD.OVERDUE] !== 0).length;
 	}
 
 	_overdueAssignmentsValueClickHandler() {
@@ -317,6 +288,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get lastSysAccessForUser() {
+		if (!this.data.userDictionary) return 0;
 		const userData = this.data.userDictionary.get(this.user.userId);
 		const currentDate = this.isDemo ? demoDate : Date.now();
 		return userData[USER.LAST_SYS_ACCESS] ? Math.floor((currentDate - userData[USER.LAST_SYS_ACCESS]) / (1000 * 60 * 60 * 24)) : '';
@@ -417,13 +389,15 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			></d2l-insights-access-trend-card>
 
 			<div class="d2l-insights-user-drill-view-content">
+			${ this.isDemo ? html`
 				<d2l-insights-courses-legend
 					.data="${this.data}"
 					.user="${this.user}"
 					.selectedCourses="${this.selectedCourses}"
 					?skeleton="${this.skeleton}"
-				>
-				</d2l-insights-courses-legend>
+				></d2l-insights-courses-legend>
+			` : nothing }
+
 				${this._renderContent()}
 			</div>
 		</div>`;
