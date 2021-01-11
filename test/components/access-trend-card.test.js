@@ -25,10 +25,10 @@ describe('d2l-insights-access-trend-card', () => {
 	});
 
 	describe('render', () => {
-		it('should render Access Over Time chart', async() => {
+		it('should render Course Access Over Time chart', async() => {
 			const el = await fixture(html`<d2l-insights-access-trend-card .data="${data}"></d2l-insights-access-trend-card>`);
 			const title = el.shadowRoot.querySelectorAll('div.d2l-insights-access-trend-title');
-			expect(title[0].innerText).to.equal('Access Over Time');
+			expect(title[0].innerText).to.equal('Course Access Over Time');
 		});
 	});
 });
