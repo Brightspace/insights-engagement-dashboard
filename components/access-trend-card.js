@@ -1,6 +1,6 @@
 import 'highcharts';
 import { css, html } from 'lit-element/lit-element.js';
-import { ORG_UNIT, USER_TREND_COLORS } from '../consts';
+import { ORG_UNIT, UserTrendColorsIterator } from '../consts';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
 import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { Localizer } from '../locales/localizer';
@@ -255,12 +255,14 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get _series() {
 		if (!this.data._data) return [];
 
+		const colors = UserTrendColorsIterator();
+
 		return this._trendData
-			.map((course, idx) => ({
+			.map((course) => ({
 				...course,
 				// It is read as `Course 1, series 1 of 3 with 8 data points.`
 				name: this._orgUnitName(course.orgUnitId),
-				color: USER_TREND_COLORS[idx % USER_TREND_COLORS.length] }))
+				color: colors.next().value }))
 			.filter(course => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0);
 	}
 }
