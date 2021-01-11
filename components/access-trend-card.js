@@ -206,38 +206,38 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const courses = [{
 			orgUnitId: 1,
 			data: [
-				{ x: Date.UTC(2020, 1, 1), y: 43934 },
-				{ x: Date.UTC(2020, 1, 3), y: 52503 },
-				{ x: Date.UTC(2020, 1, 5), y: 57177 },
-				{ x: Date.UTC(2020, 1, 7), y: 69658 },
-				{ x: Date.UTC(2020, 1, 9), y: 97031 },
-				{ x: Date.UTC(2020, 1, 11), y: 119931 },
-				{ x: Date.UTC(2020, 1, 13), y: 137133 },
-				{ x: Date.UTC(2020, 1, 15), y: 154175 }
+				{ x: Date.UTC(2020, 1, 3), y: 0 },
+				{ x: Date.UTC(2020, 1, 10), y: 3 },
+				{ x: Date.UTC(2020, 1, 17), y: 4 },
+				{ x: Date.UTC(2020, 1, 24), y: 5 },
+				{ x: Date.UTC(2020, 1, 31), y: 3 },
+				{ x: Date.UTC(2020, 2, 7), y: 7 },
+				{ x: Date.UTC(2020, 2, 14), y: 7 },
+				{ x: Date.UTC(2020, 2, 21), y: 6 }
 			]
 		}, {
 			orgUnitId: 2,
 			data: [
-				{ x: Date.UTC(2020, 1, 1), y:24916 },
-				{ x: Date.UTC(2020, 1, 3), y: 24064 },
-				{ x: Date.UTC(2020, 1, 5), y: 29742 },
-				{ x: Date.UTC(2020, 1, 7), y: 29851 },
-				{ x: Date.UTC(2020, 1, 9), y: 32490 },
-				{ x: Date.UTC(2020, 1, 11), y: 30282 },
-				{ x: Date.UTC(2020, 1, 13), y: 38121 },
-				{ x: Date.UTC(2020, 1, 15), y: 40434 }
+				{ x: Date.UTC(2020, 1, 3), y: 0 },
+				{ x: Date.UTC(2020, 1, 10), y: 2 },
+				{ x: Date.UTC(2020, 1, 17), y: 3 },
+				{ x: Date.UTC(2020, 1, 24), y: 4 },
+				{ x: Date.UTC(2020, 1, 31), y: 1 },
+				{ x: Date.UTC(2020, 2, 7), y: 4 },
+				{ x: Date.UTC(2020, 2, 14), y: 4 },
+				{ x: Date.UTC(2020, 2, 21), y: 6 }
 			]
 		}, {
 			orgUnitId: 3,
 			data: [
-				{ x: Date.UTC(2020, 1, 1), y: 12908 },
-				{ x: Date.UTC(2020, 1, 3), y: 5948 },
-				{ x: Date.UTC(2020, 1, 5), y: 8105 },
-				{ x: Date.UTC(2020, 1, 7), y: 11248 },
-				{ x: Date.UTC(2020, 1, 9), y: 8989 },
-				{ x: Date.UTC(2020, 1, 11), y: 11816 },
-				{ x: Date.UTC(2020, 1, 13), y: 18274 },
-				{ x: Date.UTC(2020, 1, 15), y: 18111 }
+				{ x: Date.UTC(2020, 1, 3), y: 0 },
+				{ x: Date.UTC(2020, 1, 10), y: 1 },
+				{ x: Date.UTC(2020, 1, 17), y: 2 },
+				{ x: Date.UTC(2020, 1, 24), y: 3 },
+				{ x: Date.UTC(2020, 1, 31), y: 0 },
+				{ x: Date.UTC(2020, 2, 7), y: 2 },
+				{ x: Date.UTC(2020, 2, 14), y: 2 },
+				{ x: Date.UTC(2020, 2, 21), y: 4 }
 			]
 		}];
 
