@@ -19,13 +19,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	constructor() {
 		super();
-		this.data = {
-			_data: {
-				serverData: {
-					orgUnits: []
-				}
-			}
-		};
+		this.data = {};
 		this.user = {};
 		this.selectedCourses = {
 			size: 0,
@@ -261,6 +255,8 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _series() {
+		if (!this.data._data) return [];
+
 		return this._trendData
 			.map((course, idx) => ({
 				...course,
