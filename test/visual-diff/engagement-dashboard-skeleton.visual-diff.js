@@ -4,7 +4,7 @@ const VisualDiff = require('@brightspace-ui/visual-diff');
 describe('engagement-dashboard-skeleton', () => {
 
 	// default value is 0.1 but VisualDiff overrides it to 0
-	const visualDiff = new VisualDiff('engagement-dashboard-skeleton', __dirname, { tolerance: 0.05 });
+	const visualDiff = new VisualDiff('engagement-dashboard-skeleton', __dirname, { tolerance: 0.1 });
 
 	let page, browser;
 
