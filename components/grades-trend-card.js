@@ -42,7 +42,7 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			:host([hidden]) {
 				display: none;
 			}
-			.d2l-insights-grades-title {
+			.d2l-insights-grades-trend-title {
 				color: var(--d2l-color-ferrite);
 				font-size: smaller;
 				font-weight: bold;
@@ -55,29 +55,29 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				height: 100%;
 			}
 
-			:host([skeleton]) .d2l-insights-grades-title {
+			:host([skeleton]) .d2l-insights-grades-trend-title {
 				margin-left: 19px;
 			}
 		`];
 	}
 
 	get _cardTitle() {
-		return this.localize('gradesCard:gradesOverTime');
+		return this.localize('gradesTrendCard:gradesOverTime');
 	}
 
 	get _currentGradeText() {
-		return this.localize('gradesCard:currentGrade');
+		return this.localize('gradesTrendCard:currentGrade');
 	}
 
 	get _dateText() {
-		return this.localize('gradesCard:date');
+		return this.localize('gradesTrendCard:date');
 	}
 
 	render() {
 		// NB: relying on mobx rather than lit-element properties to handle update detection: it will trigger a redraw for
 		// any change to a relevant observed property of the Data object
 		return html`
-			<div class="d2l-insights-grades-title d2l-skeletize d2l-skeletize-45 d2l-body-standard">${this._cardTitle}</div>
+			<div class="d2l-insights-grades-trend-title d2l-skeletize d2l-skeletize-45 d2l-body-standard">${this._cardTitle}</div>
 			<d2l-labs-chart class="d2l-insights-summary-card-body"
 							.options="${this.chartOptions}"
 							?skeleton="${this.skeleton}"
@@ -194,4 +194,4 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		}];
 	}
 }
-customElements.define('d2l-insights-grades-card', GradesTrendCard);
+customElements.define('d2l-insights-grades-trend-card', GradesTrendCard);

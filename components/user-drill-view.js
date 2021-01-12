@@ -5,7 +5,7 @@ import './summary-cards-container';
 import './user-drill-courses-table.js';
 import './message-container';
 import './content-views-card.js';
-import './grades-card.js';
+import './grades-trend-card.js';
 import './summary-card';
 
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
@@ -367,7 +367,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				.cards="${this.summaryCards}"
 			></d2l-summary-cards-container>
 			${this._contentViewsCard()}
-			${this._gradesCard()}
+			${this._gradesTrendCard()}
 
 			<div class="d2l-insights-user-drill-view-content">
 				${this._renderContent()}
@@ -382,10 +382,10 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			`;
 	}
 
-	_gradesCard() {
+	_gradesTrendCard() {
 		if (!this.isDemo) return ''; //need to remove this condition when we get access to the card data
 		return html`
-			<d2l-insights-grades-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-grades-card>
+			<d2l-insights-grades-trend-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-grades-trend-card>
 			`;
 	}
 
