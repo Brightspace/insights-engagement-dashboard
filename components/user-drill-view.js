@@ -378,10 +378,10 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 				.cards="${this.summaryCards}"
 			></d2l-summary-cards-container>
-			${this._contentViewsCard()}
 
 			<div class="d2l-insights-user-drill-view-content">
 			${ this.isDemo ? html`
+				${this._contentViewsCard()}
 				<d2l-insights-courses-legend
 					.data="${this.data}"
 					.user="${this.user}"
