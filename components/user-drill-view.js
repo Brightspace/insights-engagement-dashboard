@@ -5,6 +5,7 @@ import 'd2l-users/components/d2l-profile-image';
 import './summary-cards-container';
 import './user-drill-courses-table.js';
 import './message-container';
+import './content-views-card.js';
 import './summary-card';
 
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
@@ -266,7 +267,9 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get overdueAssignmentsForUser() {
-		return this.data.recordsByUser.get(this.user.userId).filter(record => record[RECORD.OVERDUE] !== 0).length;
+		const userRecords = this.data.recordsByUser.get(this.user.userId);
+		if (!userRecords) return [];
+		return userRecords.filter(record => record[RECORD.OVERDUE] !== 0).length;
 	}
 
 	_overdueAssignmentsValueClickHandler() {
@@ -286,6 +289,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get lastSysAccessForUser() {
+		if (!this.data.userDictionary) return 0;
 		const userData = this.data.userDictionary.get(this.user.userId);
 		const currentDate = this.isDemo ? demoDate : Date.now();
 		return userData[USER.LAST_SYS_ACCESS] ? Math.floor((currentDate - userData[USER.LAST_SYS_ACCESS]) / (1000 * 60 * 60 * 24)) : '';
@@ -394,6 +398,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 			<div class="d2l-insights-user-drill-view-content">
 			${ this.isDemo ? html`
+				${this._contentViewsCard()}
 				<d2l-insights-courses-legend
 					.data="${this.data}"
 					.user="${this.user}"
@@ -405,6 +410,13 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				${this._renderContent()}
 			</div>
 		</div>`;
+	}
+
+	_contentViewsCard() {
+		if (!this.isDemo) return ''; //need to remove this condition when we get access to the card data
+		return html`
+			<d2l-insights-content-views-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-content-views-card>
+			`;
 	}
 
 	_renderContent() {

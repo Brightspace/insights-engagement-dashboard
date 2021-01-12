@@ -89,6 +89,7 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 					align-items: center;
 					cursor: pointer;
 					display: flex;
+					margin-bottom: 10px;
 					margin-left: 12px;
 					margin-right: 24px;
 					width: 267px;
@@ -147,6 +148,8 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	get courses() {
 
+		if (this.skeleton) return new Array(20).fill({ orgUnitId: -1, name: '&nbsp' });
+
 		const recordOrgUnitId = record => record[RECORD.ORG_UNIT_ID];
 		const orgUnitInfo = orgUnitId => {
 			const orgUnit = this.serverData.orgUnits.find(unit => unit[ORG_UNIT.ID] === orgUnitId);
@@ -181,19 +184,20 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 	_renderCourse(course, color) {
 		const containerStyles = classMap({
 			'd2l-insights-user-course-legend-item': true,
-			'd2l-insights-user-course-legend-item-filtered': this.selectedCourses.has(course.orgUnitId)
+			'd2l-insights-user-course-legend-item-filtered': !this.skeleton && this.selectedCourses.has(course.orgUnitId),
+			'd2l-skeletize': this.skeleton,
 		});
 		return html`
-		<div
-			role="button"
-			aria-pressed=${!this._isEnabled(course.orgUnitId)}
-			tabindex="0"
-			data-ouid="${course.orgUnitId}"
-			class="${containerStyles}"
-		>
-			<div class="d2l-insights-user-course-legend-color" style="background-color: ${color};"></div>
-			<p class="d2l-insights-user-sourse-legend-name">${course.name}</p>
-		</div>
+			<div
+				role="button"
+				aria-pressed=${!this._isEnabled(course.orgUnitId)}
+				tabindex="0"
+				data-ouid="${course.orgUnitId}"
+				class="${containerStyles}"
+			>
+				<div class="d2l-insights-user-course-legend-color" style="background-color: ${color};"></div>
+				<p class="d2l-insights-user-sourse-legend-name">${course.name}</p>
+			</div>
 		`;
 	}
 
@@ -217,6 +221,7 @@ decorate(CoursesLegend,
 		courses: computed,
 		data: observable,
 		user: observable,
+		skeleton: observable,
 	}
 );
 
