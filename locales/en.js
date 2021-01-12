@@ -220,5 +220,9 @@ export default {
 
 	"contentViewsCard:contentViewOverTime": "Content view over time",
 	"contentViewsCard:viewCount": "View Count",
-	"contentViewsCard:date": "Date"
+	"contentViewsCard:date": "Date",
+
+	"gradesCard:date": "Date",
+	"gradesCard:gradesOverTime": "Grades Over Time",
+	"gradesCard:currentGrade": "Current Grade (%)"
 };
