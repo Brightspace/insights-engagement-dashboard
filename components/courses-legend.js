@@ -31,8 +31,8 @@ export class SelectedCourses {
 		return this.selected.has(value);
 	}
 
-	size() {
-		return this.selected.size();
+	get size() {
+		return this.selected.size;
 	}
 
 	set(values) {
