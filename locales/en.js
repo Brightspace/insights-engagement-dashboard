@@ -218,6 +218,8 @@ export default {
 	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner last accessed the system.",
 	"userSysAccessCard:userHasNeverAccessedSystem": "User has never accessed the system.",
 
+	"coursesLegend:coursesLegendFilter": "Courses",
+
 	"contentViewsCard:contentViewOverTime": "Content view over time",
 	"contentViewsCard:viewCount": "View Count",
 	"contentViewsCard:date": "Date",

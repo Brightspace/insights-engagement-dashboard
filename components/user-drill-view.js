@@ -17,8 +17,10 @@ import { ExportData } from '../model/exportData';
 import { formatPercent } from '@brightspace-ui/intl';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
+import { nothing } from 'lit-html';
 import { OVERDUE_ASSIGNMENTS_FILTER_ID } from './overdue-assignments-card';
 import { resetUrlState } from '../model/urlState';
+import { SelectedCourses } from './courses-legend';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { until } from 'lit-html/directives/until';
 
@@ -39,7 +41,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			isDemo: { type: Boolean, attribute: 'demo' },
 			isStudentSuccessSys: { type: Boolean, attribute: false },
 			orgUnitId: { type: Number, attribute: 'org-unit-id' },
-			viewState: { type: Object, attribute: false }
+			viewState: { type: Object, attribute: false },
+			selectedCourses: { type: Object, attribute: false }
 		};
 	}
 
@@ -57,6 +60,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this.isStudentSuccessSys = false;
 		this.orgUnitId = 0;
 		this.viewState = null;
+
+		this.selectedCourses = new SelectedCourses();
 	}
 
 	static get styles() {
@@ -220,7 +225,9 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get coursesInViewForUser() {
-		return this.data.recordsByUser.get(this.user.userId).length;
+		// when loading or refreshing data the user record may not exist
+		const userRecords = this.data.recordsByUser.get(this.user.userId);
+		return userRecords ? userRecords.length : 0;
 	}
 
 	_overdueAssignments({ wide, tall, skeleton }) {
@@ -251,13 +258,18 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get averageGradeForUser() {
-		const coursesWithGrades = this.data.recordsByUser.get(this.user.userId).filter(r => r[RECORD.CURRENT_FINAL_GRADE] !== null);
+		const userRecords = this.data.recordsByUser.get(this.user.userId);
+		if (!userRecords) return undefined;
+
+		const coursesWithGrades = userRecords.filter(r => r[RECORD.CURRENT_FINAL_GRADE] !== null);
 		const averageFinalGrade = coursesWithGrades.reduce((sum, r) => sum + r[RECORD.CURRENT_FINAL_GRADE], 0) / coursesWithGrades.length;
 		return averageFinalGrade ? formatPercent(averageFinalGrade / 100, numberFormatOptions) : null;
 	}
 
 	get overdueAssignmentsForUser() {
-		return this.data.recordsByUser.get(this.user.userId).filter(record => record[RECORD.OVERDUE] !== 0).length;
+		const userRecords = this.data.recordsByUser.get(this.user.userId);
+		if (!userRecords) return [];
+		return userRecords.filter(record => record[RECORD.OVERDUE] !== 0).length;
 	}
 
 	_overdueAssignmentsValueClickHandler() {
@@ -277,6 +289,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get lastSysAccessForUser() {
+		if (!this.data.userDictionary) return 0;
 		const userData = this.data.userDictionary.get(this.user.userId);
 		const currentDate = this.isDemo ? demoDate : Date.now();
 		return userData[USER.LAST_SYS_ACCESS] ? Math.floor((currentDate - userData[USER.LAST_SYS_ACCESS]) / (1000 * 60 * 60 * 24)) : '';
@@ -366,27 +379,22 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 				.cards="${this.summaryCards}"
 			></d2l-summary-cards-container>
-			${this._contentViewsCard()}
-			${this._gradesTrendCard()}
 
 			<div class="d2l-insights-user-drill-view-content">
+			${ this.isDemo ? html`
+				<d2l-insights-content-views-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-content-views-card>
+				<d2l-insights-grades-trend-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-grades-trend-card>
+				<d2l-insights-courses-legend
+					.data="${this.data}"
+					.user="${this.user}"
+					.selectedCourses="${this.selectedCourses}"
+					?skeleton="${this.skeleton}"
+				></d2l-insights-courses-legend>
+			` : nothing }
+
 				${this._renderContent()}
 			</div>
 		</div>`;
-	}
-
-	_contentViewsCard() {
-		if (!this.isDemo) return ''; //need to remove this condition when we get access to the card data
-		return html`
-			<d2l-insights-content-views-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-content-views-card>
-			`;
-	}
-
-	_gradesTrendCard() {
-		if (!this.isDemo) return ''; //need to remove this condition when we get access to the card data
-		return html`
-			<d2l-insights-grades-trend-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-grades-trend-card>
-			`;
 	}
 
 	_renderContent() {

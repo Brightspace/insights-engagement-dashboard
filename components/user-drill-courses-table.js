@@ -194,7 +194,8 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		// then sort by the selected sorting function
 		if (this.skeleton) return [];
 		const sortFunction = this._choseSortFunction(this._sortColumn, this._sortOrder);
-		return this.data.records
+		return this.data
+			.records
 			.filter(this._shouldDisplayinTable, this)
 			.map(this._preProcessData, this)
 			.sort(sortFunction)

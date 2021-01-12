@@ -119,7 +119,7 @@ To run diff tests locally
 
 ```
 # for powershell
-$Env:GITHUB_REPOSITORY=Brightspace/insights-engagement-dashboard
+$Env:GITHUB_REPOSITORY="Brightspace/insights-engagement-dashboard"
 
 # for bash
 export GITHUB_REPOSITORY=Brightspace/insights-engagement-dashboard
