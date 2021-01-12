@@ -6,7 +6,7 @@ import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 
-class GradesCard extends SkeletonMixin(Localizer(MobxLitElement)) {
+class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
 			data: { type: Object, attribute: false }
@@ -194,4 +194,4 @@ class GradesCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		}];
 	}
 }
-customElements.define('d2l-insights-grades-card', GradesCard);
+customElements.define('d2l-insights-grades-card', GradesTrendCard);
