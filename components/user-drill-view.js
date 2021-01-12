@@ -159,6 +159,12 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			d2l-alert {
 				max-width: 1200px;
 			}
+
+			.d2l-insights-summary-chart-layout {
+				display: flex;
+				flex-wrap: wrap;
+				max-width: 1300px;
+			}
 		`];
 	}
 
@@ -394,26 +400,27 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				${this.localize('userDrill:manyCoursesAlert')}
 			</d2l-alert>
 
-			<d2l-summary-cards-container
-				?hidden="${this.hidden}"
-				?skeleton="${this.skeleton}"
+			<div class="d2l-insights-summary-chart-layout">
+				<d2l-summary-cards-container
+					?hidden="${this.hidden}"
+					?skeleton="${this.skeleton}"
 
-				.cards="${this.summaryCards}"
-			></d2l-summary-cards-container>
+					.cards="${this.summaryCards}"
+				></d2l-summary-cards-container>
 
+				${ this.isDemo ? html`
+					${this._contentViewsCard()}
+					<d2l-insights-access-trend-card
+						?hidden="${this.hidden}"
+						?skeleton="${this.skeleton}"
+
+						.data="${this.data}"
+						.selectedCourses="${this.selectedCourses}"
+					></d2l-insights-access-trend-card>
+
+				` : nothing }
+			</div>
 			${ this.isDemo ? html`
-			<d2l-insights-access-trend-card
-				?hidden="${this.hidden}"
-				?skeleton="${this.skeleton}"
-
-				.data="${this.data}"
-				.selectedCourses="${this.selectedCourses}"
-			></d2l-insights-access-trend-card>
-			` : nothing }
-
-			<div class="d2l-insights-user-drill-view-content">
-			${ this.isDemo ? html`
-				${this._contentViewsCard()}
 				<d2l-insights-courses-legend
 					.data="${this.data}"
 					.user="${this.user}"
@@ -422,8 +429,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				></d2l-insights-courses-legend>
 			` : nothing }
 
-				${this._renderContent()}
-			</div>
+			${this._renderContent()}
+
 		</div>`;
 	}
 
