@@ -384,7 +384,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				<slot name="applied-filters"></slot>
 			</div>
 
-			<h3>Summary View</h3>
+			<h3>${this.localize('userDrill:summaryView')}</h3>
 
 			<d2l-alert
 				has-close-button
