@@ -230,15 +230,15 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get _series() {
 		if (!this.data._data) return [];
 
-		const colors = UserTrendColorsIterator(0, 1, this._trendData.length);
+		const colors = Array.from({ length: this._trendData.length }, function() { return this.next().value; }, UserTrendColorsIterator(0, 1, this._trendData.length));
+		const selected = (course) => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0;
 
 		return this._trendData
-			.map((course) => ({
+			.map((course, idx) => ({
 				...course,
 				// It is read as `Course 1, series 1 of 3 with 8 data points.`
 				name: this._orgUnitName(course.orgUnitId),
-				color: colors.next().value }))
-			.filter(course => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0);
+				color: selected(course) ? colors[idx] : 'var(--d2l-color-mica)' }));
 	}
 }
 customElements.define('d2l-insights-grades-trend-card', GradesTrendCard);
