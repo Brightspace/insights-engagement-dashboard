@@ -210,6 +210,29 @@ describe('d2l-insights-user-drill-view', () => {
 			expect(summaryCards[1].message).to.eql('No grade information available.');
 			expect(summaryCards[1].title).to.eql('Average Grade');
 		});
+
+		it('should render the alert if there are >= 10 courses', async() => {
+			data.recordsByUser = new Map();
+			data.recordsByUser.set(232, []);
+			(new Array(11)).fill([]).forEach((record, i) => data.recordsByUser.get(232).push([i, 232]));
+
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
+			await new Promise(res => setTimeout(res, 50));
+
+			const alert = el.shadowRoot.querySelector('d2l-alert');
+			expect(alert.hidden).to.equal(false);
+		});
+
+		it('should not render the alert if there are < 10 courses', async() => {
+			data.recordsByUser = new Map();
+			(new Array(8)).fill([]).forEach(record => data.recordsByUser.set(232, record));
+
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
+			await new Promise(res => setTimeout(res, 50));
+
+			const alert = el.shadowRoot.querySelector('d2l-alert');
+			expect(alert.hidden).to.equal(true);
+		});
 	});
 
 	describe('interactions/eventing', () => {

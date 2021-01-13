@@ -186,7 +186,8 @@ export default {
 
 	"userDrill:noUser": "This user could not be loaded. Go to the Engagement Dashboard to view the list of users.",
 	"userDrill:noData": "No data in filtered ranges. Refine your selection.",
-
+	"userDrill:manyCoursesAlert": "This dashboard is most useful with less than 10 courses. Please refine your selected courses for a better experience.",
+	"userDrill:summaryView": "Summary View",
 	"activeCoursesTable:title": "Active Courses",
 	"activeCoursesTable:loadingPlaceholder": "Loading",
 	"activeCoursesTable:course": "Course Name",
