@@ -12,6 +12,7 @@ export class SelectedCourses {
 	constructor() {
 		this.selected = new Set();
 		this.urlState = new UrlState(this);
+		this._all = undefined;
 	}
 
 	filter(record) {
@@ -24,7 +25,17 @@ export class SelectedCourses {
 		}
 		else {
 			this.selected.add(value);
+			if (this._all && this.isAllSelected()) {
+				this.selected = new Set();
+			}
 		}
+	}
+
+	isAllSelected() {
+		const intersection = [...this._all].filter(v => this.selected.has(v));
+
+		if (intersection.length === this._all.size) return true;
+		return false;
 	}
 
 	has(value) {
@@ -37,6 +48,10 @@ export class SelectedCourses {
 
 	get isEmpty() {
 		return this.selected.size === 0;
+	}
+
+	set all(values) {
+		this._all = new Set(values);
 	}
 
 	set(values) {
@@ -171,12 +186,20 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 		).map(orgUnitInfo);
 	}
 
+	//LIFECYCLE
+
+	firstUpdated() {
+		this.selectedCourses.all = new Set(this.courses.map(course => course.orgUnitId));
+	}
+
 	//EVENTS
 
 	_handleInteraction(e) {
 		if (e.target.parentElement === null) return;
 		const orgUnitId = e.target.getAttribute('data-ouid') || e.target.parentElement.getAttribute('data-ouid');
 		this.selectedCourses.toggle(Number(orgUnitId));
+
+		console.log('click! ', [...this.selectedCourses.selected]);
 	}
 
 	// RENDERERS
