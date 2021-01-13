@@ -87,6 +87,21 @@ describe('d2l-insights-current-final-grade-card', () => {
 			expect(filter.isApplied).to.be.false;
 		});
 
+		it('should reset if all categories are selected', () => {
+			const filter = new CurrentFinalGradesFilter();
+			filter.toggleCategory(0);
+			filter.toggleCategory(10);
+			filter.toggleCategory(20);
+			filter.toggleCategory(30);
+			filter.toggleCategory(40);
+			filter.toggleCategory(50);
+			filter.toggleCategory(60);
+			filter.toggleCategory(70);
+			filter.toggleCategory(80);
+			filter.toggleCategory(90);
+			expect([...filter.selectedCategories]).to.eql([]);
+		});
+
 		[
 			{ categories: [10], expected: [1] },
 			{ categories: [10, 90], expected: [1, 3, 7] },
