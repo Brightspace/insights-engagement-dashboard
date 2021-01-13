@@ -34,6 +34,8 @@ export class CurrentFinalGradesFilter extends CategoryFilter {
 			'cgf'
 		);
 		this._urlState = new UrlState(this);
+
+		this.all = new Set(CATEGORIES.slice(0, 10));
 	}
 
 	//for Urlstate
@@ -187,10 +189,6 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				<d2l-labs-chart class="d2l-insights-summary-card-body" .options="${options}" ?skeleton="${this.skeleton}" ></d2l-labs-chart>
 			</div>`;
 		}
-	}
-
-	firstUpdated() {
-		this.filter.all = new Set(CATEGORIES.slice(0, 10));
 	}
 
 	get chartOptions() {

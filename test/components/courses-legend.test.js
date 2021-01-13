@@ -3,7 +3,7 @@ import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-help
 import { SelectedCourses } from '../../components/courses-legend';
 
 const userRecordsMap = new Map();
-userRecordsMap.set(200, [[6606, 200, 300, 0, 33, 2500, 10293819283, 0, 0, 0]]);
+userRecordsMap.set(200, [[6606, 200, 300, 0, 33, 2500, 10293819283, 0, 0, 0], [6607, 200, 300, 0, 33, 2500, 10293819283, 0, 0, 0]]);
 
 const data = {
 	records: [[6606, 200, 300, 0, 33, 2500, 10293819283, 0, 0, 0]],
@@ -12,6 +12,7 @@ const data = {
 		serverData: {
 			orgUnits: [
 				[6606, 'Course 1', 3, [5], true],
+				[6607, 'Course 2', 3, [5], true],
 			]
 		}
 	}

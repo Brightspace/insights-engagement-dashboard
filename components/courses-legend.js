@@ -52,6 +52,10 @@ export class SelectedCourses {
 
 	set all(values) {
 		this._all = new Set(values);
+
+		if (this._all && this.isAllSelected()) {
+			this.selected = new Set();
+		}
 	}
 
 	set(values) {
@@ -188,7 +192,7 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	//LIFECYCLE
 
-	firstUpdated() {
+	updated() {
 		this.selectedCourses.all = new Set(this.courses.map(course => course.orgUnitId));
 	}
 

@@ -11,6 +11,7 @@ import { UrlState } from '../model/urlState';
 
 const filterId = 'd2l-insights-course-last-access-card';
 const demoDate = 1608700239822; //for Visual-Diff test
+const DATA_BUCKETS = [0, 0, 0, 0, 0, 0, 0];
 
 function lastAccessDateBucket(record, isDemo) {
 	const currentDate = isDemo ? demoDate : Date.now();
@@ -54,6 +55,9 @@ export class CourseLastAccessFilter extends CategoryFilter {
 			'caf'
 		);
 		this._urlState = new UrlState(this);
+		this.all = new Set(
+			[...DATA_BUCKETS].map((_, i) => i)
+		);
 	}
 
 	//for Urlstate
@@ -143,7 +147,7 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	get _preparedBarChartData() {
 		// return an array of size 7, each element mapping to a category on the course last access bar chart
-		const dateBucketCounts = [0, 0, 0, 0, 0, 0, 0];
+		const dateBucketCounts = [...DATA_BUCKETS];
 		this.data
 			.withoutFilter(filterId)
 			.records
@@ -221,13 +225,6 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			<div class="d2l-insights-course-last-access-title d2l-skeletize d2l-skeletize-45 d2l-body-standard">${this._cardTitle}</div>
 			<d2l-labs-chart class="d2l-insights-summary-card-body" .options="${this.chartOptions}" ?skeleton="${this.skeleton}"></d2l-labs-chart>
 		</div>`;
-	}
-
-	firstUpdated() {
-		this.filter.all = new Set(
-			this._preparedBarChartData
-				.map((_, i) => i)
-		);
 	}
 
 	get chartOptions() {
