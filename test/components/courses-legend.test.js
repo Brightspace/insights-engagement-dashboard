@@ -54,7 +54,6 @@ describe('d2l-insights-course-legend', () => {
 
 			expect([...el.selectedCourses.selected]).to.eql([]);
 			const legendItems = el.shadowRoot.querySelectorAll('.d2l-insights-user-course-legend-item');
-			console.log([...legendItems]);
 			legendItems[0].click();
 
 			expect([...el.selectedCourses.selected]).to.eql([6606]);
