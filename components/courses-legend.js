@@ -8,6 +8,7 @@ import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { UrlState } from '../model/urlState';
 
+window.colors = UserTrendColorsIterator;
 export class SelectedCourses {
 	constructor() {
 		this.selected = new Set();
@@ -33,6 +34,10 @@ export class SelectedCourses {
 
 	get size() {
 		return this.selected.size;
+	}
+
+	get isEmpty() {
+		return this.selected.size === 0;
 	}
 
 	set(values) {
@@ -184,7 +189,7 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 	_renderCourse(course, color) {
 		const containerStyles = classMap({
 			'd2l-insights-user-course-legend-item': true,
-			'd2l-insights-user-course-legend-item-filtered': !this.skeleton && this.selectedCourses.has(course.orgUnitId),
+			'd2l-insights-user-course-legend-item-filtered': !this.skeleton && (!this.selectedCourses.isEmpty && !this.selectedCourses.has(course.orgUnitId)),
 			'd2l-skeletize': this.skeleton,
 		});
 		return html`
