@@ -208,7 +208,7 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			]
 		}, {
 			orgUnitId: 2,
-			data:  [
+			data: [
 				[Date.UTC(2020, 1, 1), 30],
 				[Date.UTC(2020, 1, 7), 50],
 				[Date.UTC(2020, 1, 14), 35],
@@ -217,8 +217,8 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				[Date.UTC(2020, 2, 4), 40]
 			]
 		}, {
-			orgUnitId: 3,
-			data:  [
+			orgUnitId: 8,
+			data: [
 				[Date.UTC(2020, 1, 1), 10],
 				[Date.UTC(2020, 1, 7), 30],
 				[Date.UTC(2020, 1, 14), 25],

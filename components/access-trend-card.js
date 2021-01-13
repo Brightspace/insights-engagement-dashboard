@@ -226,7 +226,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				{ x: Date.UTC(2020, 2, 21), y: 6 }
 			]
 		}, {
-			orgUnitId: 3,
+			orgUnitId: 8,
 			data: [
 				{ x: Date.UTC(2020, 1, 3), y: 0 },
 				{ x: Date.UTC(2020, 1, 10), y: 1 },
