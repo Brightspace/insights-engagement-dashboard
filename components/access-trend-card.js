@@ -83,6 +83,14 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			></d2l-labs-chart>`;
 	}
 
+	_toggleFilterEventHandler(series) {
+		const orgUnitId = parseInt(series.userOptions.orgUnitId, 10);
+
+		if (Number.isInteger(orgUnitId)) {
+			this._toggleFilter(orgUnitId);
+		}
+	}
+
 	_toggleFilter(orgUnitId) {
 		this.selectedCourses.toggle(orgUnitId);
 	}
@@ -152,7 +160,6 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 					click: function(e) {
 						// handles ~5% of click events that are not processed in plotOptions.area.events.click
 						const seriesIdx = that._getClickedAreaByXY(e.xAxis[0].value, e.yAxis[0].value);
-
 						if (seriesIdx > -1) {
 							that._toggleFilter(that._trendData[seriesIdx].orgUnitId);
 						}
@@ -225,17 +232,25 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			},
 
 			plotOptions: {
-				area: {
-					//trackByArea: true, // area/course selection works better without this option
 
-					events: {
-						click: function(e) {
-							const orgUnitId = parseInt(e.point.series.userOptions.orgUnitId, 10);
-							if (Number.isInteger(orgUnitId)) {
-								that._toggleFilter(orgUnitId);
+				series: {
+					point: {
+						events: {
+							click: function(e) {
+								// handles also spacebar and enter keys
+								// in opposite to area.event.click which handles only mouse events
+								// e.target.series - when a user hits a keaboard key
+								// e.point.series -  when a user clicks point by mouse
+
+								that._toggleFilterEventHandler(e.target.series || e.point.series);
 							}
 						}
-					},
+					}
+				},
+
+				area: {
+					// trackByArea: true, // area/course selection by mouse works better without this option
+					// the altetnative is to enable trackByArea, add events.events.click and remove chart.events.click
 
 					states: {
 						hover: {
