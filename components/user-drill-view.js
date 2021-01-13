@@ -6,6 +6,7 @@ import './summary-cards-container';
 import './user-drill-courses-table.js';
 import './message-container';
 import './content-views-card.js';
+import './grades-trend-card.js';
 import './summary-card';
 import './access-trend-card';
 
@@ -421,6 +422,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				` : nothing }
 			</div>
 			${ this.isDemo ? html`
+				<d2l-insights-content-views-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-content-views-card>
+				<d2l-insights-grades-trend-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-grades-trend-card>
 				<d2l-insights-courses-legend
 					.data="${this.data}"
 					.user="${this.user}"
@@ -432,13 +435,6 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			${this._renderContent()}
 
 		</div>`;
-	}
-
-	_contentViewsCard() {
-		if (!this.isDemo) return ''; //need to remove this condition when we get access to the card data
-		return html`
-			<d2l-insights-content-views-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-content-views-card>
-			`;
 	}
 
 	_renderContent() {
