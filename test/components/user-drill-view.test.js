@@ -217,7 +217,7 @@ describe('d2l-insights-user-drill-view', () => {
 			(new Array(11)).fill([]).forEach((record, i) => data.recordsByUser.get(232).push([i, 232]));
 
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
-			await new Promise(res => setTimeout(res, 500));
+			await new Promise(res => setTimeout(res, 50));
 
 			const alert = el.shadowRoot.querySelector('d2l-alert');
 			expect(alert.hidden).to.equal(false);
