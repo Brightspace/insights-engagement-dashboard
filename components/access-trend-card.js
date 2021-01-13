@@ -274,7 +274,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		if (!this.data._data) return [];
 
 		const selected = (course) => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0;
-		const colors = Array.from({ length: this._trendData.length }, function() { return this.next().value; }, UserTrendColorsIterator(0, 1, this._trendData.length));
+		const colors = Array.from(UserTrendColorsIterator(0, 1, this._trendData.length));
 
 		return this._trendData
 			.map((course, idx) => ({
