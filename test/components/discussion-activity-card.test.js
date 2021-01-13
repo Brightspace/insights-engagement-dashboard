@@ -2,8 +2,8 @@ import '../../components/discussion-activity-card.js';
 import { disableUrlStateForTesting, enableUrlState, setStateForTesting } from '../../model/urlState';
 import { expect, fixture, html } from '@open-wc/testing';
 import { DiscussionActivityFilter } from '../../components/discussion-activity-card';
-import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 import { RECORD } from '../../consts.js';
+import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
 describe('d2l-insights-discussion-activity-card', () => {
 	before(() => disableUrlStateForTesting());
