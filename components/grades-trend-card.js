@@ -1,5 +1,6 @@
 import 'highcharts';
 import { css, html } from 'lit-element/lit-element.js';
+import { ORG_UNIT, UserTrendColorsIterator } from '../consts';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
 import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles';
 import { Localizer } from '../locales/localizer';
@@ -9,13 +10,18 @@ import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton
 class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
-			data: { type: Object, attribute: false }
+			data: { type: Object, attribute: false },
+			selectedCourses: { type: Object, attribute: false }
 		};
 	}
 
 	constructor() {
 		super();
 		this.data = {};
+		this.selectedCourses = {
+			size: 0,
+			has: () => false
+		};
 	}
 
 	static get styles() {
@@ -84,7 +90,13 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			></d2l-labs-chart>`;
 	}
 
+	_toggleFilter(orgUnitId) {
+		this.selectedCourses.toggle(orgUnitId);
+	}
+
 	get chartOptions() {
+		const that = this;
+
 		return {
 			chart: {
 				height: 250,
@@ -162,6 +174,14 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				series: {
 					marker: {
 						enabled: false
+					},
+					events: {
+						click: function(e) {
+							const orgUnitId = parseInt(e.point.series.userOptions.orgUnitId, 10);
+							if (Number.isInteger(orgUnitId)) {
+								that._toggleFilter(orgUnitId);
+							}
+						}
 					}
 				}
 			},
@@ -173,10 +193,11 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			series: this._series
 		};
 	}
-	get _series() {
-		return [{
+
+	get _trendData() {
+		const courses = [{
 			//test data
-			name: '1',
+			orgUnitId: 1,
 			data: [
 				[Date.UTC(2019, 1, 10), 80],
 				[Date.UTC(2019, 1, 17), 90],
@@ -184,7 +205,7 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				[Date.UTC(2019, 1, 30), 85]
 			]
 		}, {
-			name: '2',
+			orgUnitId: 2,
 			data:  [
 				[Date.UTC(2019, 2, 10), 50],
 				[Date.UTC(2019, 2, 17), 80],
@@ -192,6 +213,32 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				[Date.UTC(2019, 2, 30), 80]
 			]
 		}];
+
+		return courses;
+	}
+
+	get _serverData() {
+		return this.data._data.serverData;
+	}
+
+	_orgUnitName(orgUnitId) {
+		const orgUnit = this._serverData.orgUnits.find(unit => unit[ORG_UNIT.ID] === orgUnitId);
+
+		return orgUnit ? orgUnit[ORG_UNIT.NAME] : '';
+	}
+
+	get _series() {
+		if (!this.data._data) return [];
+
+		const colors = UserTrendColorsIterator(0, 1, this._trendData.length);
+
+		return this._trendData
+			.map((course) => ({
+				...course,
+				// It is read as `Course 1, series 1 of 3 with 8 data points.`
+				name: this._orgUnitName(course.orgUnitId),
+				color: colors.next().value }))
+			.filter(course => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0);
 	}
 }
 customElements.define('d2l-insights-grades-trend-card', GradesTrendCard);
