@@ -11,6 +11,8 @@ import { UrlState } from '../model/urlState';
 
 const filterId = 'd2l-insights-current-final-grade-card';
 
+const CATEGORIES = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+
 function gradeCategory(grade) {
 	if (grade === null || grade === 0) {
 		return grade;
@@ -187,6 +189,10 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		}
 	}
 
+	firstUpdated() {
+		this.filter.all = new Set(CATEGORIES.slice(0, 10));
+	}
+
 	get chartOptions() {
 		const that = this;
 
@@ -233,7 +239,7 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				allowDecimals: false,
 				alignTicks: false,
 				tickWidth: 0, // remove tick marks
-				categories: [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+				categories: CATEGORIES,
 				floor: 0,
 				ceiling: 100,
 				endOnTick: true,

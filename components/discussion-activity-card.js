@@ -303,6 +303,14 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			}
 		};
 	}
+
+	firstUpdated() {
+		this.filter.all = new Set([
+			RECORD.DISCUSSION_ACTIVITY_READS,
+			RECORD.DISCUSSION_ACTIVITY_THREADS,
+			RECORD.DISCUSSION_ACTIVITY_REPLIES
+		]);
+	}
 }
 
 decorate(DiscussionActivityCard, {

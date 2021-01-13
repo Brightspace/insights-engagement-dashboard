@@ -198,8 +198,6 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 		if (e.target.parentElement === null) return;
 		const orgUnitId = e.target.getAttribute('data-ouid') || e.target.parentElement.getAttribute('data-ouid');
 		this.selectedCourses.toggle(Number(orgUnitId));
-
-		console.log('click! ', [...this.selectedCourses.selected]);
 	}
 
 	// RENDERERS

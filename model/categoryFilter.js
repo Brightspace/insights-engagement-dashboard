@@ -7,6 +7,7 @@ export class CategoryFilter {
 		this.filter = filter;
 		this.selectedCategories = new Set();
 		this.persistenceKey = key;
+		this._all = undefined;
 	}
 
 	get isApplied() {
@@ -17,12 +18,29 @@ export class CategoryFilter {
 		if (!isApplied) this.selectedCategories.clear();
 	}
 
+	set all(allValues) {
+		this._all = allValues;
+		if (this._all && this.isAllCategoriesSelected()) {
+			this.selectedCategories.clear();
+		}
+	}
+
+	isAllCategoriesSelected() {
+		const intersection = [...this._all].filter(v => this.selectedCategories.has(v));
+
+		if (intersection.length === this._all.size) return true;
+		return false;
+	}
+
 	clearCategory(category) {
 		this.selectedCategories.delete(category);
 	}
 
 	selectCategory(category) {
 		this.selectedCategories.add(category);
+		if (this._all && this.isAllCategoriesSelected()) {
+			this.selectedCategories.clear();
+		}
 	}
 
 	setCategories(categories) {

@@ -223,6 +223,13 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		</div>`;
 	}
 
+	firstUpdated() {
+		this.filter.all = new Set(
+			this._preparedBarChartData
+				.map((_, i) => i)
+		);
+	}
+
 	get chartOptions() {
 		const that = this;
 		return {
