@@ -199,18 +199,32 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			//test data
 			orgUnitId: 1,
 			data: [
-				[Date.UTC(2019, 1, 10), 80],
-				[Date.UTC(2019, 1, 17), 90],
-				[Date.UTC(2019, 1, 24), 75],
-				[Date.UTC(2019, 1, 30), 85]
+				[Date.UTC(2020, 1, 1), 50],
+				[Date.UTC(2020, 1, 7), 60],
+				[Date.UTC(2020, 1, 14), 45],
+				[Date.UTC(2020, 1, 21), 65],
+				[Date.UTC(2020, 1, 28), 70],
+				[Date.UTC(2020, 2, 4), 65]
 			]
 		}, {
 			orgUnitId: 2,
 			data:  [
-				[Date.UTC(2019, 2, 10), 50],
-				[Date.UTC(2019, 2, 17), 80],
-				[Date.UTC(2019, 2, 24), 55],
-				[Date.UTC(2019, 2, 30), 80]
+				[Date.UTC(2020, 1, 1), 30],
+				[Date.UTC(2020, 1, 7), 50],
+				[Date.UTC(2020, 1, 14), 35],
+				[Date.UTC(2020, 1, 21), 50],
+				[Date.UTC(2020, 1, 28), 65],
+				[Date.UTC(2020, 2, 4), 40]
+			]
+		}, {
+			orgUnitId: 3,
+			data:  [
+				[Date.UTC(2020, 1, 1), 10],
+				[Date.UTC(2020, 1, 7), 30],
+				[Date.UTC(2020, 1, 14), 25],
+				[Date.UTC(2020, 1, 21), 40],
+				[Date.UTC(2020, 1, 28), 55],
+				[Date.UTC(2020, 2, 4), 25]
 			]
 		}];
 
@@ -230,7 +244,7 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get _series() {
 		if (!this.data._data) return [];
 
-		const colors = Array.from({ length: this._trendData.length }, function() { return this.next().value; }, UserTrendColorsIterator(0, 1, this._trendData.length));
+		const colors = [...UserTrendColorsIterator(0, 1, this._trendData.length)];
 		const selected = (course) => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0;
 
 		return this._trendData
