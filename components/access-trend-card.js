@@ -95,57 +95,6 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this.selectedCourses.toggle(orgUnitId);
 	}
 
-	_twoClosestPoints(xValue, points) {
-		// it assumes that points are ordered by elem.x value
-		return points.reduce((result, point) => {
-			if (result.length === 2) return result;
-
-			if (point.x > xValue) {
-				result.push(point);
-				return result;
-			}
-
-			return [point];
-		}, []);
-	}
-
-	_slopeInteceptFn(twoPoints) {
-		const p1 = twoPoints[0];
-		const p2 = twoPoints[1];
-		const m = (p2.y - p1.y) / (p2.x - p1.x);
-		const b = p1.y - m * p1.x;
-
-		// slope-intercept form of a line eqution
-		return (x) => m * x + b;
-	}
-
-	_getClickedAreaByXY(xVal, yVal) {
-		// For a given X, Y of the mouse click event.
-		// 1) find two surrounding points for each series by axis X
-		// 2) build function of a line for each pair of points from step 1
-		// 3) take the closest to axis X series (the lowest Y of a line that is bigger of Y of the mouse click event)
-
-		const series = this._trendData
-			.map(series => this._twoClosestPoints(xVal, series.data))
-			.map(points => ({ fn: this._slopeInteceptFn(points), points }))
-			.map((seriesData, idx) => ({
-				idx,
-				y: seriesData.fn(xVal),
-				...seriesData
-			}))
-			.sort((a, b) => a.y - b.y);
-
-		return series.reduce((idx, seriesData) => {
-			// seriesData.y >= yVal - event happened under the line
-			if (idx === -1 && seriesData.y >= yVal) {
-				idx = seriesData.idx;
-			}
-
-			return idx;
-		}, -1);
-
-	}
-
 	get _chartOptions() {
 		const that = this;
 
@@ -154,17 +103,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				type: 'area',
 				height: 250,
 				width: 583,
-				zoomType: 'x',
-
-				events: {
-					click: function(e) {
-						// handles ~5% of click events that are not processed in plotOptions.area.events.click
-						const seriesIdx = that._getClickedAreaByXY(e.xAxis[0].value, e.yAxis[0].value);
-						if (seriesIdx > -1) {
-							that._toggleFilter(that._trendData[seriesIdx].orgUnitId);
-						}
-					}
-				}
+				zoomType: 'x'
 			},
 
 			title: {
@@ -249,8 +188,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				},
 
 				area: {
-					// trackByArea: true, // area/course selection by mouse works better without this option
-					// the altetnative is to enable trackByArea, add events.events.click and remove chart.events.click
+					trackByArea: true,
 
 					states: {
 						hover: {
