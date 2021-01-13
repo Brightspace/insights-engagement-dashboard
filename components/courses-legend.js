@@ -8,7 +8,6 @@ import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { UrlState } from '../model/urlState';
 
-window.colors = UserTrendColorsIterator;
 export class SelectedCourses {
 	constructor() {
 		this.selected = new Set();
