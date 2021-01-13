@@ -22,7 +22,7 @@ describe('content-views-card', () => {
 		it('should render Content view over time chart', async() => {
 			const el = await fixture(html`<d2l-insights-content-views-card .data="${data}"></d2l-insights-content-views-card>`);
 			const title = (el.shadowRoot.querySelectorAll('div.d2l-insights-content-views-title'));
-			expect(title[0].innerText).to.equal('Content view over time');
+			expect(title[0].innerText).to.equal('Content View Over Time');
 		});
 	});
 });
