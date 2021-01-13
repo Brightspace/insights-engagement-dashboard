@@ -35,6 +35,10 @@ export class SelectedCourses {
 		return this.selected.size;
 	}
 
+	get isEmpty() {
+		return this.selected.size === 0;
+	}
+
 	set(values) {
 		this.selected = new Set();
 		values.forEach(value => this.selected.add(value));
@@ -184,7 +188,7 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 	_renderCourse(course, color) {
 		const containerStyles = classMap({
 			'd2l-insights-user-course-legend-item': true,
-			'd2l-insights-user-course-legend-item-filtered': !this.skeleton && this.selectedCourses.has(course.orgUnitId),
+			'd2l-insights-user-course-legend-item-filtered': !this.skeleton && (!this.selectedCourses.isEmpty && !this.selectedCourses.has(course.orgUnitId)),
 			'd2l-skeletize': this.skeleton,
 		});
 		return html`
