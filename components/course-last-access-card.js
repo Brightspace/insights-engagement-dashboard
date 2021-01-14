@@ -55,7 +55,7 @@ export class CourseLastAccessFilter extends CategoryFilter {
 			'caf'
 		);
 		this._urlState = new UrlState(this);
-		this.setAll(new Set(DATA_BUCKETS.keys()));
+		this._all = new Set(DATA_BUCKETS.keys());
 	}
 
 	//for Urlstate

@@ -22,11 +22,11 @@ export class DiscussionActivityFilter extends CategoryFilter {
 			'daf'
 		);
 		this._urlState = new UrlState(this);
-		this.setAll(new Set([
+		this._all = new Set([
 			RECORD.DISCUSSION_ACTIVITY_READS,
 			RECORD.DISCUSSION_ACTIVITY_THREADS,
 			RECORD.DISCUSSION_ACTIVITY_REPLIES
-		]));
+		]);
 	}
 
 	//for Urlstate
