@@ -87,12 +87,8 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const orgUnitId = parseInt(series.userOptions.orgUnitId, 10);
 
 		if (Number.isInteger(orgUnitId)) {
-			this._toggleFilter(orgUnitId);
+			this.selectedCourses.toggle(orgUnitId);
 		}
-	}
-
-	_toggleFilter(orgUnitId) {
-		this.selectedCourses.toggle(orgUnitId);
 	}
 
 	get _chartOptions() {
