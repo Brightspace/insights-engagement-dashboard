@@ -49,8 +49,8 @@ export class SelectedCourses {
 	get isEmpty() {
 		return this.selected.size === 0;
 	}
-
-	set all(values) {
+	// @action
+	setAll(values) {
 		this._all = new Set(values);
 
 		if (this._all && this.isAllSelected()) {
@@ -85,6 +85,7 @@ export class SelectedCourses {
 decorate(SelectedCourses, {
 	selected: observable,
 	toggle: action,
+	setAll: action
 });
 class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
@@ -193,7 +194,7 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 	//LIFECYCLE
 
 	updated() {
-		this.selectedCourses.all = new Set(this.courses.map(course => course.orgUnitId));
+		this.selectedCourses.setAll(new Set(this.courses.map(course => course.orgUnitId)));
 	}
 
 	//EVENTS

@@ -35,7 +35,7 @@ export class CurrentFinalGradesFilter extends CategoryFilter {
 		);
 		this._urlState = new UrlState(this);
 
-		this.all = new Set(CATEGORIES.slice(0, 10));
+		this.setAll(new Set(CATEGORIES.slice(0, 10)));
 	}
 
 	//for Urlstate

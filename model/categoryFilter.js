@@ -18,7 +18,8 @@ export class CategoryFilter {
 		if (!isApplied) this.selectedCategories.clear();
 	}
 
-	set all(allValues) {
+	//@action
+	setAll(allValues) {
 		this._all = allValues;
 		if (this._all && this.isAllCategoriesSelected()) {
 			this.selectedCategories.clear();
@@ -62,5 +63,6 @@ decorate(CategoryFilter, {
 	selectCategory: action,
 	setCategories: action,
 	toggleCategory: action,
+	setAll: action,
 	selectedCategories: observable
 });
