@@ -3,7 +3,7 @@ import { expect, fixture, html } from '@open-wc/testing';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 import { SelectedCourses } from '../../components/courses-legend';
 
-const gray = 'var(--d2l-color-mica)';
+const grey  = 'var(--d2l-color-mica)';
 
 describe('grades-trend-card', () => {
 	const data = {
@@ -47,8 +47,8 @@ describe('grades-trend-card', () => {
 		el._toggleFilterEventHandler(series[0]);
 		await el.updateComplete;
 
-		expect(el._series[0].color).to.deep.equal('#4885DC');
-		expect(el._series[1].color).to.deep.equal(gray);
-		expect(el._series[2].color).to.deep.equal(gray);
+		expect(el._series[0].color).to.eql('#4885DC');
+		expect(el._series[1].color).to.eql(grey);
+		expect(el._series[2].color).to.eql(grey);
 	});
 });
