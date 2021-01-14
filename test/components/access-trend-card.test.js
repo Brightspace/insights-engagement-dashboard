@@ -1,6 +1,8 @@
 import '../../components/access-trend-card';
 import { expect, fixture, html } from '@open-wc/testing';
+import { disableUrlStateForTesting, enableUrlState } from '../../model/urlState';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
+import { SelectedCourses } from '../../components/courses-legend';
 
 describe('d2l-insights-access-trend-card', () => {
 	const data = {
@@ -25,10 +27,46 @@ describe('d2l-insights-access-trend-card', () => {
 	});
 
 	describe('render', () => {
+		const gray = 'var(--d2l-color-mica)';
+
+		before(() => disableUrlStateForTesting());
+		after(() => enableUrlState());
+
 		it('should render Course Access Over Time chart', async() => {
 			const el = await fixture(html`<d2l-insights-access-trend-card .data="${data}"></d2l-insights-access-trend-card>`);
 			const title = el.shadowRoot.querySelectorAll('div.d2l-insights-access-trend-title');
+
 			expect(title[0].innerText).to.equal('Course Access Over Time');
+
+			const series = el.shadowRoot.querySelector('d2l-labs-chart').chart.series;
+			const colors = series.map(series => series.color);
+			expect(colors).to.eql([ '#4885DC', '#D3E24A', '#D66DAC' ]);
+		});
+
+		it('should grey out all other courses when a first course is selected', async() => {
+			const selectedCourses = new SelectedCourses();
+			const el = await fixture(html`<d2l-insights-access-trend-card .data="${data}" .selectedCourses="${selectedCourses}"></d2l-insights-access-trend-card>`);
+			const series = el.shadowRoot.querySelector('d2l-labs-chart').chart.series;
+
+			el._toggleFilterEventHandler(series[0]);
+			await el.updateComplete;
+
+			const colors = series.map(series => series.color);
+			const gray = 'var(--d2l-color-mica)';
+			expect(colors).to.eql([ '#4885DC', gray, gray ]);
+		});
+
+		it('should toggle color for any other course if there is one selected course', async() => {
+			const selectedCourses = new SelectedCourses();
+			const el = await fixture(html`<d2l-insights-access-trend-card .data="${data}" .selectedCourses="${selectedCourses}"></d2l-insights-access-trend-card>`);
+			const series = el.shadowRoot.querySelector('d2l-labs-chart').chart.series;
+
+			el._toggleFilterEventHandler(series[0]);
+			el._toggleFilterEventHandler(series[1]);
+			await el.updateComplete;
+
+			const colors = series.map(series => series.color);
+			expect(colors).to.eql([ '#4885DC', '#D3E24A', gray ]);
 		});
 	});
 });
