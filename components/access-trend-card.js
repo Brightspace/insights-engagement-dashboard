@@ -207,6 +207,13 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			accessibility: {
 				screenReaderSection: {
 					beforeChartFormat: BEFORE_CHART_FORMAT
+				},
+
+				point: {
+					// 6. Saturday, Mar  7, 2020, Date, 7 Course Access Count. Course 1.
+					// it adds `Date, ` and ` Course Access Count` into point descripton
+					valuePrefix: `${this._xAxisTitle}, `,
+					valueSuffix: ` ${this._yAxisTitle}`
 				}
 			},
 
