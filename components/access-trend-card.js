@@ -83,8 +83,12 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			></d2l-labs-chart>`;
 	}
 
-	_toggleFilter(orgUnitId) {
-		this.selectedCourses.toggle(orgUnitId);
+	_toggleFilterEventHandler(series) {
+		const orgUnitId = parseInt(series.userOptions.orgUnitId, 10);
+
+		if (Number.isInteger(orgUnitId)) {
+			this.selectedCourses.toggle(orgUnitId);
+		}
 	}
 
 	get _chartOptions() {
@@ -163,21 +167,31 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			},
 
 			plotOptions: {
+
+				series: {
+					point: {
+						events: {
+							click: function(e) {
+								// handles also spacebar and enter keys
+								// in opposite to area.event.click which handles only mouse events
+								// e.target.series - when a user hits a keaboard key
+								// e.point.series -  when a user clicks point by mouse
+
+								that._toggleFilterEventHandler(e.target.series || e.point.series);
+							}
+						}
+					}
+				},
+
 				area: {
 					trackByArea: true,
 
-					events: {
-						click: function(e) {
-							const orgUnitId = parseInt(e.point.series.userOptions.orgUnitId, 10);
-							if (Number.isInteger(orgUnitId)) {
-								that._toggleFilter(orgUnitId);
-							}
-						}
-					},
-
 					states: {
 						hover: {
-							enabled: true
+							enabled: true,
+							halo: {
+								size: 0
+							}
 						},
 						inactive: {
 							enabled: false
@@ -193,6 +207,13 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			accessibility: {
 				screenReaderSection: {
 					beforeChartFormat: BEFORE_CHART_FORMAT
+				},
+
+				point: {
+					// 6. Saturday, Mar  7, 2020, Date, 7 Course Access Count. Course 1.
+					// it adds `Date, ` and ` Course Access Count` into point descripton
+					valuePrefix: `${this._xAxisTitle}, `,
+					valueSuffix: ` ${this._yAxisTitle}`
 				}
 			},
 
@@ -226,7 +247,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				{ x: Date.UTC(2020, 2, 21), y: 6 }
 			]
 		}, {
-			orgUnitId: 3,
+			orgUnitId: 8,
 			data: [
 				{ x: Date.UTC(2020, 1, 3), y: 0 },
 				{ x: Date.UTC(2020, 1, 10), y: 1 },
@@ -255,15 +276,16 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get _series() {
 		if (!this.data._data) return [];
 
-		const colors = UserTrendColorsIterator();
+		const selected = (course) => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0;
+		const colors = [...UserTrendColorsIterator(0, 1, this._trendData.length)];
 
 		return this._trendData
-			.map((course) => ({
+			.map((course, idx) => ({
 				...course,
 				// It is read as `Course 1, series 1 of 3 with 8 data points.`
 				name: this._orgUnitName(course.orgUnitId),
-				color: colors.next().value }))
-			.filter(course => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0);
+				lineColor:  colors[idx],
+				color: selected(course) ? colors[idx] : 'var(--d2l-color-mica)' }));
 	}
 }
 customElements.define('d2l-insights-access-trend-card', AccessTrendCard);

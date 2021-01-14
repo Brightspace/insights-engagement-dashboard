@@ -1,5 +1,6 @@
 import 'highcharts';
 import { css, html } from 'lit-element/lit-element.js';
+import { ORG_UNIT, UserTrendColorsIterator } from '../consts';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
 import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles';
 import { Localizer } from '../locales/localizer';
@@ -9,13 +10,18 @@ import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton
 class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
-			data: { type: Object, attribute: false }
+			data: { type: Object, attribute: false },
+			selectedCourses: { type: Object, attribute: false }
 		};
 	}
 
 	constructor() {
 		super();
 		this.data = {};
+		this.selectedCourses = {
+			size: 0,
+			has: () => false
+		};
 	}
 
 	static get styles() {
@@ -84,7 +90,17 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			></d2l-labs-chart>`;
 	}
 
+	_toggleFilterEventHandler(series) {
+		const orgUnitId = parseInt(series.userOptions.orgUnitId, 10);
+
+		if (Number.isInteger(orgUnitId)) {
+			this.selectedCourses.toggle(orgUnitId);
+		}
+	}
+
 	get chartOptions() {
+		const that = this;
+
 		return {
 			chart: {
 				height: 250,
@@ -162,36 +178,90 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				series: {
 					marker: {
 						enabled: false
+					},
+					point: {
+						events: {
+							click: function(e) {
+								// e.target.series - when a user hits a keaboard key
+								// e.point.series -  when a user clicks point by mouse
+								that._toggleFilterEventHandler(e.target.series || e.point.series);
+							}
+						}
 					}
 				}
 			},
 			accessibility: {
 				screenReaderSection: {
 					beforeChartFormat: BEFORE_CHART_FORMAT
+				},
+				point: {
+					valuePrefix: `${this._dateText}, `,
+					valueSuffix: ` ${this._viewCountText}`
 				}
 			},
 			series: this._series
 		};
 	}
-	get _series() {
-		return [{
+
+	get _trendData() {
+		const courses = [{
 			//test data
-			name: '1',
+			orgUnitId: 1,
 			data: [
-				[Date.UTC(2019, 1, 1), 50],
-				[Date.UTC(2019, 1, 7), 60],
-				[Date.UTC(2019, 1, 14), 45],
-				[Date.UTC(2019, 1, 21), 65]
+				[Date.UTC(2020, 1, 1), 50],
+				[Date.UTC(2020, 1, 7), 60],
+				[Date.UTC(2020, 1, 14), 45],
+				[Date.UTC(2020, 1, 21), 65],
+				[Date.UTC(2020, 1, 28), 70],
+				[Date.UTC(2020, 2, 4), 65]
 			]
 		}, {
-			name: '2',
-			data:  [
-				[Date.UTC(2019, 2, 1), 20],
-				[Date.UTC(2019, 2, 7), 50],
-				[Date.UTC(2019, 2, 14), 25],
-				[Date.UTC(2019, 2, 21), 50]
+			orgUnitId: 2,
+			data: [
+				[Date.UTC(2020, 1, 1), 30],
+				[Date.UTC(2020, 1, 7), 50],
+				[Date.UTC(2020, 1, 14), 35],
+				[Date.UTC(2020, 1, 21), 50],
+				[Date.UTC(2020, 1, 28), 65],
+				[Date.UTC(2020, 2, 4), 40]
+			]
+		}, {
+			orgUnitId: 8,
+			data: [
+				[Date.UTC(2020, 1, 1), 10],
+				[Date.UTC(2020, 1, 7), 30],
+				[Date.UTC(2020, 1, 14), 25],
+				[Date.UTC(2020, 1, 21), 40],
+				[Date.UTC(2020, 1, 28), 55],
+				[Date.UTC(2020, 2, 4), 25]
 			]
 		}];
+
+		return courses;
+	}
+
+	get _serverData() {
+		return this.data._data.serverData;
+	}
+
+	_orgUnitName(orgUnitId) {
+		const orgUnit = this._serverData.orgUnits.find(unit => unit[ORG_UNIT.ID] === orgUnitId);
+
+		return orgUnit ? orgUnit[ORG_UNIT.NAME] : '';
+	}
+
+	get _series() {
+		if (!this.data._data) return [];
+
+		const colors = [...UserTrendColorsIterator(0, 1, this._trendData.length)];
+		const selected = (course) => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0;
+
+		return this._trendData
+			.map((course, idx) => ({
+				...course,
+				// It is read as `Course 1, series 1 of 3 with 8 data points.`
+				name: this._orgUnitName(course.orgUnitId),
+				color: selected(course) ? colors[idx] : 'var(--d2l-color-mica)' }));
 	}
 }
 customElements.define('d2l-insights-content-views-card', ContentViewsCard);

@@ -37,7 +37,15 @@ describe('d2l-insights-user-drill-view', () => {
 				orgUnits: [
 					[1, 'Course 1', mockOuTypes.course, [1001], false],
 					[2, 'Course 2', mockOuTypes.course, [1001], false],
-					[3, 'Course 3', mockOuTypes.course, [1002], true]
+					[3, 'Course 3', mockOuTypes.course, [1002], true],
+					[4, 'Course 4', mockOuTypes.course, [1002], true],
+					[5, 'Course 5', mockOuTypes.course, [1002], true],
+					[6, 'Course 6', mockOuTypes.course, [1002], true],
+					[7, 'Course 7', mockOuTypes.course, [1002], true],
+					[8, 'Course 8', mockOuTypes.course, [1002], true],
+					[9, 'Course 9', mockOuTypes.course, [1002], true],
+					[10, 'Course 10', mockOuTypes.course, [1002], true],
+					[11, 'Course 11', mockOuTypes.course, [1002], true]
 				],
 			}
 		},
@@ -214,7 +222,7 @@ describe('d2l-insights-user-drill-view', () => {
 		it('should render the alert if there are >= 10 courses', async() => {
 			data.recordsByUser = new Map();
 			data.recordsByUser.set(232, []);
-			(new Array(11)).fill([]).forEach((record, i) => data.recordsByUser.get(232).push([i, 232]));
+			(new Array(11)).fill([]).forEach((record, i) => data.recordsByUser.get(232).push([i + 1, 232]));
 
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
 			await new Promise(res => setTimeout(res, 50));
@@ -239,7 +247,7 @@ describe('d2l-insights-user-drill-view', () => {
 
 		it('should set filter after click on overdue assignment card', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
-			await new Promise(res => setTimeout(res, 200));
+			await new Promise(res => setTimeout(res, 250));
 
 			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
 			const overdueAssignmentsCard = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card')[2];

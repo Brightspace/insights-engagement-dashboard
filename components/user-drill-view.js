@@ -134,10 +134,6 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				margin-top: 12px;
 			}
 
-			.d2l-insights-user-drill-view-content {
-				width: 100%;
-			}
-
 			.d2l-insights-user-drill-view-action-button-group {
 				flex-grow: 1;
 				margin: 0.7em;
@@ -410,11 +406,13 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				></d2l-summary-cards-container>
 
 				${ this.isDemo ? html`
-					<d2l-insights-content-views-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-content-views-card>
+					<d2l-insights-grades-trend-card .data="${this.data}" ?skeleton="${this._isLoading}"	.selectedCourses="${this.selectedCourses}"
+					></d2l-insights-grades-trend-card>
+					<d2l-insights-content-views-card .data="${this.data}" ?skeleton="${this._isLoading}" .selectedCourses="${this.selectedCourses}"
+					></d2l-insights-content-views-card>
 					<d2l-insights-access-trend-card
 						?hidden="${this.hidden}"
 						?skeleton="${this.skeleton}"
-
 						.data="${this.data}"
 						.selectedCourses="${this.selectedCourses}"
 					></d2l-insights-access-trend-card>
