@@ -19,7 +19,7 @@ describe('user-drill', () => {
 			`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-insights-engagement-dashboard.visual-diff.html?v=user%2C200`,
 			{ waitUntil: ['networkidle0', 'load'] }
 		);
-		await new Promise(res => setTimeout(res, 50));
+		await new Promise(res => setTimeout(res, 200));
 		await page.bringToFront();
 	});
 
