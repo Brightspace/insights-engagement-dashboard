@@ -3,7 +3,7 @@ const VisualDiff = require('@brightspace-ui/visual-diff');
 
 describe('user-drill', () => {
 
-	const visualDiff = new VisualDiff('user-drill', __dirname, { tolerance: 0.05 });
+	const visualDiff = new VisualDiff('user-drill', __dirname, { tolerance: 0.1 });
 
 	let browser, page;
 
