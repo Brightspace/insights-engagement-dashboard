@@ -29,6 +29,7 @@ export class DiscussionActivityFilter extends CategoryFilter {
 			'daf',
 			all
 		);
+		this._urlState = new UrlState(this);
 	}
 
 	//for Urlstate
