@@ -3,7 +3,7 @@ const VisualDiff = require('@brightspace-ui/visual-diff');
 
 describe('user-drill', () => {
 
-	const visualDiff = new VisualDiff('user-drill', __dirname, { tolerance: 0.05 });
+	const visualDiff = new VisualDiff('user-drill', __dirname, { tolerance: 0.1 });
 
 	let browser, page;
 
@@ -19,7 +19,7 @@ describe('user-drill', () => {
 			`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-insights-engagement-dashboard.visual-diff.html?v=user%2C200`,
 			{ waitUntil: ['networkidle0', 'load'] }
 		);
-		await new Promise(res => setTimeout(res, 50));
+		await new Promise(res => setTimeout(res, 250));
 		await page.bringToFront();
 	});
 
