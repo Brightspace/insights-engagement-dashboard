@@ -1,5 +1,6 @@
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/button/button.js';
+import '@brightspace-ui/core/components/alert/alert.js';
 import 'd2l-users/components/d2l-profile-image';
 import './summary-cards-container';
 import './user-drill-courses-table.js';
@@ -133,10 +134,6 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				margin-top: 12px;
 			}
 
-			.d2l-insights-user-drill-view-content {
-				width: 100%;
-			}
-
 			.d2l-insights-user-drill-view-action-button-group {
 				flex-grow: 1;
 				margin: 0.7em;
@@ -154,6 +151,16 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				.d2l-insights-user-drill-view-profile-name > div.d2l-heading-2 {
 					width: 150px;
 				}
+			}
+
+			d2l-alert {
+				max-width: 1200px;
+			}
+
+			.d2l-insights-summary-chart-layout {
+				display: flex;
+				flex-wrap: wrap;
+				max-width: 1300px;
 			}
 		`];
 	}
@@ -321,6 +328,13 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this.data.records.filter(r => r[RECORD.USER_ID] === this.user.userId);
 	}
 
+	get hideCourseAlert() {
+		const userRecords = this.data.recordsByUser.get(this.user.userId);
+		if (!userRecords) return true;
+		const numCourses = new Set(userRecords.map(record => record[RECORD.ORG_UNIT_ID])).size;
+		return numCourses < 10;
+	}
+
 	render() {
 		if (!this.skeleton && !this.user.userId) {
 			return html`
@@ -374,31 +388,38 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				<slot name="applied-filters"></slot>
 			</div>
 
-			<d2l-summary-cards-container
-				?hidden="${this.hidden}"
-				?skeleton="${this.skeleton}"
+			<h3>${this.localize('userDrill:summaryView')}</h3>
 
-				.cards="${this.summaryCards}"
-			></d2l-summary-cards-container>
+			<d2l-alert
+				has-close-button
+				?hidden=${this.hideCourseAlert}
+			>
+				${this.localize('userDrill:manyCoursesAlert')}
+			</d2l-alert>
 
-			<div class="d2l-insights-user-drill-view-content">
-			${ this.isDemo ? html`
-				<div><d2l-insights-access-trend-card
+			<div class="d2l-insights-summary-chart-layout">
+				<d2l-summary-cards-container
 					?hidden="${this.hidden}"
 					?skeleton="${this.skeleton}"
-					.data="${this.data}"
-					.selectedCourses="${this.selectedCourses}"
-				></d2l-insights-access-trend-card></div>
-				<div><d2l-insights-content-views-card
-					.data="${this.data}"
-					?skeleton="${this._isLoading}"
-					.selectedCourses="${this.selectedCourses}"
-				></d2l-insights-content-views-card></div>
-				<div><d2l-insights-grades-trend-card
-					.data="${this.data}"
-					?skeleton="${this._isLoading}"
-					.selectedCourses="${this.selectedCourses}"
-				></d2l-insights-grades-trend-card></div>
+
+					.cards="${this.summaryCards}"
+				></d2l-summary-cards-container>
+
+				${ this.isDemo ? html`
+					<d2l-insights-grades-trend-card .data="${this.data}" ?skeleton="${this._isLoading}"	.selectedCourses="${this.selectedCourses}"
+					></d2l-insights-grades-trend-card>
+					<d2l-insights-content-views-card .data="${this.data}" ?skeleton="${this._isLoading}" .selectedCourses="${this.selectedCourses}"
+					></d2l-insights-content-views-card>
+					<d2l-insights-access-trend-card
+						?hidden="${this.hidden}"
+						?skeleton="${this.skeleton}"
+						.data="${this.data}"
+						.selectedCourses="${this.selectedCourses}"
+					></d2l-insights-access-trend-card>
+
+				` : nothing }
+			</div>
+			${ this.isDemo ? html`
 				<d2l-insights-courses-legend
 					.data="${this.data}"
 					.user="${this.user}"
@@ -407,8 +428,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				></d2l-insights-courses-legend>
 			` : nothing }
 
-				${this._renderContent()}
-			</div>
+			${this._renderContent()}
+
 		</div>`;
 	}
 
