@@ -1,6 +1,6 @@
 import '../../components/access-trend-card';
-import { expect, fixture, html } from '@open-wc/testing';
 import { disableUrlStateForTesting, enableUrlState } from '../../model/urlState';
+import { expect, fixture, html } from '@open-wc/testing';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 import { SelectedCourses } from '../../components/courses-legend';
 
