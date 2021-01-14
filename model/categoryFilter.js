@@ -64,5 +64,6 @@ decorate(CategoryFilter, {
 	setCategories: action,
 	toggleCategory: action,
 	setAll: action,
-	selectedCategories: observable
+	selectedCategories: observable,
+	_all: observable
 });

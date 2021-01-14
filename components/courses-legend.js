@@ -85,7 +85,8 @@ export class SelectedCourses {
 decorate(SelectedCourses, {
 	selected: observable,
 	toggle: action,
-	setAll: action
+	setAll: action,
+	_all: observable,
 });
 class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
