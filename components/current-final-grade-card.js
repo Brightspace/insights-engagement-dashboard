@@ -31,11 +31,10 @@ export class CurrentFinalGradesFilter extends CategoryFilter {
 			filterId,
 			'currentFinalGradeCard:currentGrade',
 			record => this.selectedCategories.has(gradeCategory(record[RECORD.CURRENT_FINAL_GRADE])),
-			'cgf'
+			'cgf',
+			new Set(CATEGORIES.slice(0, 10))
 		);
 		this._urlState = new UrlState(this);
-
-		this._all = new Set(CATEGORIES.slice(0, 10));
 	}
 
 	//for Urlstate

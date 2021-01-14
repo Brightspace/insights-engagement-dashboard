@@ -1,13 +1,13 @@
 import { action, computed, decorate, observable } from 'mobx';
 
 export class CategoryFilter {
-	constructor(filterId, title, filter, key) {
+	constructor(filterId, title, filter, key, all) {
 		this.id = filterId;
 		this.title = title;
 		this.filter = filter;
 		this.selectedCategories = new Set();
 		this.persistenceKey = key;
-		this._all = undefined;
+		this._all = all;
 	}
 
 	get isApplied() {

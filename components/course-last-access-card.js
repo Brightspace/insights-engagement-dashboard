@@ -52,10 +52,10 @@ export class CourseLastAccessFilter extends CategoryFilter {
 			filterId,
 			'courseLastAccessCard:courseAccess',
 			record => this.selectedCategories.has(lastAccessDateBucket(record, isDemo)),
-			'caf'
+			'caf',
+			new Set(DATA_BUCKETS.keys())
 		);
 		this._urlState = new UrlState(this);
-		this._all = new Set(DATA_BUCKETS.keys());
 	}
 
 	//for Urlstate
