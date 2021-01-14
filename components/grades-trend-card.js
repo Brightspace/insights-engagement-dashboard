@@ -90,6 +90,14 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			></d2l-labs-chart>`;
 	}
 
+	_toggleFilterEventHandler(series) {
+		const orgUnitId = parseInt(series.userOptions.orgUnitId, 10);
+
+		if (Number.isInteger(orgUnitId)) {
+			this._toggleFilter(orgUnitId);
+		}
+	}
+
 	_toggleFilter(orgUnitId) {
 		this.selectedCourses.toggle(orgUnitId);
 	}
@@ -175,11 +183,12 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 					marker: {
 						enabled: false
 					},
-					events: {
-						click: function(e) {
-							const orgUnitId = parseInt(e.point.series.userOptions.orgUnitId, 10);
-							if (Number.isInteger(orgUnitId)) {
-								that._toggleFilter(orgUnitId);
+					point: {
+						events: {
+							click: function(e) {
+								// e.target.series - when a user hits a keaboard key
+								// e.point.series -  when a user clicks point by mouse
+								that._toggleFilterEventHandler(e.target.series || e.point.series);
 							}
 						}
 					}
