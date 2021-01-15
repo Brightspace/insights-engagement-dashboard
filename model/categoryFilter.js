@@ -21,12 +21,14 @@ export class CategoryFilter {
 	//@action
 	setAll(allValues) {
 		this._all = allValues;
-		if (this._all && this.isAllCategoriesSelected()) {
+		if (this.isAllCategoriesSelected()) {
 			this.selectedCategories.clear();
 		}
 	}
 
 	isAllCategoriesSelected() {
+
+		if (!this._all) return false;
 		const intersection = [...this._all].filter(v => this.selectedCategories.has(v));
 
 		if (intersection.length === this._all.size) return true;
@@ -39,7 +41,7 @@ export class CategoryFilter {
 
 	selectCategory(category) {
 		this.selectedCategories.add(category);
-		if (this._all && this.isAllCategoriesSelected()) {
+		if (this.isAllCategoriesSelected()) {
 			this.selectedCategories.clear();
 		}
 	}

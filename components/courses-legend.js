@@ -25,13 +25,15 @@ export class SelectedCourses {
 		}
 		else {
 			this.selected.add(value);
-			if (this._all && this.isAllSelected()) {
+			if (this.isAllSelected()) {
 				this.selected = new Set();
 			}
 		}
 	}
 
 	isAllSelected() {
+		if (!this._all) return false;
+
 		const intersection = [...this._all].filter(v => this.selected.has(v));
 
 		if (intersection.length === this._all.size) return true;
@@ -53,7 +55,7 @@ export class SelectedCourses {
 	setAll(values) {
 		this._all = new Set(values);
 
-		if (this._all && this.isAllSelected()) {
+		if (this.isAllSelected()) {
 			this.selected = new Set();
 		}
 	}
