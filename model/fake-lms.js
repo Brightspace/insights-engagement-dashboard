@@ -1,4 +1,4 @@
-function parseHash() {
+export function parseHash() {
 	if (!window.location.hash) return {};
 
 	const hash = window.location.hash.substring(1);

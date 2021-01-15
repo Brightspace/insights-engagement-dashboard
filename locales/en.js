@@ -231,5 +231,45 @@ export default {
 
 	"gradesTrendCard:date": "Date",
 	"gradesTrendCard:gradesOverTime": "Grades Over Time",
-	"gradesTrendCard:currentGrade": "Current Grade (%)"
+	"gradesTrendCard:currentGrade": "Current Grade (%)",
+
+	"chart:loading": "Loading...",
+	"chart:decimalPoint": ".",
+	"chart:resetZoom": "Reset zoom",
+	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:thousandsSeparator": " ",
+
+	"chart:monthsJanuary": "January",
+	"chart:monthsFebruary": "February",
+	"chart:monthsMarch": "March",
+	"chart:monthsApril": "April",
+	"chart:monthsMay": "May",
+	"chart:monthsJune": "June",
+	"chart:monthsJuly": "July",
+	"chart:monthsAugust": "August",
+	"chart:monthsSeptember": "September",
+	"chart:monthsOctober": "October",
+	"chart:monthsNovember": "November",
+	"chart:monthsDecember": "December",
+
+	"chart:shortMonthsJan": "Jan",
+	"chart:shortMonthsFeb": "Feb",
+	"chart:shortMonthsMar": "Mar",
+	"chart:shortMonthsApr": "Apr",
+	"chart:shortMonthsMay": "May",
+	"chart:shortMonthsJun": "Jun",
+	"chart:shortMonthsJul": "Jul",
+	"chart:shortMonthsAug": "Aug",
+	"chart:shortMonthsSep": "Sep",
+	"chart:shortMonthsOct": "Oct",
+	"chart:shortMonthsNov": "Nov",
+	"chart:shortMonthsDec": "Dec",
+
+	"chart:weekdaysSunday": "Sunday",
+	"chart:weekdaysMonday": "Monday",
+	"chart:weekdaysTuesday": "Tuesday",
+	"chart:weekdaysWednesday": "Wednesday",
+	"chart:weekdaysThursday": "Thursday",
+	"chart:weekdaysFriday": "Friday",
+	"chart:weekdaysSaturday": "Saturday"
 };

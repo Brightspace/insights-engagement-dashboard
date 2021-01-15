@@ -5,6 +5,7 @@ import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
 import '../overlay';
 
 import { css, html, LitElement } from 'lit-element';
+import { Localizer } from '../../locales/localizer';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 
 const easeOut = (t) => (1 - (--t) * t * t * t);
@@ -28,7 +29,7 @@ export const BEFORE_CHART_FORMAT = '<h3>{chartTitle}</h3>' +
  * remove flag for suppressing updates, prevent unneeded update on first render
  * @element highcharts-chart
  */
-class Chart extends SkeletonMixin(LitElement) {
+class Chart extends SkeletonMixin(Localizer(LitElement)) {
 	static get properties() {
 		return {
 			options: { type: Object, attribute: false },
@@ -108,9 +109,8 @@ class Chart extends SkeletonMixin(LitElement) {
 	}
 
 	render() {
-		if (this.globalOptions) {
-			this.highcharts.setOptions(this.globalOptions);
-		}
+		const globalOptions = this._addLangOptions(this.globalOptions);
+		this.highcharts.setOptions(globalOptions);
 
 		return html`
 			<div id="chart-container" tabindex="${this.skeleton ? -1 : 0}"></div>
@@ -176,6 +176,65 @@ class Chart extends SkeletonMixin(LitElement) {
 
 	get chartContainer() {
 		return this.shadowRoot.querySelector('#chart-container');
+	}
+
+	_addLangOptions(globalOptions) {
+		if (!globalOptions) {
+			return {
+				lang: this._langOptions
+			};
+		}
+
+		globalOptions.lang = Object.assign({}, this._langOptions, globalOptions.lang);
+
+		return globalOptions;
+	}
+
+	get _langOptions() {
+		return {
+			loading: this.localize('chart:loading'),
+			months: [
+				this.localize('chart:monthsJanuary'),
+				this.localize('chart:monthsFebruary'),
+				this.localize('chart:monthsMarch'),
+				this.localize('chart:monthsApril'),
+				this.localize('chart:monthsMay'),
+				this.localize('chart:monthsJune'),
+				this.localize('chart:monthsJuly'),
+				this.localize('chart:monthsAugust'),
+				this.localize('chart:monthsSeptember'),
+				this.localize('chart:monthsOctober'),
+				this.localize('chart:monthsNovember'),
+				this.localize('chart:monthsDecember')
+			],
+			shortMonths: [
+				this.localize('chart:shortMonthsJan'),
+				this.localize('chart:shortMonthsFeb'),
+				this.localize('chart:shortMonthsMar'),
+				this.localize('chart:shortMonthsApr'),
+				this.localize('chart:shortMonthsMay'),
+				this.localize('chart:shortMonthsJun'),
+				this.localize('chart:shortMonthsJul'),
+				this.localize('chart:shortMonthsAug'),
+				this.localize('chart:shortMonthsSep'),
+				this.localize('chart:shortMonthsOct'),
+				this.localize('chart:shortMonthsNov'),
+				this.localize('chart:shortMonthsDec')
+			],
+			weekdays: [
+				this.localize('chart:weekdaysSunday'),
+				this.localize('chart:weekdaysMonday'),
+				this.localize('chart:weekdaysTuesday'),
+				this.localize('chart:weekdaysWednesday'),
+				this.localize('chart:weekdaysThursday'),
+				this.localize('chart:weekdaysFriday'),
+				this.localize('chart:weekdaysSaturday')
+			],
+			decimalPoint: this.localize('chart:decimalPoint'),
+			resetZoom: this.localize('chart:resetZoom'),
+			resetZoomTitle: this.localize('chart:resetZoomTitle'),
+			thousandsSep: this.localize('chart:thousandsSeparator'),
+		};
 	}
 }
 customElements.define('d2l-labs-chart', Chart);
