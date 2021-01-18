@@ -97,7 +97,7 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		return {
 			chart: {
-				height: 250,
+				height: 260,
 				width: 583,
 				zoomType: 'x',
 				resetZoomButton: {
@@ -124,7 +124,6 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			xAxis: {
 				tickInterval:  7 * 24 * 3600 * 1000, //week
 				type: 'datetime',
-				tickLength: 1,
 				labels: {
 					format: '{value:%b %e/%y}',
 					rotation: -60,

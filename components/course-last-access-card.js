@@ -228,7 +228,7 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return {
 			chart: {
 				type: 'bar',
-				height: '250px',
+				height: 260,
 				width: 583
 			},
 			tooltip: {

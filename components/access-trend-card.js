@@ -97,7 +97,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return {
 			chart: {
 				type: 'area',
-				height: 250,
+				height: 260,
 				width: 583,
 				zoomType: 'x'
 			},
