@@ -27,6 +27,11 @@ jobs:
         run: npm install
       - name: Linting
         run: npm run lint
+
+
+name: Draco Insights Dashboard Tests
+on: pull_request
+jobs:
   sauce:
     timeout-minutes: 15
     runs-on: ubuntu-latest
