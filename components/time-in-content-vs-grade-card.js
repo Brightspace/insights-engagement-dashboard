@@ -203,7 +203,7 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 		return {
 			chart: {
 				type: 'scatter',
-				height: 250,
+				height: 260,
 				width: 583,
 				events: {
 					click: function(event) {
