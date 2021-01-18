@@ -329,6 +329,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get hideCourseAlert() {
+		if (!this.isDemo) return true; // TODO: REMOVE WHEN WE ENABLE USER TRENDS
 		const userRecords = this.data.recordsByUser.get(this.user.userId);
 		if (!userRecords) return true;
 		const numCourses = new Set(userRecords.map(record => record[RECORD.ORG_UNIT_ID])).size;
