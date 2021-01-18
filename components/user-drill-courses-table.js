@@ -341,24 +341,22 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 				.data="${this._displayData}"
 				?skeleton="${this.skeleton}"
 			></d2l-insights-table>
-			${this._renderInactiveCoursesTablePagination()}
+			${this._renderTablePagination()}
 		`;
 	}
 
-	_renderInactiveCoursesTablePagination() {
-		if (!this.isActiveTable) {
-			return html`
-				<d2l-labs-pagination
-					show-item-count-select
-					item-count-options="[10,20,50,100]"
-					page-number="${this._currentPage}"
-					max-page-number="${this._maxPages}"
-					selected-count-option="${this._pageSize}"
-					@pagination-page-change="${this._handlePageChange}"
-					@pagination-item-counter-change="${this._handlePageSizeChange}"
-				></d2l-labs-pagination>
-			`;
-		}
+	_renderTablePagination() {
+		return html`
+			<d2l-labs-pagination
+				show-item-count-select
+				item-count-options="[10,20,50,100]"
+				page-number="${this._currentPage}"
+				max-page-number="${this._maxPages}"
+				selected-count-option="${this._pageSize}"
+				@pagination-page-change="${this._handlePageChange}"
+				@pagination-item-counter-change="${this._handlePageSizeChange}"
+			></d2l-labs-pagination>
+		`;
 	}
 }
 
