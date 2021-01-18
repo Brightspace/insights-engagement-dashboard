@@ -231,5 +231,11 @@ export default {
 
 	"gradesTrendCard:date": "Date",
 	"gradesTrendCard:gradesOverTime": "Grades Over Time",
-	"gradesTrendCard:currentGrade": "Current Grade (%)"
+	"gradesTrendCard:currentGrade": "Current Grade (%)",
+
+	"chart:loading": "Loading...",
+	"chart:decimalPoint": ".",
+	"chart:resetZoom": "Reset zoom",
+	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:thousandsSeparator": " ",
 };

@@ -3,6 +3,7 @@ import { css, html } from 'lit-element/lit-element.js';
 import { ORG_UNIT, UserTrendColorsIterator } from '../consts';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
 import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles';
+import { formatDate } from '@brightspace-ui/intl/lib/dateTime';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
@@ -126,7 +127,9 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				type: 'datetime',
 				tickLength: 1,
 				labels: {
-					format: '{value:%b %e/%y}',
+					formatter: function() {
+						return formatDate(new Date(this.value), { format: 'short' });
+					},
 					rotation: -60,
 					style: {
 						fontSize: '14px',

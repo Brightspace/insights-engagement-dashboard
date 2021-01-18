@@ -35,6 +35,7 @@ describe('d2l-insights-access-trend-card', () => {
 		it('should render Course Access Over Time chart', async() => {
 			const el = await fixture(html`<d2l-insights-access-trend-card .data="${data}"></d2l-insights-access-trend-card>`);
 			const title = el.shadowRoot.querySelectorAll('div.d2l-insights-access-trend-title');
+			await new Promise(resolve => setTimeout(resolve, 50));
 
 			expect(title[0].innerText).to.equal('Course Access Over Time');
 
@@ -46,6 +47,8 @@ describe('d2l-insights-access-trend-card', () => {
 		it('should grey out all other courses when a first course is selected', async() => {
 			const selectedCourses = new SelectedCourses();
 			const el = await fixture(html`<d2l-insights-access-trend-card .data="${data}" .selectedCourses="${selectedCourses}"></d2l-insights-access-trend-card>`);
+			await new Promise(resolve => setTimeout(resolve, 50));
+
 			const series = el.shadowRoot.querySelector('d2l-labs-chart').chart.series;
 
 			el._toggleFilterEventHandler(series[0]);
@@ -58,6 +61,7 @@ describe('d2l-insights-access-trend-card', () => {
 		it('should toggle color for any other course if there is one selected course', async() => {
 			const selectedCourses = new SelectedCourses();
 			const el = await fixture(html`<d2l-insights-access-trend-card .data="${data}" .selectedCourses="${selectedCourses}"></d2l-insights-access-trend-card>`);
+			await new Promise(resolve => setTimeout(resolve, 50));
 			const series = el.shadowRoot.querySelector('d2l-labs-chart').chart.series;
 
 			el._toggleFilterEventHandler(series[0]);

@@ -30,6 +30,7 @@ describe('content-views-card', () => {
 	describe('render', () => {
 		it('should render Content view over time chart', async() => {
 			const el = await fixture(html`<d2l-insights-content-views-card .data="${data}"></d2l-insights-content-views-card>`);
+			await new Promise(resolve => setTimeout(resolve, 50));
 			const title = (el.shadowRoot.querySelectorAll('div.d2l-insights-content-views-title'));
 			expect(title[0].innerText).to.equal('Content View Over Time');
 
@@ -42,6 +43,7 @@ describe('content-views-card', () => {
 	it('should grey out all other courses when a first course is selected', async() => {
 		const selectedCourses = new SelectedCourses();
 		const el = await fixture(html`<d2l-insights-content-views-card .data="${data}" .selectedCourses="${selectedCourses}"></d2l-insights-content-views-card>`);
+		await new Promise(resolve => setTimeout(resolve, 50));
 		const series = el.shadowRoot.querySelector('d2l-labs-chart').chart.series;
 
 		el._toggleFilterEventHandler(series[0]);
