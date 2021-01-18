@@ -1,4 +1,4 @@
-name: Visual Diff
+name: Draco Insights Dashboard
 on: pull_request
 jobs:
   vis-diff:
@@ -37,3 +37,6 @@ jobs:
         run: npm install
       - name: SauceLabs Tests
         run: npm run test:sauce
+        env:
+          SAUCE_USERNAME: Desire2Learn
+          SAUCE_ACCESS_KEY: ${{ secrets.SAUCE_ACCESS_KEY_DESIRE2LEARN }}
