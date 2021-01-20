@@ -110,7 +110,7 @@ describe('d2l-insights-engagement-dashboard', () => {
 						, 'd2l-summary-cards-container');
 
 					allCards.forEach(async card => {
-						let renderedCard = await trySelect(el.shadowRoot`d2l-insights-${card}`);
+						let renderedCard = await trySelect(el.shadowRoot, `d2l-insights-${card}`);
 						const smallCard = smallCards.find(c => c.card === card);
 						if (smallCard) {
 							renderedCard = await trySelect(summaryContainerEl.shadowRoot, `d2l-insights-${card}`);
