@@ -9,12 +9,13 @@ import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-help
 import sinon from 'sinon/pkg/sinon-esm.js';
 
 const trySelectAll = async(elm, query) => {
-	let child =	elm.querySelectorAll(query) || elm.shadowRoot.querySelectorAll(query);
+	if (!elm) return null;
+	let child =	elm.querySelectorAll(query);
 	let shadowChild = elm.shadowRoot.querySelectorAll(query);
 	child = child.length > 0 ? child : shadowChild;
 	while (!child) {
 		await new Promise(res => setTimeout(res, 20));
-		child =	elm.querySelectorAll(query) || elm.shadowRoot.querySelectorAll(query);
+		child =	elm.querySelectorAll(query);
 		shadowChild = elm.shadowRoot.querySelectorAll(query);
 		child = child.length > 0 ? child : shadowChild;
 	}
@@ -22,6 +23,7 @@ const trySelectAll = async(elm, query) => {
 };
 
 const trySelect = async(elm, query) => {
+	if (!elm) return null;
 	let child =	elm.querySelectorAll(query);
 	let shadowChild = elm.shadowRoot.querySelectorAll(query);
 	child = child !== null ? child : shadowChild;
