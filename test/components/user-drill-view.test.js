@@ -11,7 +11,7 @@ import sinon from 'sinon/pkg/sinon-esm.js';
 const trySelectAll = async(elm, query) => {
 	if (!elm) return null;
 	let child =	elm.querySelectorAll(query);
-	while (child === null) {
+	while (child.length === 0) {
 		await new Promise(res => setTimeout(res, 20));
 		child =	elm.querySelectorAll(query);
 	}
