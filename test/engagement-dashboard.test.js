@@ -2,6 +2,7 @@ import '../engagement-dashboard.js';
 import { expect, fixture, html } from '@open-wc/testing';
 import { LastAccessFilter } from '../components/last-access-card';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
+import { trySelect } from '../tools.js';
 
 describe('d2l-insights-engagement-dashboard', () => {
 
@@ -105,14 +106,14 @@ describe('d2l-insights-engagement-dashboard', () => {
 					></d2l-insights-engagement-dashboard>`);
 					await new Promise(resolve => setTimeout(resolve, 200));
 
-					const summaryContainerEl = el.shadowRoot
-						.querySelector('d2l-summary-cards-container');
+					const summaryContainerEl = await trySelect(el.shadowRoot
+						, 'd2l-summary-cards-container');
 
-					allCards.forEach(card => {
-						let renderedCard = el.shadowRoot.querySelector(`d2l-insights-${card}`);
+					allCards.forEach(async card => {
+						let renderedCard = await trySelect(el.shadowRoot`d2l-insights-${card}`);
 						const smallCard = smallCards.find(c => c.card === card);
 						if (smallCard) {
-							renderedCard = summaryContainerEl.shadowRoot.querySelector(`d2l-insights-${card}`);
+							renderedCard = await trySelect(summaryContainerEl.shadowRoot, `d2l-insights-${card}`);
 						}
 						if (cards.includes(card)) {
 							expect(renderedCard, card).to.exist;
@@ -150,8 +151,8 @@ describe('d2l-insights-engagement-dashboard', () => {
 					></d2l-insights-engagement-dashboard>`);
 				await new Promise(resolve => setTimeout(resolve, 100));
 
-				const usersTable = el.shadowRoot.querySelector('d2l-insights-users-table');
-				const innerTable = usersTable.shadowRoot.querySelector('d2l-insights-table');
+				const usersTable = await trySelect(el.shadowRoot, 'd2l-insights-users-table');
+				const innerTable = await trySelect(usersTable.shadowRoot, 'd2l-insights-table');
 				await innerTable.updateComplete;
 
 				const actualColHeaders = Array.from(innerTable.shadowRoot.querySelectorAll('th'));

@@ -1,32 +1,13 @@
 import '../../components/user-drill-view';
 
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { trySelect, trySelectAll } from '../tools.js';
 import fetchMock from 'fetch-mock/esm/client';
 import { flush } from '@polymer/polymer/lib/utils/render-status.js';
 import { mockOuTypes } from '../model/mocks';
 import noProfile from '../responses/no_profile';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 import sinon from 'sinon/pkg/sinon-esm.js';
-
-const trySelectAll = async(elm, query) => {
-	if (!elm) return null;
-	let child =	elm.querySelectorAll(query);
-	while (child.length === 0) {
-		await new Promise(res => setTimeout(res, 20));
-		child =	elm.querySelectorAll(query);
-	}
-	return child;
-};
-
-const trySelect = async(elm, query) => {
-	if (!elm) return null;
-	let child =	elm.querySelector(query);
-	while (!child) {
-		await new Promise(res => setTimeout(res, 20));
-		child =	elm.querySelector(query);
-	}
-	return child;
-};
 
 describe('d2l-insights-user-drill-view', () => {
 	const user = {
