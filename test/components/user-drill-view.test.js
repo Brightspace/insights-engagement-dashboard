@@ -158,9 +158,7 @@ describe('d2l-insights-user-drill-view', () => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
 			await new Promise(res => setTimeout(res, 10));
 			const summaryCardsContainer = await trySelect(el.shadowRoot, 'd2l-summary-cards-container');
-			console.log(summaryCardsContainer);
 			const summaryCards = await trySelectAll(summaryCardsContainer.shadowRoot, 'd2l-labs-summary-card');
-			console.log(summaryCards);
 
 			expect(summaryCards[0].value).to.eql('2');
 			expect(summaryCards[0].message).to.eql('courses returned within results.');
