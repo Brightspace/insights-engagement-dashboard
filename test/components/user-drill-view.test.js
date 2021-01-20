@@ -11,27 +11,19 @@ import sinon from 'sinon/pkg/sinon-esm.js';
 const trySelectAll = async(elm, query) => {
 	if (!elm) return null;
 	let child =	elm.querySelectorAll(query);
-	let shadowChild = elm.shadowRoot.querySelectorAll(query);
-	child = child.length > 0 ? child : shadowChild;
-	while (!child) {
+	while (child === null) {
 		await new Promise(res => setTimeout(res, 20));
 		child =	elm.querySelectorAll(query);
-		shadowChild = elm.shadowRoot.querySelectorAll(query);
-		child = child.length > 0 ? child : shadowChild;
 	}
 	return child;
 };
 
 const trySelect = async(elm, query) => {
 	if (!elm) return null;
-	let child =	elm.querySelectorAll(query);
-	let shadowChild = elm.shadowRoot.querySelectorAll(query);
-	child = child !== null ? child : shadowChild;
+	let child =	elm.querySelector(query);
 	while (!child) {
 		await new Promise(res => setTimeout(res, 20));
 		child =	elm.querySelector(query);
-		shadowChild = elm.shadowRoot.querySelectorAll(query);
-		child = child !== null ? child : shadowChild;
 	}
 	return child;
 };
@@ -184,8 +176,10 @@ describe('d2l-insights-user-drill-view', () => {
 		it('should return correct data from coursesInView user card', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
 			await new Promise(res => setTimeout(res, 10));
-			const summaryCardsContainer = await trySelect(el, 'd2l-summary-cards-container');
-			const summaryCards = await trySelectAll(summaryCardsContainer, 'd2l-labs-summary-card');
+			const summaryCardsContainer = await trySelect(el.shadowRoot, 'd2l-summary-cards-container');
+			console.log(summaryCardsContainer);
+			const summaryCards = await trySelectAll(summaryCardsContainer.shadowRoot, 'd2l-labs-summary-card');
+			console.log(summaryCards);
 
 			expect(summaryCards[0].value).to.eql('2');
 			expect(summaryCards[0].message).to.eql('courses returned within results.');
@@ -195,8 +189,8 @@ describe('d2l-insights-user-drill-view', () => {
 		it('should return correct data from overdueAssignments user card', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
 			await new Promise(res => setTimeout(res, 10));
-			const summaryCardsContainer = await trySelect(el, 'd2l-summary-cards-container');
-			const summaryCards = await trySelectAll(summaryCardsContainer, 'd2l-labs-summary-card');
+			const summaryCardsContainer = await trySelect(el.shadowRoot, 'd2l-summary-cards-container');
+			const summaryCards = await trySelectAll(summaryCardsContainer.shadowRoot, 'd2l-labs-summary-card');
 
 			expect(summaryCards[2].value).to.eql('1');
 			expect(summaryCards[2].message).to.eql('assignments are currently overdue.');
@@ -206,8 +200,8 @@ describe('d2l-insights-user-drill-view', () => {
 		it('should return correct data from systemAccess user card', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
 			await new Promise(res => setTimeout(res, 10));
-			const summaryCardsContainer = await trySelect(el, 'd2l-summary-cards-container');
-			const summaryCards = await trySelectAll(summaryCardsContainer, 'd2l-labs-summary-card');
+			const summaryCardsContainer = await trySelect(el.shadowRoot, 'd2l-summary-cards-container');
+			const summaryCards = await trySelectAll(summaryCardsContainer.shadowRoot, 'd2l-labs-summary-card');
 
 			expect(summaryCards[3].value).to.eql('12');
 			expect(summaryCards[3].message).to.eql('days since the learner last accessed the system.');
@@ -218,8 +212,8 @@ describe('d2l-insights-user-drill-view', () => {
 			data.userDictionary.set(232, [232, '', '', '', null]);
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
 			await new Promise(res => setTimeout(res, 10));
-			const summaryCardsContainer = await trySelect(el, 'd2l-summary-cards-container');
-			const summaryCards = await trySelectAll(summaryCardsContainer, 'd2l-labs-summary-card');
+			const summaryCardsContainer = await trySelect(el.shadowRoot, 'd2l-summary-cards-container');
+			const summaryCards = await trySelectAll(summaryCardsContainer.shadowRoot, 'd2l-labs-summary-card');
 
 			expect(summaryCards[3].value).to.eql('');
 			expect(summaryCards[3].message).to.eql('User has never accessed the system.');
@@ -229,8 +223,8 @@ describe('d2l-insights-user-drill-view', () => {
 		it('should return correct data from average grades card', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
 			await new Promise(res => setTimeout(res, 10));
-			const summaryCardsContainer = await trySelect(el, 'd2l-summary-cards-container');
-			const summaryCards = await trySelectAll(summaryCardsContainer, 'd2l-labs-summary-card');
+			const summaryCardsContainer = await trySelect(el.shadowRoot, 'd2l-summary-cards-container');
+			const summaryCards = await trySelectAll(summaryCardsContainer.shadowRoot, 'd2l-labs-summary-card');
 			expect(summaryCards[1].value).to.eql('61.5 %');
 			expect(summaryCards[1].message).to.eql('grade averaged from the courses in view.');
 			expect(summaryCards[1].title).to.eql('Average Grade');
@@ -240,8 +234,8 @@ describe('d2l-insights-user-drill-view', () => {
 			data.recordsByUser.set(232, []);
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
 			await new Promise(res => setTimeout(res, 10));
-			const summaryCardsContainer = await trySelect(el, 'd2l-summary-cards-container');
-			const summaryCards = await trySelectAll(summaryCardsContainer, 'd2l-labs-summary-card');
+			const summaryCardsContainer = await trySelect(el.shadowRoot, 'd2l-summary-cards-container');
+			const summaryCards = await trySelectAll(summaryCardsContainer.shadowRoot, 'd2l-labs-summary-card');
 			expect(summaryCards[1].value).to.eql('');
 			expect(summaryCards[1].message).to.eql('No grade information available.');
 			expect(summaryCards[1].title).to.eql('Average Grade');
