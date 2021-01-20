@@ -91,7 +91,7 @@ describe('Data', () => {
 			// trigger a truncated reload and allow recordProvider to resolve
 			sut._selectorFilters.role = new RoleSelectorFilter({ serverData: { selectedRolesIds: null, isRecordsTruncated: true } });
 			sut.selectedRoleIds = [mockRoleIds.student, TRUNCATE_IF_THIS_ROLE_IS_PRESENT];
-			await new Promise(resolve => setTimeout(resolve, 20));
+			await new Promise(resolve => setTimeout(resolve, 50));
 
 			expect(sut.orgUnitTree.isPopulated(6606)).to.be.false;
 		});

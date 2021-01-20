@@ -21,7 +21,7 @@ describe('d2l-insights-engagement-dashboard', () => {
 
 			// close the default view dialog that shows up. It causes browsers on OSX to assign aria-attributes and
 			// roles to buttons in the background that are not normally allowed
-			const defaultViewDialog = el.shadowRoot.querySelector('d2l-insights-default-view-popup');
+			const defaultViewDialog = await trySelect(el.shadowRoot, 'd2l-insights-default-view-popup');
 			defaultViewDialog.opened = false;
 			// wait for the dialog closing animation to finish
 			await new Promise(resolve => setTimeout(resolve, 500));
@@ -155,8 +155,6 @@ describe('d2l-insights-engagement-dashboard', () => {
 		const tables = await Promise.all(dashboards.map(el => trySelect(el.shadowRoot, 'd2l-insights-users-table')));
 		const innerTables = await Promise.all(tables.map(usersTable => trySelect(usersTable.shadowRoot, 'd2l-insights-table')));
 		await Promise.all(innerTables.map(inner => inner.updateComplete));
-
-		console.log("INNER TABLES", innerTables);
 
 		innerTables.forEach((innerTable, i) => {
 			it(`should show selected columns in users table (${expectedLists[i]})`, () => {
