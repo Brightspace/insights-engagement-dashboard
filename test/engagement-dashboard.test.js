@@ -16,10 +16,9 @@ describe('d2l-insights-engagement-dashboard', () => {
 				system-access-card tic-col tic-grades-card
  				demo
  			></d2l-insights-engagement-dashboard>`);
-
 			// close the default view dialog that shows up. It causes browsers on OSX to assign aria-attributes and
 			// roles to buttons in the background that are not normally allowed
-			const defaultViewDialog = await trySelect(el.shadowRoot, 'd2l-insights-default-view-popup');
+			const defaultViewDialog = await trySelect(el.shadowRoot, 'd2l-insights-default-view-popup', 100);
 			defaultViewDialog.opened = false;
 			// wait for the dialog closing animation to finish
 			await new Promise(resolve => setTimeout(resolve, 500));
