@@ -2,7 +2,7 @@ import '../engagement-dashboard.js';
 import { expect, fixture, html } from '@open-wc/testing';
 import { LastAccessFilter } from '../components/last-access-card';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
-import { trySelect } from '../tools.js';
+import { trySelect } from './tools.js';
 
 describe('d2l-insights-engagement-dashboard', () => {
 
