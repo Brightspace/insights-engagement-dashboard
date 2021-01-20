@@ -1,20 +1,24 @@
 
-export const trySelectAll = async(elm, query) => {
+export const trySelectAll = async(elm, query, attempts = 50) => {
 	if (!elm) return null;
 	let child =	elm.querySelectorAll(query);
-	while (child.length === 0) {
+	let i = 0;
+	while (child.length === 0 && i < attempts) {
 		await new Promise(res => setTimeout(res, 20));
 		child =	elm.querySelectorAll(query);
+		i++;
 	}
 	return child;
 };
 
-export const trySelect = async(elm, query) => {
+export const trySelect = async(elm, query, attempts = 50) => {
 	if (!elm) return null;
 	let child =	elm.querySelector(query);
-	while (!child) {
+	let i = 0;
+	while (!child && i < attempts) {
 		await new Promise(res => setTimeout(res, 20));
 		child =	elm.querySelector(query);
+		i++;
 	}
 	return child;
 };
