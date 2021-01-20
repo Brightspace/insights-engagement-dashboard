@@ -256,6 +256,7 @@ describe('d2l-insights-user-drill-view', () => {
 
 			const isAppliedSpy = sinon.spy(filter, 'isApplied', ['set']);
 			const button = overdueAssignmentsCard.shadowRoot.querySelector('.d2l-insights-summary-card-button');
+			console.log('LINT DEBUG: ', button);
 			button.click();
 
 			const event = await listener;
