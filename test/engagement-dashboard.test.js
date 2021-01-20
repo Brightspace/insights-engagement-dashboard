@@ -7,8 +7,7 @@ import { trySelect } from './tools.js';
 describe('d2l-insights-engagement-dashboard', () => {
 
 	describe('accessibility', () => {
-		it('should pass all axe tests', async function() {
-			this.timeout(7000);
+		it('should pass all axe tests', async() => {
 
 			const el = await fixture(html`<d2l-insights-engagement-dashboard
 				course-access-card courses-col discussions-card discussions-col
@@ -18,7 +17,7 @@ describe('d2l-insights-engagement-dashboard', () => {
  			></d2l-insights-engagement-dashboard>`);
 			// close the default view dialog that shows up. It causes browsers on OSX to assign aria-attributes and
 			// roles to buttons in the background that are not normally allowed
-			const defaultViewDialog = await trySelect(el.shadowRoot, 'd2l-insights-default-view-popup', 100);
+			const defaultViewDialog = el.shadowRoot.querySelector('d2l-insights-default-view-popup');
 			defaultViewDialog.opened = false;
 			// wait for the dialog closing animation to finish
 			await new Promise(resolve => setTimeout(resolve, 500));
