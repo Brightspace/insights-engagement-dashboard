@@ -16,8 +16,6 @@ describe('d2l-insights-engagement-dashboard', () => {
 				system-access-card tic-col tic-grades-card
  				demo
  			></d2l-insights-engagement-dashboard>`);
-			// need for this delay might be tied to the mock data async loading in engagement-dashboard.js
-			await new Promise(resolve => setTimeout(resolve, 1500));
 
 			// close the default view dialog that shows up. It causes browsers on OSX to assign aria-attributes and
 			// roles to buttons in the background that are not normally allowed
