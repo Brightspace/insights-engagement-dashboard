@@ -22,10 +22,14 @@ const trySelectAll = async(elm, query) => {
 };
 
 const trySelect = async(elm, query) => {
-	let child =	elm.querySelector(query) || elm.shadowRoot.querySelector(query);
+	let child =	elm.querySelectorAll(query);
+	let shadowChild = elm.shadowRoot.querySelectorAll(query);
+	child = child !== null ? child : shadowChild;
 	while (!child) {
 		await new Promise(res => setTimeout(res, 20));
-		child =	elm.querySelector(query) || elm.shadowRoot.querySelector(query);
+		child =	elm.querySelector(query);
+		shadowChild = elm.shadowRoot.querySelectorAll(query);
+		child = child !== null ? child : shadowChild;
 	}
 	return child;
 };
@@ -278,7 +282,6 @@ describe('d2l-insights-user-drill-view', () => {
 
 			const isAppliedSpy = sinon.spy(filter, 'isApplied', ['set']);
 			const button = overdueAssignmentsCard.shadowRoot.querySelector('.d2l-insights-summary-card-button');
-			console.log('LINT DEBUG: ', button);
 			button.click();
 
 			const event = await listener;
