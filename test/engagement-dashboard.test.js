@@ -43,7 +43,10 @@ describe('d2l-insights-engagement-dashboard', () => {
 	});
 
 	describe('prefs', async() => {
-		it('should provide configured roles to the data object', async() => {
+
+		await new Promise(res => setTimeout(res, 500));
+
+		it('should provide configured roles to the data object', async(done) => {
 			const el = await fixture(html`<d2l-insights-engagement-dashboard
 					include-roles="900, 1000, 11"
 					demo
@@ -51,9 +54,10 @@ describe('d2l-insights-engagement-dashboard', () => {
 			await new Promise(resolve => setTimeout(resolve, 100));
 			await el.updateComplete;
 			expect(el._serverData.selectedRoleIds).to.deep.equal([900, 1000, 11]);
+			done();
 		});
 
-		it('should provide threshold to last access filter', async() => {
+		it('should provide threshold to last access filter', async(done) => {
 			const el = await fixture(html`<d2l-insights-engagement-dashboard
 					last-access-threshold-days="6"
 					demo
@@ -61,6 +65,7 @@ describe('d2l-insights-engagement-dashboard', () => {
 			await new Promise(resolve => setTimeout(resolve, 100));
 
 			expect(el._data.getFilter(new LastAccessFilter().id).thresholdDays).to.equal(6);
+			done();
 		});
 
 		const allCards = [
@@ -165,24 +170,5 @@ describe('d2l-insights-engagement-dashboard', () => {
 				});
 			});
 		});
-
-		// expectedLists.forEach(expectedList => {
-		// 	it(`should show selected columns in users table (${expectedList})`, async() => {
-		// 		// cards aren't loaded for this test
-		// 		const el = await fixture(html`<d2l-insights-engagement-dashboard
-		// 				?courses-col="${expectedList.includes('courses-col')}"
-		// 				?discussions-col="${expectedList.includes('discussions-col')}"
-		// 				?grade-col="${expectedList.includes('grade-col')}"
-		// 				?last-access-col="${expectedList.includes('last-access-col')}"
-		// 				?tic-col="${expectedList.includes('tic-col')}"
-		// 				demo
-		// 			></d2l-insights-engagement-dashboard>`);
-		// 		await new Promise(resolve => setTimeout(resolve, 100));
-
-		// 		const usersTable = await trySelect(el.shadowRoot, 'd2l-insights-users-table');
-		// 		const innerTable = await trySelect(usersTable.shadowRoot, 'd2l-insights-table');
-		// 		await innerTable.updateComplete;
-		// 	});
-		// });
 	});
 });
