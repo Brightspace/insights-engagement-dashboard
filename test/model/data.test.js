@@ -90,9 +90,11 @@ describe('Data', () => {
 
 		it('marks the org unit tree as dynamic if the server truncated it', async() => {
 			// trigger a truncated reload and allow recordProvider to resolve
+			console.log('Server Truncate Data SUT: ', sut);
 			sut._selectorFilters.role = new RoleSelectorFilter({ serverData: { selectedRolesIds: null, isRecordsTruncated: true } });
 			sut.selectedRoleIds = [mockRoleIds.student, TRUNCATE_IF_THIS_ROLE_IS_PRESENT];
 			await new Promise(resolve => setTimeout(resolve, 1000));
+			console.log('Server Truncate Data SUT: ', sut);
 
 			expect(sut.orgUnitTree.isPopulated(6606)).to.be.false;
 		});
