@@ -1,4 +1,4 @@
-import { disableUrlStateForTesting, enableUrlState } from '../../model/urlState';
+import { clearUrlState, disableUrlStateForTesting, enableUrlState } from '../../model/urlState';
 import { mockOuTypes, mockRoleIds, records } from './mocks';
 import { OrgUnitSelectorFilter, RoleSelectorFilter, SemesterSelectorFilter } from '../../model/selectorFilters';
 import { Data } from '../../model/data.js';
@@ -7,6 +7,7 @@ import sinon from 'sinon/pkg/sinon-esm.js';
 
 describe('Data', () => {
 	before(() => {
+		clearUrlState();
 		disableUrlStateForTesting();
 	});
 	after(() => {
@@ -91,7 +92,7 @@ describe('Data', () => {
 			// trigger a truncated reload and allow recordProvider to resolve
 			sut._selectorFilters.role = new RoleSelectorFilter({ serverData: { selectedRolesIds: null, isRecordsTruncated: true } });
 			sut.selectedRoleIds = [mockRoleIds.student, TRUNCATE_IF_THIS_ROLE_IS_PRESENT];
-			await new Promise(resolve => setTimeout(resolve, 0));
+			await new Promise(resolve => setTimeout(resolve, 1000));
 
 			expect(sut.orgUnitTree.isPopulated(6606)).to.be.false;
 		});
