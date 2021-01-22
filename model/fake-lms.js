@@ -38,7 +38,7 @@ export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView 
 			[1, 400, 700, 1, 75, 2000, null, 2, 1, 4, null]
 		],
 		orgUnits: [
-			[1, 'Course 1', 3, [3, 4], false],
+			[1, 'Course 1', 3, [3, 4], true],
 			[2, 'Course 2', 3, [3, 10], true],
 			[6, 'Course 3 has a surprisingly long name, but nonetheless this kind of thing is bound to happen sometimes and we do need to design for it. Is that not so?', 3, [7, 4], true],
 			[8, 'ZCourse 4', 3, [5], false],
