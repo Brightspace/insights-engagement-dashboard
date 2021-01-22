@@ -2,12 +2,12 @@ import '../engagement-dashboard.js';
 import { expect, fixture, html } from '@open-wc/testing';
 import { LastAccessFilter } from '../components/last-access-card';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
+import { trySelect } from './tools.js';
 
 describe('d2l-insights-engagement-dashboard', () => {
 
 	describe('accessibility', () => {
-		it('should pass all axe tests', async function() {
-			this.timeout(7000);
+		it('should pass all axe tests', async() => {
 
 			const el = await fixture(html`<d2l-insights-engagement-dashboard
 				course-access-card courses-col discussions-card discussions-col
@@ -15,13 +15,10 @@ describe('d2l-insights-engagement-dashboard', () => {
 				system-access-card tic-col tic-grades-card
  				demo
  			></d2l-insights-engagement-dashboard>`);
-			// need for this delay might be tied to the mock data async loading in engagement-dashboard.js
-			await new Promise(resolve => setTimeout(resolve, 1500));
-
 			// close the default view dialog that shows up. It causes browsers on OSX to assign aria-attributes and
 			// roles to buttons in the background that are not normally allowed
-			const defaultViewDialog = el.shadowRoot.querySelector('d2l-insights-default-view-popup');
-			defaultViewDialog.opened = false;
+			const defaultViewDialog = trySelect(el.shadowRoot, 'd2l-insights-default-view-popup');
+			if (defaultViewDialog !== null) defaultViewDialog.opened = false;
 			// wait for the dialog closing animation to finish
 			await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -105,14 +102,14 @@ describe('d2l-insights-engagement-dashboard', () => {
 					></d2l-insights-engagement-dashboard>`);
 					await new Promise(resolve => setTimeout(resolve, 200));
 
-					const summaryContainerEl = el.shadowRoot
-						.querySelector('d2l-summary-cards-container');
+					const summaryContainerEl = await trySelect(el.shadowRoot
+						, 'd2l-summary-cards-container');
 
-					allCards.forEach(card => {
-						let renderedCard = el.shadowRoot.querySelector(`d2l-insights-${card}`);
+					allCards.forEach(async card => {
+						let renderedCard = await trySelect(el.shadowRoot, `d2l-insights-${card}`, 10);
 						const smallCard = smallCards.find(c => c.card === card);
 						if (smallCard) {
-							renderedCard = summaryContainerEl.shadowRoot.querySelector(`d2l-insights-${card}`);
+							renderedCard = await trySelect(summaryContainerEl.shadowRoot, `d2l-insights-${card}`, 10);
 						}
 						if (cards.includes(card)) {
 							expect(renderedCard, card).to.exist;
@@ -132,26 +129,20 @@ describe('d2l-insights-engagement-dashboard', () => {
 		]);
 		const allColsKeys = Array.from(allCols.keys());
 
-		[
-			allColsKeys,
-			[],
-			['grade-col', 'discussions-col'],
-			...allColsKeys.map(omitCol => allColsKeys.filter(col => col !== omitCol))
-		].forEach(expectedList => {
-			it(`should show selected columns in users table (${expectedList})`, async() => {
+		const sharedColumnsPerfCallback = (expectedList) => {
+			return async() => {
 				// cards aren't loaded for this test
 				const el = await fixture(html`<d2l-insights-engagement-dashboard
-						?courses-col="${expectedList.includes('courses-col')}"
-						?discussions-col="${expectedList.includes('discussions-col')}"
-						?grade-col="${expectedList.includes('grade-col')}"
-						?last-access-col="${expectedList.includes('last-access-col')}"
-						?tic-col="${expectedList.includes('tic-col')}"
-						demo
-					></d2l-insights-engagement-dashboard>`);
-				await new Promise(resolve => setTimeout(resolve, 100));
+					?courses-col="${expectedList.includes('courses-col')}"
+					?discussions-col="${expectedList.includes('discussions-col')}"
+					?grade-col="${expectedList.includes('grade-col')}"
+					?last-access-col="${expectedList.includes('last-access-col')}"
+					?tic-col="${expectedList.includes('tic-col')}"
+					demo
+				></d2l-insights-engagement-dashboard>`);
 
-				const usersTable = el.shadowRoot.querySelector('d2l-insights-users-table');
-				const innerTable = usersTable.shadowRoot.querySelector('d2l-insights-table');
+				const usersTable = await trySelect(el.shadowRoot, 'd2l-insights-users-table', 80);
+				const innerTable = await trySelect(usersTable.shadowRoot, 'd2l-insights-table');
 				await innerTable.updateComplete;
 
 				const actualColHeaders = Array.from(innerTable.shadowRoot.querySelectorAll('th'));
@@ -163,6 +154,17 @@ describe('d2l-insights-engagement-dashboard', () => {
 				expectedList.forEach((col, idx) => {
 					expect(actualColHeaders[idx + 2].innerText).to.equal(allCols.get(col));
 				});
+			};
+		};
+
+		[
+			allColsKeys,
+			[],
+			['grade-col', 'discussions-col'],
+			...allColsKeys.map(omitCol => allColsKeys.filter(col => col !== omitCol))
+		].forEach(expectedList => {
+			it(`should show selected columns in users table (${expectedList})`, async() => {
+				sharedColumnsPerfCallback(expectedList);
 			});
 		});
 	});

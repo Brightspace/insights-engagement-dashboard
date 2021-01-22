@@ -1,6 +1,7 @@
 import '../../components/user-drill-view';
 
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { trySelect, trySelectAll } from '../tools.js';
 import fetchMock from 'fetch-mock/esm/client';
 import { flush } from '@polymer/polymer/lib/utils/render-status.js';
 import { mockOuTypes } from '../model/mocks';
@@ -155,9 +156,9 @@ describe('d2l-insights-user-drill-view', () => {
 
 		it('should return correct data from coursesInView user card', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
-			await new Promise(res => setTimeout(res, 20));
-			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
-			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
+			await new Promise(res => setTimeout(res, 10));
+			const summaryCardsContainer = await trySelect(el.shadowRoot, 'd2l-summary-cards-container');
+			const summaryCards = await trySelectAll(summaryCardsContainer.shadowRoot, 'd2l-labs-summary-card');
 
 			expect(summaryCards[0].value).to.eql('2');
 			expect(summaryCards[0].message).to.eql('courses returned within results.');
@@ -166,9 +167,9 @@ describe('d2l-insights-user-drill-view', () => {
 
 		it('should return correct data from overdueAssignments user card', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
-			await new Promise(res => setTimeout(res, 20));
-			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
-			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
+			await new Promise(res => setTimeout(res, 10));
+			const summaryCardsContainer = await trySelect(el.shadowRoot, 'd2l-summary-cards-container');
+			const summaryCards = await trySelectAll(summaryCardsContainer.shadowRoot, 'd2l-labs-summary-card');
 
 			expect(summaryCards[2].value).to.eql('1');
 			expect(summaryCards[2].message).to.eql('assignments are currently overdue.');
@@ -177,9 +178,9 @@ describe('d2l-insights-user-drill-view', () => {
 
 		it('should return correct data from systemAccess user card', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
-			await new Promise(res => setTimeout(res, 20));
-			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
-			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
+			await new Promise(res => setTimeout(res, 10));
+			const summaryCardsContainer = await trySelect(el.shadowRoot, 'd2l-summary-cards-container');
+			const summaryCards = await trySelectAll(summaryCardsContainer.shadowRoot, 'd2l-labs-summary-card');
 
 			expect(summaryCards[3].value).to.eql('12');
 			expect(summaryCards[3].message).to.eql('days since the learner last accessed the system.');
@@ -189,9 +190,9 @@ describe('d2l-insights-user-drill-view', () => {
 		it('should return correct data from systemAccess user card if user never accessed the system', async() => {
 			data.userDictionary.set(232, [232, '', '', '', null]);
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
-			await new Promise(res => setTimeout(res, 20));
-			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
-			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
+			await new Promise(res => setTimeout(res, 10));
+			const summaryCardsContainer = await trySelect(el.shadowRoot, 'd2l-summary-cards-container');
+			const summaryCards = await trySelectAll(summaryCardsContainer.shadowRoot, 'd2l-labs-summary-card');
 
 			expect(summaryCards[3].value).to.eql('');
 			expect(summaryCards[3].message).to.eql('User has never accessed the system.');
@@ -200,9 +201,9 @@ describe('d2l-insights-user-drill-view', () => {
 
 		it('should return correct data from average grades card', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
-			await new Promise(res => setTimeout(res, 20));
-			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
-			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
+			await new Promise(res => setTimeout(res, 10));
+			const summaryCardsContainer = await trySelect(el.shadowRoot, 'd2l-summary-cards-container');
+			const summaryCards = await trySelectAll(summaryCardsContainer.shadowRoot, 'd2l-labs-summary-card');
 			expect(summaryCards[1].value).to.eql('61.5 %');
 			expect(summaryCards[1].message).to.eql('grade averaged from the courses in view.');
 			expect(summaryCards[1].title).to.eql('Average Grade');
@@ -211,9 +212,9 @@ describe('d2l-insights-user-drill-view', () => {
 		it('should render the proper message in average grades card if no grades available', async() => {
 			data.recordsByUser.set(232, []);
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
-			await new Promise(res => setTimeout(res, 20));
-			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
-			const summaryCards = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card');
+			await new Promise(res => setTimeout(res, 10));
+			const summaryCardsContainer = await trySelect(el.shadowRoot, 'd2l-summary-cards-container');
+			const summaryCards = await trySelectAll(summaryCardsContainer.shadowRoot, 'd2l-labs-summary-card');
 			expect(summaryCards[1].value).to.eql('');
 			expect(summaryCards[1].message).to.eql('No grade information available.');
 			expect(summaryCards[1].title).to.eql('Average Grade');
@@ -247,15 +248,14 @@ describe('d2l-insights-user-drill-view', () => {
 
 		it('should set filter after click on overdue assignment card', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
-			await new Promise(res => setTimeout(res, 250));
-
-			const summaryCardsContainer = el.shadowRoot.querySelector('d2l-summary-cards-container');
-			const overdueAssignmentsCard = summaryCardsContainer.shadowRoot.querySelectorAll('d2l-labs-summary-card')[2];
+			//await new Promise(res => setTimeout(res, 30000));
+			const summaryCardsContainer = await trySelect(el.shadowRoot, 'd2l-summary-cards-container');
+			const overdueAssignmentsCard = (await trySelectAll(summaryCardsContainer.shadowRoot, 'd2l-labs-summary-card'))[2];
 
 			const listener = oneEvent(overdueAssignmentsCard, 'd2l-labs-summary-card-value-click');
 
 			const isAppliedSpy = sinon.spy(filter, 'isApplied', ['set']);
-			const button = overdueAssignmentsCard.shadowRoot.querySelector('.d2l-insights-summary-card-button');
+			const button = await trySelect(overdueAssignmentsCard.shadowRoot, '.d2l-insights-summary-card-button');
 			button.click();
 
 			const event = await listener;
