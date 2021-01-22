@@ -3,6 +3,7 @@ import '@brightspace-ui-labs/pagination/pagination';
 import '@brightspace-ui/core/components/inputs/input-text';
 import { action, computed, decorate, observable, reaction } from 'mobx';
 import { css, html } from 'lit-element';
+import { defaultSort, SortMixin, userNameSort } from '../model/sorts.js';
 import { formatNumber, formatPercent } from '@brightspace-ui/intl';
 import { RECORD, USER } from '../consts';
 import { COLUMN_TYPES } from './table';
@@ -44,15 +45,13 @@ function unique(arr) {
  * @property {String} _sortOrder - either 'asc' or 'desc'
  * @property {Array} selectedUserIds - ids of users that are selected in the table
  */
-class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
+class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 
 	static get properties() {
 		return {
 			data: { type: Object, attribute: false },
 			_currentPage: { type: Number, attribute: false },
 			_pageSize: { type: Number, attribute: false },
-			_sortColumn: { type: Number, attribute: false },
-			_sortOrder: { type: String, attribute: false },
 			selectedUserIds: { type: Array, attribute: false },
 
 			// user preferences:
@@ -106,6 +105,16 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this.showGradeCol = false;
 		this.showLastAccessCol = false;
 		this.showTicCol = false;
+
+		this.sorts = [
+			undefined, // we don't sort the checkboxes
+			userNameSort,
+			defaultSort,
+			defaultSort,
+			defaultSort,
+			defaultSort,
+			defaultSort
+		];
 
 		// reset selectedUserIds whenever the input data changes
 		reaction(
@@ -189,32 +198,6 @@ class UsersTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 			[Math.round(threads), Math.round(reads), Math.round(replies)],
 			userLastSysAccess
 		];
-	}
-
-	_chosenSortFunction(column, order) {
-		const ORDER = {
-			'asc': [-1, 1, 0],
-			'desc': [1, -1, 0]
-		};
-		if (column === TABLE_USER.NAME_INFO) {
-			// NB: "desc" and "asc" are inverted for name info: desc sorts a-z whereas asc sorts z-a
-			return (user1, user2) => {
-				const lastFirstName1 = `${user1[TABLE_USER.NAME_INFO][USER.LAST_NAME]}, ${user1[TABLE_USER.NAME_INFO][USER.FIRST_NAME]}`.toLowerCase();
-				const lastFirstName2 = `${user2[TABLE_USER.NAME_INFO][USER.LAST_NAME]}, ${user2[TABLE_USER.NAME_INFO][USER.FIRST_NAME]}`.toLowerCase();
-				return (lastFirstName1 > lastFirstName2 ? ORDER[order][0] :
-					lastFirstName1 < lastFirstName2 ? ORDER[order][1] :
-						ORDER[order][2]);
-			};
-		}
-
-		return (user1, user2) => {
-			// undefined is neither greater or less then a value so we set it to -infinity
-			const record1 = user1[column] ? user1[column] : Number.NEGATIVE_INFINITY;
-			const record2 = user2[column] ? user2[column] : Number.NEGATIVE_INFINITY;
-			return (record1 > record2 ? ORDER[order][1] :
-				record1 < record2 ? ORDER[order][0] :
-					ORDER[order][2]);
-		};
 	}
 
 	_formatDataForDisplay(user) {
