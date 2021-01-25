@@ -192,6 +192,58 @@ describe('d2l-insights-user-drill-courses-table', () => {
 				}
 			});
 		});
+
+		describe('pagination', () => {
+			// use a different set of data from the rest to keep other test case data size small
+			const data = {
+				records: [
+					...Array.from({ length: 22 }).map((val, idx) => {
+						return [idx + 10, USER_ID, ROLE_ID, 0, 100 - idx, 0, 1607979700000, 3, 3, 3, null];
+					})
+				],
+				orgUnitTree: {
+					isActive: () => true,
+					getName: (orgUnitId) => `Course ${orgUnitId}`,
+					getAncestorIds: () => []
+				}
+			};
+
+			const expected = [
+				...Array.from({ length: 22 }).map((val, idx) => {
+					return [`Course ${idx + 10} (Id: ${idx + 10})`, `${100 - idx} %`, 'No predicted grade', '0',  [3, 3, 3], getLocalDateTime(1607979700000)];
+				})
+			];
+
+			let el, innerTable, pageSelector;
+			async function clickNextButton() {
+				pageSelector
+					.shadowRoot.querySelector('d2l-button-icon[text="Next page"]')
+					.shadowRoot.querySelector('button')
+					.click();
+				await pageSelector.updateComplete;
+				await innerTable.updateComplete;
+				await el.updateComplete;
+			}
+
+			before(async() => {
+				[el, innerTable] = await setupTable(html`
+					<d2l-insights-user-drill-courses-table
+						.data="${data}"
+						.user="${user}"
+						.isActiveTable="${Boolean(true)}"
+						.isStudentSuccessSys="${Boolean(true)}">
+					</d2l-insights-user-drill-courses-table>
+				`);
+				pageSelector = el.shadowRoot.querySelector('d2l-labs-pagination');
+			});
+
+			it('should display the correct data on each page', async() => {
+				expect(innerTable.data).to.deep.equal(expected.slice(0, 20));
+
+				await clickNextButton(pageSelector);
+				expect(innerTable.data).to.deep.equal(expected.slice(20, 22));
+			});
+		});
 	});
 
 	describe('inactive courses table', () => {

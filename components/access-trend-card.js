@@ -97,7 +97,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return {
 			chart: {
 				type: 'area',
-				height: 250,
+				height: 260,
 				width: 583,
 				zoomType: 'x'
 			},
@@ -169,6 +169,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			plotOptions: {
 
 				series: {
+
 					point: {
 						events: {
 							click: function(e) {
@@ -284,7 +285,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				...course,
 				// It is read as `Course 1, series 1 of 3 with 8 data points.`
 				name: this._orgUnitName(course.orgUnitId),
-				lineColor:  colors[idx],
+				lineColor:  'var(--d2l-color-white)',
 				color: selected(course) ? colors[idx] : 'var(--d2l-color-mica)' }));
 	}
 }

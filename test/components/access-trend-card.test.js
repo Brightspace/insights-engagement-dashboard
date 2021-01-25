@@ -27,7 +27,7 @@ describe('d2l-insights-access-trend-card', () => {
 	});
 
 	describe('render', () => {
-		const gray = 'var(--d2l-color-mica)';
+		const grey = 'var(--d2l-color-mica)';
 
 		before(() => disableUrlStateForTesting());
 		after(() => enableUrlState());
@@ -52,8 +52,7 @@ describe('d2l-insights-access-trend-card', () => {
 			await el.updateComplete;
 
 			const colors = series.map(series => series.color);
-			const gray = 'var(--d2l-color-mica)';
-			expect(colors).to.eql([ '#4885DC', gray, gray ]);
+			expect(colors).to.eql([ '#4885DC', grey, grey ]);
 		});
 
 		it('should toggle color for any other course if there is one selected course', async() => {
@@ -66,7 +65,7 @@ describe('d2l-insights-access-trend-card', () => {
 			await el.updateComplete;
 
 			const colors = series.map(series => series.color);
-			expect(colors).to.eql([ '#4885DC', '#D3E24A', gray ]);
+			expect(colors).to.eql([ '#4885DC', '#D3E24A', grey ]);
 		});
 	});
 });

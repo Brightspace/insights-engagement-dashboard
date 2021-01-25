@@ -195,7 +195,7 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		return {
 			chart: {
-				height: 230,
+				height: 260,
 				width: 583,
 				type: 'column'
 			},

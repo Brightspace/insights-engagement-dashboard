@@ -55,12 +55,6 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				text-indent: 3%;
 			}
 
-			.d2l-insights-summary-card-body {
-				align-items: center;
-				display: flex;
-				height: 100%;
-			}
-
 			:host([skeleton]) .d2l-insights-content-views-title {
 				margin-left: 19px;
 			}
@@ -84,9 +78,9 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		// any change to a relevant observed property of the Data object
 		return html`
 			<div class="d2l-insights-content-views-title d2l-skeletize d2l-skeletize-45 d2l-body-standard">${this._cardTitle}</div>
-			<d2l-labs-chart class="d2l-insights-summary-card-body"
-							.options="${this.chartOptions}"
-							?skeleton="${this.skeleton}"
+			<d2l-labs-chart
+				.options="${this.chartOptions}"
+				?skeleton="${this.skeleton}"
 			></d2l-labs-chart>`;
 	}
 
@@ -103,7 +97,7 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		return {
 			chart: {
-				height: 250,
+				height: 260,
 				width: 583,
 				zoomType: 'x',
 				resetZoomButton: {
@@ -130,7 +124,6 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			xAxis: {
 				tickInterval:  7 * 24 * 3600 * 1000, //week
 				type: 'datetime',
-				tickLength: 1,
 				labels: {
 					format: '{value:%b %e/%y}',
 					rotation: -60,

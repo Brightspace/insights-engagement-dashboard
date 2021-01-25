@@ -1,4 +1,4 @@
-import { disableUrlStateForTesting, enableUrlState } from '../../model/urlState';
+import { clearUrlState, disableUrlStateForTesting, enableUrlState } from '../../model/urlState';
 import { mockOuTypes, mockRoleIds, records } from './mocks';
 import { OrgUnitSelectorFilter, RoleSelectorFilter, SemesterSelectorFilter } from '../../model/selectorFilters';
 import { Data } from '../../model/data.js';
@@ -7,6 +7,7 @@ import sinon from 'sinon/pkg/sinon-esm.js';
 
 describe('Data', () => {
 	before(() => {
+		clearUrlState();
 		disableUrlStateForTesting();
 	});
 	after(() => {
