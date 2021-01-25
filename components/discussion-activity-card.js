@@ -15,11 +15,19 @@ const filterId = 'd2l-insights-discussion-activity-card';
 
 export class DiscussionActivityFilter extends CategoryFilter {
 	constructor() {
+
+		const all = new Set([
+			RECORD.DISCUSSION_ACTIVITY_READS,
+			RECORD.DISCUSSION_ACTIVITY_THREADS,
+			RECORD.DISCUSSION_ACTIVITY_REPLIES
+		]);
+
 		super(
 			filterId,
 			'discussionActivityCard:cardTitle',
 			record => [...this.selectedCategories].some(category => record[category] > 0),
-			'daf'
+			'daf',
+			all
 		);
 		this._urlState = new UrlState(this);
 	}

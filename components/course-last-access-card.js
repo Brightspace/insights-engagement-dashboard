@@ -11,6 +11,7 @@ import { UrlState } from '../model/urlState';
 
 const filterId = 'd2l-insights-course-last-access-card';
 const demoDate = 1608700239822; //for Visual-Diff test
+const DATA_BUCKETS = [0, 0, 0, 0, 0, 0, 0];
 
 function lastAccessDateBucket(record, isDemo) {
 	const currentDate = isDemo ? demoDate : Date.now();
@@ -51,7 +52,8 @@ export class CourseLastAccessFilter extends CategoryFilter {
 			filterId,
 			'courseLastAccessCard:courseAccess',
 			record => this.selectedCategories.has(lastAccessDateBucket(record, isDemo)),
-			'caf'
+			'caf',
+			new Set(DATA_BUCKETS.keys())
 		);
 		this._urlState = new UrlState(this);
 	}
@@ -143,7 +145,7 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	get _preparedBarChartData() {
 		// return an array of size 7, each element mapping to a category on the course last access bar chart
-		const dateBucketCounts = [0, 0, 0, 0, 0, 0, 0];
+		const dateBucketCounts = [...DATA_BUCKETS];
 		this.data
 			.withoutFilter(filterId)
 			.records

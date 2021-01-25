@@ -54,6 +54,20 @@ describe('d2l-insights-course-last-access-card', () => {
 		});
 	});
 
+	describe('filter', () => {
+		it('should reset if all categories are selected', () => {
+			const filter = new CourseLastAccessFilter();
+			filter.toggleCategory(0);
+			filter.toggleCategory(1);
+			filter.toggleCategory(2);
+			filter.toggleCategory(3);
+			filter.toggleCategory(4);
+			filter.toggleCategory(5);
+			filter.toggleCategory(6);
+			expect([...filter.selectedCategories]).to.eql([]);
+		});
+	});
+
 	describe('urlState', () => {
 
 		const key = new CourseLastAccessFilter().persistenceKey;

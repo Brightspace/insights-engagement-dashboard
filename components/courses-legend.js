@@ -12,6 +12,7 @@ export class SelectedCourses {
 	constructor() {
 		this.selected = new Set();
 		this.urlState = new UrlState(this);
+		this._all = undefined;
 	}
 
 	filter(record) {
@@ -24,7 +25,19 @@ export class SelectedCourses {
 		}
 		else {
 			this.selected.add(value);
+			if (this.isAllSelected()) {
+				this.selected = new Set();
+			}
 		}
+	}
+
+	isAllSelected() {
+		if (!this._all) return false;
+
+		const intersection = [...this._all].filter(v => this.selected.has(v));
+
+		if (intersection.length === this._all.size) return true;
+		return false;
 	}
 
 	has(value) {
@@ -37,6 +50,14 @@ export class SelectedCourses {
 
 	get isEmpty() {
 		return this.selected.size === 0;
+	}
+	// @action
+	setAll(values) {
+		this._all = new Set(values);
+
+		if (this.isAllSelected()) {
+			this.selected = new Set();
+		}
 	}
 
 	set(values) {
@@ -66,6 +87,8 @@ export class SelectedCourses {
 decorate(SelectedCourses, {
 	selected: observable,
 	toggle: action,
+	setAll: action,
+	_all: observable,
 });
 class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
@@ -169,6 +192,12 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return Array.from(
 			new Set(userRecords.map(recordOrgUnitId))
 		).map(orgUnitInfo);
+	}
+
+	//LIFECYCLE
+
+	updated() {
+		this.selectedCourses.setAll(new Set(this.courses.map(course => course.orgUnitId)));
 	}
 
 	//EVENTS

@@ -2,6 +2,7 @@ import '../../components/discussion-activity-card.js';
 import { disableUrlStateForTesting, enableUrlState, setStateForTesting } from '../../model/urlState';
 import { expect, fixture, html } from '@open-wc/testing';
 import { DiscussionActivityFilter } from '../../components/discussion-activity-card';
+import { RECORD } from '../../consts.js';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
 describe('d2l-insights-discussion-activity-card', () => {
@@ -55,6 +56,16 @@ describe('d2l-insights-discussion-activity-card', () => {
 			expect(el._discussionActivityStats.threadSum).to.equal(70);
 			expect(el._discussionActivityStats.replySum).to.equal(49);
 			expect(el._discussionActivityStats.readSum).to.equal(55);
+		});
+	});
+
+	describe('filter', () => {
+		it('should reset if all categories are selected', () => {
+			const filter = new DiscussionActivityFilter();
+			filter.toggleCategory(RECORD.DISCUSSION_ACTIVITY_READS);
+			filter.toggleCategory(RECORD.DISCUSSION_ACTIVITY_THREADS);
+			filter.toggleCategory(RECORD.DISCUSSION_ACTIVITY_REPLIES);
+			expect([...filter.selectedCategories]).to.eql([]);
 		});
 	});
 
