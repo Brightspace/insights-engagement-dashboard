@@ -16,8 +16,8 @@ export const userNameSort = (chosenOrder, column) =>
 	(user1, user2) => {
 		const lastFirstName1 = `${user1[column][USER.LAST_NAME]}, ${user1[column][USER.FIRST_NAME]}`.toLowerCase();
 		const lastFirstName2 = `${user2[column][USER.LAST_NAME]}, ${user2[column][USER.FIRST_NAME]}`.toLowerCase();
-		return (lastFirstName1 > lastFirstName2 ? chosenOrder[0] :
-			lastFirstName1 < lastFirstName2 ? chosenOrder[1] :
+		return (lastFirstName1 > lastFirstName2 ? chosenOrder[1] :
+			lastFirstName1 < lastFirstName2 ? chosenOrder[0] :
 				chosenOrder[2]);
 	};
 
@@ -26,12 +26,12 @@ export const courseNameSort = (chosenOrder, column) =>
 	(course1, course2) => {
 		const courseId1 = course1[column].toLowerCase();
 		const courseId2 = course2[column].toLowerCase();
-		return (courseId1 > courseId2 ? chosenOrder[0] :
-			courseId1 < courseId2 ? chosenOrder[1] :
+		return (courseId1 > courseId2 ? chosenOrder[1] :
+			courseId1 < courseId2 ? chosenOrder[0] :
 				chosenOrder[2]);
 	};
 
-const reverseSorts = []; // add sorts here to revers them
+const reverseSorts = [userNameSort, courseNameSort]; // add sorts here to revers them
 export const SortMixin = superclass => class extends superclass {
 	static get properties() {
 		return {
