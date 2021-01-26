@@ -9,6 +9,7 @@
 			import '@brightspace-ui/core/components/demo/demo-page.js';
 			import '../engagement-dashboard.js';
 			import fetchMock from 'fetch-mock/esm/client';
+			import { parseHash } from '../model/fake-lms';
 
 			// setup fetchMock to print network comunication for demo purposes
 			const fetch = fetchMock.sandbox();
@@ -29,6 +30,12 @@
 			);
 
 			window.d2lfetch = { fetch };
+
+			const hash = parseHash();
+			if (hash.lang) {
+				const html = document.querySelector('html');
+				html.setAttribute('lang', hash.lang);
+			}
 		</script>
 		<title>d2l-insights-engagement-dashboard</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
