@@ -11,8 +11,10 @@ export default {
 	"dashboard:resultsReturned": "Cafwyd defnyddwyr o fewn canlyniadau.",
 	"dashboard:overdueAssignments": "Mae gan ddefnyddwyr un neu fwy o aseiniadau sy’n hwyr ar hyn o bryd.",
 	"dashboard:overdueAssignmentsHeading": "Aseiniadau Hwyr",
-	"dashboard:lastSystemAccessMessage": "Nid oes gan ddefnyddwyr fynediad at y system yn ystod y {thresholdDays} o ddiwrnodau diwethaf.",
-	"dashboard:lastSystemAccessMessageOneDay": "Nid oes gan ddefnyddwyr fynediad i'r system yn ystod y diwrnod diwethaf.",
+	"dashboard:coursesInViewHeader": "Cyrsiau mewn Gwedd",
+	"coursesInView:CoursesReturned": "cyrsiau a ddychwelwyd o fewn y canlyniadau.",
+	"dashboard:lastSystemAccessMessage": 'Nid oes gan ddefnyddwyr fynediad at y system yn ystod y {thresholdDays} o ddiwrnodau diwethaf.',
+	"dashboard:lastSystemAccessMessageOneDay": 'Nid oes gan ddefnyddwyr fynediad i'r system yn ystod y diwrnod diwethaf.',
 	"dashboard:lastSystemAccessHeading": "Mynediad System",
 	"dashboard:tooManyResults": "Mae gormod o ganlyniadau yn eich hidlwyr. Mireiniwch eich dewis.",
 	"dashboard:learMore": "Dysgu rhagor",
@@ -184,7 +186,8 @@ export default {
 
 	"userDrill:noUser": "Doedd dim modd llwytho'r defnyddiwr hwn. Ewch i'r Dangosfwrdd Ymgysylltu i weld y rhestr o ddefnyddwyr.",
 	"userDrill:noData": "Dim data yn yr ystodau sydd wedi’u hidlo. Mireinio'ch dewis.",
-
+	"userDrill:manyCoursesAlert": "Mae’r dangosfwrdd hwn yn fwyaf defnyddiol gyda llai na 10 cwrs. Mireiniwch y cyrsiau a ddewiswyd am brofiad gwell.",
+	"userDrill:summaryView": "Gwedd Crynodeb",
 	"activeCoursesTable:title": "Cyrsiau Actif",
 	"activeCoursesTable:loadingPlaceholder": "Wrthi’n llwytho",
 	"activeCoursesTable:course": "Enw’r Cwrs",
@@ -209,10 +212,30 @@ export default {
 	"inactiveCoursesTable:semester": "Semester",
 	"inactiveCoursesTable:empty": "Dim data cwrs anweithredol mewn ystodau sydd wedi'u hidlo.",
 
+	"accessTrendCard:title": "Mynediad Cwrs Dros Amser",
+	"accessTrendCard:xAxisTitle": "Dyddiad",
+	"accessTrendCard:yAxisTitle": "Cyfrif Mynediad Cwrs",
+
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "mae aseiniadau’n hwyr ar hyn o bryd.",
-	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
+	"averageGradeSummaryCard:averageGradeText" : "gradd ar gyfartaledd o’r cyrsiau mewn gwedd.",
 	"averageGradeSummaryCard:averageGrade" : "Gradd ar Gyfartaledd",
-	"averageGradeSummaryCard:noGradeInfoAvailable" : "No grade information available.",
-	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner last accessed the system.",
-	"userSysAccessCard:userHasNeverAccessedSystem": "User has never accessed the system."
+	"averageGradeSummaryCard:noGradeInfoAvailable" : "Nid oes unrhyw wybodaeth gradd ar gael.",
+	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "diwrnodau ers i’r dysgwr gyrchu'r system ddiwethaf.",
+	"userSysAccessCard:userHasNeverAccessedSystem": "Nid yw'r defnyddiwr erioed wedi cyrchu'r system.",
+
+	"coursesLegend:coursesLegendFilter": "Cyrsiau",
+
+	"contentViewsCard:contentViewOverTime": "Gwedd Cynnwys Dros Amser",
+	"contentViewsCard:viewCount": "Cyfrif Gwedd",
+	"contentViewsCard:date": "Dyddiad",
+
+	"gradesTrendCard:date": "Dyddiad",
+	"gradesTrendCard:gradesOverTime": "Graddau Dros Amser",
+	"gradesTrendCard:currentGrade": "Gradd Bresennol (%)",
+
+	"chart:loading": "Wrthi'n llwytho...",
+	"chart:decimalPoint": ".",
+	"chart:resetZoom": "Reset zoom",
+	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:thousandsSeparator": " ",
 };
