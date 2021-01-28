@@ -11,6 +11,8 @@ export default {
 	"dashboard:resultsReturned": "결과 내에서 반환된 사용자입니다.",
 	"dashboard:overdueAssignments": "현재 사용자에게 하나 이상 기한이 경과한 과제가 있습니다.",
 	"dashboard:overdueAssignmentsHeading": "과제 기한 경과",
+	"dashboard:coursesInViewHeader": "보기의 강의",
+	"coursesInView:CoursesReturned": "결과 내에서 반환된 강의입니다.",
 	"dashboard:lastSystemAccessMessage": '사용자가 지난 {thresholdDays}일 동안 시스템에 액세스하지 않았습니다.',
 	"dashboard:lastSystemAccessMessageOneDay": '사용자가 마지막 날에 시스템에 액세스하지 않았습니다.',
 	"dashboard:lastSystemAccessHeading": "시스템 접근",
@@ -184,7 +186,8 @@ export default {
 
 	"userDrill:noUser": "이 사용자를 로드할 수 없습니다. 참여 대시보드로 이동하여 사용자 목록을 표시합니다.",
 	"userDrill:noData": "필터링된 범위에 데이터가 없습니다. 선택 영역을 구체화합니다.",
-
+	"userDrill:manyCoursesAlert": "이 대시보드는 10개 미만의 강의에서 가장 유용합니다. 더 나은 경험을 위해 선택한 강의를 세분화하십시오.",
+	"userDrill:summaryView": "요약 보기",
 	"activeCoursesTable:title": "활성 강의",
 	"activeCoursesTable:loadingPlaceholder": "로드 중...",
 	"activeCoursesTable:course": "강의 이름",
@@ -209,10 +212,30 @@ export default {
 	"inactiveCoursesTable:semester": "학기",
 	"inactiveCoursesTable:empty": "필터링된 범위에 비활성 강의 데이터가 없습니다.",
 
+	"accessTrendCard:title": "시간 기준 강의 접근",
+	"accessTrendCard:xAxisTitle": "날짜",
+	"accessTrendCard:yAxisTitle": "강의 액세스 수",
+
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "현재 과제 기한이 경과되었습니다.",
-	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
+	"averageGradeSummaryCard:averageGradeText" : "보기에 있는 강의의 평균 평점.",
 	"averageGradeSummaryCard:averageGrade" : "평균 평점",
-	"averageGradeSummaryCard:noGradeInfoAvailable" : "No grade information available.",
-	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner last accessed the system.",
-	"userSysAccessCard:userHasNeverAccessedSystem": "User has never accessed the system."
+	"averageGradeSummaryCard:noGradeInfoAvailable" : "사용 가능한 평점 정보가 없습니다.",
+	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "학습자가 시스템에 마지막으로 액세스한 이후 일수입니다.",
+	"userSysAccessCard:userHasNeverAccessedSystem": "사용자가 시스템에 접근한 적이 없습니다.",
+
+	"coursesLegend:coursesLegendFilter": "강의",
+
+	"contentViewsCard:contentViewOverTime": "시간 기준 콘텐츠 보기",
+	"contentViewsCard:viewCount": "보기 수",
+	"contentViewsCard:date": "날짜",
+
+	"gradesTrendCard:date": "날짜",
+	"gradesTrendCard:gradesOverTime": "시간 기준 평점",
+	"gradesTrendCard:currentGrade": "현재 평점(%)",
+
+	"chart:loading": "로드 중...",
+	"chart:decimalPoint": ".",
+	"chart:resetZoom": "Reset zoom",
+	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:thousandsSeparator": " ",
 };

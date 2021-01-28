@@ -11,6 +11,8 @@ export default {
 	"dashboard:resultsReturned": "Gebruikers die binnen de resultaten zijn gevonden.",
 	"dashboard:overdueAssignments": "Gebruikers hebben momenteel een of meer achterstallige opdrachten.",
 	"dashboard:overdueAssignmentsHeading": "Achterstallige opdrachten",
+	"dashboard:coursesInViewHeader": "Cursussen in weergave",
+	"coursesInView:CoursesReturned": "cursussen die binnen de resultaten zijn gevonden.",
 	"dashboard:lastSystemAccessMessage": 'Gebruikers hebben de afgelopen {thresholdDays} dagen geen systeemtoegang gehad.',
 	"dashboard:lastSystemAccessMessageOneDay": 'Gebruikers hebben de afgelopen dag geen systeemtoegang gehad.',
 	"dashboard:lastSystemAccessHeading": "Systeemaanmelding",
@@ -184,7 +186,8 @@ export default {
 
 	"userDrill:noUser": "Deze gebruiker kon niet worden geladen. Ga naar het dashboard Betrokkenheid om de lijst met gebruikers weer te geven.",
 	"userDrill:noData": "Geen gegevens in gefilterde bereiken. Verfijn uw selectie.",
-
+	"userDrill:manyCoursesAlert": "Dit dashboard is het nuttigste bij minder dan 10 cursussen. Verfijn de geselecteerde cursussen voor een betere ervaring.",
+	"userDrill:summaryView": "Overzichtsweergave",
 	"activeCoursesTable:title": "Actieve cursus",
 	"activeCoursesTable:loadingPlaceholder": "Bezig met laden",
 	"activeCoursesTable:course": "Cursusnaam",
@@ -209,10 +212,30 @@ export default {
 	"inactiveCoursesTable:semester": "Semester",
 	"inactiveCoursesTable:empty": "Geen inactieve cursusgegevens in gefilterde bereiken.",
 
+	"accessTrendCard:title": "Toegang tot de cursus in de loop der tijd",
+	"accessTrendCard:xAxisTitle": "Datum",
+	"accessTrendCard:yAxisTitle": "Aantal met toegang tot de cursus",
+
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "opdrachten zijn momenteel achterstallig.",
-	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
+	"averageGradeSummaryCard:averageGradeText" : "gemiddelde beoordeling van de weergegeven cursussen.",
 	"averageGradeSummaryCard:averageGrade" : "Gemiddelde score",
-	"averageGradeSummaryCard:noGradeInfoAvailable" : "No grade information available.",
-	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner last accessed the system.",
-	"userSysAccessCard:userHasNeverAccessedSystem": "User has never accessed the system."
+	"averageGradeSummaryCard:noGradeInfoAvailable" : "Geen informatie over beoordeling beschikbaar.",
+	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "dagen sinds de cursist voor het laatst het systeem heeft geopend.",
+	"userSysAccessCard:userHasNeverAccessedSystem": "Gebruiker heeft het systeem nooit geopend.",
+
+	"coursesLegend:coursesLegendFilter": "Cursussen",
+
+	"contentViewsCard:contentViewOverTime": "Inhoudsoverzicht in de loop der tijd",
+	"contentViewsCard:viewCount": "Aantal weergaven",
+	"contentViewsCard:date": "Datum",
+
+	"gradesTrendCard:date": "Datum",
+	"gradesTrendCard:gradesOverTime": "Beoordelingen in de loop der tijd",
+	"gradesTrendCard:currentGrade": "Huidige score (%)",
+
+	"chart:loading": "Laden...",
+	"chart:decimalPoint": ".",
+	"chart:resetZoom": "Reset zoom",
+	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:thousandsSeparator": " ",
 };

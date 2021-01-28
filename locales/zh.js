@@ -11,6 +11,8 @@ export default {
 	"dashboard:resultsReturned": "结果内返回的用户。",
 	"dashboard:overdueAssignments": "用户当前有一项或多项过期作业。",
 	"dashboard:overdueAssignmentsHeading": "过期作业",
+	"dashboard:coursesInViewHeader": "查看中的课程",
+	"coursesInView:CoursesReturned": "结果内返回的课程。",
 	"dashboard:lastSystemAccessMessage": '用户在过去 {thresholdDays} 天没有访问过系统。',
 	"dashboard:lastSystemAccessMessageOneDay": '用户在前一天内没有访问过系统。',
 	"dashboard:lastSystemAccessHeading": "系统访问",
@@ -184,7 +186,8 @@ export default {
 
 	"userDrill:noUser": "无法加载此用户。请转到参与仪表板查看用户列表。",
 	"userDrill:noData": "在筛选范围内没有数据。请细化您的选择。",
-
+	"userDrill:manyCoursesAlert": "该仪表板最有用，其中包含不超过 10 个课程。请细化您选择的课程，以获得更好的体验。",
+	"userDrill:summaryView": "摘要视图",
 	"activeCoursesTable:title": "处于活动状态的课程",
 	"activeCoursesTable:loadingPlaceholder": "正在加载",
 	"activeCoursesTable:course": "课程名称",
@@ -209,10 +212,30 @@ export default {
 	"inactiveCoursesTable:semester": "学期",
 	"inactiveCoursesTable:empty": "在筛选范围内没有处于非活动状态的课程数据。",
 
+	"accessTrendCard:title": "不同时间的课程访问",
+	"accessTrendCard:xAxisTitle": "日期",
+	"accessTrendCard:yAxisTitle": "课程访问次数",
+
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "项作业目前已经过期。",
-	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
+	"averageGradeSummaryCard:averageGradeText" : "查看中的课程的平均成绩。",
 	"averageGradeSummaryCard:averageGrade" : "平均成绩",
-	"averageGradeSummaryCard:noGradeInfoAvailable" : "No grade information available.",
-	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner last accessed the system.",
-	"userSysAccessCard:userHasNeverAccessedSystem": "User has never accessed the system."
+	"averageGradeSummaryCard:noGradeInfoAvailable" : "没有可用的成绩信息。",
+	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "自学员最后一次访问系统之日起的天数。",
+	"userSysAccessCard:userHasNeverAccessedSystem": "用户从未访问过系统。",
+
+	"coursesLegend:coursesLegendFilter": "课程",
+
+	"contentViewsCard:contentViewOverTime": "不同时间的内容查看",
+	"contentViewsCard:viewCount": "查看次数",
+	"contentViewsCard:date": "日期",
+
+	"gradesTrendCard:date": "日期",
+	"gradesTrendCard:gradesOverTime": "不同时间的成绩",
+	"gradesTrendCard:currentGrade": "当前成绩 (%)",
+
+	"chart:loading": "正在加载...",
+	"chart:decimalPoint": ".",
+	"chart:resetZoom": "Reset zoom",
+	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:thousandsSeparator": " ",
 };

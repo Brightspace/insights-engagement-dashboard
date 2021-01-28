@@ -11,6 +11,8 @@ export default {
 	"dashboard:resultsReturned": "ユーザーが結果内で戻りました。",
 	"dashboard:overdueAssignments": "ユーザーには現在 1 つ以上の期限切れの課題があります。",
 	"dashboard:overdueAssignmentsHeading": "期限切れの課題",
+	"dashboard:coursesInViewHeader": "ビュー内のコース",
+	"coursesInView:CoursesReturned": "結果内に返されたコース。",
 	"dashboard:lastSystemAccessMessage": '過去 {thresholdDays} 日間ユーザーにシステムアクセス権が与えられていません。',
 	"dashboard:lastSystemAccessMessageOneDay": '過去 1 日間ユーザーにシステムアクセス権が与えられていません。',
 	"dashboard:lastSystemAccessHeading": "システムアクセス",
@@ -184,7 +186,8 @@ export default {
 
 	"userDrill:noUser": "このユーザーを読み込むことができませんでした。受講ダッシュボードに移動して、ユーザーのリストを表示します。",
 	"userDrill:noData": "フィルタリングの範囲にデータはありません。選択を絞り込んでください。",
-
+	"userDrill:manyCoursesAlert": "このダッシュボードは、10 コース未満の場合に最も便利です。使いやすくするには、選択済みのコースを絞り込んでください。",
+	"userDrill:summaryView": "サマリー表示",
 	"activeCoursesTable:title": "アクティブなコース",
 	"activeCoursesTable:loadingPlaceholder": "読み込み中",
 	"activeCoursesTable:course": "コース名",
@@ -209,10 +212,30 @@ export default {
 	"inactiveCoursesTable:semester": "学期",
 	"inactiveCoursesTable:empty": "フィルタリングの範囲に非アクティブなコースデータがありません。",
 
+	"accessTrendCard:title": "一定期間にわたるコースへのアクセス",
+	"accessTrendCard:xAxisTitle": "日付",
+	"accessTrendCard:yAxisTitle": "コースアクセス数",
+
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "課題は現在期限切れです。",
-	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
+	"averageGradeSummaryCard:averageGradeText" : "ビュー内のコースの平均成績。",
 	"averageGradeSummaryCard:averageGrade" : "平均成績",
-	"averageGradeSummaryCard:noGradeInfoAvailable" : "No grade information available.",
-	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner last accessed the system.",
-	"userSysAccessCard:userHasNeverAccessedSystem": "User has never accessed the system."
+	"averageGradeSummaryCard:noGradeInfoAvailable" : "成績情報がありません。",
+	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "受講者が最後にシステムにアクセスしてからの日数。",
+	"userSysAccessCard:userHasNeverAccessedSystem": "ユーザーはコースへ一度もアクセスしていません。",
+
+	"coursesLegend:coursesLegendFilter": "コース",
+
+	"contentViewsCard:contentViewOverTime": "一定期間にわたるコース表示",
+	"contentViewsCard:viewCount": "表示回数",
+	"contentViewsCard:date": "日付",
+
+	"gradesTrendCard:date": "日付",
+	"gradesTrendCard:gradesOverTime": "一定期間にわたる成績",
+	"gradesTrendCard:currentGrade": "現在の成績（%）",
+
+	"chart:loading": "読み込み中...",
+	"chart:decimalPoint": ".",
+	"chart:resetZoom": "Reset zoom",
+	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:thousandsSeparator": " ",
 };
