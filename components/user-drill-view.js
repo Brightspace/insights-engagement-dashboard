@@ -22,7 +22,7 @@ import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { nothing } from 'lit-html';
 import { OVERDUE_ASSIGNMENTS_FILTER_ID } from './overdue-assignments-card';
-import { isDefault, resetUrlState } from '../model/urlState';
+import { resetUrlState } from '../model/urlState';
 import { SelectedCourses } from './courses-legend';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { until } from 'lit-html/directives/until';
