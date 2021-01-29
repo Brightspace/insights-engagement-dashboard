@@ -11,8 +11,10 @@ export default {
 	"dashboard:resultsReturned": "Användare som returnerades inom resultatet.",
 	"dashboard:overdueAssignments": "Användarna har en eller flera försenade uppgifter.",
 	"dashboard:overdueAssignmentsHeading": "Försenade uppgifter",
-	"dashboard:lastSystemAccessMessage": 'Användarna har inte använt systemet under de senaste {thresholdDays} dagarna.',
-	"dashboard:lastSystemAccessMessageOneDay": 'Användarna har inte använt systemet under den senaste dagen.',
+	"dashboard:coursesInViewHeader": "Kurser i vy",
+	"coursesInView:CoursesReturned": "kurser som returnerades inom resultatet.",
+	"dashboard:lastSystemAccessMessage": "Användarna har inte använt systemet under de senaste {thresholdDays} dagarna.",
+	"dashboard:lastSystemAccessMessageOneDay": "Användarna har inte använt systemet under den senaste dagen.",
 	"dashboard:lastSystemAccessHeading": "Systemåtkomst",
 	"dashboard:tooManyResults": "Det finns för många resultat i dina filter. Förfina ditt val.",
 	"dashboard:learMore": "Mer information",
@@ -184,7 +186,8 @@ export default {
 
 	"userDrill:noUser": "Användaren kunde inte läsas in. Gå till kontrollpanel för registrering för att visa listan över användare.",
 	"userDrill:noData": "Inga data i filtrerade intervall. Förfina ditt val.",
-
+	"userDrill:manyCoursesAlert": "Den här instrumentpanelen är mest användbar med färre än 10 kurser. Förfina dina valda kurser för en bättre upplevelse.",
+	"userDrill:summaryView": "Sammanfattningsvy",
 	"activeCoursesTable:title": "Aktiva kurser",
 	"activeCoursesTable:loadingPlaceholder": "Laddar",
 	"activeCoursesTable:course": "Kursnamn",
@@ -209,10 +212,30 @@ export default {
 	"inactiveCoursesTable:semester": "Termin",
 	"inactiveCoursesTable:empty": "Inga inaktiva kursdata i filtrerade intervall.",
 
+	"accessTrendCard:title": "Tillgång till kursen över tid",
+	"accessTrendCard:xAxisTitle": "Datum",
+	"accessTrendCard:yAxisTitle": "Antalet personer som har deltagit i kursen",
+
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "uppgifter är för närvarande försenade.",
-	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
+	"averageGradeSummaryCard:averageGradeText" : "genomsnittligt betyg för kurserna i vyn.",
 	"averageGradeSummaryCard:averageGrade" : "Genomsnittligt betyg",
-	"averageGradeSummaryCard:noGradeInfoAvailable" : "No grade information available.",
-	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner last accessed the system.",
-	"userSysAccessCard:userHasNeverAccessedSystem": "User has never accessed the system."
+	"averageGradeSummaryCard:noGradeInfoAvailable" : "Ingen information om betyg finns tillgänglig.",
+	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "dagar sedan eleven senast fick åtkomst till systemet.",
+	"userSysAccessCard:userHasNeverAccessedSystem": "Användaren har aldrig använt systemet.",
+
+	"coursesLegend:coursesLegendFilter": "Kurser",
+
+	"contentViewsCard:contentViewOverTime": "Innehållsvy över tid",
+	"contentViewsCard:viewCount": "Visa antal",
+	"contentViewsCard:date": "Datum",
+
+	"gradesTrendCard:date": "Datum",
+	"gradesTrendCard:gradesOverTime": "Betyg över tid",
+	"gradesTrendCard:currentGrade": "Aktuellt betyg (%)",
+
+	"chart:loading": "Läser in ...",
+	"chart:decimalPoint": ".",
+	"chart:resetZoom": "Reset zoom",
+	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:thousandsSeparator": " ",
 };

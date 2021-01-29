@@ -11,8 +11,10 @@ export default {
 	"dashboard:resultsReturned": "تمت إعادة المستخدمين ضمن النتائج.",
 	"dashboard:overdueAssignments": "لدى المستخدمين حاليًا فرض واحد أو أكثر من الفروض التي تم تجاوز تاريخ استحقاقها.",
 	"dashboard:overdueAssignmentsHeading": "الفروض التي تم تجاوز تاريخ استحقاقها",
-	"dashboard:lastSystemAccessMessage": 'لا يتمتع المستخدمون بإمكانية الوصول إلى النظام في آخر {thresholdDays} من الأيام.',
-	"dashboard:lastSystemAccessMessageOneDay": 'لا يتمتع المستخدمون بإمكانية الوصول إلى النظام في اليوم الأخير.',
+	"dashboard:coursesInViewHeader": "المقررات التعليمية التي يتم عرضها",
+	"coursesInView:CoursesReturned": "تمت إعادة عرض المقررات التعليمية ضمن النتائج.",
+	"dashboard:lastSystemAccessMessage": "لا يتمتع المستخدمون بإمكانية الوصول إلى النظام في آخر {thresholdDays} من الأيام.",
+	"dashboard:lastSystemAccessMessageOneDay": "لا يتمتع المستخدمون بإمكانية الوصول إلى النظام في اليوم الأخير",
 	"dashboard:lastSystemAccessHeading": "الوصول إلى النظام",
 	"dashboard:tooManyResults": "ثمة الكثير من النتائج في عوامل التصفية الخاصة بك. يُرجى تحسين التحديد.",
 	"dashboard:learMore": "معرفة المزيد",
@@ -184,7 +186,8 @@ export default {
 
 	"userDrill:noUser": "لا يمكن تحميل هذا المستخدم. انتقل إلى لوحة معلومات التفاعل لعرض قائمة المستخدمين.",
 	"userDrill:noData": "لا تتوفر بيانات في النطاقات التي تمت تصفيتها. يجب تحسين التحديد.",
-
+	"userDrill:manyCoursesAlert": "تكون لوحة المعلومات هذه مفيدة جدًا مع أقل من 10 مقررات تعليمية. يُرجى تحسين المقررات التعليمية المحددة للحصول على تجربة أفضل.",
+	"userDrill:summaryView": "عرض الملخص",
 	"activeCoursesTable:title": "المقررات التعليمية النشطة",
 	"activeCoursesTable:loadingPlaceholder": "يتم الآن التحميل",
 	"activeCoursesTable:course": "اسم المقرر التعليمي",
@@ -209,10 +212,30 @@ export default {
 	"inactiveCoursesTable:semester": "الفصل الدراسي",
 	"inactiveCoursesTable:empty": "لا تتوفر بيانات المقرر التعليمي غير النشط في النطاقات التي تمت تصفيتها.",
 
+	"accessTrendCard:title": "الوصول إلى المقرر التعليمي على مرّ الوقت",
+	"accessTrendCard:xAxisTitle": "التاريخ",
+	"accessTrendCard:yAxisTitle": "عدد مرات الوصول إلى المقرر التعليمي",
+
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "الفروض التي تم تجاوز تاريخ استحقاقها حاليًا.",
-	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
+	"averageGradeSummaryCard:averageGradeText" : "العلامة التي احتسب متوسط لها من المقررات التعليمية التي يتم عرضها.",
 	"averageGradeSummaryCard:averageGrade" : "متوسط العلامة",
-	"averageGradeSummaryCard:noGradeInfoAvailable" : "No grade information available.",
-	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner last accessed the system.",
-	"userSysAccessCard:userHasNeverAccessedSystem": "User has never accessed the system."
+	"averageGradeSummaryCard:noGradeInfoAvailable" : "لا تتوفر معلومات حول العلامات.",
+	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "من الأيام منذ آخر وصول للمتعلّم إلى النظام.",
+	"userSysAccessCard:userHasNeverAccessedSystem": "لم يصل المستخدم إلى النظام على الإطلاق.",
+
+	"coursesLegend:coursesLegendFilter": "المقررات التعليمية",
+
+	"contentViewsCard:contentViewOverTime": "عرض المحتوى على مرّ الوقت",
+	"contentViewsCard:viewCount": "عرض العدد",
+	"contentViewsCard:date": "التاريخ",
+
+	"gradesTrendCard:date": "التاريخ",
+	"gradesTrendCard:gradesOverTime": "العلامات على مرّ الوقت",
+	"gradesTrendCard:currentGrade": "العلامة الحالية (%)",
+
+	"chart:loading": "يتم الآن التحميل...",
+	"chart:decimalPoint": ".",
+	"chart:resetZoom": "Reset zoom",
+	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:thousandsSeparator": " ",
 };

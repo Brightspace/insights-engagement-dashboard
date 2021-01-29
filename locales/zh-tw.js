@@ -11,8 +11,10 @@ export default {
 	"dashboard:resultsReturned": "在結果內傳回的使用者。",
 	"dashboard:overdueAssignments": "使用者目前有一或多件逾期作業。",
 	"dashboard:overdueAssignmentsHeading": "逾期的作業",
-	"dashboard:lastSystemAccessMessage": '使用者在過去 {thresholdDays} 天未曾存取系統。',
-	"dashboard:lastSystemAccessMessageOneDay": '使用者在過去 1 天未曾存取系統。',
+	"dashboard:coursesInViewHeader": "檢視中的課程",
+	"coursesInView:CoursesReturned": "在結果內傳回的課程。",
+	"dashboard:lastSystemAccessMessage": "使用者在過去 {thresholdDays} 天未曾存取系統。",
+	"dashboard:lastSystemAccessMessageOneDay": "使用者在過去 1 天未曾存取系統。",
 	"dashboard:lastSystemAccessHeading": "系統存取",
 	"dashboard:tooManyResults": "有太多符合您篩選條件的結果。請重新調整您的選擇。",
 	"dashboard:learMore": "進一步瞭解",
@@ -184,7 +186,8 @@ export default {
 
 	"userDrill:noUser": "無法載入此使用者。請前往「參與情形」儀表板以檢視使用者清單。",
 	"userDrill:noData": "篩選範圍內沒有資料。請重新調整您的選擇。",
-
+	"userDrill:manyCoursesAlert": "此儀表板在少於 10 堂課程的情況下最實用。請調整所選的課程，以獲得更好的體驗。",
+	"userDrill:summaryView": "摘要檢視",
 	"activeCoursesTable:title": "啟用中的課程",
 	"activeCoursesTable:loadingPlaceholder": "正在載入",
 	"activeCoursesTable:course": "課程名稱",
@@ -209,10 +212,30 @@ export default {
 	"inactiveCoursesTable:semester": "學期",
 	"inactiveCoursesTable:empty": "篩選範圍內沒有停用的課程之資料。",
 
+	"accessTrendCard:title": "隨時間變化的課程存取",
+	"accessTrendCard:xAxisTitle": "日期",
+	"accessTrendCard:yAxisTitle": "課程存取計數",
+
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "項作業目前已逾期。",
-	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
+	"averageGradeSummaryCard:averageGradeText" : "檢視中之課程的平均成績。",
 	"averageGradeSummaryCard:averageGrade" : "平均成績",
-	"averageGradeSummaryCard:noGradeInfoAvailable" : "No grade information available.",
-	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner last accessed the system.",
-	"userSysAccessCard:userHasNeverAccessedSystem": "User has never accessed the system."
+	"averageGradeSummaryCard:noGradeInfoAvailable" : "沒有成績資訊可用。",
+	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "自學習者上次存取系統以來的天數。",
+	"userSysAccessCard:userHasNeverAccessedSystem": "使用者從未存取過系統。",
+
+	"coursesLegend:coursesLegendFilter": "課程",
+
+	"contentViewsCard:contentViewOverTime": "隨時間變化的內容檢視",
+	"contentViewsCard:viewCount": "檢視計數",
+	"contentViewsCard:date": "日期",
+
+	"gradesTrendCard:date": "日期",
+	"gradesTrendCard:gradesOverTime": "隨時間變化的成績",
+	"gradesTrendCard:currentGrade": "目前成績 (%)",
+
+	"chart:loading": "Loading...",
+	"chart:decimalPoint": ".",
+	"chart:resetZoom": "Reset zoom",
+	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:thousandsSeparator": " ",
 };

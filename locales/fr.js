@@ -11,8 +11,10 @@ export default {
 	"dashboard:resultsReturned": "Utilisateurs trouvés dans les résultats.",
 	"dashboard:overdueAssignments": "Des utilisateurs ont actuellement un ou plusieurs travaux en retard.",
 	"dashboard:overdueAssignmentsHeading": "Travaux en retard",
-	"dashboard:lastSystemAccessMessage": 'Utilisateurs qui n’ont pas accédé au système dans les {thresholdDays} jours.',
-	"dashboard:lastSystemAccessMessageOneDay": 'Utilisateurs qui n’ont pas accédé au système dans le dernier jour.',
+	"dashboard:coursesInViewHeader": "Cours affichés",
+	"coursesInView:CoursesReturned": "cours trouvés dans les résultats.",
+	"dashboard:lastSystemAccessMessage": "Utilisateurs qui n’ont pas accédé au système dans les {thresholdDays} jours.",
+	"dashboard:lastSystemAccessMessageOneDay": "Utilisateurs qui n’ont pas accédé au système dans le dernier jour.",
 	"dashboard:lastSystemAccessHeading": "Accès au système",
 	"dashboard:tooManyResults": "Il y a trop de résultats dans vos filtres. Veuillez préciser votre sélection.",
 	"dashboard:learMore": "En savoir plus",
@@ -184,7 +186,8 @@ export default {
 
 	"userDrill:noUser": "Cet utilisateur n’a pu être chargé. Accédez au tableau de bord Engagement pour afficher la liste des utilisateurs.",
 	"userDrill:noData": "Aucune donnée dans les plages filtrées. Affinez votre sélection.",
-
+	"userDrill:manyCoursesAlert": "Ce tableau de bord est plus utile lorsque moins de 10 cours sont affichés. Pour une expérience optimale, veuillez affiner votre sélection de cours.",
+	"userDrill:summaryView": "Vue Sommaire",
 	"activeCoursesTable:title": "Cours actifs",
 	"activeCoursesTable:loadingPlaceholder": "Chargement en cours",
 	"activeCoursesTable:course": "Nom de cours",
@@ -209,10 +212,30 @@ export default {
 	"inactiveCoursesTable:semester": "Semestre",
 	"inactiveCoursesTable:empty": "Aucune donnée de cours inactif dans les plages filtrées.",
 
+	"accessTrendCard:title": "Accès aux cours au fil du temps",
+	"accessTrendCard:xAxisTitle": "Date",
+	"accessTrendCard:yAxisTitle": "Nombre d'accès au cours",
+
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "affectations sont actuellement en retard.",
-	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
-	"averageGradeSummaryCard:averageGrade" : "Note d’appréciation moyenne",
-	"averageGradeSummaryCard:noGradeInfoAvailable" : "No grade information available.",
-	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner last accessed the system.",
-	"userSysAccessCard:userHasNeverAccessedSystem": "User has never accessed the system."
+	"averageGradeSummaryCard:averageGradeText" : "note d'appréciation moyenne des cours affichés.",
+	"averageGradeSummaryCard:averageGrade" : "Note d'appréciation moyenne",
+	"averageGradeSummaryCard:noGradeInfoAvailable" : "Aucune information disponible concernant la note d'appréciation.",
+	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "jours depuis la dernière fois que l'élève a accédé au système.",
+	"userSysAccessCard:userHasNeverAccessedSystem": "L'utilisateur n'a jamais accédé au système.",
+
+	"coursesLegend:coursesLegendFilter": "Cours",
+
+	"contentViewsCard:contentViewOverTime": "Affichage du contenu au fil du temps",
+	"contentViewsCard:viewCount": "Nombre de consultations",
+	"contentViewsCard:date": "Date",
+
+	"gradesTrendCard:date": "Date",
+	"gradesTrendCard:gradesOverTime": "Note d'appréciation au fil du temps",
+	"gradesTrendCard:currentGrade": "Note d'appréciation actuelle (%)",
+
+	"chart:loading": "Chargement…",
+	"chart:decimalPoint": ".",
+	"chart:resetZoom": "Réinitialiser le zoom",
+	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:thousandsSeparator": " ",
 };
