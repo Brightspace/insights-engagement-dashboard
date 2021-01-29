@@ -16,15 +16,17 @@ import { css, html } from 'lit-element/lit-element.js';
 import { RECORD, USER } from '../consts';
 import { createComposeEmailPopup } from './email-integration';
 import { ExportData } from '../model/exportData';
+import { fetchUserData } from '../model/lms.js';
 import { formatPercent } from '@brightspace-ui/intl';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { nothing } from 'lit-html';
 import { OVERDUE_ASSIGNMENTS_FILTER_ID } from './overdue-assignments-card';
-import { resetUrlState } from '../model/urlState';
+import { isDefault, resetUrlState } from '../model/urlState';
 import { SelectedCourses } from './courses-legend';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { until } from 'lit-html/directives/until';
+import { UserData } from '../model/userData';
 
 export const numberFormatOptions = { maximumFractionDigits: 2 };
 const demoDate = 1608000000000; //for unit test
@@ -165,6 +167,14 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		`];
 	}
 
+	firstUpdated() {
+		this._userData.loadData(this.userOrgUnitIds, this.user.userId);
+	}
+
+	get userOrgUnitIds() {
+		return this.data.records.filter(r => r[RECORD.USER_ID] === this.user.userId).map(record => record[RECORD.ORG_UNIT_ID]);
+	}
+
 	_exportToCsvHandler() {
 		const usersTables = this.shadowRoot.querySelectorAll('d2l-insights-user-drill-courses-table');
 		const activeTable = usersTables[0];
@@ -303,17 +313,6 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return userData[USER.LAST_SYS_ACCESS] ? Math.floor((currentDate - userData[USER.LAST_SYS_ACCESS]) / (1000 * 60 * 60 * 24)) : '';
 	}
 
-	_placeholder({ wide, tall, skeleton }) {
-		return html`<d2l-labs-summary-card
-			card-title="Placeholder"
-			card-value="0"
-			card-message="This is a placeholder for testing"
-			?wide="${wide}"
-			?tall="${tall}"
-			?skeleton="${skeleton}">
-		</d2l-labs-summary-card>`;
-	}
-
 	get summaryCards() {
 		return [
 			{ enabled: true, htmlFn: (w) => this._coursesInView(w) },
@@ -334,6 +333,17 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		if (!userRecords) return true;
 		const numCourses = new Set(userRecords.map(record => record[RECORD.ORG_UNIT_ID])).size;
 		return numCourses < 10;
+	}
+
+	get _userData() {
+		if (!this.__userData) {
+
+			this.__userData = new UserData({
+				userServerData: fetchUserData // TODO: demo data
+			});
+		}
+
+		return this.__userData;
 	}
 
 	render() {
@@ -406,13 +416,15 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 					.cards="${this.summaryCards}"
 				></d2l-summary-cards-container>
 
+				<d2l-insights-grades-trend-card
+					?hidden="${this.hidden}"
+					?skeleton="${this._userData.isLoading}"
+					.data="${this.data}"
+					.userData="${this._userData}"
+					.selectedCourses="${this.selectedCourses}"
+				></d2l-insights-grades-trend-card>
+
 				${ this.isDemo ? html`
-					<d2l-insights-grades-trend-card
-						?hidden="${this.hidden}"
-						?skeleton="${this.skeleton}"
-						.data="${this.data}"
-						.selectedCourses="${this.selectedCourses}"
-					></d2l-insights-grades-trend-card>
 					<d2l-insights-content-views-card
 						?hidden="${this.hidden}"
 						?skeleton="${this.skeleton}"
@@ -481,7 +493,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 }
 
 decorate(UserDrill, {
-	_userRecords: computed
+	_userRecords: computed,
+	userOrgUnitIds: computed
 });
 
 customElements.define('d2l-insights-user-drill-view', UserDrill);

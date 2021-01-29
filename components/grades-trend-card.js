@@ -7,11 +7,13 @@ import { formatDate } from '@brightspace-ui/intl/lib/dateTime';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
+import { toJS } from 'mobx';
 
 class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
 			data: { type: Object, attribute: false },
+			userData: { type: Object, attribute: false },
 			selectedCourses: { type: Object, attribute: false }
 		};
 	}
@@ -19,6 +21,7 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	constructor() {
 		super();
 		this.data = {};
+		this.userData = {};
 		this.selectedCourses = {
 			size: 0,
 			has: () => false
@@ -200,40 +203,12 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _trendData() {
-		const courses = [{
-			//test data
-			orgUnitId: 1,
-			data: [
-				[Date.UTC(2020, 1, 1), 50],
-				[Date.UTC(2020, 1, 7), 60],
-				[Date.UTC(2020, 1, 14), 45],
-				[Date.UTC(2020, 1, 21), 65],
-				[Date.UTC(2020, 1, 28), 70],
-				[Date.UTC(2020, 2, 4), 65]
-			]
-		}, {
-			orgUnitId: 2,
-			data: [
-				[Date.UTC(2020, 1, 1), 30],
-				[Date.UTC(2020, 1, 7), 50],
-				[Date.UTC(2020, 1, 14), 35],
-				[Date.UTC(2020, 1, 21), 50],
-				[Date.UTC(2020, 1, 28), 65],
-				[Date.UTC(2020, 2, 4), 40]
-			]
-		}, {
-			orgUnitId: 8,
-			data: [
-				[Date.UTC(2020, 1, 1), 10],
-				[Date.UTC(2020, 1, 7), 30],
-				[Date.UTC(2020, 1, 14), 25],
-				[Date.UTC(2020, 1, 21), 40],
-				[Date.UTC(2020, 1, 28), 55],
-				[Date.UTC(2020, 2, 4), 25]
-			]
-		}];
-
-		return courses;
+		return toJS(this.userData.courseGrades).map(grades => {
+			return {
+				orgUnitId: grades.courseId,
+				data: grades.gradesData.map(item => [item.date, item.grade * 100])
+			};
+		});
 	}
 
 	get _serverData() {
