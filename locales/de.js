@@ -11,8 +11,10 @@ export default {
 	"dashboard:resultsReturned": "Benutzer wurden in den Ergebnissen zurückgegeben.",
 	"dashboard:overdueAssignments": "Benutzer haben derzeit eine oder mehrere überfällige Übungen.",
 	"dashboard:overdueAssignmentsHeading": "Überfällige Übungen",
-	"dashboard:lastSystemAccessMessage": 'Benutzer hatten in den letzten {thresholdDays} Tagen keinen Systemzugriff.',
-	"dashboard:lastSystemAccessMessageOneDay": 'Benutzer hatten gestern keinen Systemzugriff.',
+	"dashboard:coursesInViewHeader": "Angezeigte Kurse",
+	"coursesInView:CoursesReturned": "Kurse wurden in den Ergebnissen zurückgegeben.",
+	"dashboard:lastSystemAccessMessage": "Benutzer hatten in den letzten {thresholdDays} Tagen keinen Systemzugriff.",
+	"dashboard:lastSystemAccessMessageOneDay": "Benutzer hatten gestern keinen Systemzugriff.",
 	"dashboard:lastSystemAccessHeading": "Systemzugriff",
 	"dashboard:tooManyResults": "Ihre Filter enthalten zu viele Ergebnisse. Grenzen Sie Ihre Auswahl ein.",
 	"dashboard:learMore": "Weitere Informationen",
@@ -184,7 +186,8 @@ export default {
 
 	"userDrill:noUser": "Dieser Benutzer konnte nicht geladen werden. Rufen Sie zum Aktivitäts-Dashboard, um die Liste der Benutzer anzuzeigen.",
 	"userDrill:noData": "Keine Daten in gefilterten Bereichen. Grenzen Sie Ihre Auswahl ein.",
-
+	"userDrill:manyCoursesAlert": "Dieses Dashboard eignet sich für weniger als 10 Kurse. Grenzen Sie Ihre ausgewählten Kurse für eine bessere Erfahrung ein.",
+	"userDrill:summaryView": "Zusammenfassende Ansicht",
 	"activeCoursesTable:title": "Aktive Kurse",
 	"activeCoursesTable:loadingPlaceholder": "Wird geladen",
 	"activeCoursesTable:course": "Kursname",
@@ -209,10 +212,30 @@ export default {
 	"inactiveCoursesTable:semester": "Semester",
 	"inactiveCoursesTable:empty": "Keine inaktiven Kursdaten in gefilterten Bereichen.",
 
+	"accessTrendCard:title": "Kurszugriff im Laufe der Zeit",
+	"accessTrendCard:xAxisTitle": "Datum",
+	"accessTrendCard:yAxisTitle": "Anzahl Kurszugriff",
+
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "Übungen sind derzeit überfällig.",
-	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
+	"averageGradeSummaryCard:averageGradeText" : "Durchschnittsnote der angezeigten Kurse.",
 	"averageGradeSummaryCard:averageGrade" : "Durchschnittsnote",
-	"averageGradeSummaryCard:noGradeInfoAvailable" : "No grade information available.",
-	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner last accessed the system.",
-	"userSysAccessCard:userHasNeverAccessedSystem": "User has never accessed the system."
+	"averageGradeSummaryCard:noGradeInfoAvailable" : "Keine Informationen zur Bewertung verfügbar.",
+	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "Tage, seit dem letzten Systemzugriff des Lerners",
+	"userSysAccessCard:userHasNeverAccessedSystem": "Benutzer hat niemals auf diesen Kurs zugegriffen.",
+
+	"coursesLegend:coursesLegendFilter": "Kurse",
+
+	"contentViewsCard:contentViewOverTime": "Inhaltsansicht im Laufe der Zeit",
+	"contentViewsCard:viewCount": "Anzahl Ansicht",
+	"contentViewsCard:date": "Datum",
+
+	"gradesTrendCard:date": "Datum",
+	"gradesTrendCard:gradesOverTime": "Noten im Laufe der Zeit",
+	"gradesTrendCard:currentGrade": "Aktuelle Note (%)",
+
+	"chart:loading": "Laden...",
+	"chart:decimalPoint": ".",
+	"chart:resetZoom": "Reset zoom",
+	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:thousandsSeparator": " ",
 };

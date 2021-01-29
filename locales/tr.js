@@ -11,8 +11,10 @@ export default {
 	"dashboard:resultsReturned": "Sonuçlar içerisinde kullanıcı bilgileri geldi.",
 	"dashboard:overdueAssignments": "Kullanıcıların şu anda bir veya daha fazla gecikmiş ödevi bulunuyor.",
 	"dashboard:overdueAssignmentsHeading": "Süresi Dolmuş Ödevler",
-	"dashboard:lastSystemAccessMessage": 'Son {thresholdDays} gün içinde kullanıcıların sistem erişimi yoktur.',
-	"dashboard:lastSystemAccessMessageOneDay": 'Son gün içinde kullanıcıların sistem erişimi yoktur.',
+	"dashboard:coursesInViewHeader": "Görünümdeki Dersler",
+	"coursesInView:CoursesReturned": "Sonuçlar içerisinde ders bilgileri geldi.",
+	"dashboard:lastSystemAccessMessage": "Son {thresholdDays} gün içinde kullanıcıların sistem erişimi yoktur.",
+	"dashboard:lastSystemAccessMessageOneDay": "Son gün içinde kullanıcıların sistem erişimi yoktur.",
 	"dashboard:lastSystemAccessHeading": "Sistem Erişimi",
 	"dashboard:tooManyResults": "Filtrelerinizde çok fazla sonuç var. Lütfen seçiminizi iyileştirin.",
 	"dashboard:learMore": "Daha Fazla Bilgi Al",
@@ -184,7 +186,8 @@ export default {
 
 	"userDrill:noUser": "Bu kullanıcı yüklenemedi. Kullanıcı listesini görüntülemek için Katılım Panosuna gidin.",
 	"userDrill:noData": "Filtrelenmiş aralıklarda veri yok. Seçiminizi daraltın.",
-
+	"userDrill:manyCoursesAlert": "Bu kontrol paneli, 10'dan az kurs içerdiğinde kullanışlıdır. Daha iyi bir deneyim için lütfen seçtiğiniz kursları düzenleyin.",
+	"userDrill:summaryView": "Özet Görünümü",
 	"activeCoursesTable:title": "Etkin Dersler",
 	"activeCoursesTable:loadingPlaceholder": "Yükleniyor",
 	"activeCoursesTable:course": "Ders Adı",
@@ -209,10 +212,30 @@ export default {
 	"inactiveCoursesTable:semester": "Dönem",
 	"inactiveCoursesTable:empty": "Filtrelenmiş aralıklarda etkin olmayan ders verileri yok.",
 
+	"accessTrendCard:title": "Zaman İçinde Kurs Erişimi",
+	"accessTrendCard:xAxisTitle": "Tarih",
+	"accessTrendCard:yAxisTitle": "Derse Erişim Sayısı",
+
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "ödevler şu anda gecikmiş durumda.",
-	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
+	"averageGradeSummaryCard:averageGradeText" : "not, görünümdeki derslerden ortalama olarak alınır.",
 	"averageGradeSummaryCard:averageGrade" : "Ortalama Not",
-	"averageGradeSummaryCard:noGradeInfoAvailable" : "No grade information available.",
-	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner last accessed the system.",
-	"userSysAccessCard:userHasNeverAccessedSystem": "User has never accessed the system."
+	"averageGradeSummaryCard:noGradeInfoAvailable" : "Not bilgisi bulunmuyor.",
+	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "Katılımcının sisteme en son eriştiği günden itibaren geçen gün sayısı:",
+	"userSysAccessCard:userHasNeverAccessedSystem": "Kullanıcı, derse hiç erişmedi.",
+
+	"coursesLegend:coursesLegendFilter": "Dersler",
+
+	"contentViewsCard:contentViewOverTime": "Zaman İçinde İçerik Görüntüleme",
+	"contentViewsCard:viewCount": "Görüntüleme Sayısı",
+	"contentViewsCard:date": "Tarih",
+
+	"gradesTrendCard:date": "Tarih",
+	"gradesTrendCard:gradesOverTime": "Zaman İçindeki Notlar",
+	"gradesTrendCard:currentGrade": "Mevcut Not (%)",
+
+	"chart:loading": "Yükleniyor...",
+	"chart:decimalPoint": ".",
+	"chart:resetZoom": "Reset zoom",
+	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:thousandsSeparator": " ",
 };

@@ -11,8 +11,10 @@ export default {
 	"dashboard:resultsReturned": "Usuários retornados nos resultados.",
 	"dashboard:overdueAssignments": "No momento, os usuários têm uma ou mais atividades atrasadas.",
 	"dashboard:overdueAssignmentsHeading": "Atividades atrasadas",
-	"dashboard:lastSystemAccessMessage": 'Usuários sem acesso ao sistema nos últimos {thresholdDays} dias.',
-	"dashboard:lastSystemAccessMessageOneDay": 'Usuários sem acesso ao sistema no último dia.',
+	"dashboard:coursesInViewHeader": "Cursos na visualização",
+	"coursesInView:CoursesReturned": "cursos exibidos nos resultados.",
+	"dashboard:lastSystemAccessMessage": "Usuários sem acesso ao sistema nos últimos {thresholdDays} dias.",
+	"dashboard:lastSystemAccessMessageOneDay": "Usuários sem acesso ao sistema no último dia.",
 	"dashboard:lastSystemAccessHeading": "Acesso ao sistema",
 	"dashboard:tooManyResults": "Seus filtros estão retornando resultados demais. Refine sua seleção.",
 	"dashboard:learMore": "Saiba mais",
@@ -184,7 +186,8 @@ export default {
 
 	"userDrill:noUser": "Não foi possível carregar o usuário. Acesse o painel Envolvimento para visualizar a lista de usuários.",
 	"userDrill:noData": "Nenhum dado nos intervalos filtrados. Refine a seleção.",
-
+	"userDrill:manyCoursesAlert": "Este painel é mais útil com menos de 10 cursos. Refine seus cursos selecionados para ter uma experiência melhor.",
+	"userDrill:summaryView": "Exibição resumida",
 	"activeCoursesTable:title": "Cursos ativos",
 	"activeCoursesTable:loadingPlaceholder": "Em carregamento",
 	"activeCoursesTable:course": "Nome do curso",
@@ -209,10 +212,30 @@ export default {
 	"inactiveCoursesTable:semester": "Semestre",
 	"inactiveCoursesTable:empty": "Nenhum dado de curso inativo nos intervalos filtrados.",
 
+	"accessTrendCard:title": "Acesso ao curso ao longo do tempo",
+	"accessTrendCard:xAxisTitle": "Data",
+	"accessTrendCard:yAxisTitle": "Contagem de acesso ao curso",
+
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "as atividades estão atrasadas no momento.",
-	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
+	"averageGradeSummaryCard:averageGradeText" : "média da nota dos cursos na visualização.",
 	"averageGradeSummaryCard:averageGrade" : "Nota média",
-	"averageGradeSummaryCard:noGradeInfoAvailable" : "No grade information available.",
-	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner last accessed the system.",
-	"userSysAccessCard:userHasNeverAccessedSystem": "User has never accessed the system."
+	"averageGradeSummaryCard:noGradeInfoAvailable" : "Nenhuma informação de nota disponível.",
+	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "dias desde que o aluno acessou o sistema pela última vez.",
+	"userSysAccessCard:userHasNeverAccessedSystem": "Usuário nunca acessou o sistema.",
+
+	"coursesLegend:coursesLegendFilter": "Cursos",
+
+	"contentViewsCard:contentViewOverTime": "Visualização de conteúdo ao longo do tempo",
+	"contentViewsCard:viewCount": "Contagem de visualizações",
+	"contentViewsCard:date": "Data",
+
+	"gradesTrendCard:date": "Data",
+	"gradesTrendCard:gradesOverTime": "Notas ao longo do tempo",
+	"gradesTrendCard:currentGrade": "Nota atual (%)",
+
+	"chart:loading": "Loading...",
+	"chart:decimalPoint": ".",
+	"chart:resetZoom": "Redefinir zoom",
+	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:thousandsSeparator": " ",
 };
