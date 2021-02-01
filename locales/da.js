@@ -11,8 +11,10 @@ export default {
 	"dashboard:resultsReturned": "Brugere returneret inden for resultaterne.",
 	"dashboard:overdueAssignments": "Brugere har i øjeblikket en eller flere opgaver, der er forsinket.",
 	"dashboard:overdueAssignmentsHeading": "Forsinkede opgaver",
-	"dashboard:lastSystemAccessMessage": 'Brugere har ingen systemadgang inden for de seneste {thresholdDays} dage.',
-	"dashboard:lastSystemAccessMessageOneDay": 'Brugere har ingen systemadgang inden for den seneste dag.',
+	"dashboard:coursesInViewHeader": "Kurser i visning",
+	"coursesInView:CoursesReturned": "kurser returneret inden for resultaterne.",
+	"dashboard:lastSystemAccessMessage": "Brugere har ingen systemadgang inden for de seneste {thresholdDays} dage.",
+	"dashboard:lastSystemAccessMessageOneDay": "Brugere har ingen systemadgang inden for den seneste dag.",
 	"dashboard:lastSystemAccessHeading": "Systemadgang",
 	"dashboard:tooManyResults": "Der er for mange resultater i dine filtre. Afgræns dit valg.",
 	"dashboard:learMore": "Få mere at vide",
@@ -184,7 +186,8 @@ export default {
 
 	"userDrill:noUser": "Denne bruger kunne ikke indlæses. Gå til kontrolpanelet Engagement for at se listen over brugere.",
 	"userDrill:noData": "Ingen data i filtrerede klasser. Afgræns dit valg.",
-
+	"userDrill:manyCoursesAlert": "Dette kontrolpanel er mest nyttigt med under 10 kurser. Afgræns dine valgte kurser for at få en bedre oplevelse.",
+	"userDrill:summaryView": "Oversigtsvisning",
 	"activeCoursesTable:title": "Aktive kurser",
 	"activeCoursesTable:loadingPlaceholder": "Indlæser",
 	"activeCoursesTable:course": "Kursusnavn",
@@ -209,10 +212,30 @@ export default {
 	"inactiveCoursesTable:semester": "Semester",
 	"inactiveCoursesTable:empty": "Ingen inaktive kursusdata i filtrerede klasser.",
 
+	"accessTrendCard:title": "Kursusadgang over tid",
+	"accessTrendCard:xAxisTitle": "Dato",
+	"accessTrendCard:yAxisTitle": "Antal gange kursus er tilgået",
+
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "opgaver er i øjeblikket forsinkede.",
-	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
+	"averageGradeSummaryCard:averageGradeText" : "karaktergennemsnit fra kurser i visningen.",
 	"averageGradeSummaryCard:averageGrade" : "Gennemsnitskarakter",
-	"averageGradeSummaryCard:noGradeInfoAvailable" : "No grade information available.",
-	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner last accessed the system.",
-	"userSysAccessCard:userHasNeverAccessedSystem": "User has never accessed the system."
+	"averageGradeSummaryCard:noGradeInfoAvailable" : "Der er ingen tilgængelige karakteroplysninger.",
+	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "dage siden eleven senest åbnede systemet.",
+	"userSysAccessCard:userHasNeverAccessedSystem": "Bruger har aldrig åbnet systemet.",
+
+	"coursesLegend:coursesLegendFilter": "Kurser",
+
+	"contentViewsCard:contentViewOverTime": "Indholdsvisning over tid",
+	"contentViewsCard:viewCount": "Vis antal",
+	"contentViewsCard:date": "Dato",
+
+	"gradesTrendCard:date": "Dato",
+	"gradesTrendCard:gradesOverTime": "Karakterer over tid",
+	"gradesTrendCard:currentGrade": "Aktuel karakter (%)",
+
+	"chart:loading": "Loading...",
+	"chart:decimalPoint": ".",
+	"chart:resetZoom": "Reset zoom",
+	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:thousandsSeparator": " ",
 };
