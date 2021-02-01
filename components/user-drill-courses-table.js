@@ -4,6 +4,7 @@ import './table.js';
 import './message-container';
 
 import { action, computed, decorate, observable } from 'mobx';
+import { courseNameSort, defaultSort, SortMixin } from '../model/sorts.js';
 import { css, html } from 'lit-element';
 import { formatNumber, formatPercent } from '@brightspace-ui/intl';
 import { COLUMN_TYPES } from './table';
@@ -33,7 +34,7 @@ const DEFAULT_PAGE_SIZE = 20;
  * @property {Object} user - {firstName, lastName, username, userId}
  * @property {Boolean} isActiveTable - whether we want the active or inactive table to render
  */
-class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
+class UserDrillCoursesTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 
 	static get properties() {
 		return {
@@ -69,6 +70,15 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this._sortColumn = TABLE_COLUMNS.COURSE_NAME;
 		this._currentPage = 1;
 		this._pageSize = DEFAULT_PAGE_SIZE;
+
+		this.sorts = [
+			courseNameSort,
+			defaultSort,
+			defaultSort,
+			defaultSort,
+			defaultSort,
+			defaultSort
+		];
 	}
 
 	get _itemsCount() {
@@ -145,32 +155,6 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return firstSemesterOrgUnitId ? this.localize('semesterFilter:semesterName', { orgUnitName: semesterOrgUnitName, orgUnitId: firstSemesterOrgUnitId }) : '';
 	}
 
-	_choseSortFunction(column, order) {
-		const ORDER = {
-			'asc': [-1, 1, 0],
-			'desc': [1, -1, 0]
-		};
-		if (column === TABLE_COLUMNS.COURSE_NAME) {
-			// NB: "desc" and "asc" are inverted for course info: desc sorts a-z whereas asc sorts z-a
-			return (course1, course2) => {
-				const courseId1 = course1[TABLE_COLUMNS.COURSE_NAME].toLowerCase();
-				const courseId2 = course2[TABLE_COLUMNS.COURSE_NAME].toLowerCase();
-				return (courseId1 > courseId2 ? ORDER[order][0] :
-					courseId1 < courseId2 ? ORDER[order][1] :
-						ORDER[order][2]);
-			};
-		}
-
-		return (course1, course2) => {
-			// undefined is neither greater or less then a value so we set it to -infinity
-			const record1 = course1[column] ? course1[column] : Number.NEGATIVE_INFINITY;
-			const record2 = course2[column] ? course2[column] : Number.NEGATIVE_INFINITY;
-			return (record1 > record2 ? ORDER[order][1] :
-				record1 < record2 ? ORDER[order][0] :
-					ORDER[order][2]);
-		};
-	}
-
 	_formatDataForDisplay(course) {
 		const courseLastAccessFormatted = course[TABLE_COLUMNS.COURSE_LAST_ACCESS]
 			? formatDateTime(new Date(course[TABLE_COLUMNS.COURSE_LAST_ACCESS]), { format: 'medium' })
@@ -193,7 +177,7 @@ class UserDrillCoursesTable extends SkeletonMixin(Localizer(MobxLitElement)) {
 		// map to a 2D userData array,
 		// then sort by the selected sorting function
 		if (this.skeleton) return [];
-		const sortFunction = this._choseSortFunction(this._sortColumn, this._sortOrder);
+		const sortFunction = this._chosenSortFunction(this._sortColumn, this._sortOrder);
 		return this.data
 			.records
 			.filter(this._shouldDisplayinTable, this)
