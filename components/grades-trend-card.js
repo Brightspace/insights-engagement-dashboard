@@ -7,7 +7,6 @@ import { formatDate } from '@brightspace-ui/intl/lib/dateTime';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
-import { toJS } from 'mobx';
 
 class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
@@ -203,7 +202,7 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _trendData() {
-		return toJS(this.userData.courseGrades).map(grades => {
+		return [...this.userData.courseGrades].map(grades => {
 			return {
 				orgUnitId: grades.courseId,
 				data: grades.gradesData.map(item => [item.date, item.grade * 100])
@@ -222,7 +221,7 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _series() {
-		if (!this.data._data) return [];
+		if (!this.data._data || !this.userData.courseGrades) return [];
 
 		const colors = [...UserTrendColorsIterator(0, 1, this._trendData.length)];
 		const selected = (course) => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0;
