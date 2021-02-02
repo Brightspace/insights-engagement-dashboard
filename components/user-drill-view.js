@@ -423,6 +423,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 					?hidden="${this.hidden}"
 					?skeleton="${this._userData.isLoading}"
 					.data="${this.data}"
+					.user="${this.user}"
 					.userData="${this._userData}"
 					.selectedCourses="${this.selectedCourses}"
 				></d2l-insights-grades-trend-card>

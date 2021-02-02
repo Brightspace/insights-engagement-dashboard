@@ -48,6 +48,7 @@ describe('d2l-insights-user-drill-view', () => {
 					[10, 'Course 10', mockOuTypes.course, [1002], true],
 					[11, 'Course 11', mockOuTypes.course, [1002], true]
 				],
+				records: userRecords
 			}
 		},
 		records: userRecords,

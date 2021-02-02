@@ -1,6 +1,6 @@
 import 'highcharts';
 import { css, html } from 'lit-element/lit-element.js';
-import { ORG_UNIT, UserTrendColorsIterator } from '../consts';
+import { ORG_UNIT, RECORD, UserTrendColorsIterator } from '../consts';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
 import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles';
 import { formatDate } from '@brightspace-ui/intl/lib/dateTime';
@@ -13,7 +13,8 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return {
 			data: { type: Object, attribute: false },
 			userData: { type: Object, attribute: false },
-			selectedCourses: { type: Object, attribute: false }
+			selectedCourses: { type: Object, attribute: false },
+			user: { type: Object, attribute: false }
 		};
 	}
 
@@ -222,18 +223,23 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return orgUnit ? orgUnit[ORG_UNIT.NAME] : '';
 	}
 
+	get _userOrgUnitIds() {
+		return Array.from(
+			new Set(this._serverData.records.filter(r => r[RECORD.USER_ID] === this.user.userId).map(record => record[RECORD.ORG_UNIT_ID])));
+	}
+
 	get _series() {
 		if (!this.data._data || !this.userData.courseGrades) return [];
 
-		const colors = [...UserTrendColorsIterator(0, 1, this._trendData.length)];
+		const colors = [...UserTrendColorsIterator(0, 1, this._userOrgUnitIds.length)];
 		const selected = (course) => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0;
 
 		return this._trendData
-			.map((course, idx) => ({
+			.map((course) => ({
 				...course,
-				// It is read as `Course 1, series 1 of 3 with 8 data points.`
 				name: this._orgUnitName(course.orgUnitId),
-				color: selected(course) ? colors[idx] : 'var(--d2l-color-mica)' }));
+				//if grades data are not available for some course, the colors will remain consistent
+				color: selected(course) ? colors[this._userOrgUnitIds.findIndex(orgId => orgId === course.orgUnitId)] : 'var(--d2l-color-mica)' }));
 	}
 }
 customElements.define('d2l-insights-grades-trend-card', GradesTrendCard);
