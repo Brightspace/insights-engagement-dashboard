@@ -125,6 +125,8 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				enabled: false
 			},
 			xAxis: {
+				startOnTick: true,
+				endOnTick: true,
 				tickInterval:  7 * 24 * 3600 * 1000, //week
 				type: 'datetime',
 				labels: {

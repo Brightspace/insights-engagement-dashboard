@@ -13,6 +13,22 @@ describe('grades-trend-card', () => {
 			}
 		}
 	};
+	const userData = {
+		courseGrades: [
+			{
+				courseId: 1,
+				gradesData: [{ date: 0, grade: 0.5 }]
+			},
+			{
+				courseId: 2,
+				gradesData: [{ date: 0, grade: 0.5 }]
+			},
+			{
+				courseId: 3,
+				gradesData: [{ date: 0, grade: 0.5 }]
+			}
+		]
+	};
 
 	describe('constructor', () => {
 		it('should construct', () => {
@@ -22,14 +38,14 @@ describe('grades-trend-card', () => {
 
 	describe('accessibility', () => {
 		it('should pass all axe tests', async() => {
-			const el = await fixture(html`<d2l-insights-grades-trend-card .data="${data}"></d2l-insights-grades-trend-card>`);
+			const el = await fixture(html`<d2l-insights-grades-trend-card .userData="${userData}" .data="${data}"></d2l-insights-grades-trend-card>`);
 			await expect(el).to.be.accessible();
 		});
 	});
 
 	describe('render', () => {
 		it('should render Grades Over Time chart', async() => {
-			const el = await fixture(html`<d2l-insights-grades-trend-card .data="${data}"></d2l-insights-grades-trend-card>`);
+			const el = await fixture(html`<d2l-insights-grades-trend-card .userData="${userData}" .data="${data}"></d2l-insights-grades-trend-card>`);
 			await new Promise(resolve => setTimeout(resolve, 50));
 			const title = (el.shadowRoot.querySelectorAll('div.d2l-insights-grades-trend-title'));
 			expect(title[0].innerText).to.equal('Grades Over Time');
@@ -42,7 +58,7 @@ describe('grades-trend-card', () => {
 
 	it('should grey out all other courses when a first course is selected', async() => {
 		const selectedCourses = new SelectedCourses();
-		const el = await fixture(html`<d2l-insights-grades-trend-card .data="${data}" .selectedCourses="${selectedCourses}"></d2l-insights-grades-trend-card>`);
+		const el = await fixture(html`<d2l-insights-grades-trend-card .userData="${userData}" .data="${data}" .selectedCourses="${selectedCourses}"></d2l-insights-grades-trend-card>`);
 		await new Promise(resolve => setTimeout(resolve, 50));
 		const series = el.shadowRoot.querySelector('d2l-labs-chart').chart.series;
 

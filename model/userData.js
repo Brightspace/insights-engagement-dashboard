@@ -23,7 +23,6 @@ export class UserData {
 			this.isQueryError = false;
 		} catch (ignored) {
 			this.isQueryError = true;
-			console.log('user-query-error');
 		}
 	}
 
