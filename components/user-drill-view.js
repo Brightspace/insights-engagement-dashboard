@@ -342,7 +342,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get userOrgUnitIds() {
-		return this._userRecords.map(record => record[RECORD.ORG_UNIT_ID]);
+		return this.data.records.filter(r => r[RECORD.USER_ID] === this.user.userId).map(record => record[RECORD.ORG_UNIT_ID]);
 	}
 
 	render() {
