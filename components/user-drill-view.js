@@ -47,8 +47,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			isDemo: { type: Boolean, attribute: 'demo' },
 			isStudentSuccessSys: { type: Boolean, attribute: false },
 			orgUnitId: { type: Number, attribute: 'org-unit-id' },
-			viewState: { type: Object, attribute: false },
-			selectedCourses: { type: Object, attribute: false }
+			viewState: { type: Object, attribute: false }
 		};
 	}
 
@@ -447,14 +446,12 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 				` : nothing }
 			</div>
-			${ this.isDemo ? html`
 				<d2l-insights-courses-legend
 					.data="${this.data}"
 					.user="${this.user}"
 					.selectedCourses="${this.selectedCourses}"
 					?skeleton="${this.skeleton}"
 				></d2l-insights-courses-legend>
-			` : nothing }
 
 			${this._renderContent()}
 
@@ -475,7 +472,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				.user="${this.user}"
 				.isActiveTable=${Boolean(true)}
 				.isStudentSuccessSys="${this.isStudentSuccessSys}"
-				?skeleton="${this.skeleton}">
+				?skeleton="${this.skeleton}"
+				.selectedCourses="${this.selectedCourses}">
 			</d2l-insights-user-drill-courses-table>
 
 			<h2 class="d2l-heading-3">${this.localize('inactiveCoursesTable:title')}</h2>
@@ -484,7 +482,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				.user="${this.user}"
 				.isActiveTable=${Boolean(false)}
 				.isStudentSuccessSys="${this.isStudentSuccessSys}"
-				?skeleton="${this.skeleton}">
+				?skeleton="${this.skeleton}"
+				.selectedCourses="${this.selectedCourses}">
 			</d2l-insights-user-drill-courses-table>
 		`;
 	}
