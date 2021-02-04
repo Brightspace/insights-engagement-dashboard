@@ -200,7 +200,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get userEntity() {
-		return `/d2l/api/hm/users/${this.userIdFromUrl}`;
+		const userId = this.user.userId ? this.user.userId : this.userIdFromUrl;
+		return `/d2l/api/hm/users/${userId}`;
 	}
 
 	get loadingUserProfile() {
@@ -359,7 +360,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	render() {
 		if (this.filteredOrgUnitIds !== this.userOrgUnitIds) {
 			this.filteredOrgUnitIds = this.userOrgUnitIds;
-			this._userData.loadData(this.filteredOrgUnitIds, this.userIdFromUrl);
+			this._userData.loadData(this.filteredOrgUnitIds, this.user.userId ? this.user.userId : this.userIdFromUrl);
 		}
 
 		if (!this.skeleton && !this.user.userId) {
