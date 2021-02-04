@@ -23,6 +23,7 @@ export class UserData {
 			this.isQueryError = false;
 		} catch (ignored) {
 			this.isQueryError = true;
+			this.isLoading = false;
 		}
 	}
 

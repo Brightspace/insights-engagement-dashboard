@@ -200,8 +200,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get userEntity() {
-		const userId = this.user.userId ? this.user.userId : this.userIdFromUrl;
-		return `/d2l/api/hm/users/${userId}`;
+		return `/d2l/api/hm/users/${this.userIdFromUrl}`;
 	}
 
 	get loadingUserProfile() {
@@ -342,6 +341,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	get allCourses() {
 		const userRecords = this.data.recordsByUser.get(this.userIdFromUrl);
+		if (!userRecords) return [];
 		return Array.from(
 			new Set(userRecords.map(record => record[RECORD.ORG_UNIT_ID]))
 		);
@@ -360,7 +360,9 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	render() {
 		if (this.filteredOrgUnitIds !== this.userOrgUnitIds) {
 			this.filteredOrgUnitIds = this.userOrgUnitIds;
-			this._userData.loadData(this.filteredOrgUnitIds, this.user.userId ? this.user.userId : this.userIdFromUrl);
+			if (this.filteredOrgUnitIds.length !== 0) {
+				this._userData.loadData(this.filteredOrgUnitIds, this.userIdFromUrl);
+			}
 		}
 
 		if (!this.skeleton && !this.user.userId) {
@@ -415,6 +417,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				<slot name="applied-filters"></slot>
 			</div>
 
+			${ !this._userData.isQueryError ? html`
+
 			<h3>${this.localize('userDrill:summaryView')}</h3>
 
 			<d2l-alert
@@ -440,9 +444,6 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 					.userData="${this._userData}"
 					.selectedCourses="${this.selectedCourses}"
 				></d2l-insights-grades-trend-card>
-				<d2l-insights-engagement-user-drill-errors
-					.userData="${this._userData}">
-				</d2l-insights-engagement-user-drill-errors>
 
 				${ this.isDemo ? html`
 					<d2l-insights-content-views-card
@@ -469,6 +470,11 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 			${this._renderContent()}
 
+		` : html `
+				<d2l-insights-engagement-user-drill-errors
+					.userData="${this._userData}">
+				</d2l-insights-engagement-user-drill-errors>
+			` }
 		</div>`;
 	}
 
