@@ -107,6 +107,13 @@ export class Tree {
 		return this._getSelected(this.rootId);
 	}
 
+	get allSelectedCourses() {
+		const selected = [...this._state]
+			.filter(([, state]) => state === 'explicit')
+			.map(([id]) => id);
+		return selected.filter(id => this.getType(id) === 3);
+	}
+
 	set selected(ids) {
 		this.clearSelection();
 		this.select(ids);

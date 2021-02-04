@@ -224,8 +224,11 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _userOrgUnitIds() {
+		const userRecords = this.data.recordsByUser.get(this.user.userId);
+		if (!userRecords) return [];
 		return Array.from(
-			new Set(this._serverData.records.filter(r => r[RECORD.USER_ID] === this.user.userId).map(record => record[RECORD.ORG_UNIT_ID])));
+			new Set(userRecords.map(record => record[RECORD.ORG_UNIT_ID]))
+		);
 	}
 
 	get _series() {

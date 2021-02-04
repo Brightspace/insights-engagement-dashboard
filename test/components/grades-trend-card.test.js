@@ -4,13 +4,17 @@ import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-help
 import { SelectedCourses } from '../../components/courses-legend';
 
 const grey  = 'var(--d2l-color-mica)';
+const records = [[1, 200], [2, 200], [3, 200]];
+const userRecordsMap = new Map();
+userRecordsMap.set(200, records);
 
 describe('grades-trend-card', () => {
 	const data = {
+		recordsByUser: userRecordsMap,
 		_data: {
 			serverData: {
 				orgUnits: [],
-				records: [[1, 200], [2, 200], [3, 200]]
+				records: records
 			}
 		}
 	};

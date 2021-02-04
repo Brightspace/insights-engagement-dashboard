@@ -200,7 +200,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get userEntity() {
-		return `/d2l/api/hm/users/${this.user.userId}`;
+		return `/d2l/api/hm/users/${this.userIdFromUrl}`;
 	}
 
 	get loadingUserProfile() {
@@ -304,7 +304,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		if (!this.data.userDictionary) return 0;
 		const userData = this.data.userDictionary.get(this.user.userId);
 		const currentDate = this.isDemo ? demoDate : Date.now();
-		return userData[USER.LAST_SYS_ACCESS] ? Math.floor((currentDate - userData[USER.LAST_SYS_ACCESS]) / (1000 * 60 * 60 * 24)) : '';
+		return userData && userData[USER.LAST_SYS_ACCESS] ? Math.floor((currentDate - userData[USER.LAST_SYS_ACCESS]) / (1000 * 60 * 60 * 24)) : '';
 	}
 
 	get summaryCards() {
@@ -322,7 +322,6 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get hideCourseAlert() {
-		if (!this.isDemo) return true; // TODO: REMOVE WHEN WE ENABLE USER TRENDS
 		const userRecords = this.data.recordsByUser.get(this.user.userId);
 		if (!userRecords) return true;
 		const numCourses = new Set(userRecords.map(record => record[RECORD.ORG_UNIT_ID])).size;
@@ -340,14 +339,27 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this.__userData;
 	}
 
+	get allCourses() {
+		const userRecords = this.data.recordsByUser.get(this.userIdFromUrl);
+		return Array.from(
+			new Set(userRecords.map(record => record[RECORD.ORG_UNIT_ID]))
+		);
+	}
+
 	get userOrgUnitIds() {
-		return this.data.records.filter(r => r[RECORD.USER_ID] === this.user.userId).map(record => record[RECORD.ORG_UNIT_ID]);
+		const allSelectedCourses = this.data.orgUnitTree.allSelectedCourses.sort((a, b) => a - b);
+		return this.data.orgUnitTree.selected.length !== 0 ? allSelectedCourses : this.allCourses;
+	}
+
+	get userIdFromUrl() {
+		const urlParams = new URLSearchParams(window.location.search);
+		return Number(urlParams.get('v').split(',')[1]);
 	}
 
 	render() {
 		if (this.filteredOrgUnitIds !== this.userOrgUnitIds) {
 			this.filteredOrgUnitIds = this.userOrgUnitIds;
-			this._userData.loadData(this.filteredOrgUnitIds, this.user.userId);
+			this._userData.loadData(this.filteredOrgUnitIds, this.userIdFromUrl);
 		}
 
 		if (!this.skeleton && !this.user.userId) {

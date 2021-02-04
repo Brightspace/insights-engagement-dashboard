@@ -7,9 +7,11 @@ import { flush } from '@polymer/polymer/lib/utils/render-status.js';
 import { mockOuTypes } from '../model/mocks';
 import noProfile from '../responses/no_profile';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
+import { setStateForTesting } from '../../model/urlState';
 import sinon from 'sinon/pkg/sinon-esm.js';
 
 describe('d2l-insights-user-drill-view', () => {
+	setStateForTesting('v', 'user,232');
 	const user = {
 		userId: 232,
 		firstName: 'firstName',
@@ -56,7 +58,9 @@ describe('d2l-insights-user-drill-view', () => {
 			isActive: () => true,
 			getName: () => '',
 			getAncestorIds: () => [],
-			getType: () => 0
+			getType: () => 0,
+			allSelectedCourses: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+			selected: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 		},
 		users: [Object.values(user)],
 		getFilter: () => filter
