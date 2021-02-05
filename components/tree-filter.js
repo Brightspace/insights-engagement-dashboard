@@ -449,6 +449,7 @@ decorate(Tree, {
 	_bookmarks: observable,
 	_hasMore: observable,
 	selected: computed,
+	allSelectedCourses: computed,
 	addNodes: action,
 	clearSelection: action,
 	select: action,

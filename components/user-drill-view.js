@@ -515,7 +515,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 decorate(UserDrill, {
 	_userRecords: computed,
-	userOrgUnitIds: computed
+	userOrgUnitIds: computed,
+	allCourses: computed
 });
 
 customElements.define('d2l-insights-user-drill-view', UserDrill);

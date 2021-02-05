@@ -1,4 +1,5 @@
 import 'highcharts';
+import { computed, decorate } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
 import { ORG_UNIT, RECORD, UserTrendColorsIterator } from '../consts';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
@@ -245,4 +246,9 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				color: selected(course) ? colors[this._userOrgUnitIds.findIndex(orgId => orgId === course.orgUnitId)] : 'var(--d2l-color-mica)' }));
 	}
 }
+decorate(GradesTrendCard, {
+	_trendData: computed,
+	_userOrgUnitIds: computed,
+	_series: computed
+});
 customElements.define('d2l-insights-grades-trend-card', GradesTrendCard);
