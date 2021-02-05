@@ -200,7 +200,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get userEntity() {
-		return `/d2l/api/hm/users/${this.userIdFromUrl}`;
+		return `/d2l/api/hm/users/${this.user.userId}`;
 	}
 
 	get loadingUserProfile() {
@@ -340,7 +340,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get allCourses() {
-		const userRecords = this.data.recordsByUser.get(this.userIdFromUrl);
+		const userRecords = this.data.recordsByUser.get(this.user.userId);
 		if (!userRecords) return [];
 		return Array.from(
 			new Set(userRecords.map(record => record[RECORD.ORG_UNIT_ID]))
@@ -352,16 +352,11 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this.data.orgUnitTree.selected.length !== 0 ? allSelectedCourses : this.allCourses;
 	}
 
-	get userIdFromUrl() {
-		const urlParams = new URLSearchParams(window.location.search);
-		return Number(urlParams.get('v').split(',')[1]);
-	}
-
 	render() {
 		if (this.filteredOrgUnitIds !== this.userOrgUnitIds) {
 			this.filteredOrgUnitIds = this.userOrgUnitIds;
 			if (this.filteredOrgUnitIds.length !== 0) {
-				this._userData.loadData(this.filteredOrgUnitIds, this.userIdFromUrl);
+				this._userData.loadData(this.filteredOrgUnitIds, this.user.userId);
 			}
 		}
 

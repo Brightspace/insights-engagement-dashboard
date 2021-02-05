@@ -95,8 +95,13 @@ describe('d2l-insights-user-drill-view', () => {
 	describe('render', () => {
 
 		const temp = window.d2lfetch.fetch;
+		let handle;
+		let profileCallPromise;
 
 		before(() => {
+
+			profileCallPromise = new Promise(res => handle = res);
+
 			D2L.LP = {
 				Web: {
 					Authentication: {
@@ -106,7 +111,12 @@ describe('d2l-insights-user-drill-view', () => {
 					}
 				}
 			};
-			window.d2lfetch.fetch = fetchMock.sandbox().get('path:/d2l/api/hm/users/232', noProfile);
+			const profileCalled = () => {
+				handle();
+				return noProfile;
+			};
+			window.d2lfetch.fetch = fetchMock.sandbox().get('path:/d2l/api/hm/users/232', profileCalled);
+
 		});
 
 		after(() => {
@@ -130,7 +140,7 @@ describe('d2l-insights-user-drill-view', () => {
 				.user=${user} .data=${data}
 			></d2l-insights-user-drill-view>`);
 			const profile = await trySelect(el.shadowRoot, 'd2l-profile-image');
-
+			await profileCallPromise;
 			const names = [profile._firstName, profile._lastName];
 			const results = ['First', 'Last'];
 
