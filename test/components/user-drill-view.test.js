@@ -112,7 +112,7 @@ describe('d2l-insights-user-drill-view', () => {
 				}
 			};
 			const profileCalled = () => {
-				handle();
+				setTimeout(handle, 50);
 				return noProfile;
 			};
 			window.d2lfetch.fetch = fetchMock.sandbox().get('path:/d2l/api/hm/users/232', profileCalled);
