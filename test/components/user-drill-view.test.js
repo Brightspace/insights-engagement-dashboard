@@ -129,8 +129,7 @@ describe('d2l-insights-user-drill-view', () => {
 			const el = await fixture(html`<d2l-insights-user-drill-view
 				.user=${user} .data=${data}
 			></d2l-insights-user-drill-view>`);
-			const profile = el.shadowRoot.querySelector('d2l-profile-image');
-			await new Promise(res => setTimeout(res, 140));
+			const profile = await trySelect(el.shadowRoot, 'd2l-profile-image');
 
 			const names = [profile._firstName, profile._lastName];
 			const results = ['First', 'Last'];
