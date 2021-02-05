@@ -139,7 +139,7 @@ describe('d2l-insights-user-drill-view', () => {
 		});
 
 		it('should render no user error message if there is no user', async() => {
-			const el = await fixture(html`<d2l-insights-user-drill-view .data=${data}></d2l-insights-user-drill-view>`);
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .data=${data}></d2l-insights-user-drill-view>`);
 			await new Promise(res => setTimeout(res, 10));
 
 			const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');
@@ -151,7 +151,7 @@ describe('d2l-insights-user-drill-view', () => {
 			const dataNoRecords = { ...data };
 			dataNoRecords.records = [];
 
-			const el = await fixture(html`<d2l-insights-user-drill-view .user="${user}" .data=${dataNoRecords}></d2l-insights-user-drill-view>`);
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data=${dataNoRecords}></d2l-insights-user-drill-view>`);
 			await new Promise(res => setTimeout(res, 10));
 
 			const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');

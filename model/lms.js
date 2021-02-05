@@ -49,11 +49,18 @@ export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [
  */
 export async function fetchUserData(orgUnitIds = [], userId = 0) {
 	const url = new URL(userDrillDataEndpoint, window.location.origin);
-	if (orgUnitIds) {
-		url.searchParams.set('selectedOrgUnitIdsCsv', orgUnitIds.join(','));
-	}
-	url.searchParams.set('selectedUserId', userId);
-	const response = await fetch(url.toString());
+	const userDrillBody = {
+		selectedUserId: userId,
+		selectedOrgUnitIds: orgUnitIds,
+		metrics: true
+	};
+	const response = await d2lfetch.fetch(new Request(url.toString(), {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(userDrillBody)
+	}));
 	const responseJson = await response.json();
 	if (response.ok) return responseJson;
 	else {
