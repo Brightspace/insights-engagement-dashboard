@@ -234,18 +234,20 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	}
 
 	_renderUserDrillView() {
-		let user = {};
+		// Pass in the known userId so we can preload the user profile and other data.
+		let user = {
+			userId : this._viewState.userViewUserId
+		};
 
 		if (!this._isLoading) {
-			const userId = this._viewState.userViewUserId;
-			const userData = this._serverData.userDictionary.get(userId);
+			const userData = this._serverData.userDictionary.get(user.userId);
 
 			if (userData) {
 				user = {
+					...user,
 					firstName: userData[USER.FIRST_NAME],
 					lastName: userData[USER.LAST_NAME],
 					username: userData[USER.USERNAME],
-					userId: userId
 				};
 			}
 		}

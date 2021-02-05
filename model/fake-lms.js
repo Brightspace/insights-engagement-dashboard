@@ -178,3 +178,44 @@ export async function fetchSemesters(pageSize, bookmark, search) {
 	return new Promise(resolve =>	setTimeout(() => resolve(response), 100));
 }
 
+// eslint-disable-next-line no-unused-vars
+export async function fetchUserData(orgUnitIds = [], userId = 0) {
+	const demoData = {
+		courseGradesData: [
+			{
+				courseId: 1,
+				gradesData: [
+					{ date: Date.UTC(2020, 1, 1), grade: 0.5 },
+					{ date: Date.UTC(2020, 1, 7), grade: 0.60 },
+					{ date: Date.UTC(2020, 1, 14), grade: 0.45 },
+					{ date: Date.UTC(2020, 1, 21), grade: 0.65 },
+					{ date: Date.UTC(2020, 1, 28), grade: 0.70 },
+					{ date: Date.UTC(2020, 2, 4), grade: 0.65 }
+				]
+			}, {
+				courseId: 2,
+				gradesData: [
+					{ date: Date.UTC(2020, 1, 1), grade: 0.30 },
+					{ date: Date.UTC(2020, 1, 7), grade: 0.50 },
+					{ date: Date.UTC(2020, 1, 14), grade: 0.35 },
+					{ date: Date.UTC(2020, 1, 21), grade: 0.50 },
+					{ date: Date.UTC(2020, 1, 28), grade: 0.65 },
+					{ date: Date.UTC(2020, 2, 4), grade: 0.40 }
+				]
+			}, {
+				courseId: 8,
+				gradesData: [
+					{ date: Date.UTC(2020, 1, 1), grade: 0.10 },
+					{ date: Date.UTC(2020, 1, 7), grade: 0.30 },
+					{ date: Date.UTC(2020, 1, 14), grade: 0.25 },
+					{ date: Date.UTC(2020, 1, 21), grade: 0.40 },
+					{ date: Date.UTC(2020, 1, 28), grade: 0.55 },
+					{ date: Date.UTC(2020, 2, 4), grade: 0.25 }
+				]
+			}
+		]
+	};
+
+	return new Promise(resolve => setTimeout(() => resolve(demoData), 100));
+}
+

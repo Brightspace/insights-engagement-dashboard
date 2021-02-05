@@ -7,9 +7,11 @@ import { flush } from '@polymer/polymer/lib/utils/render-status.js';
 import { mockOuTypes } from '../model/mocks';
 import noProfile from '../responses/no_profile';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
+import { setStateForTesting } from '../../model/urlState';
 import sinon from 'sinon/pkg/sinon-esm.js';
 
 describe('d2l-insights-user-drill-view', () => {
+	setStateForTesting('v', 'user,232');
 	const user = {
 		userId: 232,
 		firstName: 'firstName',
@@ -48,6 +50,7 @@ describe('d2l-insights-user-drill-view', () => {
 					[10, 'Course 10', mockOuTypes.course, [1002], true],
 					[11, 'Course 11', mockOuTypes.course, [1002], true]
 				],
+				records: userRecords
 			}
 		},
 		records: userRecords,
@@ -55,7 +58,9 @@ describe('d2l-insights-user-drill-view', () => {
 			isActive: () => true,
 			getName: () => '',
 			getAncestorIds: () => [],
-			getType: () => 0
+			getType: () => 0,
+			allSelectedCourses: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+			selected: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 		},
 		users: [Object.values(user)],
 		getFilter: () => filter
@@ -90,8 +95,13 @@ describe('d2l-insights-user-drill-view', () => {
 	describe('render', () => {
 
 		const temp = window.d2lfetch.fetch;
+		let handle;
+		let profileCallPromise;
 
 		before(() => {
+
+			profileCallPromise = new Promise(res => handle = res);
+
 			D2L.LP = {
 				Web: {
 					Authentication: {
@@ -101,7 +111,12 @@ describe('d2l-insights-user-drill-view', () => {
 					}
 				}
 			};
-			window.d2lfetch.fetch = fetchMock.sandbox().get('path:/d2l/api/hm/users/232', noProfile);
+			const profileCalled = () => {
+				setTimeout(handle, 50);
+				return noProfile;
+			};
+			window.d2lfetch.fetch = fetchMock.sandbox().get('path:/d2l/api/hm/users/232', profileCalled);
+
 		});
 
 		after(() => {
@@ -124,9 +139,8 @@ describe('d2l-insights-user-drill-view', () => {
 			const el = await fixture(html`<d2l-insights-user-drill-view
 				.user=${user} .data=${data}
 			></d2l-insights-user-drill-view>`);
-			const profile = el.shadowRoot.querySelector('d2l-profile-image');
-			await new Promise(res => setTimeout(res, 140));
-
+			const profile = await trySelect(el.shadowRoot, 'd2l-profile-image');
+			await profileCallPromise;
 			const names = [profile._firstName, profile._lastName];
 			const results = ['First', 'Last'];
 
@@ -134,7 +148,7 @@ describe('d2l-insights-user-drill-view', () => {
 		});
 
 		it('should render no user error message if there is no user', async() => {
-			const el = await fixture(html`<d2l-insights-user-drill-view .data=${data}></d2l-insights-user-drill-view>`);
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .data=${data}></d2l-insights-user-drill-view>`);
 			await new Promise(res => setTimeout(res, 10));
 
 			const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');
@@ -146,7 +160,7 @@ describe('d2l-insights-user-drill-view', () => {
 			const dataNoRecords = { ...data };
 			dataNoRecords.records = [];
 
-			const el = await fixture(html`<d2l-insights-user-drill-view .user="${user}" .data=${dataNoRecords}></d2l-insights-user-drill-view>`);
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data=${dataNoRecords}></d2l-insights-user-drill-view>`);
 			await new Promise(res => setTimeout(res, 10));
 
 			const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');
