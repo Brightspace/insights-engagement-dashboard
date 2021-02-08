@@ -347,14 +347,14 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		);
 	}
 
-	get userOrgUnitIds() {
+	get _filteredOrgUnitIds() {
 		const allSelectedCourses = this.data.orgUnitTree.allSelectedCourses.sort((a, b) => a - b);
 		return this.data.orgUnitTree.selected.length !== 0 ? allSelectedCourses : this.allCourses;
 	}
 
 	render() {
-		if (this.filteredOrgUnitIds !== this.userOrgUnitIds) {
-			this.filteredOrgUnitIds = this.userOrgUnitIds;
+		if (this.filteredOrgUnitIds.length < this._filteredOrgUnitIds.length) {
+			this.filteredOrgUnitIds = this._filteredOrgUnitIds;
 			if (this.filteredOrgUnitIds.length !== 0) {
 				this._userData.loadData(this.filteredOrgUnitIds, this.user.userId);
 			}
@@ -515,7 +515,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 decorate(UserDrill, {
 	_userRecords: computed,
-	userOrgUnitIds: computed,
+	_filteredOrgUnitIds: computed,
 	allCourses: computed
 });
 

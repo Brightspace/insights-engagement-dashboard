@@ -16,6 +16,10 @@ describe('grades-trend-card', () => {
 				orgUnits: [],
 				records: records
 			}
+		},
+		orgUnitTree: {
+			allSelectedCourses: [],
+			selected: []
 		}
 	};
 	const userData = {

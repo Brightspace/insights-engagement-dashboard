@@ -206,12 +206,27 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _trendData() {
-		return [...this.userData.courseGrades].map(grades => {
-			return {
-				orgUnitId: grades.courseId,
-				data: grades.gradesData.map(item => [item.date, item.grade * 100])
-			};
-		});
+		return [...this.userData.courseGrades]
+			.filter(grades => this._filteredOrgUnitIds.includes(grades.courseId))
+			.map(grades => {
+				return {
+					orgUnitId: grades.courseId,
+					data: grades.gradesData.map(item => [item.date, item.grade * 100])
+				};
+			});
+	}
+
+	get _filteredOrgUnitIds() {
+		const allSelectedCourses = this.data.orgUnitTree.allSelectedCourses.sort((a, b) => a - b);
+		return this.data.orgUnitTree.selected.length !== 0 ? allSelectedCourses : this.allCourses;
+	}
+
+	get allCourses() {
+		const userRecords = this.data.recordsByUser.get(this.user.userId);
+		if (!userRecords) return [];
+		return Array.from(
+			new Set(userRecords.map(record => record[RECORD.ORG_UNIT_ID]))
+		);
 	}
 
 	get _serverData() {
@@ -233,8 +248,7 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _series() {
-		if (!this.data._data || !this.userData.courseGrades) return [];
-
+		if (!this.data._data || !this.userData.courseGrades || this.userData.courseGrades.length === 0) return [0, 0];
 		const colors = [...UserTrendColorsIterator(0, 1, this._userOrgUnitIds.length)];
 		const selected = (course) => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0;
 
@@ -249,6 +263,8 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 decorate(GradesTrendCard, {
 	_trendData: computed,
 	_userOrgUnitIds: computed,
-	_series: computed
+	_series: computed,
+	_filteredOrgUnitIds: computed,
+	allCourses: computed
 });
 customElements.define('d2l-insights-grades-trend-card', GradesTrendCard);
