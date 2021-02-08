@@ -207,7 +207,7 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	get _trendData() {
 		return [...this.userData.courseGrades]
-			.filter(grades => this._filteredOrgUnitIds.includes(grades.courseId))
+			.filter(grades => this._filteredOrgUnitIds.has(grades.courseId))
 			.map(grades => {
 				return {
 					orgUnitId: grades.courseId,
@@ -218,15 +218,7 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	get _filteredOrgUnitIds() {
 		const allSelectedCourses = this.data.orgUnitTree.allSelectedCourses.sort((a, b) => a - b);
-		return this.data.orgUnitTree.selected.length !== 0 ? allSelectedCourses : this.allCourses;
-	}
-
-	get allCourses() {
-		const userRecords = this.data.recordsByUser.get(this.user.userId);
-		if (!userRecords) return [];
-		return Array.from(
-			new Set(userRecords.map(record => record[RECORD.ORG_UNIT_ID]))
-		);
+		return this.data.orgUnitTree.selected.length !== 0 ? new Set(allSelectedCourses) : new Set(this._userOrgUnitIds);
 	}
 
 	get _serverData() {
@@ -264,7 +256,6 @@ decorate(GradesTrendCard, {
 	_trendData: computed,
 	_userOrgUnitIds: computed,
 	_series: computed,
-	_filteredOrgUnitIds: computed,
-	allCourses: computed
+	_filteredOrgUnitIds: computed
 });
 customElements.define('d2l-insights-grades-trend-card', GradesTrendCard);

@@ -67,7 +67,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this.viewState = null;
 
 		this.selectedCourses = new SelectedCourses();
-		this.filteredOrgUnitIds = [];
+		this.lastFilteredOrgUnitIds = [];
 	}
 
 	static get styles() {
@@ -347,16 +347,16 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		);
 	}
 
-	get _filteredOrgUnitIds() {
+	get newFilteredOrgUnitIds() {
 		const allSelectedCourses = this.data.orgUnitTree.allSelectedCourses.sort((a, b) => a - b);
 		return this.data.orgUnitTree.selected.length !== 0 ? allSelectedCourses : this.allCourses;
 	}
 
 	render() {
-		if (this.filteredOrgUnitIds.length < this._filteredOrgUnitIds.length) {
-			this.filteredOrgUnitIds = this._filteredOrgUnitIds;
-			if (this.filteredOrgUnitIds.length !== 0) {
-				this._userData.loadData(this.filteredOrgUnitIds, this.user.userId);
+		if (this.newFilteredOrgUnitIds.some(id => !this.lastFilteredOrgUnitIds.includes(id))) {
+			this.lastFilteredOrgUnitIds = this.newFilteredOrgUnitIds;
+			if (this.lastFilteredOrgUnitIds.length !== 0) {
+				this._userData.loadData(this.newFilteredOrgUnitIds, this.user.userId);
 			}
 		}
 
@@ -515,7 +515,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 decorate(UserDrill, {
 	_userRecords: computed,
-	_filteredOrgUnitIds: computed,
+	newFilteredOrgUnitIds: computed,
 	allCourses: computed
 });
 
