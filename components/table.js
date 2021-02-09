@@ -163,7 +163,7 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 				padding-right: 30px;
 			}
 			.d2l-insights-table-table td:not(.d2l-insights-table-cell-first):not(td>d2l-icon) {
-				min-width: 130px;
+				min-width: 30px;
 			}
 
 			d2l-scroll-wrapper {

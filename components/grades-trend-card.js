@@ -206,12 +206,19 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _trendData() {
-		return [...this.userData.courseGrades].map(grades => {
-			return {
-				orgUnitId: grades.courseId,
-				data: grades.gradesData.map(item => [item.date, item.grade * 100])
-			};
-		});
+		return [...this.userData.courseGrades]
+			.filter(grades => this._filteredOrgUnitIds.has(grades.courseId))
+			.map(grades => {
+				return {
+					orgUnitId: grades.courseId,
+					data: grades.gradesData.map(item => [item.date, item.grade * 100])
+				};
+			});
+	}
+
+	get _filteredOrgUnitIds() {
+		const allSelectedCourses = this.data.orgUnitTree.allSelectedCourses;
+		return allSelectedCourses.length !== 0 ? new Set(allSelectedCourses) : new Set(this._userOrgUnitIds);
 	}
 
 	get _serverData() {
@@ -233,8 +240,7 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _series() {
-		if (!this.data._data || !this.userData.courseGrades) return [];
-
+		if (!this.data._data || !this.userData.courseGrades || this.userData.courseGrades.length === 0) return [0, 0];
 		const colors = [...UserTrendColorsIterator(0, 1, this._userOrgUnitIds.length)];
 		const selected = (course) => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0;
 
@@ -249,6 +255,7 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 decorate(GradesTrendCard, {
 	_trendData: computed,
 	_userOrgUnitIds: computed,
-	_series: computed
+	_series: computed,
+	_filteredOrgUnitIds: computed
 });
 customElements.define('d2l-insights-grades-trend-card', GradesTrendCard);
