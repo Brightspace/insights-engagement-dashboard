@@ -348,8 +348,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get newFilteredOrgUnitIds() {
-		const allSelectedCourses = this.data.orgUnitTree.allSelectedCourses.sort((a, b) => a - b);
-		return this.data.orgUnitTree.selected.length !== 0 ? allSelectedCourses : this.allCourses;
+		const allSelectedCourses = this.data.orgUnitTree.allSelectedCourses;
+		return allSelectedCourses.length !== 0 ? allSelectedCourses : this.allCourses;
 	}
 
 	render() {

@@ -217,8 +217,8 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _filteredOrgUnitIds() {
-		const allSelectedCourses = this.data.orgUnitTree.allSelectedCourses.sort((a, b) => a - b);
-		return this.data.orgUnitTree.selected.length !== 0 ? new Set(allSelectedCourses) : new Set(this._userOrgUnitIds);
+		const allSelectedCourses = this.data.orgUnitTree.allSelectedCourses;
+		return allSelectedCourses.length !== 0 ? new Set(allSelectedCourses) : new Set(this._userOrgUnitIds);
 	}
 
 	get _serverData() {

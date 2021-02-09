@@ -18,8 +18,7 @@ describe('grades-trend-card', () => {
 			}
 		},
 		orgUnitTree: {
-			allSelectedCourses: [],
-			selected: []
+			allSelectedCourses: []
 		}
 	};
 	const userData = {
@@ -70,6 +69,22 @@ describe('grades-trend-card', () => {
 			const series = el.shadowRoot.querySelector('d2l-labs-chart').chart.series;
 			const colors = series.map(series => series.color);
 			expect(colors).to.eql([ '#4885DC', '#D3E24A', '#D66DAC' ]);
+		});
+	});
+
+	describe('render', () => {
+		it('should render Grades Over Time chart with only selected courses', async() => {
+			data.orgUnitTree.allSelectedCourses = [1, 2];
+			const el = await fixture(html`<d2l-insights-grades-trend-card
+				.userData="${userData}"
+				.data="${data}"
+				.user="${{ userId: 200 }}">
+			</d2l-insights-grades-trend-card>`);
+			await new Promise(resolve => setTimeout(resolve, 50));
+
+			const series = el.shadowRoot.querySelector('d2l-labs-chart').chart.series;
+			const colors = series.map(series => series.color);
+			expect(colors).to.eql([ '#4885DC', '#D3E24A']);
 		});
 	});
 

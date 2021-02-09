@@ -59,8 +59,7 @@ describe('d2l-insights-user-drill-view', () => {
 			getName: () => '',
 			getAncestorIds: () => [],
 			getType: () => 0,
-			allSelectedCourses: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-			selected: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+			allSelectedCourses: []
 		},
 		users: [Object.values(user)],
 		getFilter: () => filter
@@ -262,7 +261,6 @@ describe('d2l-insights-user-drill-view', () => {
 
 		it('should set filter after click on overdue assignment card', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
-			//await new Promise(res => setTimeout(res, 30000));
 			const summaryCardsContainer = await trySelect(el.shadowRoot, 'd2l-summary-cards-container');
 			const overdueAssignmentsCard = (await trySelectAll(summaryCardsContainer.shadowRoot, 'd2l-labs-summary-card'))[2];
 
