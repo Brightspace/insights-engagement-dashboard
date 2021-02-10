@@ -236,7 +236,7 @@ export async function fetchUserData(orgUnitIds = [], userId = 0) {
 				[Date.UTC(2020, 2, 4), 40]
 			]
 		}, {
-			orgUnitId: 3,
+			orgUnitId: 8,
 			data: [
 				[Date.UTC(2020, 1, 1), 10],
 				[Date.UTC(2020, 1, 7), 30],
@@ -271,7 +271,7 @@ export async function fetchUserData(orgUnitIds = [], userId = 0) {
 				{ x: Date.UTC(2020, 2, 21), y: 6 }
 			]
 		}, {
-			orgUnitId: 3,
+			orgUnitId: 8,
 			data: [
 				{ x: Date.UTC(2020, 1, 3), y: 0 },
 				{ x: Date.UTC(2020, 1, 10), y: 1 },
