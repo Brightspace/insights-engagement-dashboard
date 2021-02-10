@@ -225,7 +225,7 @@ export default {
 
 	"coursesLegend:coursesLegendFilter": "Courses",
 
-	"contentViewsCard:contentViewOverTime": "Content View Over Time",
+	"contentViewsCard:contentViewOverTime": "Content Views Over Time",
 	"contentViewsCard:viewCount": "View Count",
 	"contentViewsCard:date": "Date",
 

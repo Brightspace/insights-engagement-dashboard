@@ -22,7 +22,6 @@ import { fetchUserData } from '../model/lms.js';
 import { formatPercent } from '@brightspace-ui/intl';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
-import { nothing } from 'lit-html';
 import { OVERDUE_ASSIGNMENTS_FILTER_ID } from './overdue-assignments-card';
 import { resetUrlState } from '../model/urlState';
 import { SelectedCourses } from './courses-legend';
@@ -442,22 +441,23 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 					.userData="${this._userData}"
 					.selectedCourses="${this.selectedCourses}"
 				></d2l-insights-grades-trend-card>
+				<d2l-insights-content-views-card
+					?hidden="${this.hidden}"
+					?skeleton="${this.skeleton}"
+					.data="${this.data}"
+					.user="${this.user}"
+					.userData="${this._userData}"
+					.selectedCourses="${this.selectedCourses}"
+				></d2l-insights-content-views-card>
+				<d2l-insights-access-trend-card
+					?hidden="${this.hidden}"
+					?skeleton="${this.skeleton}"
+					.data="${this.data}"
+					.user="${this.user}"
+					.userData="${this._userData}"
+					.selectedCourses="${this.selectedCourses}"
+				></d2l-insights-access-trend-card>
 
-				${ this.isDemo ? html`
-					<d2l-insights-content-views-card
-						?hidden="${this.hidden}"
-						?skeleton="${this.skeleton}"
-						.data="${this.data}"
-						.selectedCourses="${this.selectedCourses}"
-					></d2l-insights-content-views-card>
-					<d2l-insights-access-trend-card
-						?hidden="${this.hidden}"
-						?skeleton="${this.skeleton}"
-						.data="${this.data}"
-						.selectedCourses="${this.selectedCourses}"
-					></d2l-insights-access-trend-card>
-
-				` : nothing }
 			</div>
 				<d2l-insights-courses-legend
 					.data="${this.data}"

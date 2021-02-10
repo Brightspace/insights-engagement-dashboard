@@ -12,7 +12,9 @@ export class UserData {
 		this.isLoading = true;
 		this.isQueryError = false;
 		this.userData = {
-			courseGradesData: []
+			userGrades: [],
+			userContent: [],
+			userCourseAccess: []
 		};
 	}
 
@@ -29,12 +31,22 @@ export class UserData {
 	}
 
 	get courseGrades() {
-		return this.userData.courseGradesData;
+		return this.userData.userGrades;
+	}
+
+	get contentViews() {
+		return this.userData.userContent;
+	}
+
+	get courseAccess() {
+		return this.userData.userCourseAccess;
 	}
 }
 
 decorate(UserData, {
 	courseGrades: computed,
+	contentViews: computed,
+	courseAccess: computed,
 	isLoading: observable,
 	userData: observable,
 	isQueryError: observable,

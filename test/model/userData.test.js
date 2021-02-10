@@ -2,7 +2,7 @@ import { expect } from '@open-wc/testing';
 import { UserData } from '../../model/userData.js';
 
 const userData = {
-	courseGradesData: [
+	userGrades: [
 		{
 			courseId: 1,
 			gradesData: [{ date: 0, grade: 0.5 }]
@@ -15,15 +15,14 @@ const userData = {
 			courseId: 3,
 			gradesData: [{ date: 0, grade: 0.5 }]
 		}
-	]
+	],
+	userContent: 'some data',
+	userCourseAccess: [{ any: 'data' }]
 };
 
 describe('UserData', () => {
-	const serverData = {
-		courseGradesData: userData
-	};
 	const fetchUserData = async() => ({
-		...serverData
+		...userData
 	});
 
 	let sut;
@@ -42,7 +41,13 @@ describe('UserData', () => {
 
 	describe('reload from server', () => {
 		it('should return courseGrades', async() => {
-			expect(sut.courseGrades).to.deep.equal(userData);
+			expect(sut.courseGrades).to.deep.equal(userData.userGrades);
+		});
+		it('should return contentViews', async() => {
+			expect(sut.contentViews).to.deep.equal(userData.userContent);
+		});
+		it('should return courseAccess', async() => {
+			expect(sut.courseAccess).to.deep.equal(userData.userCourseAccess);
 		});
 	});
 });
