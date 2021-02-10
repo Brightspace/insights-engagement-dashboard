@@ -47,7 +47,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			isDemo: { type: Boolean, attribute: 'demo' },
 			isStudentSuccessSys: { type: Boolean, attribute: false },
 			orgUnitId: { type: Number, attribute: 'org-unit-id' },
-			viewState: { type: Object, attribute: false }
+			viewState: { type: Object, attribute: false },
+			metronEndpoint: { type: String, attribute: 'metron-endpoint' }
 		};
 	}
 
@@ -68,6 +69,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		this.selectedCourses = new SelectedCourses();
 		this.lastFilteredOrgUnitIds = [];
+		this.metronEndpoint = '';
 	}
 
 	static get styles() {
@@ -332,7 +334,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		if (!this.__userData) {
 
 			this.__userData = new UserData({
-				fetchUserData : this.isDemo ? fetchDemoUserData : fetchUserData
+				fetchUserData : this.isDemo ? fetchDemoUserData : fetchUserData,
+				metronEndpoint: this.metronEndpoint
 			});
 		}
 

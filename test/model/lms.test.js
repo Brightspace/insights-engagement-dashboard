@@ -1,4 +1,4 @@
-import { fetchCachedChildren, fetchData, fetchLastSearch, fetchRelevantChildren, fetchRoles, orgUnitSearch, saveSettings } from '../../model/lms';
+import { fetchCachedChildren, fetchData, fetchLastSearch, fetchRelevantChildren, fetchRoles, fetchUserData, orgUnitSearch, saveSettings } from '../../model/lms';
 import { expect } from '@open-wc/testing';
 import fetchMock from 'fetch-mock/esm/client';
 
@@ -324,6 +324,19 @@ describe('Lms', () => {
 				error = err.toString();
 			}
 			expect(error).to.equal('Error: query-failure');
+		});
+	});
+
+	describe('fetchUserData', () => {
+		it('should throw an error if the query fails', async() => {
+			fetchMock.post('', 403);
+			let error;
+			try {
+				await fetchUserData([], 1234, 'https://data.example.com');
+			} catch (err) {
+				error = err.toString();
+			}
+			expect(error).to.exist;
 		});
 	});
 });

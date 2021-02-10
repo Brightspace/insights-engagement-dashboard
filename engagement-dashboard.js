@@ -56,6 +56,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			orgUnitId: { type: Number, attribute: 'org-unit-id' },
 			telemetryEndpoint: { type: String, attribute: 'telemetry-endpoint' },
 			telemetryId: { type: String, attribute: 'telemetry-id' },
+			metronEndpoint: { type: String, attribute: 'metron-endpoint' },
 
 			// user preferences:
 			showCourseAccessCard: { type: Boolean, attribute: 'course-access-card', reflect: true },
@@ -85,6 +86,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		this.isDemo = false;
 		this.telemetryEndpoint = '';
 		this.telemetryId = '';
+		this.metronEndpoint = '';
 
 		this.showCourseAccessCard = false;
 		this.showCoursesCol = false;
@@ -261,6 +263,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				.isStudentSuccessSys="${this._serverData.serverData.isStudentSuccessSys}"
 				org-unit-id="${this.orgUnitId}"
 				.viewState="${this._viewState}"
+				.metronEndpoint="${this.metronEndpoint}"
 				@d2l-insights-user-drill-view-back="${this._backToHomeHandler}"
 			>
 				<div slot="filters">

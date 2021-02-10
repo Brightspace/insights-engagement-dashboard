@@ -16,7 +16,7 @@ const dataEndpoint = '/d2l/api/ap/unstable/insights/data/engagement';
 const relevantChildrenEndpoint = orgUnitId => `/d2l/api/ap/unstable/insights/data/orgunits/${orgUnitId}/children`;
 const ouSearchEndpoint = '/d2l/api/ap/unstable/insights/data/orgunits';
 const saveSettingsEndpoint = '/d2l/api/ap/unstable/insights/mysettings/engagement';
-const userDrillDataEndpoint = '/d2l/api/ap/unstable/insights/data/engagementUserDrill';
+const userDrillDataEndpoint = '/unstable/insights/data/userdrill';
 
 /**
  * @param {[Number]} roleIds
@@ -46,9 +46,10 @@ export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [
 /**
  * @param {[Number]} orgUnitIds
  * @param {Number} userId
+ * @param {String} metronEndpoint
  */
-export async function fetchUserData(orgUnitIds = [], userId = 0) {
-	const url = new URL(userDrillDataEndpoint, window.location.origin);
+export async function fetchUserData(orgUnitIds = [], userId = 0, metronEndpoint) {
+	const url = new URL(`${metronEndpoint}${userDrillDataEndpoint}`, window.location.origin);
 	const userDrillBody = {
 		selectedUserId: userId,
 		selectedOrgUnitIds: orgUnitIds,
@@ -61,8 +62,7 @@ export async function fetchUserData(orgUnitIds = [], userId = 0) {
 		},
 		body: JSON.stringify(userDrillBody)
 	}));
-	const responseJson = await response.json();
-	if (response.ok) return responseJson;
+	if (response.ok) return await response.json();
 	else {
 		throw new Error('query-failure');
 	}
