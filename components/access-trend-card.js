@@ -1,6 +1,7 @@
 import 'highcharts';
+import { computed, decorate } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
-import { ORG_UNIT, UserTrendColorsIterator } from '../consts';
+import { ORG_UNIT, RECORD, UserTrendColorsIterator } from '../consts';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
 import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { formatDate } from '@brightspace-ui/intl/lib/dateTime';
@@ -13,13 +14,16 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
 			data: { type: Object, attribute: false },
-			selectedCourses: { type: Object, attribute: false }
+			userData: { type: Object, attribute: false },
+			selectedCourses: { type: Object, attribute: false },
+			user: { type: Object, attribute: false }
 		};
 	}
 
 	constructor() {
 		super();
 		this.data = {};
+		this.userData = {};
 		this.selectedCourses = {
 			size: 0,
 			has: () => false
@@ -226,45 +230,22 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _trendData() {
-		const courses = [{
-			orgUnitId: 1,
-			data: [
-				{ x: Date.UTC(2020, 1, 3), y: 0 },
-				{ x: Date.UTC(2020, 1, 10), y: 3 },
-				{ x: Date.UTC(2020, 1, 17), y: 4 },
-				{ x: Date.UTC(2020, 1, 24), y: 5 },
-				{ x: Date.UTC(2020, 1, 31), y: 3 },
-				{ x: Date.UTC(2020, 2, 7), y: 7 },
-				{ x: Date.UTC(2020, 2, 14), y: 7 },
-				{ x: Date.UTC(2020, 2, 21), y: 6 }
-			]
-		}, {
-			orgUnitId: 2,
-			data: [
-				{ x: Date.UTC(2020, 1, 3), y: 0 },
-				{ x: Date.UTC(2020, 1, 10), y: 2 },
-				{ x: Date.UTC(2020, 1, 17), y: 3 },
-				{ x: Date.UTC(2020, 1, 24), y: 4 },
-				{ x: Date.UTC(2020, 1, 31), y: 1 },
-				{ x: Date.UTC(2020, 2, 7), y: 4 },
-				{ x: Date.UTC(2020, 2, 14), y: 4 },
-				{ x: Date.UTC(2020, 2, 21), y: 6 }
-			]
-		}, {
-			orgUnitId: 8,
-			data: [
-				{ x: Date.UTC(2020, 1, 3), y: 0 },
-				{ x: Date.UTC(2020, 1, 10), y: 1 },
-				{ x: Date.UTC(2020, 1, 17), y: 2 },
-				{ x: Date.UTC(2020, 1, 24), y: 3 },
-				{ x: Date.UTC(2020, 1, 31), y: 0 },
-				{ x: Date.UTC(2020, 2, 7), y: 2 },
-				{ x: Date.UTC(2020, 2, 14), y: 2 },
-				{ x: Date.UTC(2020, 2, 21), y: 4 }
-			]
-		}];
+		return this.userData
+			.courseAccess
+			.filter(courseData => this._filteredOrgUnitIds.has(courseData.orgUnitId));
+	}
 
-		return courses;
+	get _filteredOrgUnitIds() {
+		const allSelectedCourses = this.data.orgUnitTree.allSelectedCourses;
+		return allSelectedCourses.length !== 0 ? new Set(allSelectedCourses) : new Set(this._userOrgUnitIds);
+	}
+
+	get _userOrgUnitIds() {
+		const userRecords = this.data.recordsByUser.get(this.user.userId);
+		if (!userRecords) return [];
+		return Array.from(
+			new Set(userRecords.map(record => record[RECORD.ORG_UNIT_ID]))
+		);
 	}
 
 	get _serverData() {
@@ -292,4 +273,10 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				color: selected(course) ? colors[idx] : 'var(--d2l-color-mica)' }));
 	}
 }
+decorate(AccessTrendCard, {
+	_trendData: computed,
+	_userOrgUnitIds: computed,
+	_series: computed,
+	_filteredOrgUnitIds: computed
+});
 customElements.define('d2l-insights-access-trend-card', AccessTrendCard);

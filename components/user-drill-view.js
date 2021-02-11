@@ -22,7 +22,6 @@ import { fetchUserData } from '../model/lms.js';
 import { formatPercent } from '@brightspace-ui/intl';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
-import { nothing } from 'lit-html';
 import { OVERDUE_ASSIGNMENTS_FILTER_ID } from './overdue-assignments-card';
 import { resetUrlState } from '../model/urlState';
 import { SelectedCourses } from './courses-legend';
@@ -47,7 +46,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			isDemo: { type: Boolean, attribute: 'demo' },
 			isStudentSuccessSys: { type: Boolean, attribute: false },
 			orgUnitId: { type: Number, attribute: 'org-unit-id' },
-			viewState: { type: Object, attribute: false }
+			viewState: { type: Object, attribute: false },
+			metronEndpoint: { type: String, attribute: 'metron-endpoint' }
 		};
 	}
 
@@ -68,6 +68,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		this.selectedCourses = new SelectedCourses();
 		this.lastFilteredOrgUnitIds = [];
+		this.metronEndpoint = '';
 	}
 
 	static get styles() {
@@ -332,7 +333,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		if (!this.__userData) {
 
 			this.__userData = new UserData({
-				fetchUserData : this.isDemo ? fetchDemoUserData : fetchUserData
+				fetchUserData : this.isDemo ? fetchDemoUserData : fetchUserData,
+				metronEndpoint: this.metronEndpoint
 			});
 		}
 
@@ -439,22 +441,23 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 					.userData="${this._userData}"
 					.selectedCourses="${this.selectedCourses}"
 				></d2l-insights-grades-trend-card>
+				<d2l-insights-content-views-card
+					?hidden="${this.hidden}"
+					?skeleton="${this.skeleton}"
+					.data="${this.data}"
+					.user="${this.user}"
+					.userData="${this._userData}"
+					.selectedCourses="${this.selectedCourses}"
+				></d2l-insights-content-views-card>
+				<d2l-insights-access-trend-card
+					?hidden="${this.hidden}"
+					?skeleton="${this.skeleton}"
+					.data="${this.data}"
+					.user="${this.user}"
+					.userData="${this._userData}"
+					.selectedCourses="${this.selectedCourses}"
+				></d2l-insights-access-trend-card>
 
-				${ this.isDemo ? html`
-					<d2l-insights-content-views-card
-						?hidden="${this.hidden}"
-						?skeleton="${this.skeleton}"
-						.data="${this.data}"
-						.selectedCourses="${this.selectedCourses}"
-					></d2l-insights-content-views-card>
-					<d2l-insights-access-trend-card
-						?hidden="${this.hidden}"
-						?skeleton="${this.skeleton}"
-						.data="${this.data}"
-						.selectedCourses="${this.selectedCourses}"
-					></d2l-insights-access-trend-card>
-
-				` : nothing }
 			</div>
 				<d2l-insights-courses-legend
 					.data="${this.data}"
