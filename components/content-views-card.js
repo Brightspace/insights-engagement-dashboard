@@ -235,15 +235,15 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get _series() {
 		if (!this.data._data) return [];
 
-		const colors = [...UserTrendColorsIterator(0, 1, this._trendData.length)];
+		const colors = [...UserTrendColorsIterator(0, 1, this._userOrgUnitIds.length)];
 		const selected = (course) => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0;
 
 		return this._trendData
-			.map((course, idx) => ({
+			.map((course) => ({
 				...course,
 				// It is read as `Course 1, series 1 of 3 with 8 data points.`
 				name: this._orgUnitName(course.orgUnitId),
-				color: selected(course) ? colors[idx] : 'var(--d2l-color-mica)' }));
+				color: selected(course) ? colors[this._userOrgUnitIds.findIndex(orgId => orgId === course.orgUnitId)] : 'var(--d2l-color-mica)' }));
 	}
 }
 decorate(ContentViewsCard, {
