@@ -24,10 +24,10 @@ const userDrillDataEndpoint = '/unstable/insights/data/userdrill';
  * @param {[Number]} semesterIds
  * @param {[Number]} orgUnitIds
  * @param {Boolean} defaultView if true, request that the server select a limited set of data for first view
+ * @param {String} metronEndpoint
  */
-export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [], defaultView = false }) {
-	const baseUrl = 'https://csk5rlf820.execute-api.us-west-2.amazonaws.com/jgw';
-	const url = new URL(`${baseUrl}${dataEndpoint}`);
+export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [], defaultView = false }, metronEndpoint) {
+	const url = new URL(`${metronEndpoint}${dataEndpoint}`);
 	// const url = new URL(dataEndpoint, window.location.origin);
 	if (roleIds) {
 		url.searchParams.set('selectedRolesCsv', roleIds.join(','));

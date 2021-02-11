@@ -512,7 +512,8 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 			this.__serverData = new Data({
 				recordProvider: this.isDemo ? fetchDemoData : fetchData,
-				includeRoles: this._parsedIncludeRoles
+				includeRoles: this._parsedIncludeRoles,
+				metronEndpoint: this.metronEndpoint
 			});
 		}
 

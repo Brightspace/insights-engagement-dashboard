@@ -8,8 +8,9 @@ import { Tree } from '../components/tree-filter';
  * Data from the server, along with filter settings that are passed in server calls.
  */
 export class Data {
-	constructor({ recordProvider, includeRoles }) {
+	constructor({ recordProvider, includeRoles, metronEndpoint }) {
 		this.recordProvider = recordProvider;
+		this._metronEndpoint = metronEndpoint;
 		this.orgUnitTree = new Tree({});
 		this.userDictionary = null;
 
@@ -52,7 +53,7 @@ export class Data {
 			defaultView
 		};
 		try {
-			const data = await this.recordProvider(filters);
+			const data = await this.recordProvider(filters, this._metronEndpoint);
 			this.onServerDataReload(data);
 			this.isQueryError = false;
 		} catch (ignored) {
