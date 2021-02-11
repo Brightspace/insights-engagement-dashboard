@@ -316,20 +316,43 @@ describe('Lms', () => {
 
 	describe('fetchData', () => {
 		it('should throw an error if the query fails', async() => {
-			fetchMock.get('', 403);
+			fetchMock.post('path:/d2l/lp/auth/oauth2/token', {
+				'expires_at': Date.now() + 100000,
+				'access_token': 't'
+			});
+			fetchMock.get('begin:https://data.example.com/unstable/insights/data/engagement', 403);
 			let error;
 			try {
-				await fetchData({});
+				await fetchData({}, 'https://data.example.com');
 			} catch (err) {
 				error = err.toString();
 			}
 			expect(error).to.equal('Error: query-failure');
 		});
+
+		it('should poll for data', async() => {
+			const dataUri = 'begin:https://data.example.com/unstable/insights/data/engagement';
+			const expected = { the: 'data' };
+			fetchMock.post('path:/d2l/lp/auth/oauth2/token', {
+				'expires_at': Date.now() + 100000,
+				'access_token': 't'
+			});
+			fetchMock.get(dataUri, 202, { repeat: 2 });
+			fetchMock.get(dataUri, expected, { overwriteRoutes: false });
+
+			const actual = await fetchData({}, 'https://data.example.com');
+
+			expect(actual).to.deep.equal(expected);
+		});
 	});
 
 	describe('fetchUserData', () => {
 		it('should throw an error if the query fails', async() => {
-			fetchMock.post('', 403);
+			fetchMock.post('path:/d2l/lp/auth/oauth2/token', {
+				'expires_at': Date.now() + 100000,
+				'access_token': 't'
+			});
+			fetchMock.post('https://data.example.com/unstable/insights/data/userdrill', 403);
 			let error;
 			try {
 				await fetchUserData([], 1234, 'https://data.example.com');
@@ -337,6 +360,7 @@ describe('Lms', () => {
 				error = err.toString();
 			}
 			expect(error).to.exist;
+			expect(error).to.equal('Error: query-failure');
 		});
 	});
 });
