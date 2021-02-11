@@ -12,7 +12,6 @@ export function restore() {
 
 const rolesEndpoint = '/d2l/api/ap/unstable/insights/data/roles';
 const semestersEndpoint = '/d2l/api/ap/unstable/insights/data/semesters';
-//const dataEndpoint = '/d2l/api/ap/unstable/insights/data/
 const dataEndpoint = '/unstable/insights/data/engagement';
 const relevantChildrenEndpoint = orgUnitId => `/d2l/api/ap/unstable/insights/data/orgunits/${orgUnitId}/children`;
 const ouSearchEndpoint = '/d2l/api/ap/unstable/insights/data/orgunits';
