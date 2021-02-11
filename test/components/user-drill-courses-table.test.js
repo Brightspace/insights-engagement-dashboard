@@ -52,6 +52,9 @@ const emptyData = {
 };
 
 const user = { userId: 1 };
+const selectedCourses = {
+	isEmpty: () => true
+};
 
 const expected = {
 	active: [
@@ -87,6 +90,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.user="${user}"
 						.isActiveTable="${Boolean(true)}"
 						.isStudentSuccessSys="${Boolean(true)}"
+						.selectedCourses="${selectedCourses}"
 					>
 					</d2l-insights-user-drill-courses-table>
 				`);
@@ -108,7 +112,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.data="${data}"
 						.user="${user}"
 						.isActiveTable="${Boolean(true)}"
-						.isStudentSuccessSys="${Boolean(true)}">
+						.isStudentSuccessSys="${Boolean(true)}"
+						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
 
@@ -129,7 +134,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.data="${data}"
 						.user="${user}"
 						.isActiveTable="${Boolean(true)}"
-						.isStudentSuccessSys="${Boolean(false)}">
+						.isStudentSuccessSys="${Boolean(false)}"
+						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
 
@@ -150,7 +156,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.data="${emptyData}"
 						.user="${user}"
 						.isActiveTable="${Boolean(true)}"
-						.isStudentSuccessSys="${Boolean(false)}">
+						.isStudentSuccessSys="${Boolean(false)}"
+						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
 
@@ -165,7 +172,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 					.data="${data}"
 					.user="${user}"
 					.isActiveTable="${Boolean(true)}"
-					.isStudentSuccessSys="${Boolean(true)}">
+					.isStudentSuccessSys="${Boolean(true)}"
+					.selectedCourses="${selectedCourses}">
 				</d2l-insights-user-drill-courses-table>
 			`;
 			const noS3TableHtml = html`
@@ -173,7 +181,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 					.data="${data}"
 					.user="${user}"
 					.isActiveTable="${Boolean(true)}"
-					.isStudentSuccessSys="${Boolean(false)}">
+					.isStudentSuccessSys="${Boolean(false)}"
+					.selectedCourses="${selectedCourses}">
 				</d2l-insights-user-drill-courses-table>
 			`;
 
@@ -231,7 +240,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.data="${data}"
 						.user="${user}"
 						.isActiveTable="${Boolean(true)}"
-						.isStudentSuccessSys="${Boolean(true)}">
+						.isStudentSuccessSys="${Boolean(true)}"
+						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
 				pageSelector = el.shadowRoot.querySelector('d2l-labs-pagination');
@@ -253,7 +263,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 					<d2l-insights-user-drill-courses-table
 						.data="${data}"
 						.user="${user}"
-						.isActiveTable="${Boolean(false)}">
+						.isActiveTable="${Boolean(false)}"
+						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
 
@@ -275,7 +286,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.data="${data}"
 						.user="${user}"
 						.isActiveTable="${Boolean(false)}"
-						.isStudentSuccessSys="${Boolean(true)}">
+						.isStudentSuccessSys="${Boolean(true)}"
+						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
 				await new Promise(resolve => setTimeout(resolve, 200));
@@ -298,7 +310,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 					<d2l-insights-user-drill-courses-table
 						.data="${emptyData}"
 						.user="${user}"
-						.isActiveTable="${Boolean(false)}">
+						.isActiveTable="${Boolean(false)}"
+						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
 
@@ -312,16 +325,18 @@ describe('d2l-insights-user-drill-courses-table', () => {
 				<d2l-insights-user-drill-courses-table
 					.data="${data}"
 					.user="${user}"
-					.isActiveTable="${Boolean(false)}">
-					.isStudentSuccessSys="${Boolean(true)}">
+					.isActiveTable="${Boolean(false)}"
+					.isStudentSuccessSys="${Boolean(true)}"
+					.selectedCourses="${selectedCourses}">
 				</d2l-insights-user-drill-courses-table>
 			`;
 			const noS3TableHtml = html`
 				<d2l-insights-user-drill-courses-table
 					.data="${data}"
 					.user="${user}"
-					.isActiveTable="${Boolean(false)}">
-					.isStudentSuccessSys="${Boolean(false)}">
+					.isActiveTable="${Boolean(false)}"
+					.isStudentSuccessSys="${Boolean(false)}"
+					.selectedCourses="${selectedCourses}">
 				</d2l-insights-user-drill-courses-table>
 			`;
 
@@ -377,7 +392,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 					<d2l-insights-user-drill-courses-table
 						.data="${data}"
 						.user="${user}"
-						.isActiveTable="${Boolean(false)}">
+						.isActiveTable="${Boolean(false)}"
+						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
 				pageSelector = el.shadowRoot.querySelector('d2l-labs-pagination');
@@ -430,7 +446,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.data="${data}"
 						.user="${user}"
 						.isActiveTable="${Boolean(false)}"
-						.isStudentSuccessSys="${Boolean(true)}">
+						.isStudentSuccessSys="${Boolean(true)}"
+						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
 				await new Promise(resolve => setTimeout(resolve, 200));
@@ -445,7 +462,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.data="${data}"
 						.user="${user}"
 						.isActiveTable="${Boolean(true)}"
-						.isStudentSuccessSys="${Boolean(true)}">
+						.isStudentSuccessSys="${Boolean(true)}"
+						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
 				await new Promise(resolve => setTimeout(resolve, 200));
@@ -460,7 +478,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.data="${data}"
 						.user="${user}"
 						.isActiveTable="${Boolean(true)}"
-						.isStudentSuccessSys="${Boolean(false)}">
+						.isStudentSuccessSys="${Boolean(false)}"
+						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
 				await new Promise(resolve => setTimeout(resolve, 200));
@@ -488,7 +507,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.data="${data}"
 						.user="${user}"
 						.isActiveTable="${Boolean(true)}"
-						.isStudentSuccessSys="${Boolean(false)}">
+						.isStudentSuccessSys="${Boolean(false)}"
+						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
 				await new Promise(resolve => setTimeout(resolve, 200));

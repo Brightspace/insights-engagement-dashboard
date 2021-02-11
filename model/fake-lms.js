@@ -178,3 +178,113 @@ export async function fetchSemesters(pageSize, bookmark, search) {
 	return new Promise(resolve =>	setTimeout(() => resolve(response), 100));
 }
 
+// eslint-disable-next-line no-unused-vars
+export async function fetchUserData(orgUnitIds = [], userId = 0) {
+	const demoData = {
+		userGrades: [
+			{
+				courseId: 1,
+				gradesData: [
+					{ date: Date.UTC(2020, 1, 1), grade: 0.5 },
+					{ date: Date.UTC(2020, 1, 7), grade: 0.60 },
+					{ date: Date.UTC(2020, 1, 14), grade: 0.45 },
+					{ date: Date.UTC(2020, 1, 21), grade: 0.65 },
+					{ date: Date.UTC(2020, 1, 28), grade: 0.70 },
+					{ date: Date.UTC(2020, 2, 4), grade: 0.65 }
+				]
+			}, {
+				courseId: 2,
+				gradesData: [
+					{ date: Date.UTC(2020, 1, 1), grade: 0.30 },
+					{ date: Date.UTC(2020, 1, 7), grade: 0.50 },
+					{ date: Date.UTC(2020, 1, 14), grade: 0.35 },
+					{ date: Date.UTC(2020, 1, 21), grade: 0.50 },
+					{ date: Date.UTC(2020, 1, 28), grade: 0.65 },
+					{ date: Date.UTC(2020, 2, 4), grade: 0.40 }
+				]
+			}, {
+				courseId: 8,
+				gradesData: [
+					{ date: Date.UTC(2020, 1, 1), grade: 0.10 },
+					{ date: Date.UTC(2020, 1, 7), grade: 0.30 },
+					{ date: Date.UTC(2020, 1, 14), grade: 0.25 },
+					{ date: Date.UTC(2020, 1, 21), grade: 0.40 },
+					{ date: Date.UTC(2020, 1, 28), grade: 0.55 },
+					{ date: Date.UTC(2020, 2, 4), grade: 0.25 }
+				]
+			}
+		],
+		userContent: [{
+			//test data
+			orgUnitId: 1,
+			data: [
+				[Date.UTC(2020, 1, 1), 50],
+				[Date.UTC(2020, 1, 7), 60],
+				[Date.UTC(2020, 1, 14), 45],
+				[Date.UTC(2020, 1, 21), 65],
+				[Date.UTC(2020, 1, 28), 70],
+				[Date.UTC(2020, 2, 4), 65]
+			]
+		}, {
+			orgUnitId: 2,
+			data: [
+				[Date.UTC(2020, 1, 1), 30],
+				[Date.UTC(2020, 1, 7), 50],
+				[Date.UTC(2020, 1, 14), 35],
+				[Date.UTC(2020, 1, 21), 50],
+				[Date.UTC(2020, 1, 28), 65],
+				[Date.UTC(2020, 2, 4), 40]
+			]
+		}, {
+			orgUnitId: 8,
+			data: [
+				[Date.UTC(2020, 1, 1), 10],
+				[Date.UTC(2020, 1, 7), 30],
+				[Date.UTC(2020, 1, 14), 25],
+				[Date.UTC(2020, 1, 21), 40],
+				[Date.UTC(2020, 1, 28), 55],
+				[Date.UTC(2020, 2, 4), 25]
+			]
+		}],
+		userCourseAccess: [{
+			orgUnitId: 1,
+			data: [
+				{ x: Date.UTC(2020, 1, 3), y: 0 },
+				{ x: Date.UTC(2020, 1, 10), y: 3 },
+				{ x: Date.UTC(2020, 1, 17), y: 4 },
+				{ x: Date.UTC(2020, 1, 24), y: 5 },
+				{ x: Date.UTC(2020, 1, 31), y: 3 },
+				{ x: Date.UTC(2020, 2, 7), y: 7 },
+				{ x: Date.UTC(2020, 2, 14), y: 7 },
+				{ x: Date.UTC(2020, 2, 21), y: 6 }
+			]
+		}, {
+			orgUnitId: 2,
+			data: [
+				{ x: Date.UTC(2020, 1, 3), y: 0 },
+				{ x: Date.UTC(2020, 1, 10), y: 2 },
+				{ x: Date.UTC(2020, 1, 17), y: 3 },
+				{ x: Date.UTC(2020, 1, 24), y: 4 },
+				{ x: Date.UTC(2020, 1, 31), y: 1 },
+				{ x: Date.UTC(2020, 2, 7), y: 4 },
+				{ x: Date.UTC(2020, 2, 14), y: 4 },
+				{ x: Date.UTC(2020, 2, 21), y: 6 }
+			]
+		}, {
+			orgUnitId: 8,
+			data: [
+				{ x: Date.UTC(2020, 1, 3), y: 0 },
+				{ x: Date.UTC(2020, 1, 10), y: 1 },
+				{ x: Date.UTC(2020, 1, 17), y: 2 },
+				{ x: Date.UTC(2020, 1, 24), y: 3 },
+				{ x: Date.UTC(2020, 1, 31), y: 0 },
+				{ x: Date.UTC(2020, 2, 7), y: 2 },
+				{ x: Date.UTC(2020, 2, 14), y: 2 },
+				{ x: Date.UTC(2020, 2, 21), y: 4 }
+			]
+		}]
+	};
+
+	return new Promise(resolve => setTimeout(() => resolve(demoData), 100));
+}
+

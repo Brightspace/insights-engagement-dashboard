@@ -118,12 +118,15 @@ Note: Place all visual tests in the ./test/visual-diff folder or they will be ig
 To run diff tests locally
 
 ```
+# install puppeteer and visual-diff locally
+npm i mocha -g
+npm i @brightspace-ui/visual-diff puppeteer --no-save
+
 # for powershell
 $Env:GITHUB_REPOSITORY="Brightspace/insights-engagement-dashboard"
 
 # for bash
 export GITHUB_REPOSITORY=Brightspace/insights-engagement-dashboard
-
 
 npm run test:diff:golden
 # make some changes
