@@ -27,7 +27,7 @@ const userDrillDataEndpoint = '/unstable/insights/data/userdrill';
  */
 export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [], defaultView = false }, metronEndpoint) {
 	const url = new URL(`${metronEndpoint}${dataEndpoint}`);
-	// const url = new URL(dataEndpoint, window.location.origin);
+
 	if (roleIds) {
 		url.searchParams.set('selectedRolesCsv', roleIds.join(','));
 	}
