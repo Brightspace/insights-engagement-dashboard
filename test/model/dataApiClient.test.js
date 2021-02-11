@@ -1,4 +1,4 @@
-import { fetchCachedChildren, fetchData, fetchLastSearch, fetchRelevantChildren, fetchRoles, fetchUserData, orgUnitSearch, saveSettings } from '../../model/lms';
+import { fetchCachedChildren, fetchData, fetchLastSearch, fetchRelevantChildren, fetchRoles, fetchUserData, orgUnitSearch, saveSettings } from '../../model/dataApiClient';
 import { expect } from '@open-wc/testing';
 import fetchMock from 'fetch-mock/esm/client';
 

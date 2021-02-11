@@ -18,7 +18,7 @@ import { RECORD, USER } from '../consts';
 import { createComposeEmailPopup } from './email-integration';
 import { ExportData } from '../model/exportData';
 import { fetchUserData as fetchDemoUserData } from '../model/fake-lms.js';
-import { fetchUserData } from '../model/lms.js';
+import { fetchUserData } from '../model/dataApiClient.js';
 import { formatPercent } from '@brightspace-ui/intl';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';

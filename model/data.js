@@ -1,6 +1,6 @@
 import { action, computed, decorate, observable } from 'mobx';
 import { COURSE_OFFERING, USER } from '../consts';
-import { fetchCachedChildren, fetchLastSearch } from './lms.js';
+import { fetchCachedChildren, fetchLastSearch } from './dataApiClient.js';
 import { OrgUnitSelectorFilter, RoleSelectorFilter, SemesterSelectorFilter } from './selectorFilters.js';
 import { Tree } from '../components/tree-filter';
 
