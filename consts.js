@@ -31,7 +31,7 @@ export const ORG_UNIT = {
 export const TiCVsGradesFilterId = 'd2l-insights-time-in-content-vs-grade-card';
 
 export const USER_TREND_COLORS = [
-	'#168FE6 ',
+	'#168FE6',
 	'#8AD934',
 	'#008EAB',
 	'#E87511',

@@ -94,7 +94,7 @@ describe('d2l-insights-access-trend-card', () => {
 
 			const series = el.shadowRoot.querySelector('d2l-labs-chart').chart.series;
 			const colors = series.map(series => series.color);
-			expect(colors).to.eql([ '#4885DC', '#D3E24A', '#D66DAC' ]);
+			expect(colors).to.eql([ '#168FE6', '#8AD934', '#008EAB' ]);
 		});
 
 		it('should grey out all other courses when a first course is selected', async() => {
@@ -112,7 +112,7 @@ describe('d2l-insights-access-trend-card', () => {
 			await el.updateComplete;
 
 			const colors = series.map(series => series.color);
-			expect(colors).to.eql([ '#4885DC', grey, grey ]);
+			expect(colors).to.eql([ '#168FE6', grey, grey ]);
 		});
 
 		it('should toggle color for any other course if there is one selected course', async() => {
@@ -130,7 +130,7 @@ describe('d2l-insights-access-trend-card', () => {
 			await el.updateComplete;
 
 			const colors = series.map(series => series.color);
-			expect(colors).to.eql([ '#4885DC', '#D3E24A', grey ]);
+			expect(colors).to.eql([ '#168FE6', '#8AD934', grey ]);
 		});
 	});
 });
