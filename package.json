@@ -1,6 +1,6 @@
 {
   "name": "d2l-engagement-dashboard",
-  "version": "1.2102.1",
+  "version": "1.2103.0",
   "description": "D2L Insights Engagement Dashboard",
   "repository": "https://github.com/Brightspace/insights-engagement-dashboard.git",
   "private": true,
@@ -10,7 +10,7 @@
     "lint:lit": "lit-analyzer engagement-dashboard.js demo test components",
     "lint:style": "stylelint \"**/*.js\"",
     "start": "es-dev-server --app-index demo/index.html --node-resolve --dedupe --open --watch",
-    "test": "npm run lint && npm run test:headless && npm run test:diff",
+    "test": "npm run lint && npm run test:headless",
     "test:diff": "mocha ./test/visual-diff/**/*.visual-diff.js -t 40000",
     "test:diff:golden": "mocha ./test/visual-diff/**/*.visual-diff.js -t 40000 --golden",
     "test:diff:golden:commit": "commit-goldens",
@@ -22,7 +22,6 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@brightspace-ui/stylelint-config": "0.0.3",
-    "@brightspace-ui/visual-diff": "^2",
     "@open-wc/testing": "^2",
     "@open-wc/testing-karma": "^4.0.1",
     "@polymer/polymer": "^3.4.1",
@@ -40,7 +39,6 @@
     "frau-ci": "^1",
     "karma-sauce-launcher": "^4",
     "lit-analyzer": "^1.2.0",
-    "puppeteer": "^5",
     "sinon": "^9.0.3",
     "stylelint": "^13.6.1"
   },

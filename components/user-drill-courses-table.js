@@ -43,7 +43,8 @@ class UserDrillCoursesTable extends SortMixin(SkeletonMixin(Localizer(MobxLitEle
 			isActiveTable: { type: Boolean, attribute: false, reflect: true },
 			_currentPage: { type: Number, attribute: false },
 			_pageSize: { type: Number, attribute: false },
-			isStudentSuccessSys: { type: Boolean, attribute: false }
+			isStudentSuccessSys: { type: Boolean, attribute: false },
+			selectedCourses: { type: Object, attribute: false }
 		};
 	}
 
@@ -180,6 +181,7 @@ class UserDrillCoursesTable extends SortMixin(SkeletonMixin(Localizer(MobxLitEle
 		const sortFunction = this._chosenSortFunction(this._sortColumn, this._sortOrder);
 		return this.data
 			.records
+			.filter(record => this.selectedCourses.isEmpty || this.selectedCourses.has(record[RECORD.ORG_UNIT_ID]))
 			.filter(this._shouldDisplayinTable, this)
 			.map(this._preProcessData, this)
 			.sort(sortFunction)

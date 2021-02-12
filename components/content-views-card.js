@@ -1,6 +1,7 @@
 import 'highcharts';
+import { computed, decorate } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
-import { ORG_UNIT, UserTrendColorsIterator } from '../consts';
+import { ORG_UNIT, RECORD, UserTrendColorsIterator } from '../consts';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
 import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles';
 import { formatDate } from '@brightspace-ui/intl/lib/dateTime';
@@ -12,13 +13,16 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
 			data: { type: Object, attribute: false },
-			selectedCourses: { type: Object, attribute: false }
+			userData: { type: Object, attribute: false },
+			selectedCourses: { type: Object, attribute: false },
+			user: { type: Object, attribute: false }
 		};
 	}
 
 	constructor() {
 		super();
 		this.data = {};
+		this.userData = {};
 		this.selectedCourses = {
 			size: 0,
 			has: () => false
@@ -200,40 +204,22 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _trendData() {
-		const courses = [{
-			//test data
-			orgUnitId: 1,
-			data: [
-				[Date.UTC(2020, 1, 1), 50],
-				[Date.UTC(2020, 1, 7), 60],
-				[Date.UTC(2020, 1, 14), 45],
-				[Date.UTC(2020, 1, 21), 65],
-				[Date.UTC(2020, 1, 28), 70],
-				[Date.UTC(2020, 2, 4), 65]
-			]
-		}, {
-			orgUnitId: 2,
-			data: [
-				[Date.UTC(2020, 1, 1), 30],
-				[Date.UTC(2020, 1, 7), 50],
-				[Date.UTC(2020, 1, 14), 35],
-				[Date.UTC(2020, 1, 21), 50],
-				[Date.UTC(2020, 1, 28), 65],
-				[Date.UTC(2020, 2, 4), 40]
-			]
-		}, {
-			orgUnitId: 8,
-			data: [
-				[Date.UTC(2020, 1, 1), 10],
-				[Date.UTC(2020, 1, 7), 30],
-				[Date.UTC(2020, 1, 14), 25],
-				[Date.UTC(2020, 1, 21), 40],
-				[Date.UTC(2020, 1, 28), 55],
-				[Date.UTC(2020, 2, 4), 25]
-			]
-		}];
+		return this.userData
+			.contentViews
+			.filter(courseData => this._filteredOrgUnitIds.has(courseData.orgUnitId));
+	}
 
-		return courses;
+	get _filteredOrgUnitIds() {
+		const allSelectedCourses = this.data.orgUnitTree.allSelectedCourses;
+		return allSelectedCourses.length !== 0 ? new Set(allSelectedCourses) : new Set(this._userOrgUnitIds);
+	}
+
+	get _userOrgUnitIds() {
+		const userRecords = this.data.recordsByUser.get(this.user.userId);
+		if (!userRecords) return [];
+		return Array.from(
+			new Set(userRecords.map(record => record[RECORD.ORG_UNIT_ID]))
+		);
 	}
 
 	get _serverData() {
@@ -249,15 +235,21 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get _series() {
 		if (!this.data._data) return [];
 
-		const colors = [...UserTrendColorsIterator(0, 1, this._trendData.length)];
+		const colors = [...UserTrendColorsIterator(0, 1, this._userOrgUnitIds.length)];
 		const selected = (course) => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0;
 
 		return this._trendData
-			.map((course, idx) => ({
+			.map((course) => ({
 				...course,
 				// It is read as `Course 1, series 1 of 3 with 8 data points.`
 				name: this._orgUnitName(course.orgUnitId),
-				color: selected(course) ? colors[idx] : 'var(--d2l-color-mica)' }));
+				color: selected(course) ? colors[this._userOrgUnitIds.findIndex(orgId => orgId === course.orgUnitId)] : 'var(--d2l-color-mica)' }));
 	}
 }
+decorate(ContentViewsCard, {
+	_trendData: computed,
+	_userOrgUnitIds: computed,
+	_series: computed,
+	_filteredOrgUnitIds: computed
+});
 customElements.define('d2l-insights-content-views-card', ContentViewsCard);

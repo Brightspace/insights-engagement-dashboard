@@ -1,7 +1,7 @@
 import '../../components/dashboard-settings';
 
 import { expect, fixture, html, oneEvent } from '@open-wc/testing';
-import { mock, restore } from '../../model/lms';
+import { mock, restore } from '../../model/dataApiClient';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
 describe('d2l-insights-engagement-dashboard-settings', () => {

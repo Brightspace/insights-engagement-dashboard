@@ -32,8 +32,8 @@ import { CurrentFinalGradesFilter } from './components/current-final-grade-card'
 import { Data } from './model/data.js';
 import { DiscussionActivityFilter } from './components/discussion-activity-card';
 import { ExportData } from './model/exportData';
-import { fetchData } from './model/lms.js';
-import { fetchData as fetchDemoData } from './model/fake-lms.js';
+import { fetchData } from './model/dataApiClient.js';
+import { fetchData as fetchDemoData } from './model/fake-dataApiClient.js';
 import { FilteredData } from './model/filteredData';
 import { heading3Styles } from '@brightspace-ui/core/components/typography/styles';
 import { Localizer } from './locales/localizer';
@@ -56,6 +56,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			orgUnitId: { type: Number, attribute: 'org-unit-id' },
 			telemetryEndpoint: { type: String, attribute: 'telemetry-endpoint' },
 			telemetryId: { type: String, attribute: 'telemetry-id' },
+			metronEndpoint: { type: String, attribute: 'metron-endpoint' },
 
 			// user preferences:
 			showCourseAccessCard: { type: Boolean, attribute: 'course-access-card', reflect: true },
@@ -85,6 +86,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		this.isDemo = false;
 		this.telemetryEndpoint = '';
 		this.telemetryId = '';
+		this.metronEndpoint = '';
 
 		this.showCourseAccessCard = false;
 		this.showCoursesCol = false;
@@ -234,18 +236,20 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	}
 
 	_renderUserDrillView() {
-		let user = {};
+		// Pass in the known userId so we can preload the user profile and other data.
+		let user = {
+			userId : this._viewState.userViewUserId
+		};
 
 		if (!this._isLoading) {
-			const userId = this._viewState.userViewUserId;
-			const userData = this._serverData.userDictionary.get(userId);
+			const userData = this._serverData.userDictionary.get(user.userId);
 
 			if (userData) {
 				user = {
+					...user,
 					firstName: userData[USER.FIRST_NAME],
 					lastName: userData[USER.LAST_NAME],
 					username: userData[USER.USERNAME],
-					userId: userId
 				};
 			}
 		}
@@ -259,6 +263,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				.isStudentSuccessSys="${this._serverData.serverData.isStudentSuccessSys}"
 				org-unit-id="${this.orgUnitId}"
 				.viewState="${this._viewState}"
+				.metronEndpoint="${this.metronEndpoint}"
 				@d2l-insights-user-drill-view-back="${this._backToHomeHandler}"
 			>
 				<div slot="filters">

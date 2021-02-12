@@ -1,8 +1,8 @@
 import './dropdown-filter';
 
 import { html, LitElement } from 'lit-element';
-import { fetchSemesters as fetchDemoSemesters } from '../model/fake-lms';
-import { fetchSemesters } from '../model/lms';
+import { fetchSemesters as fetchDemoSemesters } from '../model/fake-dataApiClient';
+import { fetchSemesters } from '../model/dataApiClient';
 import { Localizer } from '../locales/localizer';
 
 /**
