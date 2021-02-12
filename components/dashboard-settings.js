@@ -13,7 +13,7 @@ import { css, html, LitElement } from 'lit-element';
 import { heading1Styles, heading2Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { Localizer } from '../locales/localizer';
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin';
-import { saveSettings } from '../model/lms';
+import { saveSettings } from '../model/dataApiClient';
 
 /**
  * @fires d2l-insights-settings-view-back

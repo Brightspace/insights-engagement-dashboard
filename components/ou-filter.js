@@ -1,5 +1,5 @@
 import { css, html } from 'lit-element/lit-element.js';
-import { fetchRelevantChildren, orgUnitSearch } from '../model/lms';
+import { fetchRelevantChildren, orgUnitSearch } from '../model/dataApiClient';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 
