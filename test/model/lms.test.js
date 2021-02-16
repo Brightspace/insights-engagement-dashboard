@@ -329,14 +329,23 @@ describe('Lms', () => {
 
 	describe('fetchUserData', () => {
 		it('should throw an error if the query fails', async() => {
-			fetchMock.post('', 403);
+			fetchMock.post('path:/d2l/lp/auth/oauth2/token', {});
+			fetchMock.post('https://data.example.com/unstable/insights/data/userdrill', 403);
 			let error;
 			try {
 				await fetchUserData([], 1234, 'https://data.example.com');
 			} catch (err) {
 				error = err.toString();
 			}
-			expect(error).to.exist;
+			expect(error).to.equal('Error: query-failure');
+		});
+
+		it('should not add a redundant slash', async() => {
+			fetchMock.post('path:/d2l/lp/auth/oauth2/token', {});
+			fetchMock.post('https://data.example.com/unstable/insights/data/userdrill', { the: 'data' });
+			// note trailing slash here
+			const actual = await fetchUserData([], 1234, 'https://data.example.com/');
+			expect(actual).to.deep.equal({ the: 'data' });
 		});
 	});
 });
