@@ -16,7 +16,7 @@ const dataEndpoint = '/unstable/insights/data/engagement';
 const relevantChildrenEndpoint = orgUnitId => `/d2l/api/ap/unstable/insights/data/orgunits/${orgUnitId}/children`;
 const ouSearchEndpoint = '/d2l/api/ap/unstable/insights/data/orgunits';
 const saveSettingsEndpoint = '/d2l/api/ap/unstable/insights/mysettings/engagement';
-const userDrillDataEndpoint = '/unstable/insights/data/userdrill';
+const userDrillDataEndpoint = 'unstable/insights/data/userdrill';
 
 /**
  * @param {[Number]} roleIds
@@ -61,13 +61,13 @@ export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [
  * @param {String} metronEndpoint
  */
 export async function fetchUserData(orgUnitIds = [], userId = 0, metronEndpoint) {
-	const url = new URL(`${metronEndpoint}${userDrillDataEndpoint}`, window.location.origin);
+	const url = metronEndpoint + (metronEndpoint.endsWith('/') ? '' : '/') + userDrillDataEndpoint;
 	const userDrillBody = {
 		selectedUserId: userId,
 		selectedOrgUnitIds: orgUnitIds,
 		metrics: true
 	};
-	const response = await d2lfetch.fetch(new Request(url.toString(), {
+	const response = await d2lfetch.fetch(new Request(url, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
