@@ -270,7 +270,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			.map((course) => ({
 				...course,
 				marker:{
-					enabled: course.data && course.data.length === 1 ? true : false
+					enabled: course.data && course.data.length === 1
 				},
 				// It is read as `Course 1, series 1 of 3 with 8 data points.`
 				name: this._orgUnitName(course.orgUnitId),
