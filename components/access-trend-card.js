@@ -16,7 +16,8 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			data: { type: Object, attribute: false },
 			userData: { type: Object, attribute: false },
 			selectedCourses: { type: Object, attribute: false },
-			user: { type: Object, attribute: false }
+			user: { type: Object, attribute: false },
+			isDemo: { type: Boolean, attribute: 'demo' },
 		};
 	}
 
@@ -150,6 +151,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			},
 
 			yAxis: {
+				tickPositions: this.isDemo ? [0, 5, 10] : undefined,
 				title: {
 					text: this._yAxisTitle,
 					style: {
