@@ -84,7 +84,7 @@ describe('content-views-card', () => {
 
 			const series = el.shadowRoot.querySelector('d2l-labs-chart').chart.series;
 			const colors = series.map(series => series.color);
-			expect(colors).to.eql([ '#4885DC', '#D3E24A', '#D66DAC' ]);
+			expect(colors).to.eql([ '#168FE6', '#8AD934', '#008EAB' ]);
 		});
 	});
 
@@ -101,7 +101,7 @@ describe('content-views-card', () => {
 		el._toggleFilterEventHandler(series[0]);
 		await el.updateComplete;
 
-		expect(el._series[0].color).to.eql('#4885DC');
+		expect(el._series[0].color).to.eql('#168FE6');
 		expect(el._series[1].color).to.eql(grey);
 		expect(el._series[2].color).to.eql(grey);
 	});

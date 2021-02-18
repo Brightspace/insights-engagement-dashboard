@@ -443,7 +443,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				></d2l-insights-grades-trend-card>
 				<d2l-insights-content-views-card
 					?hidden="${this.hidden}"
-					?skeleton="${this.skeleton}"
+					?skeleton="${this._userData.isLoading}"
 					.data="${this.data}"
 					.user="${this.user}"
 					.userData="${this._userData}"
@@ -451,11 +451,12 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				></d2l-insights-content-views-card>
 				<d2l-insights-access-trend-card
 					?hidden="${this.hidden}"
-					?skeleton="${this.skeleton}"
+					?skeleton="${this._userData.isLoading}"
 					.data="${this.data}"
 					.user="${this.user}"
 					.userData="${this._userData}"
 					.selectedCourses="${this.selectedCourses}"
+					?demo="${this.isDemo}"
 				></d2l-insights-access-trend-card>
 
 			</div>
