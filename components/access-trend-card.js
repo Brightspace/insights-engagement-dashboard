@@ -172,7 +172,19 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			},
 
 			tooltip: {
-				enabled: true
+				enabled: true,
+				backgroundColor: 'var(--d2l-color-ferrite)',
+				borderWidth: 0,
+				borderRadius: 15,
+				shadow: false,
+				padding: 10,
+
+				style: {
+					color: 'var(--d2l-color-white)',
+					fontSize: '10px',
+					fontFamily: 'Lato',
+					lineHeight: '18px'
+				}
 			},
 
 			plotOptions: {
