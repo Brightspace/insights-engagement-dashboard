@@ -12,7 +12,7 @@ export function restore() {
 
 const rolesEndpoint = '/d2l/api/ap/unstable/insights/data/roles';
 const semestersEndpoint = '/d2l/api/ap/unstable/insights/data/semesters';
-const dataEndpoint = '/d2l/api/ap/unstable/insights/data/engagement';
+const dataEndpoint = '/unstable/insights/data/engagement';
 const relevantChildrenEndpoint = orgUnitId => `/d2l/api/ap/unstable/insights/data/orgunits/${orgUnitId}/children`;
 const ouSearchEndpoint = '/d2l/api/ap/unstable/insights/data/orgunits';
 const saveSettingsEndpoint = '/d2l/api/ap/unstable/insights/mysettings/engagement';
@@ -23,9 +23,11 @@ const userDrillDataEndpoint = 'unstable/insights/data/userdrill';
  * @param {[Number]} semesterIds
  * @param {[Number]} orgUnitIds
  * @param {Boolean} defaultView if true, request that the server select a limited set of data for first view
+ * @param {String} metronEndpoint
  */
-export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [], defaultView = false }) {
-	const url = new URL(dataEndpoint, window.location.origin);
+export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [], defaultView = false }, metronEndpoint) {
+	const url = new URL(`${metronEndpoint}${dataEndpoint}`);
+
 	if (roleIds) {
 		url.searchParams.set('selectedRolesCsv', roleIds.join(','));
 	}
@@ -36,7 +38,17 @@ export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [
 		url.searchParams.set('selectedOrgUnitIdsCsv', orgUnitIds.join(','));
 	}
 	url.searchParams.set('defaultView', defaultView ? 'true' : 'false');
-	const response = await fetch(url.toString());
+	const uri = url.toString();
+
+	let response = await d2lfetch.fetch(uri, { headers: { 'cache-control': 'no-store' } });
+	let waitMs = 0;
+	while (response.status === 202) {
+		if (waitMs < 2000) waitMs += 250;
+		await new Promise(resolve => setTimeout(resolve, waitMs));
+
+		response = await d2lfetch.fetch(uri, { headers: { 'cache-control': 'no-store' } });
+	}
+
 	if (response.ok) return await response.json();
 	else {
 		throw new Error('query-failure');
