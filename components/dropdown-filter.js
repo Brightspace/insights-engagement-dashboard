@@ -1,6 +1,6 @@
-import 'd2l-facet-filter-sort/components/d2l-filter-dropdown/d2l-filter-dropdown.js';
-import 'd2l-facet-filter-sort/components/d2l-filter-dropdown/d2l-filter-dropdown-category.js';
-import 'd2l-facet-filter-sort/components/d2l-filter-dropdown/d2l-filter-dropdown-option.js';
+import '@brightspace-ui-labs/facet-filter-sort/components/filter-dropdown/filter-dropdown.js';
+import '@brightspace-ui-labs/facet-filter-sort/components/filter-dropdown/filter-dropdown-category.js';
+import '@brightspace-ui-labs/facet-filter-sort/components/filter-dropdown/filter-dropdown-option.js';
 
 import { css, html, LitElement } from 'lit-element';
 import { Localizer } from '../locales/localizer';
@@ -39,7 +39,7 @@ class DropdownFilter extends Localizer(LitElement) {
 				margin: 0.25rem;
 			}
 
-			d2l-filter-dropdown-category[disable-search] {
+			d2l-labs-filter-dropdown-category[disable-search] {
 				padding-top: 0;
 			}
 		`];
@@ -71,42 +71,42 @@ class DropdownFilter extends Localizer(LitElement) {
 		let openerSelectedText;
 		if (selectedCount === 1) {
 			// use name instead of displayName here to avoid showing semester ids in the main selector text
-			openerSelectedText = this.localize('components.dropdown-filter.opener-text-single', {
+			openerSelectedText = this.localize('dropdownFilter:openerTextSingle', {
 				filterName: this.name,
 				selectedItemName: this._selectedData[0].name
 			});
 		} else {
-			openerSelectedText = this.localize('components.dropdown-filter.opener-text-multiple', {
+			openerSelectedText = this.localize('dropdownFilter:openerTextMultiple', {
 				filterName: this.name,
 				selectedCount: selectedCount
 			});
 		}
 
 		return html`
-			<d2l-filter-dropdown
+			<d2l-labs-filter-dropdown
 				total-selected-option-count="${selectedCount}"
-				opener-text="${this.localize('components.dropdown-filter.opener-text-all', { filterName: this.name })}"
+				opener-text="${this.localize('dropdownFilter:openerTextAll', { filterName: this.name })}"
 				opener-text-single="${openerSelectedText}"
 				opener-text-multiple="${openerSelectedText}"
 				header-text=""
-				@d2l-filter-dropdown-cleared="${this._clearSelectionClick}"
+				@d2l-labs-filter-dropdown-cleared="${this._clearSelectionClick}"
 				@d2l-dropdown-close="${this._filterClose}"
 			>
-				<d2l-filter-dropdown-category
+				<d2l-labs-filter-dropdown-category
 					?disable-search="${this.disableSearch}"
 					category-text="${this.name}"
-					@d2l-filter-dropdown-option-change="${this._handleElementSelected}"
-					@d2l-filter-dropdown-category-searched="${this._handleSearchedClick}"
+					@d2l-labs-filter-dropdown-option-change="${this._handleElementSelected}"
+					@d2l-labs-filter-dropdown-category-searched="${this._handleSearchedClick}"
 				>
-					${this.data.map(item => html`<d2l-filter-dropdown-option
+					${this.data.map(item => html`<d2l-labs-filter-dropdown-option
  						text="${item.displayName}"
  						value="${item.id}"
  						?selected="${item.selected}"
  						?hidden="${!!this.filter && !item.displayName.toLowerCase().includes(this.filter.toLowerCase())}"
- 					></d2l-filter-dropdown-option>`)}
+ 					></d2l-labs-filter-dropdown-option>`)}
 
-				</d2l-filter-dropdown-category>
-			</d2l-filter-dropdown>
+				</d2l-labs-filter-dropdown-category>
+			</d2l-labs-filter-dropdown>
 		`;
 	}
 

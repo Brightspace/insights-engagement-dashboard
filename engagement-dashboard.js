@@ -3,7 +3,6 @@ import 'd2l-button-group/d2l-action-button-group';
 
 import './components/histogram-card.js';
 import './components/ou-filter.js';
-import './components/results-card.js';
 import './components/debug-card.js';
 import './components/semester-filter.js';
 import './components/users-table.js';
@@ -11,17 +10,21 @@ import './components/table.js';
 import './components/current-final-grade-card.js';
 import './components/applied-filters';
 import './components/aria-loading-progress';
-import './components/course-last-access-card.js';
-import './components/discussion-activity-card.js';
-import './components/message-container.js';
+import './components/engagement-dashboard-errors.js';
 import './components/default-view-popup.js';
 import './components/user-drill-view.js';
 import './components/immersive-nav.js';
 import './components/dashboard-settings';
+import './components/summary-cards-container.js';
+import './components/discussion-activity-card.js';
+import './components/course-last-access-card.js';
+import './components/results-card.js';
+import './components/overdue-assignments-card.js';
 
 import { css, html } from 'lit-element/lit-element.js';
 import { DefaultViewState, ViewState } from './model/view-state';
 import { getPerformanceLoadPageMeasures, TelemetryHelper } from './model/telemetry-helper';
+import { isDefault, UrlState } from './model/urlState';
 import { LastAccessFilter, filterId as lastAccessFilterId } from './components/last-access-card';
 import { CourseLastAccessFilter } from './components/course-last-access-card';
 import { createComposeEmailPopup } from './components/email-integration';
@@ -29,11 +32,10 @@ import { CurrentFinalGradesFilter } from './components/current-final-grade-card'
 import { Data } from './model/data.js';
 import { DiscussionActivityFilter } from './components/discussion-activity-card';
 import { ExportData } from './model/exportData';
-import { fetchData } from './model/lms.js';
-import { fetchData as fetchDemoData } from './model/fake-lms.js';
+import { fetchData } from './model/dataApiClient.js';
+import { fetchData as fetchDemoData } from './model/fake-dataApiClient.js';
 import { FilteredData } from './model/filteredData';
 import { heading3Styles } from '@brightspace-ui/core/components/typography/styles';
-import { isDefault } from './model/urlState';
 import { Localizer } from './locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { OverdueAssignmentsFilter } from './components/overdue-assignments-card';
@@ -54,6 +56,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			orgUnitId: { type: Number, attribute: 'org-unit-id' },
 			telemetryEndpoint: { type: String, attribute: 'telemetry-endpoint' },
 			telemetryId: { type: String, attribute: 'telemetry-id' },
+			metronEndpoint: { type: String, attribute: 'metron-endpoint' },
 
 			// user preferences:
 			showCourseAccessCard: { type: Boolean, attribute: 'course-access-card', reflect: true },
@@ -83,6 +86,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		this.isDemo = false;
 		this.telemetryEndpoint = '';
 		this.telemetryId = '';
+		this.metronEndpoint = '';
 
 		this.showCourseAccessCard = false;
 		this.showCoursesCol = false;
@@ -98,6 +102,12 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		this.showTicGradesCard = false;
 		this.lastAccessThresholdDays = 14;
 		this.includeRoles = '';
+
+		this._viewState = new ViewState({});
+		// if current view is not provided in url
+		if (!this._viewState.currentView) {
+			this._viewState.setHomeView();
+		}
 	}
 
 	static get styles() {
@@ -105,6 +115,13 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			heading3Styles,
 			css`
 				:host {
+					--d2l-insights-engagement-small-card-height: 154px;
+					--d2l-insights-engagement-small-card-width: 291px;
+					--d2l-insights-engagement-big-card-width: calc(var(--d2l-insights-engagement-small-card-width) * 2 + var(--d2l-insights-engagement-card-margin-right)); /* 594px; */
+					--d2l-insights-engagement-big-card-height: calc(var(--d2l-insights-engagement-small-card-height) * 2 + var(--d2l-insights-engagement-card-margin-top));	/* 318px; */
+					--d2l-insights-engagement-card-margin-top: 10px;
+					--d2l-insights-engagement-card-margin-right: 12px;
+
 					display: block;
 					padding: 0 30px;
 				}
@@ -122,24 +139,6 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 					display: flex;
 					flex-wrap: wrap;
 					max-width: 1300px;
-				}
-
-				d2l-insights-results-card,
-				d2l-insights-discussion-activity-card {
-					margin-right: 12px;
-					margin-top: 10px;
-				}
-
-				d2l-insights-overdue-assignments-card,
-				d2l-insights-last-access-card {
-					margin-top: 10px;
-				}
-
-				.d2l-insights-summary-container {
-					display: flex;
-					flex-wrap: wrap;
-					margin-right: 10px;
-					max-width: 594px;
 				}
 
 				.d2l-insights-summary-container-applied-filters {
@@ -204,12 +203,6 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	}
 
 	firstUpdated() {
-		this._viewState = new ViewState({});
-		// if current view is not provided in url
-		if (!this._viewState.currentView) {
-			this._viewState.setHomeView();
-		}
-
 		// moved loadData call here because its inderect call in render function via _data getter causes nested render call with exception
 		this._serverData.loadData({ defaultView: isDefault() });
 	}
@@ -243,27 +236,42 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	}
 
 	_renderUserDrillView() {
-		const userId = this._viewState.userViewUserId;
-		const userData = this._serverData.userDictionary.get(userId);
-
-		if (!userData) {
-			return;
-		}
-
-		const user = {
-			firstName: userData[USER.FIRST_NAME],
-			lastName: userData[USER.LAST_NAME],
-			username: userData[USER.USERNAME],
-			userId: userId
+		// Pass in the known userId so we can preload the user profile and other data.
+		let user = {
+			userId : this._viewState.userViewUserId
 		};
+
+		if (!this._isLoading) {
+			const userData = this._serverData.userDictionary.get(user.userId);
+
+			if (userData) {
+				user = {
+					...user,
+					firstName: userData[USER.FIRST_NAME],
+					lastName: userData[USER.LAST_NAME],
+					username: userData[USER.USERNAME],
+				};
+			}
+		}
 
 		return html`
 			<d2l-insights-user-drill-view
+				?skeleton="${this._isLoading}"
+				?demo="${this.isDemo}"
+				.data="${this._data}"
 				.user="${user}"
+				.isStudentSuccessSys="${this._serverData.serverData.isStudentSuccessSys}"
+				org-unit-id="${this.orgUnitId}"
+				.viewState="${this._viewState}"
+				.metronEndpoint="${this.metronEndpoint}"
 				@d2l-insights-user-drill-view-back="${this._backToHomeHandler}"
 			>
 				<div slot="filters">
 					${this._renderFilters()}
+				</div>
+
+				<div slot="applied-filters">
+					${this._renderAppliedFilters()}
 				</div>
 			</d2l-insights-user-drill-view>
 		`;
@@ -281,6 +289,12 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			.preSelected="${this._serverData.selectedSemesterIds}"
 			@d2l-insights-semester-filter-change="${this._semesterFilterChange}"
 		></d2l-insights-semester-filter>
+		`;
+	}
+
+	_renderAppliedFilters() {
+		return html `
+			<d2l-insights-applied-filters .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-applied-filters>
 		`;
 	}
 
@@ -313,7 +327,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			<d2l-insights-aria-loading-progress .data="${this._data}"></d2l-insights-aria-loading-progress>
 
 			<div class="d2l-heading-button-group">
-				<h1 class="d2l-heading-1">${this.localize('components.insights-engagement-dashboard.title')}</h1>
+				<h1 class="d2l-heading-1">${this.localize('dashboard:title')}</h1>
 				<d2l-action-button-group
 					class="d2l-main-action-button-group"
 					min-to-show="0"
@@ -321,17 +335,17 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				>
 					<d2l-button-subtle
 						icon="d2l-tier1:export"
-						text=${this.localize('components.insights-engagement-dashboard.exportToCsv')}
+						text=${this.localize('dashboard:exportToCsv')}
 						@click="${this._exportToCsv}">
 					</d2l-button-subtle>
 					<d2l-button-subtle
 						icon="d2l-tier1:help"
-						text=${this.localize('components.insights-engagement-dashboard.learMore')}
+						text=${this.localize('dashboard:learMore')}
 						@click="${this._openHelpLink}">
 					</d2l-button-subtle>
 					<d2l-button-subtle
 						icon="d2l-tier1:gear"
-						text=${this.localize('components.insights-settings-view.title')}
+						text=${this.localize('settings:title')}
 						@click="${this._openSettingsPage}">
 					</d2l-button-subtle>
 				</d2l-action-button-group>
@@ -340,43 +354,28 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			<div class="view-filters-container">
 				${this._renderFilters()}
 			</div>
-			<d2l-insights-message-container .data="${this._data}" .isNoDataReturned="${this._isNoUserResults}"></d2l-insights-message-container>
-			<h2 class="d2l-heading-3">${this.localize('components.insights-engagement-dashboard.summaryHeading')}</h2>
+			<d2l-insights-engagement-dashboard-errors
+				.data="${this._data}"
+				.isNoDataReturned="${this._isNoUserResults}"
+				@d2l-insights-undo-last-filter="${this._handleUndo}">
+			</d2l-insights-engagement-dashboard-errors>
+			${this._summaryViewHeader}
 			<div class="d2l-insights-summary-container-applied-filters">
-				<d2l-insights-applied-filters .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-applied-filters>
+				${this._renderAppliedFilters()}
 			</div>
 			<div class="d2l-insights-summary-chart-layout">
-				<div class="d2l-insights-summary-container">
-					${this._resultsCard}
-					${this._overdueAssignmentsCard}
-					${this._discussionsCard}
-					${this._lastAccessCard}
-				</div>
+				<d2l-summary-cards-container
+
+					?hidden="${this._isNoUserResults}"
+					?skeleton="${this._isLoading}"
+
+					.cards="${this.summaryCards}"
+				></d2l-summary-cards-container>
 				${this._gradesCard}
 				${this._ticGradesCard}
 				${this._courseAccessCard}
 			</div>
-			<h2 class="d2l-heading-3">${this.localize('components.insights-engagement-dashboard.resultsHeading')}</h2>
-			<d2l-action-button-group class="d2l-table-action-button-group" min-to-show="0" max-to-show="2" opener-type="more">
-				<d2l-button-subtle
-					icon="d2l-tier1:email"
-					text="${this.localize('components.insights-engagement-dashboard.emailButton')}"
-					@click="${this._handleEmailButtonPress}">
-				</d2l-button-subtle>
-			</d2l-action-button-group>
-
-			<d2l-insights-users-table
-				.data="${this._data}"
-				?skeleton="${this._isLoading}"
-				@d2l-insights-users-table-cell-clicked="${this._userTableCellClicked}"
-				?courses-col="${this.showCoursesCol}"
-				?discussions-col="${this.showDiscussionsCol}"
-				?grade-col="${this.showGradeCol}"
-				?last-access-col="${this.showLastAccessCol}"
-				?tic-col="${this.showTicCol}"
-			></d2l-insights-users-table>
-
-
+			${this._userTable}
 			<d2l-insights-default-view-popup
 				?opened=${Boolean(this._serverData.isDefaultView && !this._defaultViewPopupShown)}
 				.data="${this._serverData}">
@@ -384,52 +383,91 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 			<d2l-dialog-confirm
 				id="no-users-selected-dialog"
-				text="${this.localize('components.insights-engagement-dashboard.noUsersSelectedDialogText')}">
+				text="${this.localize('dashboard:noUsersSelectedDialogText')}">
 				<d2l-button slot="footer" primary data-dialog-action>
-					${this.localize('components.insights-default-view-popup.buttonOk')}
+					${this.localize('defaultViewPopup:buttonOk')}
 				</d2l-button>
 			</d2l-dialog-confirm>
 		`;
 	}
 
-	get _courseAccessCard() {
-		if (!this.showCourseAccessCard) return '';
-		return html`<div><d2l-insights-course-last-access-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-course-last-access-card></div>`;
+	_resultsCard({ wide, tall, skeleton }) {
+		return html`<d2l-insights-results-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${skeleton}"></d2l-insights-results-card>`;
+	}
+	_overdueAssignmentsCard({ wide, tall, skeleton }) {
+		return html`<d2l-insights-overdue-assignments-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${skeleton}"></d2l-insights-overdue-assignments-card>`;
 	}
 
-	get _discussionsCard() {
-		if (!this.showDiscussionsCard) return '';
-		return html`<d2l-insights-discussion-activity-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-discussion-activity-card>`;
+	_discussionsCard({ wide, tall, skeleton }) {
+		return html`<d2l-insights-discussion-activity-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${skeleton}"></d2l-insights-discussion-activity-card>`;
+	}
+
+	_lastAccessCard({ wide, tall, skeleton }) {
+		return html`<d2l-insights-last-access-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${skeleton}"></d2l-insights-last-access-card>`;
+	}
+
+	get summaryCards() {
+		return [
+			{ enabled: this.showResultsCard, htmlFn: (w) => this._resultsCard(w) },
+			{ enabled: this.showOverdueCard, htmlFn: (w) => this._overdueAssignmentsCard(w) },
+			{ enabled: this.showDiscussionsCard, htmlFn: (w) => this._discussionsCard(w) },
+			{ enabled: this.showSystemAccessCard, htmlFn: (w) => this._lastAccessCard(w) }
+		];
+	}
+
+	get _courseAccessCard() {
+		if (!this.showCourseAccessCard || this._isNoUserResults) return '';
+		return html`<div><d2l-insights-course-last-access-card ?demo="${this.isDemo}" .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-course-last-access-card></div>`;
 	}
 
 	get _gradesCard() {
-		if (!this.showGradesCard) return '';
+		if (!this.showGradesCard || this._isNoUserResults) return '';
 		return html`<div><d2l-insights-current-final-grade-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-current-final-grade-card></div>`;
 	}
 
-	get _lastAccessCard() {
-		if (!this.showSystemAccessCard) return '';
-		return html`<d2l-insights-last-access-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-last-access-card>`;
-	}
-
-	get _overdueAssignmentsCard() {
-		if (!this.showOverdueCard) return '';
-		return html`<d2l-insights-overdue-assignments-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-overdue-assignments-card>`;
-	}
-
-	get _resultsCard() {
-		if (!this.showResultsCard) return '';
-		return html`<d2l-insights-results-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-results-card>`;
-	}
-
 	get _ticGradesCard() {
-		if (!this.showTicGradesCard) return '';
+		if (!this.showTicGradesCard || this._isNoUserResults) return '';
 		return html`<div><d2l-insights-time-in-content-vs-grade-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-time-in-content-vs-grade-card></div>`;
+	}
+
+	get _userTable() {
+		if (this._isNoUserResults) return '';
+		return html`
+			<h2 class="d2l-heading-3">${this.localize('dashboard:resultsHeading')}</h2>
+			<d2l-action-button-group class="d2l-table-action-button-group" min-to-show="0" max-to-show="2" opener-type="more">
+				<d2l-button-subtle
+					aria-label="${this.localize('dashboard:emailButtonAriaLabel')}"
+					icon="d2l-tier1:email"
+					text="${this.localize('dashboard:emailButton')}"
+					@click="${this._handleEmailButtonPress}">
+				</d2l-button-subtle>
+			</d2l-action-button-group>
+
+			<d2l-insights-users-table
+				.data="${this._data}"
+				?skeleton="${this._isLoading}"
+				?courses-col="${this.showCoursesCol}"
+				?discussions-col="${this.showDiscussionsCol}"
+				?grade-col="${this.showGradeCol}"
+				?last-access-col="${this.showLastAccessCol}"
+				?tic-col="${this.showTicCol}"
+				@d2l-insights-users-table-cell-clicked="${this._userTableCellClicked}"
+			></d2l-insights-users-table>
+		`;
+	}
+
+	get _summaryViewHeader() {
+		if (this._isNoUserResults) return '';
+		return html`<h2 class="d2l-heading-3">${this.localize('dashboard:summaryHeading')}</h2>`;
 	}
 
 	_exportToCsv() {
 		const usersTable = this.shadowRoot.querySelector('d2l-insights-users-table');
 		ExportData.userDataToCsv(usersTable.dataForExport, usersTable.headersForExport);
+	}
+
+	_handleUndo() {
+		UrlState.backOrResetView();
 	}
 
 	get _defaultViewPopupShown() {
@@ -451,8 +489,8 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			// on the results of the other: we avoid this by building them on specific sets of filters.
 			const rowFilteredData = new FilteredData(this._serverData)
 				.withFilter(new OverdueAssignmentsFilter())
-				.withFilter(new LastAccessFilter(this.lastAccessThresholdDays))
-				.withFilter(new CourseLastAccessFilter())
+				.withFilter(new LastAccessFilter(this.lastAccessThresholdDays, this.isDemo))
+				.withFilter(new CourseLastAccessFilter(this.isDemo))
 				.withFilter(new CurrentFinalGradesFilter())
 				.withFilter(new DiscussionActivityFilter());
 

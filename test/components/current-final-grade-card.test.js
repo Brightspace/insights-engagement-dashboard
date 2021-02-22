@@ -59,6 +59,7 @@ describe('d2l-insights-current-final-grade-card', () => {
 
 		it('should exclude chart form tabindex when data is loading', async() => {
 			const el = await fixture(html`<d2l-insights-current-final-grade-card .data="${data}" skeleton></d2l-insights-current-final-grade-card>`);
+			await new Promise(resolve => setTimeout(resolve, 50));
 			const chart = el.shadowRoot.querySelector('d2l-labs-chart');
 			const chartDiv = chart.shadowRoot.querySelector('#chart-container');
 			expect(chartDiv.getAttribute('tabindex')).to.equal('-1');
@@ -85,6 +86,21 @@ describe('d2l-insights-current-final-grade-card', () => {
 			filter.selectCategory('a');
 			filter.isApplied = false;
 			expect(filter.isApplied).to.be.false;
+		});
+
+		it('should reset if all categories are selected', () => {
+			const filter = new CurrentFinalGradesFilter();
+			filter.toggleCategory(0);
+			filter.toggleCategory(10);
+			filter.toggleCategory(20);
+			filter.toggleCategory(30);
+			filter.toggleCategory(40);
+			filter.toggleCategory(50);
+			filter.toggleCategory(60);
+			filter.toggleCategory(70);
+			filter.toggleCategory(80);
+			filter.toggleCategory(90);
+			expect([...filter.selectedCategories]).to.eql([]);
 		});
 
 		[

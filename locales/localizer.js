@@ -1,6 +1,8 @@
-// copied from BrightspaceUI/core's LocalizeCoreElement, with modifications
+// see https://docs.dev.d2l/index.php/Oslo
+import { getLocalizeOverrideResources } from '@brightspace-ui/core/helpers/getLocalizeResources.js';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin';
 
+// copied from BrightspaceUI/core's LocalizeCoreElement, with modifications
 export const Localizer = superclass => class extends LocalizeMixin(superclass) {
 
 	/**
@@ -8,6 +10,11 @@ export const Localizer = superclass => class extends LocalizeMixin(superclass) {
 	 * e.g. ['fr-fr', 'fr', 'en-us', 'en']
 	 */
 	static async getLocalizeResources(langs) {
+		function getCollectionName() {
+			// must be "name" from package.json, then backslash, then "name" from *.serge.json
+			return 'd2l-engagement-dashboard\\insights-engagement-dashboard';
+		}
+
 		let translations;
 		// always load in English translations, so we have something to default to
 		const enTranslations = await import('./en.js');
@@ -69,25 +76,29 @@ export const Localizer = superclass => class extends LocalizeMixin(superclass) {
 						translations = await import('./zh.js');
 						break;
 				}
+
 				if (translations && translations.default) {
-					return {
-						language: lang,
-						resources: Object.assign(enTranslations.default, translations.default)
-					};
+					return await getLocalizeOverrideResources(
+						lang,
+						Object.assign(enTranslations.default, translations.default),
+						getCollectionName
+					);
 				}
 			}
 
-			return {
-				language: 'en',
-				resources: enTranslations.default
-			};
+			return await getLocalizeOverrideResources(
+				'en',
+				enTranslations.default,
+				getCollectionName
+			);
 
 		} catch (err) {
 			// can happen if the langterms file for a language doesn't exist
-			return {
-				language: 'en',
-				resources: enTranslations.default
-			};
+			return await getLocalizeOverrideResources(
+				'en',
+				enTranslations.default,
+				getCollectionName
+			);
 		}
 	}
 };

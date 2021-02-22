@@ -1,4 +1,4 @@
-import { disableUrlStateForTesting, enableUrlState } from '../../model/urlState';
+import { clearUrlState, disableUrlStateForTesting, enableUrlState } from '../../model/urlState';
 import { mockOuTypes, mockRoleIds, records } from './mocks';
 import { OrgUnitSelectorFilter, RoleSelectorFilter, SemesterSelectorFilter } from '../../model/selectorFilters';
 import { Data } from '../../model/data.js';
@@ -7,6 +7,7 @@ import sinon from 'sinon/pkg/sinon-esm.js';
 
 describe('Data', () => {
 	before(() => {
+		clearUrlState();
 		disableUrlStateForTesting();
 	});
 	after(() => {
@@ -94,6 +95,14 @@ describe('Data', () => {
 			await new Promise(resolve => setTimeout(resolve, 0));
 
 			expect(sut.orgUnitTree.isPopulated(6606)).to.be.false;
+		});
+
+		it('should return default serverData if recordProvider ends with an error and set isQueryError to true', async() => {
+			sut = new Data({});
+			sut.loadData({});
+			expect(sut.isQueryError).to.equal(true);
+			expect(sut.serverData.records.length).to.equal(0);
+			expect(sut.userDictionary.size).to.equal(0);
 		});
 	});
 

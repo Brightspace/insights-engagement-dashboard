@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-timezone='{"name":"Canada - Toronto","identifier":"America/Chicago"}'>
 	<head>
 		<link rel="stylesheet" href="/node_modules/@brightspace-ui/core/components/demo/styles.css" type="text/css">
 		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
@@ -9,8 +9,15 @@
 			import '@brightspace-ui/core/components/demo/demo-page.js';
 			import '../engagement-dashboard.js';
 			import { worker } from '../test/server.js';
+			import { parseHash } from '../model/fake-dataApiClient';
 
 			worker.start();
+
+			const hash = parseHash();
+			if (hash.lang) {
+				const html = document.querySelector('html');
+				html.setAttribute('lang', hash.lang);
+			}
 		</script>
 		<title>d2l-insights-engagement-dashboard</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">

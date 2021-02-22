@@ -69,6 +69,10 @@ export class FilteredData {
 		return userIdsInView.map(userId => this.userDictionary.get(userId));
 	}
 
+	get orgUnitTree() {
+		return this._data.orgUnitTree;
+	}
+
 	clearFilters() {
 		this.filters.forEach(f => f.isApplied = false);
 	}
@@ -76,6 +80,11 @@ export class FilteredData {
 	getFilter(id) {
 		return this.filters.find(f => f.id === id);
 	}
+
+	get semesterTypeId() {
+		return this._data.semesterTypeId;
+	}
+
 }
 decorate(FilteredData, {
 	_data: observable,

@@ -31,6 +31,14 @@ export function clearUrlState() {
 	window.history.replaceState({}, '', '');
 }
 
+export function removeState(key) {
+	const searchParams = new URLSearchParams(window.location.search);
+	searchParams.delete(key);
+	const url = new URL(window.location.href);
+	url.search = searchParams.toString();
+	window.history.pushState({}, '', url.toString());
+}
+
 // plan: store various filter settings in the url query (handled by each component); then add a button
 // "make this my default view" that stores the current query in local storage
 /**
@@ -40,12 +48,15 @@ export function clearUrlState() {
  * set persistenceValue({String}) - called when the component should set the given state
  * If persistenceValue references one or more mobx observables, mobx will track changes. Otherwise,
  * it is necessary to call save() when the state changes.
+ * The wrapped object may optionally implement:
+ * {Boolean} get persistEmpty() - if true, the key will not be removed from the url even if the value is ''
  */
 export class UrlState {
 
+	static currentId = 0;
+
 	constructor(wrapped) {
 		this._wrapped = wrapped;
-
 		if (isDisabledForTesting) return;
 
 		// load state from the url on setup, and again when the user hits forward or back;
@@ -57,21 +68,24 @@ export class UrlState {
 	}
 
 	save() {
-		// don't save state changes if we are restoring an old state
 		const url = new URL(window.location.href);
 		const valueToSave = this.value;
-		if (valueToSave === '' && url.searchParams.has(this.key)) {
+		if (!this.persistEmpty && valueToSave === '' && url.searchParams.has(this.key)) {
 			url.searchParams.delete(this.key);
-			window.history.pushState({}, '', url.toString());
+			UrlState.pushState(url);
 		}
 		else if (valueToSave !== this._savedValue(url)) {
 			url.searchParams.set(this.key, valueToSave);
-			window.history.pushState({}, '', url.toString());
+			UrlState.pushState(url);
 		}
 	}
 
 	get key() {
 		return this._wrapped.persistenceKey;
+	}
+
+	get persistEmpty() {
+		return this._wrapped.persistEmpty;
 	}
 
 	get value() {
@@ -83,6 +97,7 @@ export class UrlState {
 	}
 
 	_onpopstate(e) {
+		UrlState.currentId = (e.state !== null && e.state.id) ? e.state.id : 0;
 		if (e.state !== null) this._load();
 	}
 
@@ -94,4 +109,26 @@ export class UrlState {
 	_savedValue(url) {
 		return url.searchParams.get(this.key) || '';
 	}
+
+	// static history managment methods
+
+	static backOrResetView() {
+		if (this.currentId === 0) {
+			resetUrlState();
+		} else {
+			window.history.back();
+		}
+	}
+
+	static pushState(url) {
+		this.currentId += 1;
+		window.history.pushState({ id: this.currentId }, '', url.toString());
+	}
+}
+
+export function resetUrlState() {
+	const url = new URL(window.location.href);
+	url.search = new URLSearchParams();
+	UrlState.pushState(url);
+	window.location.reload();
 }

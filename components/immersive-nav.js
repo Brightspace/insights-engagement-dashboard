@@ -5,7 +5,8 @@ import { css, html } from 'lit-element/lit-element';
 import { DefaultViewState } from '../model/view-state';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
-
+import { removeState } from '../model/urlState';
+import { SelectedCourses } from './courses-legend';
 const insightsPortalEndpoint = '/d2l/ap/insightsPortal/main.d2l';
 
 // Extends the standard immersive nav to resize the back link on small screens
@@ -56,22 +57,22 @@ class InsightsImmersiveNav extends Localizer(MobxLitElement) {
 
 	get mainText() {
 		switch (this.view) {
-			case 'home': return this.localize('components.insights-engagement-dashboard.title');
-			case 'user': return this.localize('components.insights-engagement-dashboard.title-user-view');
-			case 'settings': return this.localize('components.insights-settings-view.title');
+			case 'home': return this.localize('dashboard:title');
+			case 'user': return this.localize('dashboard:userView:title');
+			case 'settings': return this.localize('settings:title');
 		}
-		return this.localize('components.insights-engagement-dashboard.title');
+		return this.localize('dashboard:title');
 	}
 
 	get backText() {
 		switch (this.view) {
 			case 'home':
-				return this.localize('components.insights-engagement-dashboard.backToInsightsPortal');
+				return this.localize('dashboard:backToInsightsPortal');
 			case 'user':
 			case 'settings':
-				return this.localize('components.insights-engagement-dashboard.backToEngagementDashboard');
+				return this.localize('dashboard:backToEngagementDashboard');
 		}
-		return this.localize('components.insights-engagement-dashboard.backToInsightsPortal');
+		return this.localize('dashboard:backToInsightsPortal');
 	}
 
 	render() {
@@ -90,7 +91,7 @@ class InsightsImmersiveNav extends Localizer(MobxLitElement) {
 						@click=${this._backLinkClickHandler}>
 					</d2l-navigation-link-back>
 					<d2l-navigation-link-back
-						text="${this.localize('components.insights-engagement-dashboard.backLinkTextShort')}"
+						text="${this.localize('dashboard:backLinkTextShort')}"
 						href="${href}"
 						class="d2l-insights-link-back-responsive"
 						@click=${this._backLinkClickHandler}>
@@ -108,6 +109,10 @@ class InsightsImmersiveNav extends Localizer(MobxLitElement) {
 	_backLinkClickHandler(e) {
 		if (this.view === 'home') {
 			return true;
+		}
+
+		if (this.view === 'user') {
+			removeState((new SelectedCourses()).persistenceKey);
 		}
 
 		this.viewState.setHomeView();

@@ -5,6 +5,8 @@ import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
 import '../overlay';
 
 import { css, html, LitElement } from 'lit-element';
+import { getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime';
+import { Localizer } from '../../locales/localizer';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 
 const easeOut = (t) => (1 - (--t) * t * t * t);
@@ -28,7 +30,7 @@ export const BEFORE_CHART_FORMAT = '<h3>{chartTitle}</h3>' +
  * remove flag for suppressing updates, prevent unneeded update on first render
  * @element highcharts-chart
  */
-class Chart extends SkeletonMixin(LitElement) {
+class Chart extends SkeletonMixin(Localizer(LitElement)) {
 	static get properties() {
 		return {
 			options: { type: Object, attribute: false },
@@ -143,17 +145,18 @@ class Chart extends SkeletonMixin(LitElement) {
 		else {
 			// accessible options overload
 			this.setDefaultOptions();
-			// Create a chart
-			H.setOptions({
-				lang: {
-					accessibility: {
-						screenReaderSection: {
-							// fixes axe error: Landmarks must have a unique role or role/label/title
-							beforeRegionLabel: ''
-						}
+
+			const langAccessibility = {
+				accessibility: {
+					screenReaderSection: {
+						// fixes axe error: Landmarks must have a unique role or role/label/title
+						beforeRegionLabel: ''
 					}
 				}
-			});
+			};
+
+			// Create a chart
+			H.setOptions({ lang: Object.assign({}, this._langOptions, langAccessibility) });
 			this.chart = H[constructorType](this.chartContainer, this.options, this.chartCreated.bind(this));
 			// force highcharts to recalculate the chart position incase the filter move the graph
 			this.chartContainer.addEventListener('click', () => (delete this.chart.pointer.chartPosition));
@@ -176,6 +179,22 @@ class Chart extends SkeletonMixin(LitElement) {
 
 	get chartContainer() {
 		return this.shadowRoot.querySelector('#chart-container');
+	}
+
+	get _langOptions() {
+		const descriptor = getDateTimeDescriptor();
+
+		return {
+			loading: this.localize('chart:loading'),
+			months:  descriptor.calendar.months.long,
+			shortMonths:  descriptor.calendar.months.short,
+			weekdays: descriptor.calendar.days.long,
+
+			decimalPoint: this.localize('chart:decimalPoint'),
+			resetZoom: this.localize('chart:resetZoom'),
+			resetZoomTitle: this.localize('chart:resetZoomTitle'),
+			thousandsSep: this.localize('chart:thousandsSeparator'),
+		};
 	}
 }
 customElements.define('d2l-labs-chart', Chart);

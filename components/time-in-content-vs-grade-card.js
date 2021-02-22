@@ -53,7 +53,7 @@ export class TimeInContentVsGradeFilter {
 			.map(item => [Math.floor(item[RECORD.TIME_IN_CONTENT] / 60), item[RECORD.CURRENT_FINAL_GRADE]]);
 	}
 
-	get title() { return 'components.insights-time-in-content-vs-grade-card.timeInContentVsGrade'; }
+	get title() { return 'timeInContentVsGradeCard:timeInContentVsGrade'; }
 
 	calculateQuadrant(tic, grade) {
 		// accept either a record or coordinates
@@ -130,11 +130,11 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 				border-style: solid;
 				border-width: 1.5px;
 				display: inline-block;
-				height: 275px;
+				height: 285px;
 				margin-right: 12px;
 				margin-top: 10px;
 				padding: 15px 4px;
-				width: 581px;
+				width: 583px;
 			}
 
 			@media only screen and (max-width: 615px) {
@@ -160,15 +160,15 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 	}
 
 	get _cardTitle() {
-		return this.localize('components.insights-time-in-content-vs-grade-card.timeInContentVsGrade');
+		return this.localize('timeInContentVsGradeCard:timeInContentVsGrade');
 	}
 
 	get _currentGradeText() {
-		return this.localize('components.insights-time-in-content-vs-grade-card.currentGrade');
+		return this.localize('timeInContentVsGradeCard:currentGrade');
 	}
 
 	get _timeInContentText() {
-		return this.localize('components.insights-time-in-content-vs-grade-card.timeInContentLong');
+		return this.localize('timeInContentVsGradeCard:timeInContentLong');
 	}
 
 	get _dataMidPoints() {
@@ -203,8 +203,8 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 		return {
 			chart: {
 				type: 'scatter',
-				height: 250,
-				width: 581,
+				height: 260,
+				width: 583,
 				events: {
 					click: function(event) {
 						that.filter.toggleQuadrant(that.filter.calculateQuadrant(Math.floor(event.xAxis[0].value), Math.floor(event.yAxis[0].value)));
@@ -270,7 +270,7 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 				}],
 				accessibility:{
 					description: `${this._timeInContentText} ${
-						this.localize('components.insights-time-in-content-vs-grade-card.averageTimeInContent', {
+						this.localize('timeInContentVsGradeCard:averageTimeInContent', {
 							avgTimeInContent: this.filter.avgTimeInContent
 						})
 					}`,
@@ -309,7 +309,7 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 				}],
 				accessibility:{
 					description: `${this._currentGradeText} ${
-						this.localize('components.insights-time-in-content-vs-grade-card.averageGrade', {
+						this.localize('timeInContentVsGradeCard:averageGrade', {
 							avgGrade: this.filter.avgGrade
 						})
 					}`,

@@ -1,8 +1,8 @@
 import './summary-card.js';
-import 'd2l-facet-filter-sort/components/d2l-applied-filters/d2l-applied-filters';
-import 'd2l-facet-filter-sort/components/d2l-filter-dropdown/d2l-filter-dropdown.js';
-import 'd2l-facet-filter-sort/components/d2l-filter-dropdown/d2l-filter-dropdown-category.js';
-import 'd2l-facet-filter-sort/components/d2l-filter-dropdown/d2l-filter-dropdown-option.js';
+import '@brightspace-ui-labs/facet-filter-sort/components/applied-filters/applied-filters';
+import '@brightspace-ui-labs/facet-filter-sort/components/filter-dropdown/filter-dropdown.js';
+import '@brightspace-ui-labs/facet-filter-sort/components/filter-dropdown/filter-dropdown-category.js';
+import '@brightspace-ui-labs/facet-filter-sort/components/filter-dropdown/filter-dropdown-option.js';
 
 import { html } from 'lit-element';
 import { Localizer } from '../locales/localizer';
@@ -23,13 +23,22 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 	constructor() {
 		super();
 		this.data = {};
+
+		this.addEventListener('keypress', this._handleKeyEvents);
+	}
+
+	_handleKeyEvents(e) {
+		if (e.keyCode === 32 || e.keyCode === 13) {
+			e.preventDefault();
+			e.path[0].shadowRoot.querySelector('d2l-icon').click();
+		}
 	}
 
 	render() {
 		const filters = this.data.filters.map(f => ({
 			id: f.id,
 			title: this.localize(f.title),
-			isApplied: f.isApplied
+			isApplied: f.isApplied,
 		}));
 
 		if (filters.filter(f => f.isApplied).length < 1) {
@@ -38,34 +47,34 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		filters.push({
 			id: clearAllOptionId,
-			title: this.localize('components.insights-applied-filters.clear-all'),
+			title: this.localize('appliedFilters:clearAll'),
 			isApplied: true
 		});
 
 		// clear all button appears if 4 or more filters are applied
 		return html`
 			<div style="display: none;">
-				<d2l-filter-dropdown id="d2l-insights-applied-filters-dropdown" total-selected-option-count="${filters.length}">
-					<d2l-filter-dropdown-category
+				<d2l-labs-filter-dropdown id="d2l-insights-applied-filters-dropdown" total-selected-option-count="${filters.length}">
+					<d2l-labs-filter-dropdown-category
 						disable-search
-						@d2l-filter-dropdown-option-change="${this._filterChangeHandler}"
+						@d2l-labs-filter-dropdown-option-change="${this._filterChangeHandler}"
 					>
-						${repeat(filters, (f) => `${f.id}:${f.isApplied}`, (item) => html`<d2l-filter-dropdown-option
+						${repeat(filters, (f) => `${f.id}:${f.isApplied}`, (item) => html`<d2l-labs-filter-dropdown-option
 								text="${item.title}"
 								value="${item.id}"
 								?selected="${item.isApplied}"
-							></d2l-filter-dropdown-option>`)}
+							></d2l-labs-filter-dropdown-option>`)}
 
-					</d2l-filter-dropdown-category>
-				</d2l-filter-dropdown>
+					</d2l-labs-filter-dropdown-category>
+				</d2l-labs-filter-dropdown>
 			</div>
 
 			${!this.skeleton
 				? html`
-					<d2l-applied-filters
+					<d2l-labs-applied-filters
 						for="d2l-insights-applied-filters-dropdown"
-						label-text="${this.localize('components.insights-applied-filters.label-text')}">
-					</d2l-applied-filters>`
+						label-text="${this.localize('appliedFilters:labelText')}">
+					</d2l-labs-applied-filters>`
 				: html``
 			}
 		`;

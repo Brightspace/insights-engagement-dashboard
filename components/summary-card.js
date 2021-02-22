@@ -10,6 +10,8 @@ import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton
  * @property {string} title
  * @property {string} value
  * @property {string} message
+ * @property {Boolean} wide
+ * @property {Boolean} tall
  * @fires d2l-labs-summary-card-value-click
  */
 class SummaryCard extends SkeletonMixin(Localizer(LitElement)) {
@@ -19,7 +21,9 @@ class SummaryCard extends SkeletonMixin(Localizer(LitElement)) {
 			value: { type: String, attribute: 'card-value' },
 			message: { type: String, attribute: 'card-message' },
 			isValueClickable: { type: Boolean, attribute: 'value-clickable' },
-			isLive: { type: Boolean, attribute: 'live' }
+			isLive: { type: Boolean, attribute: 'live' },
+			wide: { type: Boolean, attribute: true },
+			tall: { type: Boolean, attribute: true }
 		};
 	}
 
@@ -40,16 +44,34 @@ class SummaryCard extends SkeletonMixin(Localizer(LitElement)) {
 				border-width: 1.5px;
 				display: flex;
 				flex-direction: column;
-				height: 121px;
+				height: calc(var(--d2l-insights-engagement-small-card-height) - 30px - 3px);	/* 100% - 2 x padding - 2 x border */
 				padding: 15px 4px;
 				position: relative;
-				width: 280px;
+				width: calc(var(--d2l-insights-engagement-small-card-width) - 8px - 3px);		/* 100% - 2 x padding - 2 x border */
+			}
+
+			:host([wide]) .d2l-insights-summary-card {
+				width: calc(var(--d2l-insights-engagement-big-card-width) - 8px - 3px);			/* 100% - 2 x padding - 2 x border */
+			}
+
+			:host([tall]) .d2l-insights-summary-card {
+				height: calc(var(--d2l-insights-engagement-big-card-height) - 30px - 3px);	/* 100% - 2 x padding - 2 x border */
+			}
+
+			@media screen and (max-width: 615px) {
+				:host([tall]) .d2l-insights-summary-card {
+					height: calc(var(--d2l-insights-engagement-small-card-height) - 30px - 3px);	/* 100% - 2 x padding - 2 x border */
+				}
 			}
 
 			.d2l-insights-summary-card-body {
 				align-items: center;
 				display: flex;
 				height: 100%;
+			}
+
+			:host([wide]) .d2l-insights-summary-card-body {
+				justify-content: space-evenly;
 			}
 
 			.d2l-insights-summary-card-title {
@@ -69,8 +91,9 @@ class SummaryCard extends SkeletonMixin(Localizer(LitElement)) {
 				color: var(--d2l-color-ferrite);
 				font-size: 22px;
 				font-weight: bold;
-				margin: 10px;
+				margin: 12px;
 				margin-inline-start: 30px;
+				white-space: nowrap;
 			}
 
 			.d2l-insights-summary-card-button {
@@ -93,6 +116,12 @@ class SummaryCard extends SkeletonMixin(Localizer(LitElement)) {
 				margin-inline-start: 2%;
 				max-width: 180px;
 			}
+
+			:host([wide]) .d2l-insights-summary-card-message {
+				justify-content: space-evenly;
+				max-width: 250px;
+				width: 250px;
+			}
 		`];
 	}
 
@@ -104,7 +133,7 @@ class SummaryCard extends SkeletonMixin(Localizer(LitElement)) {
 	}
 
 	get summaryLabel() {
-		return this.localize('components.insights-summary-card.label', { value: this.value, message: this.message });
+		return this.localize('summaryCard:label', { value: this.value, message: this.message });
 	}
 
 	get ariaLive() {

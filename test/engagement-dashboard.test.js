@@ -2,12 +2,12 @@ import '../engagement-dashboard.js';
 import { expect, fixture, html } from '@open-wc/testing';
 import { LastAccessFilter } from '../components/last-access-card';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
+import { trySelect } from './tools.js';
 
 describe('d2l-insights-engagement-dashboard', () => {
 
 	describe('accessibility', () => {
-		it('should pass all axe tests', async function() {
-			this.timeout(7000);
+		it('should pass all axe tests', async() => {
 
 			const el = await fixture(html`<d2l-insights-engagement-dashboard
 				course-access-card courses-col discussions-card discussions-col
@@ -15,13 +15,10 @@ describe('d2l-insights-engagement-dashboard', () => {
 				system-access-card tic-col tic-grades-card
  				demo
  			></d2l-insights-engagement-dashboard>`);
-			// need for this delay might be tied to the mock data async loading in engagement-dashboard.js
-			await new Promise(resolve => setTimeout(resolve, 1500));
-
 			// close the default view dialog that shows up. It causes browsers on OSX to assign aria-attributes and
 			// roles to buttons in the background that are not normally allowed
-			const defaultViewDialog = el.shadowRoot.querySelector('d2l-insights-default-view-popup');
-			defaultViewDialog.opened = false;
+			const defaultViewDialog = trySelect(el.shadowRoot, 'd2l-insights-default-view-popup');
+			if (defaultViewDialog !== null) defaultViewDialog.opened = false;
 			// wait for the dialog closing animation to finish
 			await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -52,7 +49,7 @@ describe('d2l-insights-engagement-dashboard', () => {
 					demo
 				></d2l-insights-engagement-dashboard>`);
 			await new Promise(resolve => setTimeout(resolve, 100));
-
+			await el.updateComplete;
 			expect(el._serverData.selectedRoleIds).to.deep.equal([900, 1000, 11]);
 		});
 
@@ -76,6 +73,13 @@ describe('d2l-insights-engagement-dashboard', () => {
 			'time-in-content-vs-grade-card'
 		];
 
+		const smallCards = [
+			{ card: 'discussion-activity-card', property: 'discussions-card' },
+			{ card: 'overdue-assignments-card', property: 'overdue-card' },
+			{ card: 'results-card', property: 'results-card' },
+			{ card: 'last-access-card', property: 'system-access-card' }
+		];
+
 		[
 			allCards,
 			[],
@@ -96,10 +100,17 @@ describe('d2l-insights-engagement-dashboard', () => {
 						courses-col	discussions-col	grade-col last-access-col tic-col
 						demo
 					></d2l-insights-engagement-dashboard>`);
-					await new Promise(resolve => setTimeout(resolve, 100));
+					await new Promise(resolve => setTimeout(resolve, 200));
 
-					allCards.forEach(card => {
-						const renderedCard = el.shadowRoot.querySelector(`d2l-insights-${card}`);
+					const summaryContainerEl = await trySelect(el.shadowRoot
+						, 'd2l-summary-cards-container');
+
+					allCards.forEach(async card => {
+						let renderedCard = await trySelect(el.shadowRoot, `d2l-insights-${card}`, 10);
+						const smallCard = smallCards.find(c => c.card === card);
+						if (smallCard) {
+							renderedCard = await trySelect(summaryContainerEl.shadowRoot, `d2l-insights-${card}`, 10);
+						}
 						if (cards.includes(card)) {
 							expect(renderedCard, card).to.exist;
 						} else {
@@ -108,5 +119,53 @@ describe('d2l-insights-engagement-dashboard', () => {
 					});
 				})
 			);
+
+		const allCols = new Map([
+			['courses-col', 'Courses'],
+			['grade-col', 'Average Grade'],
+			['tic-col', 'Average Time in Content (mins)'],
+			['discussions-col', 'Average Discussion Activity'],
+			['last-access-col', 'Last Accessed System']
+		]);
+		const allColsKeys = Array.from(allCols.keys());
+
+		const sharedColumnsPerfCallback = (expectedList) => {
+			return async() => {
+				// cards aren't loaded for this test
+				const el = await fixture(html`<d2l-insights-engagement-dashboard
+					?courses-col="${expectedList.includes('courses-col')}"
+					?discussions-col="${expectedList.includes('discussions-col')}"
+					?grade-col="${expectedList.includes('grade-col')}"
+					?last-access-col="${expectedList.includes('last-access-col')}"
+					?tic-col="${expectedList.includes('tic-col')}"
+					demo
+				></d2l-insights-engagement-dashboard>`);
+
+				const usersTable = await trySelect(el.shadowRoot, 'd2l-insights-users-table', 80);
+				const innerTable = await trySelect(usersTable.shadowRoot, 'd2l-insights-table');
+				await innerTable.updateComplete;
+
+				const actualColHeaders = Array.from(innerTable.shadowRoot.querySelectorAll('th'));
+				expect(actualColHeaders.length).to.equal(expectedList.length + 2); // 2 extra for row-selector and name columns
+
+				expect(actualColHeaders[0].firstElementChild.nodeName).to.equal('D2L-INPUT-CHECKBOX');
+				expect(actualColHeaders[1].innerText.trim()).to.equal('Name');
+
+				expectedList.forEach((col, idx) => {
+					expect(actualColHeaders[idx + 2].innerText).to.equal(allCols.get(col));
+				});
+			};
+		};
+
+		[
+			allColsKeys,
+			[],
+			['grade-col', 'discussions-col'],
+			...allColsKeys.map(omitCol => allColsKeys.filter(col => col !== omitCol))
+		].forEach(expectedList => {
+			it(`should show selected columns in users table (${expectedList})`, async() => {
+				sharedColumnsPerfCallback(expectedList);
+			});
+		});
 	});
 });

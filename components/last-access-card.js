@@ -8,18 +8,20 @@ import { UrlState } from '../model/urlState';
 
 export const filterId = 'd2l-insights-last-access-card';
 const oneDayMillis = 86400000;
+const demoDate = 16088300239822; //for Visual-Diff test
 
 export class LastAccessFilter {
-	constructor(thresholdDays) {
+	constructor(thresholdDays, isDemo) {
 		this.isApplied = false;
 		this.thresholdDays = thresholdDays;
 		this._urlState = new UrlState(this);
+		this.isDemo = isDemo;
 	}
 
 	get id() { return filterId; }
 
 	get title() {
-		return 'components.insights-engagement-dashboard.lastSystemAccessHeading';
+		return 'dashboard:lastSystemAccessHeading';
 	}
 
 	filter(record, userDictionary) {
@@ -39,8 +41,9 @@ export class LastAccessFilter {
 	}
 
 	isWithoutRecentAccess(user) {
+		const currentDate = this.isDemo ? demoDate : Date.now();
 		return !user[USER.LAST_SYS_ACCESS] ||
-			((Date.now() - user[USER.LAST_SYS_ACCESS]) > this.thresholdDays * oneDayMillis);
+			((currentDate - user[USER.LAST_SYS_ACCESS]) > this.thresholdDays * oneDayMillis);
 	}
 }
 
@@ -52,26 +55,30 @@ class LastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	static get properties() {
 		return {
-			data: { type: Object, attribute: false }
+			data: { type: Object, attribute: false },
+			wide: { type: Boolean, attribute: true },
+			tall: { type: Boolean, attribute: true }
 		};
 	}
 
 	constructor() {
 		super();
 		this.data = {};
+		this.wide = false;
+		this.tall = false;
 	}
 
 	get _cardMessage() {
 		return this.filter.thresholdDays !== 1 ?
 			this.localize(
-				'components.insights-engagement-dashboard.lastSystemAccessMessage',
+				'dashboard:lastSystemAccessMessage',
 				{ thresholdDays: this.filter.thresholdDays }
 			) :
-			this.localize('components.insights-engagement-dashboard.lastSystemAccessMessageOneDay');
+			this.localize('dashboard:lastSystemAccessMessageOneDay');
 	}
 
 	get _cardTitle() {
-		return this.localize('components.insights-engagement-dashboard.lastSystemAccessHeading');
+		return this.localize('dashboard:lastSystemAccessHeading');
 	}
 
 	get filter() {
@@ -93,6 +100,8 @@ class LastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				card-message="${this._cardMessage}"
 				@d2l-labs-summary-card-value-click=${this._valueClickHandler}
 				?skeleton="${this.skeleton}"
+				?wide="${this.wide}"
+				?tall="${this.tall}"
 			></d2l-labs-summary-card>
 		`;
 	}

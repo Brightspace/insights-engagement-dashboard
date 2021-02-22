@@ -1,4 +1,4 @@
-import { fetchCachedChildren, fetchLastSearch, fetchRelevantChildren, fetchRoles, orgUnitSearch, saveSettings } from '../../model/lms';
+import { fetchCachedChildren, fetchData, fetchLastSearch, fetchRelevantChildren, fetchRoles, fetchUserData, orgUnitSearch, saveSettings } from '../../model/dataApiClient';
 import { expect } from '@open-wc/testing';
 import fetchMock from 'fetch-mock/esm/client';
 
@@ -311,6 +311,41 @@ describe('Lms', () => {
 			expect(request.headers.get('content-type')).to.equal('application/json');
 			expect(request.headers.get('x-csrf-token')).to.equal('token');
 			expect(await request.json()).to.deep.equal(settings);
+		});
+	});
+
+	describe('fetchData', () => {
+		it('should throw an error if the query fails', async() => {
+			fetchMock.get('', 403);
+			let error;
+			try {
+				await fetchData({});
+			} catch (err) {
+				error = err.toString();
+			}
+			expect(error).to.equal('Error: query-failure');
+		});
+	});
+
+	describe('fetchUserData', () => {
+		it('should throw an error if the query fails', async() => {
+			fetchMock.post('path:/d2l/lp/auth/oauth2/token', {});
+			fetchMock.post('https://data.example.com/unstable/insights/data/userdrill', 403);
+			let error;
+			try {
+				await fetchUserData([], 1234, 'https://data.example.com');
+			} catch (err) {
+				error = err.toString();
+			}
+			expect(error).to.equal('Error: query-failure');
+		});
+
+		it('should not add a redundant slash', async() => {
+			fetchMock.post('path:/d2l/lp/auth/oauth2/token', {});
+			fetchMock.post('https://data.example.com/unstable/insights/data/userdrill', { the: 'data' });
+			// note trailing slash here
+			const actual = await fetchUserData([], 1234, 'https://data.example.com/');
+			expect(actual).to.deep.equal({ the: 'data' });
 		});
 	});
 });

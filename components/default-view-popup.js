@@ -45,7 +45,7 @@ class DefaultViewPopup extends RtlMixin(Localizer(LitElement)) {
 
 	get _displayData() {
 		return this.data.defaultViewPopupDisplayData.map((item) => {
-			return this.localize('components.tree-filter.node-name', { orgUnitName: item.name, id: item.id });
+			return this.localize('treeFilter:nodeName', { orgUnitName: item.name, id: item.id });
 		});
 	}
 
@@ -62,20 +62,20 @@ class DefaultViewPopup extends RtlMixin(Localizer(LitElement)) {
 		return html`
 			<d2l-dialog
 				?opened="${this.opened}"
-				title-text="${this.localize('components.insights-default-view-popup.title')}"
+				title-text="${this.localize('defaultViewPopup:title')}"
 					width="615"
 					@d2l-dialog-close="${this._closeDialog}">
 
 				${this._renderResultsDescription({ displayData, numDefaultCourses: displayData.length, numDefaultSemesters: this._defaultSemestersCount })}
 
 				<p class="d2l-insights-default-view-popup-description">
-					${this.localize('components.insights-default-view-popup.promptUseFilters')}
+					${this.localize('defaultViewPopup:promptUseFilters')}
 				</p>
 
 				${this._renderExpandableCoursesList(displayData)}
 
 				<d2l-button primary slot="footer" @click="${this._closeDialog}">
-					${this.localize('components.insights-default-view-popup.buttonOk')}
+					${this.localize('defaultViewPopup:buttonOk')}
 				</d2l-button>
 			</d2l-dialog>
 		`;
@@ -85,13 +85,13 @@ class DefaultViewPopup extends RtlMixin(Localizer(LitElement)) {
 		if (displayData.length) {
 			return html`
 				<p class="d2l-insights-default-view-popup-description">
-				${this.localize('components.insights-default-view-popup.resultsFromNRecentCourses', { numDefaultCourses })}
+				${this.localize('defaultViewPopup:resultsFromNRecentCourses', { numDefaultCourses })}
 				</p>`;
 		}
 
 		return html`
 			<p class="d2l-insights-default-view-popup-description">
-			${this.localize('components.insights-default-view-popup.emptyResultsFromNRecentSemesters', { numDefaultSemesters })}
+			${this.localize('defaultViewPopup:emptyResultsFromNRecentSemesters', { numDefaultSemesters })}
 			</p>`;
 	}
 
@@ -102,8 +102,8 @@ class DefaultViewPopup extends RtlMixin(Localizer(LitElement)) {
 
 		return html`
 			<d2l-insights-expander-with-control
-				control-expanded-text="${this.localize('components.insights-default-view-popup.collapseDefaultCourseList')}"
-				control-collapsed-text="${this.localize('components.insights-default-view-popup.expandDefaultCourseList')}"
+				control-expanded-text="${this.localize('defaultViewPopup:collapseDefaultCourseList')}"
+				control-collapsed-text="${this.localize('defaultViewPopup:expandDefaultCourseList')}"
 				@d2l-insights-expander-with-control-expanded="${this._resize}"
 				@d2l-insights-expander-with-control-collapsed="${this._resize}">
 

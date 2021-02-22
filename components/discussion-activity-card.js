@@ -15,11 +15,19 @@ const filterId = 'd2l-insights-discussion-activity-card';
 
 export class DiscussionActivityFilter extends CategoryFilter {
 	constructor() {
+
+		const all = new Set([
+			RECORD.DISCUSSION_ACTIVITY_READS,
+			RECORD.DISCUSSION_ACTIVITY_THREADS,
+			RECORD.DISCUSSION_ACTIVITY_REPLIES
+		]);
+
 		super(
 			filterId,
-			'components.insights-discussion-activity-card.cardTitle',
+			'discussionActivityCard:cardTitle',
 			record => [...this.selectedCategories].some(category => record[category] > 0),
-			'daf'
+			'daf',
+			all
 		);
 		this._urlState = new UrlState(this);
 	}
@@ -43,7 +51,8 @@ export class DiscussionActivityFilter extends CategoryFilter {
 class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
-			data: { type: Object, attribute: false }
+			data: { type: Object, attribute: false },
+			wide: { type: Boolean, attribute: true }
 		};
 	}
 
@@ -66,7 +75,7 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				height: 121px;
 				padding: 15px 4px;
 				position: relative;
-				width: 280px;
+				width: calc(var(--d2l-insights-engagement-small-card-width) - 3px - 8px); /* width - 2 x border - 2 x padding */
 			}
 
 			.d2l-insights-discussion-activity-card-body {
@@ -82,6 +91,10 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				font-weight: bold;
 				text-indent: 3%;
 			}
+
+			:host([wide]) .d2l-insights-summary-discussion-activity-card {
+				width: calc(var(--d2l-insights-engagement-big-card-width) - 3px - 8px); /* width - 2 x border - 2 x padding */
+			}
 		`];
 	}
 
@@ -90,14 +103,14 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _cardTitle() {
-		return this.localize('components.insights-discussion-activity-card.cardTitle');
+		return this.localize('discussionActivityCard:cardTitle');
 	}
 
 	get _legendLabels() {
 		return [
-			this.localize('components.insights-discussion-activity-card.threads'),
-			this.localize('components.insights-discussion-activity-card.replies'),
-			this.localize('components.insights-discussion-activity-card.reads')
+			this.localize('discussionActivityCard:threads'),
+			this.localize('discussionActivityCard:replies'),
+			this.localize('discussionActivityCard:reads')
 		];
 	}
 
@@ -114,19 +127,19 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _chartDescriptionTextLabel() {
-		return this.localize('components.insights-discussion-activity-card.textLabel');
+		return this.localize('discussionActivityCard:textLabel');
 	}
 
 	toolTipTextThreads(numberOfUsers) {
-		return this.localize('components.insights-discussion-activity-card.toolTipThreads', { numberOfUsers });
+		return this.localize('discussionActivityCard:toolTipThreads', { numberOfUsers });
 	}
 
 	toolTipTextReplies(numberOfUsers) {
-		return this.localize('components.insights-discussion-activity-card.toolTipReplies', { numberOfUsers });
+		return this.localize('discussionActivityCard:toolTipReplies', { numberOfUsers });
 	}
 
 	toolTipTextReads(numberOfUsers) {
-		return this.localize('components.insights-discussion-activity-card.toolTipReads', { numberOfUsers });
+		return this.localize('discussionActivityCard:toolTipReads', { numberOfUsers });
 	}
 
 	render() {
@@ -153,7 +166,7 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			chart: {
 				type: 'pie',
 				height: 100,
-				width: 280
+				width: this.wide ? 583 : 280 // width - 2 x border - 2 x padding
 			},
 			title: {
 				text: this._cardTitle, // override default title
@@ -180,7 +193,8 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 						}
 					},
 					showInLegend: true,
-					slicedOffset: 7
+					slicedOffset: 7,
+					center: this.wide ? ['40%', '40%'] : [null, null]
 				},
 				series: {
 					point: {
@@ -206,7 +220,7 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			},
 			legend: {
 				layout: 'vertical',
-				align: 'right',
+				align: this.wide ? 'center' : 'right',
 				verticalAlign: 'middle',
 				itemMarginBottom: 15,
 				itemStyle: {
@@ -215,11 +229,12 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				},
 				symbolRadius: 0,
 				margin: 20,
+				x: this.wide ? 100 : 0,
 				navigation: {
 					enabled: false
 				}
 			},
-			series: {
+			series: [{
 				colorByPoint: true,
 				data: [{
 					name: that._legendLabels[0],
@@ -251,7 +266,7 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 						return `${ix}, ${point.y}.`;
 					}
 				}
-			},
+			}],
 			accessibility: {
 				screenReaderSection: {
 					beforeChartFormat: BEFORE_CHART_FORMAT
@@ -289,8 +304,8 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				accessibility: {
 					legend: {
 						// highcharts will substitute the actual item name, so we pass the placeholder to localize()
-						legendItem: this.localize('components.insights-discussion-activity-card.legendItem', { itemName: '{itemName}' }),
-						legendLabel: this.localize('components.insights-discussion-activity-card.legendLabel')
+						legendItem: this.localize('discussionActivityCard:legendItem', { itemName: '{itemName}' }),
+						legendLabel: this.localize('discussionActivityCard:legendLabel')
 					}
 				}
 			}

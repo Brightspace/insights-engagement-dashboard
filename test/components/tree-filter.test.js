@@ -549,6 +549,80 @@ describe('Tree', () => {
 			expect(dynamicTree.isOpenable(2352235)).to.be.a('Boolean');
 		});
 	});
+
+	describe('pruning', () => {
+		const singleDepartmentNodes = [
+			[6606, 'Org', mockOuTypes.organization, [0]],
+			[1001, 'Department 1', mockOuTypes.department, [6606]],
+
+			[2, 'Course 2', mockOuTypes.course, [1001]],
+			[1, 'Course 1', mockOuTypes.course, [1001]],
+
+			[11, 'Semester 1', mockOuTypes.semester, [6606]],
+			[12, 'Semester 2', mockOuTypes.semester, [6606]],
+
+			[111, 'Course 1 / Semester 1', mockOuTypes.courseOffering, [1, 11]],
+			[211, 'Course 2 / Semester 1', mockOuTypes.courseOffering, [2, 12]]
+		];
+
+		const singleCourseNodes = [
+			[6606, 'Org', mockOuTypes.organization, [0]],
+			[1001, 'Department 1', mockOuTypes.department, [6606]],
+
+			[1, 'Course 1', mockOuTypes.course, [1001]],
+
+			[11, 'Semester 1', mockOuTypes.semester, [6606]],
+			[12, 'Semester 2', mockOuTypes.semester, [6606]],
+
+			[111, 'Course 1 / Semester 1', mockOuTypes.courseOffering, [1, 11]],
+			[112, 'Course 1 / Semester 2', mockOuTypes.courseOffering, [1, 12]]
+		];
+
+		const singleCourseOfferingNodes = [
+			[6606, 'Org', mockOuTypes.organization, [0]],
+			[1001, 'Department 1', mockOuTypes.department, [6606]],
+
+			[1, 'Course 1', mockOuTypes.course, [1001]],
+
+			[11, 'Semester 1', mockOuTypes.semester, [6606]],
+			[12, 'Semester 2', mockOuTypes.semester, [6606]],
+
+			[111, 'Course 1 / Semester 1', mockOuTypes.courseOffering, [1, 11]]
+		];
+
+		describe('getChildIdsForDisplay', () => {
+			it('should return non-pruned children', () => {
+				expect(staticTree.getChildIdsForDisplay(6606)).to.deep.equal([1001, 1002, 1003]);
+
+				let tree = new Tree({ nodes: singleDepartmentNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
+				expect(tree.getChildIdsForDisplay(6606)).to.deep.equal([1, 2]);
+
+				tree = new Tree({ nodes: singleCourseNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
+				expect(tree.getChildIdsForDisplay(6606)).to.deep.equal([111, 112]);
+
+				tree = new Tree({ nodes: singleCourseOfferingNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
+				expect(tree.getChildIdsForDisplay(6606)).to.deep.equal([111]);
+			});
+
+			it('should skip pruning for a dynamic tree', () => {
+				const tree = new Tree({ nodes: singleCourseOfferingNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: true });
+				expect(tree.getChildIdsForDisplay(6606)).to.deep.equal([1001]);
+			});
+
+			it('should return non-pruned children for filtered part of the tree', () => {
+				const tree = new Tree({ nodes: singleDepartmentNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
+				tree.setAncestorFilter([12]);
+				expect(tree.getChildIdsForDisplay(6606)).to.deep.equal([211]);
+			});
+		});
+
+		describe('search', () => {
+			it('should return pruned nodes as well', async() => {
+				const tree = new Tree({ nodes: singleCourseOfferingNodes, selectedIds, leafTypes, invisibleTypes, isDynamic: false });
+				expect(tree.getMatchingIds('1')).to.deep.equal([1001, 111, 1]);
+			});
+		});
+	});
 });
 
 describe('d2l-insights-tree-filter', () => {

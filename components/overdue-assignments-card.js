@@ -6,7 +6,7 @@ import { RECORD } from '../consts';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 import { UrlState } from '../model/urlState';
 
-const filterId = 'd2l-insights-overdue-assignments-card';
+export const OVERDUE_ASSIGNMENTS_FILTER_ID = 'd2l-insights-overdue-assignments-card';
 
 export class OverdueAssignmentsFilter {
 	constructor() {
@@ -14,9 +14,9 @@ export class OverdueAssignmentsFilter {
 		this._urlState = new UrlState(this);
 	}
 
-	get id() { return filterId; }
+	get id() { return OVERDUE_ASSIGNMENTS_FILTER_ID; }
 
-	get title() { return 'components.insights-engagement-dashboard.overdueAssignmentsHeading'; }
+	get title() { return 'dashboard:overdueAssignmentsHeading'; }
 
 	filter(record) {
 		return record[RECORD.OVERDUE] > 0;
@@ -41,25 +41,29 @@ class OverdueAssignmentsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	static get properties() {
 		return {
-			data: { type: Object, attribute: false }
+			data: { type: Object, attribute: false },
+			wide: { type: Boolean, attribute: true },
+			tall: { type: Boolean, attribute: true }
 		};
 	}
 
 	constructor() {
 		super();
 		this.data = {};
+		this.wide = false;
+		this.tall = false;
 	}
 
 	get _cardMessage() {
-		return this.localize('components.insights-engagement-dashboard.overdueAssignments');
+		return this.localize('dashboard:overdueAssignments');
 	}
 
 	get _cardTitle() {
-		return this.localize('components.insights-engagement-dashboard.overdueAssignmentsHeading');
+		return this.localize('dashboard:overdueAssignmentsHeading');
 	}
 
 	get _cardValue() {
-		return this.data.withoutFilter(filterId).records
+		return this.data.withoutFilter(OVERDUE_ASSIGNMENTS_FILTER_ID).records
 			.reduce((acc, record) => {
 				if (!acc.has(record[RECORD.USER_ID]) && record[RECORD.OVERDUE] !== 0) {
 					acc.add(record[RECORD.USER_ID]);
@@ -69,7 +73,7 @@ class OverdueAssignmentsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get filter() {
-		return this.data.getFilter(filterId);
+		return this.data.getFilter(OVERDUE_ASSIGNMENTS_FILTER_ID);
 	}
 
 	render() {
@@ -82,6 +86,8 @@ class OverdueAssignmentsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				card-message="${this._cardMessage}"
 				@d2l-labs-summary-card-value-click=${this._valueClickHandler}
 				?skeleton="${this.skeleton}"
+				?wide="${this.wide}"
+				?tall="${this.tall}"
 			></d2l-labs-summary-card>
 		`;
 	}

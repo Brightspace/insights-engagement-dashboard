@@ -1,6 +1,6 @@
 import { action, computed, decorate, observable } from 'mobx';
 import { COURSE_OFFERING, USER } from '../consts';
-import { fetchCachedChildren, fetchLastSearch } from './lms.js';
+import { fetchCachedChildren, fetchLastSearch } from './dataApiClient.js';
 import { OrgUnitSelectorFilter, RoleSelectorFilter, SemesterSelectorFilter } from './selectorFilters.js';
 import { Tree } from '../components/tree-filter';
 
@@ -14,6 +14,7 @@ export class Data {
 		this.userDictionary = null;
 
 		// @observables
+		this.isQueryError = false;
 		this.isLoading = true;
 		this.serverData = {
 			records: [],
@@ -31,7 +32,8 @@ export class Data {
 			selectedOrgUnitIds: [],
 			selectedRolesIds: includeRoles || [],
 			selectedSemestersIds: [],
-			defaultViewOrgUnitIds: null
+			defaultViewOrgUnitIds: null,
+			isStudentSuccessSys: false
 		};
 
 		this._selectorFilters = {
@@ -41,7 +43,7 @@ export class Data {
 		};
 	}
 
-	loadData({ newRoleIds = null, newSemesterIds = null, newOrgUnitIds = null, defaultView = false }) {
+	async loadData({ newRoleIds = null, newSemesterIds = null, newOrgUnitIds = null, defaultView = false }) {
 		this.isLoading = true;
 		const filters = {
 			roleIds: newRoleIds || this._selectorFilters.role.selected,
@@ -49,7 +51,14 @@ export class Data {
 			orgUnitIds: newOrgUnitIds || this._selectorFilters.orgUnit.selected,
 			defaultView
 		};
-		this.recordProvider(filters).then(data => this.onServerDataReload(data));
+		try {
+			const data = await this.recordProvider(filters);
+			this.onServerDataReload(data);
+			this.isQueryError = false;
+		} catch (ignored) {
+			this.onServerDataReload(this.serverData);
+			this.isQueryError = true;
+		}
 	}
 
 	// @action
@@ -75,9 +84,7 @@ export class Data {
 		this.userDictionary = new Map(newServerData.users.map(user => [user[USER.ID], user]));
 		this.isLoading = false;
 		this.serverData = newServerData;
-		if (this.serverData.selectedSemestersIds) {
-			this._selectorFilters.semester.selected = this.serverData.selectedSemestersIds;
-		}
+		this._selectorFilters.semester.selected = this.serverData.selectedSemestersIds || [];
 	}
 
 	set selectedRoleIds(newRoleIds) {
@@ -141,6 +148,10 @@ export class Data {
 		return this.serverData.isDefaultView;
 	}
 
+	get semesterTypeId() {
+		return this.serverData.semesterTypeId;
+	}
+
 	// @computed
 	get records() {
 		return this.serverData.records.filter(record => {
@@ -153,6 +164,10 @@ decorate(Data, {
 	serverData: observable,
 	orgUnitTree: observable,
 	isLoading: observable,
+	isQueryError: observable,
 	records: computed,
+	selectedOrgUnitIds: computed,
+	selectedRoleIds: computed,
+	selectedSemesterIds: computed,
 	onServerDataReload: action
 });

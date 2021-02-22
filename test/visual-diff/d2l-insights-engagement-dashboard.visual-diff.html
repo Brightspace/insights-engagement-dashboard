@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" data-timezone='{"name":"Canada - Toronto","identifier":"America/Chicago"}'>
+	<head>
+		<link rel="stylesheet" href="/node_modules/@brightspace-ui/core/components/demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			/* eslint-disable no-console */
+
+			import '@brightspace-ui/core/components/demo/demo-page.js';
+			import '../../engagement-dashboard.js';
+			import fetchMock from 'fetch-mock/esm/client';
+
+			// setup fetchMock to print network comunication for demo purposes
+			const fetch = fetchMock.sandbox();
+
+			fetch.mock(
+				async(url, opts) => {
+					console.log(`${opts.method} ${url}`);
+					console.dir('Body: ');
+					const body = JSON.parse(await opts.body);
+					console.dir(body);
+
+					// verifies that only telemetry is sent on demo page
+					const endpoint = 'https://example.com/api/events/';
+					console.assert(url === endpoint, { endpoint, body });
+					return true;
+				},
+				200
+			);
+
+			window.d2lfetch = { fetch };
+		</script>
+		<title>d2l-insights-engagement-dashboard</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+	</head>
+	<style>
+		:root {
+			--d2l-loading-spinner-color: rgb(230, 234, 240);
+		}
+		html, body {
+			min-height: 100%;
+		}
+		body {
+			background-color: white;
+		}
+	</style>
+	<body>
+		<d2l-insights-engagement-dashboard
+			demo
+			org-unit-id="6606"
+			telemetry-endpoint="https://example.com/api/events/"
+			telemetry-id="cfc669e0-509e-4ed0-b932-4a7ec5c2d8c7"
+			course-access-card courses-col discussions-card discussions-col
+			grade-col grades-card last-access-col overdue-card results-card
+			system-access-card tic-col tic-grades-card
+			include-roles="600,700"
+		></d2l-insights-engagement-dashboard>
+	</body>
+</html>

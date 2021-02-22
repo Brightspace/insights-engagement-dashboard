@@ -34,6 +34,7 @@ module.exports = config => {
 			browserDisconnectTolerance: 1, // default 0
 			browserNoActivityTimeout: 4 * 60 * 1000, //default 10000
 			captureTimeout: 4 * 60 * 1000, //default 60000
+			browserConsoleLogOptions: { level: 'log', format: '%b %T: %m', terminal: true },
 			files: [
 				// runs all files ending with .test in the test folder,
 				// can be overwritten by passing a --grep flag. examples:
@@ -48,7 +49,8 @@ module.exports = config => {
 				nodeResolve: true,
 			},
 			sauceLabs: {
-				testName: 'Unit Tests'
+				testName: 'Unit Tests',
+				idleTimeout: 300 // 5 minutes
 			},
 			customLaunchers: customLaunchers,
 			browsers: Object.keys(customLaunchers),
