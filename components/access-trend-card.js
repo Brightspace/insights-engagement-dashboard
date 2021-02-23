@@ -16,7 +16,8 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			data: { type: Object, attribute: false },
 			userData: { type: Object, attribute: false },
 			selectedCourses: { type: Object, attribute: false },
-			user: { type: Object, attribute: false }
+			user: { type: Object, attribute: false },
+			isDemo: { type: Boolean, attribute: 'demo' },
 		};
 	}
 
@@ -115,6 +116,8 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			},
 
 			xAxis: {
+				startOnTick: true,
+				endOnTick: true,
 				title: {
 					text: this._xAxisTitle,
 
@@ -150,6 +153,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			},
 
 			yAxis: {
+				tickPositions: this.isDemo ? [0, 5, 10] : undefined,
 				title: {
 					text: this._yAxisTitle,
 					style: {
@@ -170,7 +174,19 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			},
 
 			tooltip: {
-				enabled: false
+				enabled: true,
+				backgroundColor: 'var(--d2l-color-ferrite)',
+				borderWidth: 0,
+				borderRadius: 15,
+				shadow: false,
+				padding: 10,
+
+				style: {
+					color: 'var(--d2l-color-white)',
+					fontSize: '10px',
+					fontFamily: 'Lato',
+					lineHeight: '18px'
+				}
 			},
 
 			plotOptions: {
@@ -267,6 +283,9 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this._trendData
 			.map((course) => ({
 				...course,
+				marker:{
+					enabled: course.data && course.data.length === 1
+				},
 				// It is read as `Course 1, series 1 of 3 with 8 data points.`
 				name: this._orgUnitName(course.orgUnitId),
 				lineColor:  'var(--d2l-color-white)',
