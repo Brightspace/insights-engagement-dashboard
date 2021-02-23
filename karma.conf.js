@@ -29,6 +29,9 @@ module.exports = config => {
 				mocha: {
 					timeout: 20000 // 20 seconds
 				}
+			},
+			proxies: {
+				'/mockServiceWorker.js': '/base/mockServiceWorker.js',
 			}
 		}),
 	);

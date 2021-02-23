@@ -1,14 +1,41 @@
 import '../../components/user-drill-view';
 
-import { expect, fixture, html, oneEvent } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent, waitUntil, nextFrame } from '@open-wc/testing';
+import { rest, setupWorker } from 'msw';
 import { trySelect, trySelectAll } from '../tools.js';
-import fetchMock from 'fetch-mock/esm/client';
 import { flush } from '@polymer/polymer/lib/utils/render-status.js';
 import { mockOuTypes } from '../model/mocks';
 import noProfile from '../responses/no_profile';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 import { setStateForTesting } from '../../model/urlState';
 import sinon from 'sinon/pkg/sinon-esm.js';
+
+let handle;
+// copies resolve function into handle variable
+// primise is resolved when resolve function is called
+const profileCallPromise = new Promise(res => handle = res);
+
+const worker = setupWorker(
+	rest.get('/d2l/lp/auth/xsrf-tokens', async(req, res, ctx) => {
+		return res(ctx.json('token'));
+	}),
+
+	rest.get('/d2l/api/hm/users/232', async(req, res, ctx) => {
+		setTimeout(handle, 50);
+		return res(ctx.json(noProfile));
+	}),
+
+	rest.post('/unstable/insights/data/userdrill', async(req, res, ctx) => {
+		return res(
+			ctx.delay(100),
+			ctx.json({
+				userGrades: [],
+				userContent: [],
+				userCourseAccess: []
+			}));
+	})
+);
+worker.start({ quiet: true });
 
 describe('d2l-insights-user-drill-view', () => {
 	setStateForTesting('v', 'user,232');
@@ -78,6 +105,8 @@ describe('d2l-insights-user-drill-view', () => {
 		flush();
 	});
 
+	after(() => worker.stop());
+
 	describe('constructor', () => {
 		it('should construct', () => {
 			runConstructor('d2l-insights-user-drill-view');
@@ -93,14 +122,7 @@ describe('d2l-insights-user-drill-view', () => {
 
 	describe('render', () => {
 
-		const temp = window.d2lfetch.fetch;
-		let handle;
-		let profileCallPromise;
-
 		before(() => {
-
-			profileCallPromise = new Promise(res => handle = res);
-
 			D2L.LP = {
 				Web: {
 					Authentication: {
@@ -110,17 +132,10 @@ describe('d2l-insights-user-drill-view', () => {
 					}
 				}
 			};
-			const profileCalled = () => {
-				setTimeout(handle, 50);
-				return noProfile;
-			};
-			window.d2lfetch.fetch = fetchMock.sandbox().get('path:/d2l/api/hm/users/232', profileCalled);
-
 		});
 
 		after(() => {
 			D2L.LP = {};
-			window.d2lfetch.fetch = temp;
 		});
 
 		it('should render proper title and sub-title', async() => {

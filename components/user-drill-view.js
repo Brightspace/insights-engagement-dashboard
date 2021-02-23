@@ -17,7 +17,6 @@ import { css, html } from 'lit-element/lit-element.js';
 import { RECORD, USER } from '../consts';
 import { createComposeEmailPopup } from './email-integration';
 import { ExportData } from '../model/exportData';
-import { fetchUserData as fetchDemoUserData } from '../model/fake-dataApiClient.js';
 import { fetchUserData } from '../model/dataApiClient.js';
 import { formatPercent } from '@brightspace-ui/intl';
 import { Localizer } from '../locales/localizer';
@@ -333,7 +332,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		if (!this.__userData) {
 
 			this.__userData = new UserData({
-				fetchUserData : this.isDemo ? fetchDemoUserData : fetchUserData,
+				fetchUserData : fetchUserData,
 				metronEndpoint: this.metronEndpoint
 			});
 		}
