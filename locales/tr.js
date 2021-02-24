@@ -225,7 +225,7 @@ export default {
 
 	"coursesLegend:coursesLegendFilter": "Dersler",
 
-	"contentViewsCard:contentViewOverTime": "Zaman İçinde İçerik Görüntüleme",
+	"contentViewsCard:contentViewOverTime": "Zaman İçinde İçerik Görüntülenmeleri",
 	"contentViewsCard:viewCount": "Görüntüleme Sayısı",
 	"contentViewsCard:date": "Tarih",
 
@@ -234,6 +234,6 @@ export default {
 	"gradesTrendCard:currentGrade": "Mevcut Not (%)",
 
 	"chart:loading": "Yükleniyor...",
-	"chart:resetZoom": "Reset zoom",
-	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:resetZoom": "Yakınlaştırmayı sıfırla",
+	"chart:resetZoomTitle": "Yakınlaştırma düzeyini 1:1'e sıfırla",
 };
