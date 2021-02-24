@@ -16,7 +16,7 @@ const dataEndpoint = '/unstable/insights/data/engagement';
 const relevantChildrenEndpoint = orgUnitId => `/d2l/api/ap/unstable/insights/data/orgunits/${orgUnitId}/children`;
 const ouSearchEndpoint = '/d2l/api/ap/unstable/insights/data/orgunits';
 const saveSettingsEndpoint = '/d2l/api/ap/unstable/insights/mysettings/engagement';
-const userDrillDataEndpoint = 'unstable/insights/data/userdrill';
+const userDrillDataEndpoint = '/unstable/insights/data/userdrill';
 
 /**
  * @param {[Number]} roleIds
@@ -26,7 +26,7 @@ const userDrillDataEndpoint = 'unstable/insights/data/userdrill';
  * @param {String} metronEndpoint
  */
 export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [], defaultView = false }, metronEndpoint) {
-	const url = new URL(`${metronEndpoint}${dataEndpoint}`);
+	const url = new URL(dataEndpoint, metronEndpoint);
 
 	if (roleIds) {
 		url.searchParams.set('selectedRolesCsv', roleIds.join(','));
@@ -61,7 +61,7 @@ export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [
  * @param {String} metronEndpoint
  */
 export async function fetchUserData(orgUnitIds = [], userId = 0, metronEndpoint) {
-	const url = metronEndpoint + (metronEndpoint.endsWith('/') ? '' : '/') + userDrillDataEndpoint;
+	const url = new URL(userDrillDataEndpoint, metronEndpoint);
 	const userDrillBody = {
 		selectedUserId: userId,
 		selectedOrgUnitIds: orgUnitIds,
