@@ -235,5 +235,5 @@ export default {
 
 	"chart:loading": "Chargement…",
 	"chart:resetZoom": "Réinitialiser le zoom",
-	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:resetZoomTitle": "Réinitialiser le niveau de zoom 1:1",
 };

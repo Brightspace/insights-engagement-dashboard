@@ -225,7 +225,7 @@ export default {
 
 	"coursesLegend:coursesLegendFilter": "المقررات التعليمية",
 
-	"contentViewsCard:contentViewOverTime": "عرض المحتوى على مرّ الوقت",
+	"contentViewsCard:contentViewOverTime": "مشاهدات المحتوى على مرّ الوقت",
 	"contentViewsCard:viewCount": "عرض العدد",
 	"contentViewsCard:date": "التاريخ",
 
@@ -234,6 +234,6 @@ export default {
 	"gradesTrendCard:currentGrade": "العلامة الحالية (%)",
 
 	"chart:loading": "يتم الآن التحميل...",
-	"chart:resetZoom": "Reset zoom",
-	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:resetZoom": "إعادة تعيين التكبير/التصغير",
+	"chart:resetZoomTitle": "إعادة تعيين مستوى التكبير/التصغير 1:1",
 };

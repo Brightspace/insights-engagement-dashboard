@@ -225,7 +225,7 @@ export default {
 
 	"coursesLegend:coursesLegendFilter": "コース",
 
-	"contentViewsCard:contentViewOverTime": "一定期間にわたるコース表示",
+	"contentViewsCard:contentViewOverTime": "一定期間にわたるコンテンツビュー",
 	"contentViewsCard:viewCount": "表示回数",
 	"contentViewsCard:date": "日付",
 
@@ -234,6 +234,6 @@ export default {
 	"gradesTrendCard:currentGrade": "現在の成績（%）",
 
 	"chart:loading": "読み込み中...",
-	"chart:resetZoom": "Reset zoom",
-	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:resetZoom": "ズームのリセット",
+	"chart:resetZoomTitle": "ズームレベルを 1:1 にリセット",
 };

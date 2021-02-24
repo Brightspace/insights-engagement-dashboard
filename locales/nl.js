@@ -225,7 +225,7 @@ export default {
 
 	"coursesLegend:coursesLegendFilter": "Cursussen",
 
-	"contentViewsCard:contentViewOverTime": "Inhoudsoverzicht in de loop der tijd",
+	"contentViewsCard:contentViewOverTime": "Inhoudsoverzichten in de loop der tijd",
 	"contentViewsCard:viewCount": "Aantal weergaven",
 	"contentViewsCard:date": "Datum",
 
@@ -234,6 +234,6 @@ export default {
 	"gradesTrendCard:currentGrade": "Huidige score (%)",
 
 	"chart:loading": "Laden...",
-	"chart:resetZoom": "Reset zoom",
-	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:resetZoom": "Zoom opnieuw instellen",
+	"chart:resetZoomTitle": "Zoomniveau opnieuw instellen op 1:1",
 };
