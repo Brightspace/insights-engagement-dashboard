@@ -18,7 +18,7 @@ const ouSearchEndpoint = '/d2l/api/ap/unstable/insights/data/orgunits';
 const saveSettingsEndpoint = '/d2l/api/ap/unstable/insights/mysettings/engagement';
 const userDrillDataEndpoint = 'unstable/insights/data/userdrill';
 
-function concatMetronUlr(endpoint, apiPath) {
+function concatMetronUrl(endpoint, apiPath) {
 	if (apiPath.startsWith('/')) {
 		throw new Error('Api path should not have leading / symbol.');
 	}
@@ -34,7 +34,7 @@ function concatMetronUlr(endpoint, apiPath) {
  * @param {String} metronEndpoint
  */
 export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [], defaultView = false }, metronEndpoint) {
-	const url = new URL(concatMetronUlr(metronEndpoint, dataEndpoint));
+	const url = new URL(concatMetronUrl(metronEndpoint, dataEndpoint));
 
 	if (roleIds) {
 		url.searchParams.set('selectedRolesCsv', roleIds.join(','));
@@ -69,7 +69,7 @@ export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [
  * @param {String} metronEndpoint
  */
 export async function fetchUserData(orgUnitIds = [], userId = 0, metronEndpoint) {
-	const url = concatMetronUlr(metronEndpoint, userDrillDataEndpoint);
+	const url = concatMetronUrl(metronEndpoint, userDrillDataEndpoint);
 	const userDrillBody = {
 		selectedUserId: userId,
 		selectedOrgUnitIds: orgUnitIds,
