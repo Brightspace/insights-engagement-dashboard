@@ -61,6 +61,8 @@ export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [
  * @param {String} metronEndpoint
  */
 export async function fetchUserData(orgUnitIds = [], userId = 0, metronEndpoint) {
+	// Example new URL('/en-US/docs', "https://example.com/fr-FR/docs");
+	// Results to => 'https://example.com/en-US/docs'
 	const url = new URL(userDrillDataEndpoint, metronEndpoint);
 	const userDrillBody = {
 		selectedUserId: userId,
