@@ -26,10 +26,7 @@ const userDrillDataEndpoint = '/unstable/insights/data/userdrill';
  * @param {String} metronEndpoint
  */
 export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [], defaultView = false }, metronEndpoint) {
-	// Example new URL('/en-US/docs', "https://example.com/fr-FR/docs");
-	// Results to => 'https://example.com/en-US/docs'
-	const url = new URL(dataEndpoint, metronEndpoint);
-
+	const url = new URL(`${metronEndpoint}${dataEndpoint}`);
 	if (roleIds) {
 		url.searchParams.set('selectedRolesCsv', roleIds.join(','));
 	}
@@ -63,7 +60,7 @@ export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [
  * @param {String} metronEndpoint
  */
 export async function fetchUserData(orgUnitIds = [], userId = 0, metronEndpoint) {
-	const url = new URL(userDrillDataEndpoint, metronEndpoint);
+	const url = metronEndpoint + (metronEndpoint.endsWith('/') ? '' : '/') + userDrillDataEndpoint;
 	const userDrillBody = {
 		selectedUserId: userId,
 		selectedOrgUnitIds: orgUnitIds,
