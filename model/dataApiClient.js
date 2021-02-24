@@ -20,7 +20,7 @@ const userDrillDataEndpoint = 'unstable/insights/data/userdrill';
 
 function concatMetronUlr(endpoint, apiPath) {
 	if (apiPath.startsWith('/')) {
-		throw new Error('Api path should not have leadint / symbol');
+		throw new Error('Api path should not have leading / symbol.');
 	}
 
 	return endpoint + (endpoint.endsWith('/') ? '' : '/') + apiPath;
