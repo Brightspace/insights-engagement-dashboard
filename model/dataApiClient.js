@@ -26,6 +26,8 @@ const userDrillDataEndpoint = '/unstable/insights/data/userdrill';
  * @param {String} metronEndpoint
  */
 export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [], defaultView = false }, metronEndpoint) {
+	// Example new URL('/en-US/docs', "https://example.com/fr-FR/docs");
+	// Results to => 'https://example.com/en-US/docs'
 	const url = new URL(dataEndpoint, metronEndpoint);
 
 	if (roleIds) {
@@ -61,8 +63,6 @@ export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [
  * @param {String} metronEndpoint
  */
 export async function fetchUserData(orgUnitIds = [], userId = 0, metronEndpoint) {
-	// Example new URL('/en-US/docs', "https://example.com/fr-FR/docs");
-	// Results to => 'https://example.com/en-US/docs'
 	const url = new URL(userDrillDataEndpoint, metronEndpoint);
 	const userDrillBody = {
 		selectedUserId: userId,
