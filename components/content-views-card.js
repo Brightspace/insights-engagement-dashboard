@@ -86,7 +86,6 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			<d2l-labs-chart
 				.options="${this.chartOptions}"
 				?skeleton="${this.skeleton}"
-				@load="${this._onChartLoad}"
 			></d2l-labs-chart>`;
 	}
 
@@ -255,10 +254,6 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	get _emptyData() {
 		return !this.data._data || !this.userData.contentViews || this._trendData.length === 0;
-	}
-
-	_onChartLoad(event) {
-		this._chart = event.detail;
 	}
 
 	get _series() {
