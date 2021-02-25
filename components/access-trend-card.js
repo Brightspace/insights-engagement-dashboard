@@ -3,7 +3,7 @@ import { computed, decorate } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
 import { ORG_UNIT, RECORD, UserTrendColorsIterator } from '../consts';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
-import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
+import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles';
 import { formatDate } from '@brightspace-ui/intl/lib/dateTime';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
@@ -156,10 +156,25 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 					text: this._yAxisTitle,
 					style: {
 						color: 'var(--d2l-color-ferrite)',
-						fontSize: '10px',
+						fontSize: '9px',
 						fontWeight: 'bold',
 						fontFamily: 'Lato'
+					},
+				},
+
+				gridLineWidth: 1,
+				gridLineColor: 'var(--d2l-color-mica)',
+
+				labels: {
+					style: {
+						fontSize: '14px',
+						color: 'var(--d2l-color-ferrite)',
+						fontFamily: 'Lato'
 					}
+				},
+
+				tickPositioner: function() {
+					return that._emptyData ? [0, 25, 50, 75, 100] : undefined;
 				}
 			},
 
@@ -272,8 +287,12 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return orgUnit ? orgUnit[ORG_UNIT.NAME] : '';
 	}
 
+	get _emptyData() {
+		return !this.data._data || this._trendData.length === 0;
+	}
+
 	get _series() {
-		if (!this.data._data) return [];
+		if (this._emptyData) return [{ data:[] }];
 
 		const selected = (course) => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0;
 		const colors = [...UserTrendColorsIterator(0, 1, this._userOrgUnitIds.length)];
