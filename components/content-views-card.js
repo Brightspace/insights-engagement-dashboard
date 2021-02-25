@@ -263,7 +263,7 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _series() {
-		if (this._emptyData) return [0, 0];
+		if (this._emptyData) return [{ data:[] }];
 
 		const colors = [...UserTrendColorsIterator(0, 1, this._userOrgUnitIds.length)];
 		const selected = (course) => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0;
