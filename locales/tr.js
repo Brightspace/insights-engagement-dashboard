@@ -234,8 +234,6 @@ export default {
 	"gradesTrendCard:currentGrade": "Mevcut Not (%)",
 
 	"chart:loading": "Yükleniyor...",
-	"chart:decimalPoint": ".",
 	"chart:resetZoom": "Reset zoom",
 	"chart:resetZoomTitle": "Reset zoom level 1:1",
-	"chart:thousandsSeparator": " ",
 };

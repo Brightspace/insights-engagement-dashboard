@@ -234,8 +234,6 @@ export default {
 	"gradesTrendCard:currentGrade": "Aktuellt betyg (%)",
 
 	"chart:loading": "Läser in ...",
-	"chart:decimalPoint": ".",
 	"chart:resetZoom": "Reset zoom",
 	"chart:resetZoomTitle": "Reset zoom level 1:1",
-	"chart:thousandsSeparator": " ",
 };
