@@ -222,7 +222,7 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			.map(grades => {
 				return {
 					orgUnitId: grades.courseId,
-					data: grades.gradesData.map(item => [item.date, item.grade * 100])
+					data: grades.gradesData.map(item => [item.date, Math.floor(item.grade * 10000) / 100])
 				};
 			});
 	}
