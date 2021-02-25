@@ -177,7 +177,6 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				max: this.isDemo ? 100 : undefined,
 				tickPositions: this.isDemo ? [0, 25, 50, 75, 100] : undefined,
 
-				tickInterval: 1,
 				tickPositioner: function() {
 					return that._emptyData ? [0, 25, 50, 75, 100] : undefined;
 				},

@@ -174,7 +174,6 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 					}
 				},
 
-				tickInterval: 1,
 				tickPositioner: function() {
 					return that._emptyData ? [0, 25, 50, 75, 100] : undefined;
 				}
