@@ -234,8 +234,6 @@ export default {
 	"gradesTrendCard:currentGrade": "Note d'appréciation actuelle (%)",
 
 	"chart:loading": "Chargement…",
-	"chart:decimalPoint": ".",
 	"chart:resetZoom": "Réinitialiser le zoom",
 	"chart:resetZoomTitle": "Reset zoom level 1:1",
-	"chart:thousandsSeparator": " ",
 };

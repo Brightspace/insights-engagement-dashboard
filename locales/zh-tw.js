@@ -234,8 +234,6 @@ export default {
 	"gradesTrendCard:currentGrade": "目前成績 (%)",
 
 	"chart:loading": "Loading...",
-	"chart:decimalPoint": ".",
 	"chart:resetZoom": "Reset zoom",
 	"chart:resetZoomTitle": "Reset zoom level 1:1",
-	"chart:thousandsSeparator": " ",
 };
