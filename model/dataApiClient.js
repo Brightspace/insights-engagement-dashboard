@@ -16,7 +16,7 @@ const dataEndpoint = 'unstable/insights/data/engagement';
 const relevantChildrenEndpoint = orgUnitId => `/d2l/api/ap/unstable/insights/data/orgunits/${orgUnitId}/children`;
 const ouSearchEndpoint = '/d2l/api/ap/unstable/insights/data/orgunits';
 const saveSettingsEndpoint = '/d2l/api/ap/unstable/insights/mysettings/engagement';
-const userDrillDataEndpoint = '/unstable/insights/data/userdrill';
+const userDrillDataEndpoint = 'unstable/insights/data/userdrill';
 
 function concatMetronUrl(endpoint, apiPath) {
 	if (apiPath.startsWith('/')) {
