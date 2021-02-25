@@ -174,7 +174,10 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 					}
 				},
 				max: this.isDemo ? 100 : undefined,
-				tickPositions: this.isDemo ? [0, 25, 50, 75] : undefined,
+
+				tickPositioner: function() {
+					return that._emptyData ? [0, 25, 50, 75, 100] : undefined;
+				},
 				gridLineWidth: 1,
 				gridLineColor: 'var(--d2l-color-mica)',
 				labels: {
@@ -248,8 +251,12 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return orgUnit ? orgUnit[ORG_UNIT.NAME] : '';
 	}
 
+	get _emptyData() {
+		return !this.data._data || !this.userData.contentViews || this._trendData.length === 0;
+	}
+
 	get _series() {
-		if (!this.data._data) return [];
+		if (this._emptyData) return [{ data:[] }];
 
 		const colors = [...UserTrendColorsIterator(0, 1, this._userOrgUnitIds.length)];
 		const selected = (course) => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0;
