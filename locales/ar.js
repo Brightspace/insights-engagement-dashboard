@@ -234,8 +234,6 @@ export default {
 	"gradesTrendCard:currentGrade": "العلامة الحالية (%)",
 
 	"chart:loading": "يتم الآن التحميل...",
-	"chart:decimalPoint": ".",
 	"chart:resetZoom": "Reset zoom",
 	"chart:resetZoomTitle": "Reset zoom level 1:1",
-	"chart:thousandsSeparator": " ",
 };
