@@ -152,6 +152,9 @@ class Chart extends SkeletonMixin(Localizer(LitElement)) {
 					screenReaderSection: {
 						// fixes axe error: Landmarks must have a unique role or role/label/title
 						beforeRegionLabel: ''
+					},
+					zoom: {
+						resetZoomButton: this.localize('chart:resetZoom')
 					}
 				}
 			};
