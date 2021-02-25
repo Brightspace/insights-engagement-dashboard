@@ -124,12 +124,23 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				enabled: false,
 			},
 			tooltip: {
-				enabled: false
+				enabled: true,
+				backgroundColor: 'var(--d2l-color-ferrite)',
+				borderWidth: 0,
+				borderRadius: 15,
+				shadow: false,
+				padding: 10,
+
+				style: {
+					color: 'var(--d2l-color-white)',
+					fontSize: '10px',
+					fontFamily: 'Lato',
+					lineHeight: '18px'
+				}
 			},
 			xAxis: {
 				startOnTick: true,
 				endOnTick: true,
-				tickInterval:  7 * 24 * 3600 * 1000, //week
 				type: 'datetime',
 				labels: {
 					formatter: function() {
@@ -211,7 +222,7 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			.map(grades => {
 				return {
 					orgUnitId: grades.courseId,
-					data: grades.gradesData.map(item => [item.date, item.grade * 100])
+					data: grades.gradesData.map(item => [item.date, Math.floor(item.grade * 10000) / 100])
 				};
 			});
 	}
@@ -247,6 +258,9 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this._trendData
 			.map((course) => ({
 				...course,
+				marker:{
+					enabled: course.data && course.data.length === 1
+				},
 				name: this._orgUnitName(course.orgUnitId),
 				//if grades data are not available for some course, the colors will remain consistent
 				color: selected(course) ? colors[this._userOrgUnitIds.findIndex(orgId => orgId === course.orgUnitId)] : 'var(--d2l-color-mica)' }));
