@@ -86,6 +86,7 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			<d2l-labs-chart
 				.options="${this.chartOptions}"
 				?skeleton="${this.skeleton}"
+				@load="${this._onChartLoad}"
 			></d2l-labs-chart>`;
 	}
 
@@ -175,6 +176,11 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				},
 				max: this.isDemo ? 100 : undefined,
 				tickPositions: this.isDemo ? [0, 25, 50, 75, 100] : undefined,
+
+				tickInterval: 1,
+				tickPositioner: function() {
+					return that._emptyData ? [0, 25, 50, 75, 100] : undefined;
+				},
 				gridLineWidth: 1,
 				gridLineColor: 'var(--d2l-color-mica)',
 				labels: {
@@ -248,8 +254,18 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return orgUnit ? orgUnit[ORG_UNIT.NAME] : '';
 	}
 
+	get _emptyData() {
+		return !this.data._data || this._trendData.length === 0;
+	}
+
+	_onChartLoad(event) {
+		this._chart = event.detail;
+	}
+
 	get _series() {
-		if (!this.data._data) return [];
+		if (this._emptyData) return [0, 0];
+
+		if (this._chart) this._chart.redraw(); // update tickPositions for the chart with data
 
 		const colors = [...UserTrendColorsIterator(0, 1, this._userOrgUnitIds.length)];
 		const selected = (course) => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0;

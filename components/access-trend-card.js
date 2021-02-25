@@ -85,6 +85,7 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			<d2l-labs-chart
 				.options="${this._chartOptions}"
 				?skeleton="${this.skeleton}"
+				@load="${this._onChartLoad}"
 			></d2l-labs-chart>`;
 	}
 
@@ -160,6 +161,11 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 						fontWeight: 'bold',
 						fontFamily: 'Lato'
 					}
+				},
+
+				tickInterval: 1,
+				tickPositioner: function() {
+					return that._emptyData ? [0, 25, 50, 75, 100] : undefined;
 				}
 			},
 
@@ -272,8 +278,18 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return orgUnit ? orgUnit[ORG_UNIT.NAME] : '';
 	}
 
+	get _emptyData() {
+		return !this.data._data || this._trendData.length === 0;
+	}
+
+	_onChartLoad(event) {
+		this._chart = event.detail;
+	}
+
 	get _series() {
-		if (!this.data._data) return [];
+		if (this._emptyData) return [0, 0];
+
+		if (this._chart) this._chart.redraw(); // update tickPositions for the chart with data
 
 		const selected = (course) => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0;
 		const colors = [...UserTrendColorsIterator(0, 1, this._userOrgUnitIds.length)];
