@@ -234,6 +234,6 @@ export default {
 	"gradesTrendCard:currentGrade": "현재 평점(%)",
 
 	"chart:loading": "로드 중...",
-	"chart:resetZoom": "Reset zoom",
-	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:resetZoom": "확대/축소 재설정",
+	"chart:resetZoomTitle": "확대/축소 수준 1:1 재설정",
 };

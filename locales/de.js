@@ -225,7 +225,7 @@ export default {
 
 	"coursesLegend:coursesLegendFilter": "Kurse",
 
-	"contentViewsCard:contentViewOverTime": "Inhaltsansicht im Laufe der Zeit",
+	"contentViewsCard:contentViewOverTime": "Inhaltsansichten im Laufe der Zeit",
 	"contentViewsCard:viewCount": "Anzahl Ansicht",
 	"contentViewsCard:date": "Datum",
 
@@ -234,6 +234,6 @@ export default {
 	"gradesTrendCard:currentGrade": "Aktuelle Note (%)",
 
 	"chart:loading": "Laden...",
-	"chart:resetZoom": "Reset zoom",
-	"chart:resetZoomTitle": "Reset zoom level 1:1",
+	"chart:resetZoom": "Zoom zurücksetzen",
+	"chart:resetZoomTitle": "Zoomstufe 1:1 zurücksetzen",
 };
