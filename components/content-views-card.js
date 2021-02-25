@@ -174,7 +174,7 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 					}
 				},
 				max: this.isDemo ? 100 : undefined,
-				tickPositions: this.isDemo ? [0, 25, 50, 75, 100] : undefined,
+				tickPositions: this.isDemo ? [0, 25, 50, 75] : undefined,
 				gridLineWidth: 1,
 				gridLineColor: 'var(--d2l-color-mica)',
 				labels: {
