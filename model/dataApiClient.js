@@ -12,11 +12,19 @@ export function restore() {
 
 const rolesEndpoint = '/d2l/api/ap/unstable/insights/data/roles';
 const semestersEndpoint = '/d2l/api/ap/unstable/insights/data/semesters';
-const dataEndpoint = '/unstable/insights/data/engagement';
+const dataEndpoint = 'unstable/insights/data/engagement';
 const relevantChildrenEndpoint = orgUnitId => `/d2l/api/ap/unstable/insights/data/orgunits/${orgUnitId}/children`;
 const ouSearchEndpoint = '/d2l/api/ap/unstable/insights/data/orgunits';
 const saveSettingsEndpoint = '/d2l/api/ap/unstable/insights/mysettings/engagement';
 const userDrillDataEndpoint = '/unstable/insights/data/userdrill';
+
+function concatMetronUrl(endpoint, apiPath) {
+	if (apiPath.startsWith('/')) {
+		throw new Error('Api path should not have leading / symbol.');
+	}
+
+	return endpoint + (endpoint.endsWith('/') ? '' : '/') + apiPath;
+}
 
 /**
  * @param {[Number]} roleIds
@@ -26,7 +34,7 @@ const userDrillDataEndpoint = '/unstable/insights/data/userdrill';
  * @param {String} metronEndpoint
  */
 export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [], defaultView = false }, metronEndpoint) {
-	const url = new URL(`${metronEndpoint}${dataEndpoint}`);
+	const url = new URL(concatMetronUrl(metronEndpoint, dataEndpoint));
 	if (roleIds) {
 		url.searchParams.set('selectedRolesCsv', roleIds.join(','));
 	}
@@ -60,7 +68,7 @@ export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [
  * @param {String} metronEndpoint
  */
 export async function fetchUserData(orgUnitIds = [], userId = 0, metronEndpoint) {
-	const url = metronEndpoint + (metronEndpoint.endsWith('/') ? '' : '/') + userDrillDataEndpoint;
+	const url = concatMetronUrl(metronEndpoint, userDrillDataEndpoint);
 	const userDrillBody = {
 		selectedUserId: userId,
 		selectedOrgUnitIds: orgUnitIds,
