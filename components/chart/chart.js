@@ -6,6 +6,7 @@ import '../overlay';
 
 import { css, html, LitElement } from 'lit-element';
 import { getDateTimeDescriptor } from '@brightspace-ui/intl/lib/dateTime';
+import { getNumberDescriptor } from '@brightspace-ui/intl/lib/number';
 import { Localizer } from '../../locales/localizer';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 
@@ -182,18 +183,19 @@ class Chart extends SkeletonMixin(Localizer(LitElement)) {
 	}
 
 	get _langOptions() {
-		const descriptor = getDateTimeDescriptor();
+		const dateTimeDescriptor = getDateTimeDescriptor();
+		const numberDescriptor = getNumberDescriptor();
 
 		return {
 			loading: this.localize('chart:loading'),
-			months:  descriptor.calendar.months.long,
-			shortMonths:  descriptor.calendar.months.short,
-			weekdays: descriptor.calendar.days.long,
+			months:  dateTimeDescriptor.calendar.months.long,
+			shortMonths:  dateTimeDescriptor.calendar.months.short,
+			weekdays: dateTimeDescriptor.calendar.days.long,
 
-			decimalPoint: this.localize('chart:decimalPoint'),
+			decimalPoint: numberDescriptor.symbols.decimal,
 			resetZoom: this.localize('chart:resetZoom'),
 			resetZoomTitle: this.localize('chart:resetZoomTitle'),
-			thousandsSep: this.localize('chart:thousandsSeparator'),
+			thousandsSep: numberDescriptor.symbols.group,
 		};
 	}
 }

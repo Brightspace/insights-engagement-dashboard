@@ -234,8 +234,6 @@ export default {
 	"gradesTrendCard:currentGrade": "Huidige score (%)",
 
 	"chart:loading": "Laden...",
-	"chart:decimalPoint": ".",
 	"chart:resetZoom": "Reset zoom",
 	"chart:resetZoomTitle": "Reset zoom level 1:1",
-	"chart:thousandsSeparator": " ",
 };
