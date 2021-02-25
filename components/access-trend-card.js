@@ -300,8 +300,6 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get _series() {
 		if (this._emptyData) return [0, 0];
 
-		if (this._chart) this._chart.redraw(); // update tickPositions for the chart with data
-
 		const selected = (course) => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0;
 		const colors = [...UserTrendColorsIterator(0, 1, this._userOrgUnitIds.length)];
 
