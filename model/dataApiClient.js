@@ -35,7 +35,6 @@ function concatMetronUrl(endpoint, apiPath) {
  */
 export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [], defaultView = false }, metronEndpoint) {
 	const url = new URL(concatMetronUrl(metronEndpoint, dataEndpoint));
-
 	if (roleIds) {
 		url.searchParams.set('selectedRolesCsv', roleIds.join(','));
 	}
