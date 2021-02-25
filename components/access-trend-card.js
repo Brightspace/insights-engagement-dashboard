@@ -3,7 +3,7 @@ import { computed, decorate } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
 import { ORG_UNIT, RECORD, UserTrendColorsIterator } from '../consts';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
-import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
+import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles';
 import { formatDate } from '@brightspace-ui/intl/lib/dateTime';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
@@ -157,8 +157,19 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 					text: this._yAxisTitle,
 					style: {
 						color: 'var(--d2l-color-ferrite)',
-						fontSize: '10px',
+						fontSize: '9px',
 						fontWeight: 'bold',
+						fontFamily: 'Lato'
+					},
+				},
+
+				gridLineWidth: 1,
+				gridLineColor: 'var(--d2l-color-mica)',
+
+				labels: {
+					style: {
+						fontSize: '14px',
+						color: 'var(--d2l-color-ferrite)',
 						fontFamily: 'Lato'
 					}
 				},
