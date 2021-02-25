@@ -225,7 +225,7 @@ export default {
 
 	"coursesLegend:coursesLegendFilter": "Kurser",
 
-	"contentViewsCard:contentViewOverTime": "Innehållsvy över tid",
+	"contentViewsCard:contentViewOverTime": "Innehållsvyer för olika tidpunkter",
 	"contentViewsCard:viewCount": "Visa antal",
 	"contentViewsCard:date": "Datum",
 
@@ -234,8 +234,6 @@ export default {
 	"gradesTrendCard:currentGrade": "Aktuellt betyg (%)",
 
 	"chart:loading": "Läser in ...",
-	"chart:decimalPoint": ".",
-	"chart:resetZoom": "Reset zoom",
-	"chart:resetZoomTitle": "Reset zoom level 1:1",
-	"chart:thousandsSeparator": " ",
+	"chart:resetZoom": "Återställ zoomnivån",
+	"chart:resetZoomTitle": "Återställ zoomnivån till 1:1",
 };

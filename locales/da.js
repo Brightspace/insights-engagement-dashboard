@@ -225,7 +225,7 @@ export default {
 
 	"coursesLegend:coursesLegendFilter": "Kurser",
 
-	"contentViewsCard:contentViewOverTime": "Indholdsvisning over tid",
+	"contentViewsCard:contentViewOverTime": "Indholdsvisninger over tid",
 	"contentViewsCard:viewCount": "Vis antal",
 	"contentViewsCard:date": "Dato",
 
@@ -233,9 +233,7 @@ export default {
 	"gradesTrendCard:gradesOverTime": "Karakterer over tid",
 	"gradesTrendCard:currentGrade": "Aktuel karakter (%)",
 
-	"chart:loading": "Loading...",
-	"chart:decimalPoint": ".",
-	"chart:resetZoom": "Reset zoom",
-	"chart:resetZoomTitle": "Reset zoom level 1:1",
-	"chart:thousandsSeparator": " ",
+	"chart:loading": "Indlæser ...",
+	"chart:resetZoom": "Nulstil zoom",
+	"chart:resetZoomTitle": "Nulstil zoomniveau 1:1",
 };
