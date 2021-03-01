@@ -251,7 +251,7 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _series() {
-		if (!this.data._data || !this.userData.courseGrades || this.userData.courseGrades.length === 0) return [0, 0];
+		if (!this.data._data || !this.userData.courseGrades || this.userData.courseGrades.length === 0) return [{ data:[] }];
 		const colors = [...UserTrendColorsIterator(0, 1, this._userOrgUnitIds.length)];
 		const selected = (course) => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0;
 
