@@ -142,7 +142,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			.d2l-insights-user-drill-view-action-button-group {
 				flex-grow: 1;
 				margin: 0.7em;
-				max-width: 160px;
+				max-width: 300px;
 			}
 
 			.d2l-insights-view-filters-container {
