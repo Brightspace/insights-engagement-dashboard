@@ -397,6 +397,11 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 						text=${this.localize('dashboard:exportToCsv')}
 						@click="${this._exportToCsvHandler}">
 					</d2l-button-subtle>
+					<d2l-button-subtle
+						icon="d2l-tier1:gear"
+						text=${this.localize('settings:title')}
+						@click="${this._openSettingsPage}">
+					</d2l-button-subtle>
 				</d2l-action-button-group>
 
 			</div>
@@ -514,6 +519,12 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		// prevent href navigation
 		e.preventDefault();
 		return false;
+	}
+
+	_openSettingsPage() {
+		if (this.viewState) {
+			this.viewState.setSettingsView();
+		}
 	}
 }
 
