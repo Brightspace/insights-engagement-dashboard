@@ -7,6 +7,7 @@ import '@brightspace-ui/core/components/inputs/input-number';
 import './card-selection-list';
 import './role-list.js';
 import './column-configuration';
+import './user-level-card-selection-list';
 import './custom-toast-message';
 
 import { css, html, LitElement } from 'lit-element';
@@ -37,6 +38,10 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 			showTicGradesCard: { type: Boolean, attribute: 'tic-grades-card', reflect: true },
 			lastAccessThresholdDays: { type: Number, attribute: 'last-access-threshold-days', reflect: true },
 			includeRoles: { type: Array, attribute: false },
+			showAverageGradeSummaryCard: { type: Boolean, attribute: 'average-grade-summary-card', reflect: true },
+			showContentViewsTrendCard: { type: Boolean, attribute: 'content-views-trend-card', reflect: true },
+			showCourseAccessTrendCard: { type: Boolean, attribute: 'course-access-trend-card', reflect: true },
+			showGradesTrendCard: { type: Boolean, attribute: 'grades-trend-card', reflect: true },
 			_toastMessagetext: { type: String, attribute: false }
 		};
 	}
@@ -161,6 +166,10 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 		this.showTicGradesCard = false;
 		this.lastAccessThresholdDays = 14;
 		this.includeRoles = [];
+		this.showAverageGradeSummaryCard = false;
+		this.showContentViewsTrendCard = false;
+		this.showCourseAccessTrendCard = false;
+		this.showGradesTrendCard = false;
 	}
 
 	render() {
@@ -198,6 +207,15 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 								?tic-col="${this.showTicCol}"
 								?demo="${this.isDemo}"
 							></d2l-insights-engagement-column-configuration>
+						</d2l-tab-panel>
+
+						<d2l-tab-panel text="${this.localize('settings:tabTitleUserLevelMetrics')}">
+							<d2l-insights-engagement-user-card-selection-list
+								?average-grade-summary-card="${this.showAverageGradeSummaryCard}"
+								?grades-trend-card="${this.showGradesTrendCard}"
+								?course-access-trend-card="${this.showCourseAccessTrendCard}"
+								?content-views-trend-card="${this.showContentViewsTrendCard}"
+							></d2l-insights-engagement-user-card-selection-list>
 						</d2l-tab-panel>
 					</d2l-tabs>
 				</div>
@@ -239,10 +257,12 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 
 	async _handleSaveAndClose() {
 		const cardSelectionList = this.shadowRoot.querySelector('d2l-insights-engagement-card-selection-list');
+		const userCardSelectionList = this.shadowRoot.querySelector('d2l-insights-engagement-user-card-selection-list');
 
 		const columnConfig = this.shadowRoot.querySelector('d2l-insights-engagement-column-configuration');
 		const settings = {
 			...cardSelectionList.settings,
+			...userCardSelectionList.settings,
 			showCoursesCol: columnConfig.showCoursesCol,
 			showGradeCol: columnConfig.showGradeCol,
 			showTicCol: columnConfig.showTicCol,

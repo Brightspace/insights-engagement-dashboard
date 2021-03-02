@@ -159,6 +159,7 @@ export default {
 	"settings:description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
 	"settings:tabTitleSummaryMetrics": "Summary Metrics",
 	"settings:tabTitleResultsTableMetrics": "Results Table Metrics",
+	"settings:tabTitleUserLevelMetrics": "User Level Metrics",
 	"settings:saveAndClose": "Save and Close",
 	"settings:save": "Save",
 	"settings:cancel": "Cancel",
@@ -174,6 +175,7 @@ export default {
 	"settings:systemAccessEditLabel": "Edit system access threshold",
 
 	"settings:avgGrade": "Average Grade",
+	"settings:avgGradeSummary": "Average Grade Summary",
 	"settings:avgTimeInContent": "Average Time in Content",
 	"settings:avgDiscussionActivity": "Average Discussion Participation",
 	"settings:lastAccessedSystem": "System Last Access",
@@ -183,6 +185,11 @@ export default {
 	"settings:lastAccessedSystemDescription": "The System Last Access indicator displays the timestamp, in Brightspace local time, of the last time the user accessed the system in any way.",
 	"settings:invalidSystemAccessValueToast": "Your settings could not be saved. System Access thresholds need to be between 1 and 30.",
 	"settings:serverSideErrorToast": "Something went wrong. Your settings could not be saved.",
+
+	"settings:avgGradeSummaryDescription": "The Average Grade Summary card presents the current average grade for the student across all the applied filtered fields FIXME? across courses that are filtered on.",
+	"settings:gradesOverTimeDescription": "The Grades Over Time card shows the distribution of grades over the academic period FIXME?.",
+	"settings:accessOverTimeDescription": "The Course Access Over Time card shows learner’s course access over the academic period FIXME?.",
+	"settings:contentViewsOverTimeDescription": "The Content Views Over Time card shows view counts for content over the academic period FIXME?.",
 
 	"userDrill:noUser": "This user could not be loaded. Go to the Engagement Dashboard to view the list of users.",
 	"userDrill:noData": "No data in filtered ranges. Refine your selection.",

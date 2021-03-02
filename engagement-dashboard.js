@@ -72,7 +72,11 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			showTicCol: { type: Boolean, attribute: 'tic-col', reflect: true },
 			showTicGradesCard: { type: Boolean, attribute: 'tic-grades-card', reflect: true },
 			lastAccessThresholdDays: { type: Number, attribute: 'last-access-threshold-days', reflect: true },
-			includeRoles: { type: String, attribute: 'include-roles', reflect: true }
+			includeRoles: { type: String, attribute: 'include-roles', reflect: true },
+			showAverageGradeSummaryCard: { type: Boolean, attribute: 'average-grade-summary-card', reflect: true },
+			showContentViewsTrendCard: { type: Boolean, attribute: 'content-views-trend-card', reflect: true },
+			showCourseAccessTrendCard: { type: Boolean, attribute: 'course-access-trend-card', reflect: true },
+			showGradesTrendCard: { type: Boolean, attribute: 'grades-trend-card', reflect: true }
 		};
 	}
 
@@ -102,6 +106,10 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		this.showTicGradesCard = false;
 		this.lastAccessThresholdDays = 14;
 		this.includeRoles = '';
+		this.showAverageGradeSummaryCard = false;
+		this.showContentViewsTrendCard = false;
+		this.showCourseAccessTrendCard = false;
+		this.showGradesTrendCard = false;
 
 		this._viewState = new ViewState({});
 		// if current view is not provided in url
@@ -265,6 +273,10 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				.viewState="${this._viewState}"
 				.metronEndpoint="${this.metronEndpoint}"
 				@d2l-insights-user-drill-view-back="${this._backToHomeHandler}"
+				?average-grade-summary-card="${this.showAverageGradeSummaryCard}"
+				?grades-trend-card="${this.showGradesTrendCard}"
+				?course-access-trend-card="${this.showCourseAccessTrendCard}"
+				?content-views-trend-card="${this.showContentViewsTrendCard}"
 			>
 				<div slot="filters">
 					${this._renderFilters()}
@@ -317,6 +329,10 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				?tic-grades-card="${this.showTicGradesCard}"
 				last-access-threshold-days="${this.lastAccessThresholdDays}"
 				.includeRoles="${this._serverData.selectedRoleIds}"
+				?average-grade-summary-card="${this.showAverageGradeSummaryCard}"
+				?grades-trend-card="${this.showGradesTrendCard}"
+				?course-access-trend-card="${this.showCourseAccessTrendCard}"
+				?content-views-trend-card="${this.showContentViewsTrendCard}"
 			></d2l-insights-engagement-dashboard-settings>
 		`;
 	}
@@ -552,6 +568,10 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			this.showLastAccessCol = e.detail.showLastAccessCol;
 			this.lastAccessThresholdDays = e.detail.lastAccessThresholdDays;
 			this.includeRoles = (e.detail.includeRoles || []).join(',');
+			this.showAverageGradeSummaryCard = e.detail.showAverageGradeSummaryCard;
+			this.showContentViewsTrendCard = e.detail.showContentViewsTrendCard;
+			this.showCourseAccessTrendCard = e.detail.showCourseAccessTrendCard;
+			this.showGradesTrendCard = e.detail.showGradesTrendCard;
 
 			this._serverData.selectedRoleIds = e.detail.includeRoles;
 			// update LastSystemAccess filter's threshold, as it may have changed (e.g. if new settings were saved)

@@ -47,7 +47,11 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			isStudentSuccessSys: { type: Boolean, attribute: false },
 			orgUnitId: { type: Number, attribute: 'org-unit-id' },
 			viewState: { type: Object, attribute: false },
-			metronEndpoint: { type: String, attribute: 'metron-endpoint' }
+			metronEndpoint: { type: String, attribute: 'metron-endpoint' },
+			showAverageGradeSummaryCard: { type: Boolean, attribute: 'average-grade-summary-card', reflect: true },
+			showContentViewsTrendCard: { type: Boolean, attribute: 'content-views-trend-card', reflect: true },
+			showCourseAccessTrendCard: { type: Boolean, attribute: 'course-access-trend-card', reflect: true },
+			showGradesTrendCard: { type: Boolean, attribute: 'grades-trend-card', reflect: true }
 		};
 	}
 
