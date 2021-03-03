@@ -1,7 +1,6 @@
 import './dropdown-filter';
 
 import { html, LitElement } from 'lit-element';
-import { fetchSemesters as fetchDemoSemesters } from '../model/fake-dataApiClient';
 import { fetchSemesters } from '../model/dataApiClient';
 import { Localizer } from '../locales/localizer';
 
@@ -43,7 +42,7 @@ class SemesterFilter extends Localizer(LitElement) {
 	}
 
 	async firstUpdated() {
-		this.dataProvider = this.isDemo ? fetchDemoSemesters : fetchSemesters;
+		this.dataProvider = fetchSemesters;
 		await this._loadData();
 	}
 

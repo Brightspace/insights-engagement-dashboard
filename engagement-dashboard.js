@@ -33,7 +33,6 @@ import { Data } from './model/data.js';
 import { DiscussionActivityFilter } from './components/discussion-activity-card';
 import { ExportData } from './model/exportData';
 import { fetchData } from './model/dataApiClient.js';
-import { fetchData as fetchDemoData } from './model/fake-dataApiClient.js';
 import { FilteredData } from './model/filteredData';
 import { heading3Styles } from '@brightspace-ui/core/components/typography/styles';
 import { Localizer } from './locales/localizer';
@@ -511,7 +510,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		if (!this.__serverData) {
 
 			this.__serverData = new Data({
-				recordProvider: this.isDemo ? fetchDemoData : fetchData,
+				recordProvider: fetchData,
 				includeRoles: this._parsedIncludeRoles,
 				metronEndpoint: this.metronEndpoint
 			});

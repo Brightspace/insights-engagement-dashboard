@@ -3,7 +3,6 @@ import '@brightspace-ui/core/components/inputs/input-checkbox';
 
 import { css, html, LitElement } from 'lit-element';
 import { classMap } from 'lit-html/directives/class-map.js';
-import { fetchRoles as fetchDemoRoles } from '../model/fake-dataApiClient';
 import { fetchRoles } from '../model/dataApiClient';
 import { heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { Localizer } from '../locales/localizer';
@@ -72,8 +71,7 @@ class RoleList extends Localizer(LitElement) {
 	}
 
 	async firstUpdated() {
-		const dataProvider = this.isDemo ? fetchDemoRoles : fetchRoles;
-		const data = await dataProvider();
+		const data = await fetchRoles();
 		this._setRoleData(data);
 	}
 
