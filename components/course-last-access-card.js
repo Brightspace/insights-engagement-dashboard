@@ -3,6 +3,7 @@ import { css, html } from 'lit-element/lit-element.js';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
 import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { CategoryFilter } from '../model/categoryFilter';
+import { filterEventQueue } from './alert-data-update';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { RECORD } from '../consts';
@@ -12,6 +13,7 @@ import { UrlState } from '../model/urlState';
 const filterId = 'd2l-insights-course-last-access-card';
 const demoDate = 1608700239822; //for Visual-Diff test
 const DATA_BUCKETS = [0, 0, 0, 0, 0, 0, 0];
+const DATA_DESCRIPTIONS = ['Never', 'greater than 14', [7, 14], [5, 7], [3, 5], [1, 3], 'less than 1'];
 
 function lastAccessDateBucket(record, isDemo) {
 	const currentDate = isDemo ? demoDate : Date.now();
@@ -225,6 +227,31 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		</div>`;
 	}
 
+	getAxeDescription() {
+		// bin the ranges of numbers together
+		const categories = ([...this.filter.selectedCategories]);
+		const pairs = categories.sort().reverse().reduce((acc, cur) => {
+			// if we can find the cur in a pair then we have a chain
+			const desc = DATA_DESCRIPTIONS[cur];
+			if (typeof(desc) === 'string') {
+				acc.push([desc]);
+				return acc;
+			}
+			const pair = acc.find((pair) => pair[1] === desc[0]);
+			if (pair !== undefined) {
+				pair[1] = desc[1];
+			} else {
+				acc.push([desc[0], desc[1]]);
+			}
+			return acc;
+		}, []);
+		console.log(pairs);
+		// eslint-disable-next-line prefer-const
+		let [last, ...descriptions] = pairs.map(pair => pair.join(' to ')).reverse();
+		descriptions = descriptions.reverse();
+		return `Viewing learners with course access in range ${`${descriptions.join(', ')} ${descriptions.length > 0 ? 'and' : ''} ${last}`} `;
+	}
+
 	get chartOptions() {
 		const that = this;
 		return {
@@ -316,6 +343,7 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 						events: {
 							click: function() {
 								that.filter.toggleCategory(this.index);
+								filterEventQueue.add('Course Access filter applied', that.getAxeDescription());
 							}
 						}
 					}

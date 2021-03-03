@@ -1,5 +1,6 @@
 import { computed, decorate, observable } from 'mobx';
 import { RECORD, USER } from '../consts';
+import { filterEventQueue } from './alert-data-update';
 import { html } from 'lit-element';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
@@ -108,6 +109,7 @@ class LastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_valueClickHandler() {
 		this.filter.isApplied = !this.filter.isApplied;
+		filterEventQueue.add('Last System Access filter applied');
 	}
 }
 customElements.define('d2l-insights-last-access-card', LastAccessCard);

@@ -5,6 +5,7 @@ import { css, html } from 'lit-element/lit-element.js';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
 import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { CategoryFilter } from '../model/categoryFilter';
+import { filterEventQueue } from './alert-data-update';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { RECORD } from '../consts';
@@ -160,6 +161,23 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		</div>`;
 	}
 
+	getAxeDescription() {
+		const categories = [...this.filter.selectedCategories];
+		const terms = [];
+		if (categories.includes(7)) {
+			terms.push('Threads');
+		} if (categories.includes(8)) {
+			terms.push('Replies');
+		} if (categories.includes(9)) {
+			terms.push('Reads');
+		}
+		// eslint-disable-next-line prefer-const
+		let [last, ...descriptions] = terms;
+		descriptions = descriptions.reverse();
+		if (terms.length === 0) return 'Viewing users with discussion activity in all categories';
+		return `Viewing users with discussion activity in ${`${descriptions.join(', ')} ${descriptions.length > 0 ? 'and' : ''} ${last}`} `;
+	}
+
 	get chartOptions() {
 		const that = this;
 		return {
@@ -188,6 +206,7 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 							legendItemClick: function(e) {
 								const point = this;
 								that.filter.toggleCategory(point.id);
+								filterEventQueue.add('Discussion Activity filter applied', that.getAxeDescription());
 								e.preventDefault();
 							}
 						}
@@ -202,6 +221,7 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 							click: function() {
 								const point = this;
 								that.filter.toggleCategory(point.id);
+								filterEventQueue.add('Discussion Activity filter applied', that.getAxeDescription());
 							}
 						}
 					},

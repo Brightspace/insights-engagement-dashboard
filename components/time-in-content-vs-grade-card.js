@@ -8,6 +8,7 @@ import { MobxLitElement } from '@adobe/lit-mobx';
 import { RECORD } from '../consts';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 import { UrlState } from '../model/urlState';
+import { filterEventQueue } from './alert-data-update';
 
 const filterId = 'd2l-insights-time-in-content-vs-grade-card';
 
@@ -198,6 +199,26 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 			<d2l-labs-chart class="d2l-insights-summary-card-body" .options="${this.chartOptions}" ?skeleton="${this.skeleton}"></d2l-labs-chart>`;
 	}
 
+	getAxeDescription(quadrant) {
+		let description = 'Viewing learners with ';
+		switch (quadrant) {
+			case 'rightTop':
+				description += 'high time in content and high grade';
+				break;
+			case 'rightBottom':
+				description += 'high time in content and low grade';
+				break;
+			case 'leftTop':
+				description += 'low time in content and high grade';
+				break;
+			case 'leftBottom':
+				description += 'low time in content and low grade';
+				break;
+		}
+		return description;
+	}
+
+
 	get chartOptions() {
 		const that = this;
 		return {
@@ -207,7 +228,14 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 				width: 583,
 				events: {
 					click: function(event) {
-						that.filter.toggleQuadrant(that.filter.calculateQuadrant(Math.floor(event.xAxis[0].value), Math.floor(event.yAxis[0].value)));
+						const quadrant = that.filter.calculateQuadrant(Math.floor(event.xAxis[0].value), Math.floor(event.yAxis[0].value));
+						console.log(quadrant);
+						that.filter.toggleQuadrant();
+
+						filterEventQueue.add(
+							'Time in Content vs. Grade Updated filter applied',
+							that.getAxeDescription(quadrant)
+						);
 					},
 				}
 			},
