@@ -146,7 +146,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			.d2l-insights-user-drill-view-action-button-group {
 				flex-grow: 1;
 				margin: 0.7em;
-				max-width: 160px;
+				max-width: 300px;
 			}
 
 			.d2l-insights-view-filters-container {
@@ -401,6 +401,11 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 						text=${this.localize('dashboard:exportToCsv')}
 						@click="${this._exportToCsvHandler}">
 					</d2l-button-subtle>
+					<d2l-button-subtle
+						icon="d2l-tier1:gear"
+						text=${this.localize('settings:title')}
+						@click="${this._openSettingsPage}">
+					</d2l-button-subtle>
 				</d2l-action-button-group>
 
 			</div>
@@ -518,6 +523,12 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		// prevent href navigation
 		e.preventDefault();
 		return false;
+	}
+
+	_openSettingsPage() {
+		if (this.viewState) {
+			this.viewState.setSettingsView();
+		}
 	}
 }
 
