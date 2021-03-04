@@ -186,10 +186,10 @@ export default {
 	"settings:invalidSystemAccessValueToast": "Your settings could not be saved. System Access thresholds need to be between 1 and 30.",
 	"settings:serverSideErrorToast": "Something went wrong. Your settings could not be saved.",
 
-	"settings:avgGradeSummaryDescription": "The Average Grade Summary card presents the current average grade for the student across all the applied filtered fields FIXME? across courses that are filtered on.",
-	"settings:gradesOverTimeDescription": "The Grades Over Time card shows the distribution of grades over the academic period FIXME?.",
-	"settings:accessOverTimeDescription": "The Course Access Over Time card shows learner’s course access over the academic period FIXME?.",
-	"settings:contentViewsOverTimeDescription": "The Content Views Over Time card shows view counts for content over the academic period FIXME?.",
+	"settings:avgGradeSummaryDescription": "The Average Grade Summary card presents the current average grade for the student across courses that are filtered on.",
+	"settings:gradesOverTimeDescription": "The Grades Over Time card shows how the learner's grades have changed over time.",
+	"settings:accessOverTimeDescription": "The Course Access Over Time card shows how the learner’s course access frequency has changed over time.",
+	"settings:contentViewsOverTimeDescription": "The Content Views Over Time card shows how view counts for content have changed over time.",
 
 	"userDrill:noUser": "This user could not be loaded. Go to the Engagement Dashboard to view the list of users.",
 	"userDrill:noData": "No data in filtered ranges. Refine your selection.",
