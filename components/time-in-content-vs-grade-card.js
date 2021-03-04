@@ -200,24 +200,26 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 	}
 
 	getAxeDescription(quadrant) {
-		let description = 'Viewing learners with ';
+		const chartName = { chartName : this.localize('timeInContentVsGradeCard:timeInContentVsGrade') };
+		if (!this.filter.isApplied) return this.localize('alert:axeNotFiltering', chartName);
+
+		let description = this.localize('alert:axeDescription');
 		switch (quadrant) {
 			case 'rightTop':
-				description += 'high time in content and high grade';
+				description += this.localize('timeInContentVsGradeCard:highTimeHighGrade');
 				break;
 			case 'rightBottom':
-				description += 'high time in content and low grade';
+				description += this.localize('timeInContentVsGradeCard:highTimeLowGrade');
 				break;
 			case 'leftTop':
-				description += 'low time in content and high grade';
+				description += this.localize('timeInContentVsGradeCard:lowTimeHighGrade');
 				break;
 			case 'leftBottom':
-				description += 'low time in content and low grade';
+				description += this.localize('timeInContentVsGradeCard:lowTimeLowGrade');
 				break;
 		}
 		return description;
 	}
-
 
 	get chartOptions() {
 		const that = this;
@@ -229,11 +231,9 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 				events: {
 					click: function(event) {
 						const quadrant = that.filter.calculateQuadrant(Math.floor(event.xAxis[0].value), Math.floor(event.yAxis[0].value));
-						console.log(quadrant);
 						that.filter.toggleQuadrant();
-
 						filterEventQueue.add(
-							'Time in Content vs. Grade Updated filter applied',
+							that.localize('timeInContentVsGradeCard:alertUpdate'),
 							that.getAxeDescription(quadrant)
 						);
 					},

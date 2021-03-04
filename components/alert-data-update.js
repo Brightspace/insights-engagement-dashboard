@@ -167,7 +167,7 @@ class AlertDataUpdate extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return html`
 			<div class="d2l-insights-event-container">
 				${repeat(this.dataEvents.events, (event) => event.id, (event) => this._render_event(event))}
-			</div>;
+			</div>
 		`;
 	}
 }

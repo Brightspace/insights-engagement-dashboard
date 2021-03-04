@@ -165,17 +165,17 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const categories = [...this.filter.selectedCategories];
 		const terms = [];
 		if (categories.includes(7)) {
-			terms.push('Threads');
+			terms.push(this.localize('discussionActivityCard:threads'));
 		} if (categories.includes(8)) {
-			terms.push('Replies');
+			terms.push(this.localize('discussionActivityCard:replies'));
 		} if (categories.includes(9)) {
-			terms.push('Reads');
+			terms.push(this.localize('discussionActivityCard:reads'));
 		}
-		// eslint-disable-next-line prefer-const
-		let [last, ...descriptions] = terms;
-		descriptions = descriptions.reverse();
-		if (terms.length === 0) return 'Viewing users with discussion activity in all categories';
-		return `Viewing users with discussion activity in ${`${descriptions.join(', ')} ${descriptions.length > 0 ? 'and' : ''} ${last}`} `;
+
+		const chartName = { chartName : this.localize('discussionActivityCard:cardTitle') };
+		if (categories.length === 0) return this.localize('alert:axeNotFiltering', chartName);
+
+		return `${this.localize('alert:axeDescriptionRange', chartName)} ${terms.join(', ')} `;
 	}
 
 	get chartOptions() {

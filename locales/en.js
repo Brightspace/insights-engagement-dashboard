@@ -94,6 +94,11 @@ export default {
 	"timeInContentVsGradeCard:rightTop": " {numberOfUsers} user enrollments are getting an above average grade and spending above average time in content.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} user enrollments are getting a below average grade and spending below average time in content.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} user enrollments are getting a below average grade and spending above average time in content.",
+	"timeInContentVsGradeCard:alertUpdate": "Time in Content vs. Grade Updated filter applied",
+	"timeInContentVsGradeCard:highTimeHighGrade": "high time in content and high grade",
+	"timeInContentVsGradeCard:highTimeLowGrade": "high time in content and low grade",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "low time in content and high grade",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "low time in content and low grade",
 
 	"currentFinalGradeCard:currentGrade": "Current Grade",
 	"currentFinalGradeCard:numberOfStudents": "Number of Users",
@@ -115,6 +120,7 @@ export default {
 	"courseLastAccessCard:oneToThreeDaysAgo": "1-3 days ago",
 	"courseLastAccessCard:lessThanOneDayAgo": "< 1 day ago",
 	"courseLastAccessCard:accessibilityLessThanOne": "Less than 1 day ago",
+	"courseLastAccessCard:accessibilityMoreThanFourteenDaysAgo": "More than 14 days ago",
 	"courseLastAccessCard:tooltipNeverAccessed": "{numberOfUsers} users have never accessed the course",
 	"courseLastAccessCard:tooltipMoreThanFourteenDays": "{numberOfUsers} users last accessed the course more than 14 days ago",
 	"courseLastAccessCard:toolTipSevenToFourteenDays": "{numberOfUsers} users last accessed the course 7 to 14 days ago",
@@ -238,4 +244,10 @@ export default {
 	"chart:resetZoom": "Reset zoom",
 	"chart:resetZoomTitle": "Reset zoom level 1:1",
 	"chart:thousandsSeparator": " ",
+
+	"alert:axeDescriptionRange" : "Viewing learners with {chartName} in these categories ",
+	"alert:axeDescription" : "Viewing learners with ",
+	"alert:axeNotFiltering" : "Not filtering by {chartName}",
+	// this "to" that, and this "to" that <- translate the word "to" in this context
+	"alert:this-To-That" : " to "
 };

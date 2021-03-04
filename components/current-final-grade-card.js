@@ -194,6 +194,10 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	getAxeDescription() {
 		// bin the ranges of numbers together
 		const categories = ([...this.filter.selectedCategories]);
+
+		const chartName = { chartName: this.localize('currentFinalGradeCard:currentGrade') };
+		if (categories.length === 0) return this.localize('alert:axeNotFiltering', chartName);
+
 		const pairs = categories.sort().reduce((acc, cur) => {
 			// if we can find the cur in a pair then we have a chain
 			const pair = acc.find((pair) => pair[1] === cur);
@@ -205,10 +209,8 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			return acc;
 		}, []);
 
-		// eslint-disable-next-line prefer-const
-		let [last, ...descriptions] = pairs.map(pair => pair.join(' to ')).reverse();
-		descriptions = descriptions.reverse();
-		return `Viewing learners with course access in range ${`${descriptions.join(', ')} ${descriptions.length > 0 ? 'and' : ''} ${last}`} `;
+		const descriptions = pairs.map(pair => pair.join(this.localize('alert:this-To-That'))).join(', ');
+		return `${this.localize('alert:axeDescriptionRange', chartName)} ${descriptions}`;
 	}
 
 	get chartOptions() {
