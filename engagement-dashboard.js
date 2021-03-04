@@ -277,6 +277,12 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				?grades-trend-card="${this.showGradesTrendCard}"
 				?course-access-trend-card="${this.showCourseAccessTrendCard}"
 				?content-views-trend-card="${this.showContentViewsTrendCard}"
+				?system-access-card="${this.showSystemAccessCard}"
+				?overdue-card="${this.showOverdueCard}"
+				?discussions-col="${this.showDiscussionsCol}"
+				?grade-col="${this.showGradeCol}"
+				?last-access-col="${this.showLastAccessCol}"
+				?tic-col="${this.showTicCol}"
 			>
 				<div slot="filters">
 					${this._renderFilters()}
