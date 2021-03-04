@@ -167,6 +167,32 @@ describe('d2l-insights-user-drill-view', () => {
 			expect(errorMessage.text).to.equal('No data in filtered ranges. Refine your selection.');
 		});
 
+		it('should render "Unable to load your results" if the main query to Metron fails', async() => {
+			const isQueryErrorData = { ...data };
+			isQueryErrorData.records = [];
+			isQueryErrorData._data.isQueryError = true;
+
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data=${isQueryErrorData}></d2l-insights-user-drill-view>`);
+			await new Promise(res => setTimeout(res, 10));
+
+			const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');
+			expect(errorMessage.type).to.equal('link');
+			expect(errorMessage.text).to.equal('Unable to load your results. If this problem persists, please ');
+		});
+
+		it('should render "Unable to load your results" if user drill query to Metron fails', async() => {
+			const isQueryErrorData = { ...data };
+			isQueryErrorData.records = [];
+			window.d2lfetch.fetch = fetchMock.sandbox().post('path:/unstable/insights/data/userdrill', 500);
+
+			const el = await fixture(html`<d2l-insights-user-drill-view .user="${user}" .data=${isQueryErrorData}></d2l-insights-user-drill-view>`);
+			await new Promise(res => setTimeout(res, 10));
+
+			const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');
+			expect(errorMessage.type).to.equal('link');
+			expect(errorMessage.text).to.equal('Unable to load your results. If this problem persists, please ');
+		});
+
 		it('should return correct data from coursesInView user card', async() => {
 			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data="${data}" org-unit-id=100></d2l-insights-user-drill-view>`);
 			await new Promise(res => setTimeout(res, 10));
