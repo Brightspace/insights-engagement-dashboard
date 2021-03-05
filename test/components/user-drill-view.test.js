@@ -51,7 +51,8 @@ describe('d2l-insights-user-drill-view', () => {
 					[11, 'Course 11', mockOuTypes.course, [1002], true]
 				],
 				records: userRecords
-			}
+			},
+			isQueryError: false
 		},
 		records: userRecords,
 		orgUnitTree: {
@@ -69,14 +70,6 @@ describe('d2l-insights-user-drill-view', () => {
 	data.recordsByUser.set(user.userId, data.records);
 	data.userDictionary = new Map();
 	data.userDictionary.set(user.userId, Object.values(user));
-
-	afterEach(() => {
-		// d2l-action-button-group uses afterNextRender that causes
-		// 'Cannot read property 'disconnect' of undefined'
-		// when scheduled rendering does not happen, but the node is removed
-		// flush - fixes that by calling scheduled rendering. Alternative is fixing d2l-action-button-group attached/detached functions
-		flush();
-	});
 
 	describe('constructor', () => {
 		it('should construct', () => {
@@ -100,7 +93,7 @@ describe('d2l-insights-user-drill-view', () => {
 		let handle;
 		let profileCallPromise;
 
-		before(() => {
+		beforeEach(() => {
 
 			profileCallPromise = new Promise(res => handle = res);
 
@@ -121,9 +114,15 @@ describe('d2l-insights-user-drill-view', () => {
 
 		});
 
-		after(() => {
+		afterEach(() => {
 			D2L.LP = {};
 			window.d2lfetch.fetch = temp;
+
+			// d2l-action-button-group uses afterNextRender that causes
+			// 'Cannot read property 'disconnect' of undefined'
+			// when scheduled rendering does not happen, but the node is removed
+			// flush - fixes that by calling scheduled rendering. Alternative is fixing d2l-action-button-group attached/detached functions
+			flush();
 		});
 
 		it('should render proper title and sub-title', async() => {
@@ -138,11 +137,17 @@ describe('d2l-insights-user-drill-view', () => {
 		});
 
 		it('should render the users profile', async() => {
+			window.d2lfetch.fetch =	window.d2lfetch.fetch.post('path:/unstable/insights/data/userdrill', {
+				userContent: [],
+				userCourseAccess: [],
+				userGrades: []
+			});
+
 			const el = await fixture(html`<d2l-insights-user-drill-view
 				.user=${user} .data=${data}
 			></d2l-insights-user-drill-view>`);
-			const profile = await trySelect(el.shadowRoot, 'd2l-profile-image');
 			await profileCallPromise;
+			const profile = await trySelect(el.shadowRoot, 'd2l-profile-image');
 			const names = [profile._firstName, profile._lastName];
 			const results = ['First', 'Last'];
 
@@ -171,6 +176,32 @@ describe('d2l-insights-user-drill-view', () => {
 			const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');
 			expect(errorMessage.type).to.equal('default');
 			expect(errorMessage.text).to.equal('No data in filtered ranges. Refine your selection.');
+		});
+
+		it('should render "Unable to load your results" if the main query to Metron fails', async() => {
+			const isQueryErrorData = { ...data };
+			isQueryErrorData.records = [];
+			isQueryErrorData.isQueryError = true;
+
+			const el = await fixture(html`<d2l-insights-user-drill-view demo .user="${user}" .data=${isQueryErrorData}></d2l-insights-user-drill-view>`);
+			await new Promise(res => setTimeout(res, 10));
+
+			const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');
+			expect(errorMessage.type).to.equal('link');
+			expect(errorMessage.text).to.equal('Unable to load your results. If this problem persists, please ');
+		});
+
+		it('should render "Unable to load your results" if user drill query to Metron fails', async() => {
+			const isQueryErrorData = { ...data };
+			window.d2lfetch.fetch =	window.d2lfetch.fetch.post('path:/unstable/insights/data/userdrill', 500);
+
+			const el = await fixture(html`<d2l-insights-user-drill-view .user="${user}" .data=${isQueryErrorData}></d2l-insights-user-drill-view>`);
+			flush();
+			await new Promise(res => setTimeout(res, 10));
+
+			const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');
+			expect(errorMessage.type).to.equal('link');
+			expect(errorMessage.text).to.equal('Unable to load your results. If this problem persists, please ');
 		});
 
 		it('should return correct data from coursesInView user card', async() => {
