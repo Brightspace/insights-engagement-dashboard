@@ -1,10 +1,10 @@
 import '@brightspace-ui/core/components/offscreen/offscreen.js';
 
 import '../components/summary-card';
-import '../components/svg/course-access-thumbnail.svg';
-import '../components/svg/current-grade-thumbnail.svg';
-import '../components/svg/tic-vs-grade-thumbnail.svg';
-import '../components/svg/disc-activity-thumbnail.svg';
+import '../components/svg/average-grade-summary.svg';
+import '../components/svg/grades-trend.svg';
+import '../components/svg/course-access-trend.svg';
+import '../components/svg/content-views-trend.svg';
 
 import { bodySmallStyles, bodyStandardStyles, heading3Styles } from '@brightspace-ui/core/components/typography/styles';
 import { css, html, LitElement } from 'lit-element/lit-element';
@@ -92,7 +92,7 @@ class UserLevelCardSelectionList extends RtlMixin(Localizer(LitElement)) {
 
 				<d2l-list-item key="showAverageGradeSummaryCard" selectable ?selected="${this.showAverageGradeSummaryCard}">
 					<div class="d2l-insights-list-flex-container">
-						<d2l-insights-current-grade-thumbnail class="d2l-demo-card" aria-hidden="true"></d2l-insights-current-grade-thumbnail>
+						<d2l-insights-average-grade-summary-thumbnail class="d2l-demo-card" aria-hidden="true"></d2l-insights-average-grade-summary-thumbnail>
 						<div class="d2l-card-selection-text">
 							<h3 class="d2l-heading-3 d2l-card-selection-title" aria-hidden="true">
 								${this.localize('settings:avgGradeSummary')}
@@ -105,7 +105,7 @@ class UserLevelCardSelectionList extends RtlMixin(Localizer(LitElement)) {
 
 				<d2l-list-item key="showGradesTrendCard" selectable ?selected="${this.showGradesTrendCard}">
 					<div class="d2l-insights-list-flex-container">
-						<d2l-insights-current-grade-thumbnail class="d2l-demo-card" aria-hidden="true"></d2l-insights-current-grade-thumbnail>
+						<d2l-insights-grades-trend-thumbnail class="d2l-demo-card" aria-hidden="true"></d2l-insights-grades-trend-thumbnail>
 						<div class="d2l-card-selection-text">
 							<h3 class="d2l-heading-3 d2l-card-selection-title" aria-hidden="true">
 								${this.localize('gradesTrendCard:gradesOverTime')}
@@ -118,7 +118,7 @@ class UserLevelCardSelectionList extends RtlMixin(Localizer(LitElement)) {
 
 				<d2l-list-item key="showCourseAccessTrendCard" selectable ?selected="${this.showCourseAccessTrendCard}">
 					<div class="d2l-insights-list-flex-container">
-						<d2l-insights-current-grade-thumbnail class="d2l-demo-card" aria-hidden="true"></d2l-insights-current-grade-thumbnail>
+						<d2l-insights-course-access-trend-thumbnail class="d2l-demo-card" aria-hidden="true"></d2l-insights-course-access-trend-thumbnail>
 						<div class="d2l-card-selection-text">
 							<h3 class="d2l-heading-3 d2l-card-selection-title" aria-hidden="true">
 								${this.localize('accessTrendCard:title')}
@@ -131,7 +131,7 @@ class UserLevelCardSelectionList extends RtlMixin(Localizer(LitElement)) {
 
 				<d2l-list-item key="showContentViewsTrendCard" selectable ?selected="${this.showContentViewsTrendCard}">
 					<div class="d2l-insights-list-flex-container">
-						<d2l-insights-current-grade-thumbnail class="d2l-demo-card" aria-hidden="true"></d2l-insights-current-grade-thumbnail>
+						<d2l-insights-content-views-trend-thumbnail class="d2l-demo-card" aria-hidden="true"></d2l-insights-content-views-trend-thumbnail>
 						<div class="d2l-card-selection-text">
 							<h3 class="d2l-heading-3 d2l-card-selection-title" aria-hidden="true">
 								${this.localize('contentViewsCard:contentViewOverTime')}
