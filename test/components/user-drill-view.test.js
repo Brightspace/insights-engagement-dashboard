@@ -10,7 +10,7 @@ import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-help
 import { setStateForTesting } from '../../model/urlState';
 import sinon from 'sinon/pkg/sinon-esm.js';
 
-describe.only('d2l-insights-user-drill-view', () => {
+describe('d2l-insights-user-drill-view', () => {
 	setStateForTesting('v', 'user,232');
 	const user = {
 		userId: 232,
@@ -114,6 +114,12 @@ describe.only('d2l-insights-user-drill-view', () => {
 		afterEach(() => {
 			D2L.LP = {};
 			window.d2lfetch.fetch = temp;
+
+			// d2l-action-button-group uses afterNextRender that causes
+			// 'Cannot read property 'disconnect' of undefined'
+			// when scheduled rendering does not happen, but the node is removed
+			// flush - fixes that by calling scheduled rendering. Alternative is fixing d2l-action-button-group attached/detached functions
+			flush();
 		});
 
 		it('should render proper title and sub-title', async() => {
