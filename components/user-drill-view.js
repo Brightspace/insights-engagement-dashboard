@@ -11,7 +11,7 @@ import './summary-card';
 import './access-trend-card';
 
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
-import { computed, decorate } from 'mobx';
+import { computed, decorate, reaction } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
 import { RECORD, USER } from '../consts';
 import { createComposeEmailPopup } from './email-integration';
@@ -367,14 +367,38 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return false;
 	}
 
-	render() {
-		if (this.newFilteredOrgUnitIds.some(id => !this.lastFilteredOrgUnitIds.includes(id))) {
-			this.lastFilteredOrgUnitIds = this.newFilteredOrgUnitIds;
-			if (this.lastFilteredOrgUnitIds.length !== 0) {
+	firstUpdated() {
+		// setTimeout allows to unwind the first render call-chain that was caused by Localizer connectedCallback
+		setTimeout(() => this._userData.loadData(this.newFilteredOrgUnitIds, this.user.userId), 0);
+
+		this.disposer = reaction(
+			// any expression that should cause rendering. It also should use MobX observables
+			() => this.newFilteredOrgUnitIds,
+
+			newFilteredOrgUnitIds => {
+				if (!newFilteredOrgUnitIds || newFilteredOrgUnitIds.length === 0) {
+					return;
+				}
+
+				if (newFilteredOrgUnitIds.every(item => this.lastFilteredOrgUnitIds.includes(item))) {
+					return;
+				}
+
+				this.lastFilteredOrgUnitIds = newFilteredOrgUnitIds;
 				this._userData.loadData(this.newFilteredOrgUnitIds, this.user.userId);
 			}
+		);
+	}
+
+	disconnectedCallback() {
+		if (this.disposer) {
+			this.disposer();
 		}
 
+		super.disconnectedCallback();
+	}
+
+	render() {
 		if (!this.skeleton && !this.user.userId) {
 			return html`
 				<d2l-insights-message-container
