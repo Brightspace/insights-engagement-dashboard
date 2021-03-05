@@ -259,10 +259,11 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_averageGrade({ wide, tall }) {
+		const isNoGrade = this.averageGradeForUser === null || this.averageGradeForUser === undefined;
 		return html`<d2l-labs-summary-card
 			card-title="${this.localize('averageGradeSummaryCard:averageGrade')}"
-			card-value="${this.averageGradeForUser === null ? '' : this.averageGradeForUser}"
-			card-message="${this.averageGradeForUser === null ? this.localize('averageGradeSummaryCard:noGradeInfoAvailable') : this.localize('averageGradeSummaryCard:averageGradeText')}"
+			card-value="${isNoGrade ? '' : this.averageGradeForUser}"
+			card-message="${isNoGrade ? this.localize('averageGradeSummaryCard:noGradeInfoAvailable') : this.localize('averageGradeSummaryCard:averageGradeText')}"
 			?wide="${wide}"
 			?tall="${tall}"
 			?skeleton="${this.skeleton}">
