@@ -18,6 +18,7 @@ import { createComposeEmailPopup } from './email-integration';
 import { ExportData } from '../model/exportData';
 import { fetchUserData as fetchDemoUserData } from '../model/fake-dataApiClient.js';
 import { fetchUserData } from '../model/dataApiClient.js';
+import { flush } from '@polymer/polymer/lib/utils/render-status.js';
 import { formatPercent } from '@brightspace-ui/intl';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
@@ -368,6 +369,12 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	render() {
+		// d2l-action-button-group uses afterNextRender that causes
+		// 'Cannot read property 'disconnect' of undefined'
+		// when scheduled rendering does not happen, but the node is removed
+		// flush - fixes that by calling scheduled rendering. Alternative is fixing d2l-action-button-group attached/detached functions
+		flush();
+
 		if (this.newFilteredOrgUnitIds.some(id => !this.lastFilteredOrgUnitIds.includes(id))) {
 			this.lastFilteredOrgUnitIds = this.newFilteredOrgUnitIds;
 			if (this.lastFilteredOrgUnitIds.length !== 0) {
