@@ -355,7 +355,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	get isQueryError() {
 		// if main query failed
-		if (this.data && this.data._data && this.data._data.isQueryError) {
+		if (this.data && this.data.isQueryError) {
 			return true;
 		}
 

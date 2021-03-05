@@ -44,6 +44,10 @@ export class FilteredData {
 		return this._data.isLoading;
 	}
 
+	get isQueryError() {
+		return this._data.isQueryError;
+	}
+
 	get records() {
 		const appliedFilters = this.filters.filter(f => f.isApplied);
 		return this._data.records.filter(r => appliedFilters.every(f => f.filter(r, this.userDictionary)));
