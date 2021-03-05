@@ -10,7 +10,12 @@
     ],
     "parserOptions": {
         "ecmaVersion": 2018,
-        "sourceType": "module"
+        "sourceType": "module",
+		"babelOptions": {
+			"plugins": [
+	  			"@babel/plugin-proposal-class-properties"
+			]
+		}
     },
     "plugins": [
       "json",
