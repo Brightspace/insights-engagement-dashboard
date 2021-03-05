@@ -381,11 +381,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			return true;
 		}
 
-		if (this._userData.isQueryError) {
-			return true;
-		}
-
-		return false;
+		return this._userData.isQueryError;
 	}
 
 	render() {
