@@ -188,7 +188,7 @@ export default {
 
 	"settings:avgGradeSummaryDescription": "The Average Grade Summary card presents the current average grade for the student across courses that are filtered on.",
 	"settings:gradesOverTimeDescription": "The Grades Over Time card shows how the learner's grades have changed over time.",
-	"settings:accessOverTimeDescription": "The Course Access Over Time card shows how the learner’s course access frequency has changed over time.",
+	"settings:accessOverTimeDescription": "The Course Access Over Time card shows how the learner's course access frequency has changed over time.",
 	"settings:contentViewsOverTimeDescription": "The Content Views Over Time card shows how view counts for content have changed over time.",
 
 	"userDrill:noUser": "This user could not be loaded. Go to the Engagement Dashboard to view the list of users.",
