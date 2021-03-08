@@ -4,12 +4,12 @@ import '@brightspace-ui-labs/facet-filter-sort/components/filter-dropdown/filter
 import '@brightspace-ui-labs/facet-filter-sort/components/filter-dropdown/filter-dropdown-category.js';
 import '@brightspace-ui-labs/facet-filter-sort/components/filter-dropdown/filter-dropdown-option.js';
 
+import { filterEventQueue } from './alert-data-update.js';
 import { html } from 'lit-element';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { repeat } from 'lit-html/directives/repeat';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
-import { filterEventQueue } from './alert-data-update.js';
 
 const clearAllOptionId = 'clear-all';
 
