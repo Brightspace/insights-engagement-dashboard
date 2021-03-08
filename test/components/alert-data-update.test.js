@@ -22,7 +22,7 @@ describe('d2l-insights-alert-data-updated', () => {
 
 			const alerts = await trySelectAll(el.shadowRoot, '.d2l-insights-event-container > d2l-alert');
 			expect(alerts.length).to.equal(2);
-			const alertMessages = Array.from(alerts).map(alert => alert.innerText);
+			const alertMessages = Array.from(alerts).map(alert => alert.innerText.trim());
 			expect(alertMessages).to.eql(['Test Alert 2', 'Test Alert 3']);
 		});
 
@@ -39,7 +39,7 @@ describe('d2l-insights-alert-data-updated', () => {
 
 			const alerts = await trySelectAll(el.shadowRoot, '.d2l-insights-event-container > d2l-alert');
 			expect(alerts.length).to.equal(1);
-			const alertMessages = Array.from(alerts).map(alert => alert.innerText);
+			const alertMessages = Array.from(alerts).map(alert => alert.innerText.trim());
 			expect(alertMessages).to.eql(['Test Alert 3']);
 		});
 	});
