@@ -83,12 +83,6 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_filterChangeHandler(event) {
 
-		// const filter = this.data.filters.find(f => ({
-		// 	id: f.id,
-		// 	title: this.localize(f.title),
-		// 	isApplied: f.isApplied,
-		// }));
-
 		const filter = this.data.filters.find(filter => filter.id === event.detail.menuItemKey);
 
 		if (event.detail.menuItemKey === clearAllOptionId) {

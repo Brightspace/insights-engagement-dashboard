@@ -9,6 +9,7 @@ import { MobxLitElement } from '@adobe/lit-mobx';
 import { RECORD } from '../consts';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 import { UrlState } from '../model/urlState';
+import { merge } from '@brightspace-ui/intl/lib/common';
 
 const filterId = 'd2l-insights-current-final-grade-card';
 
@@ -191,6 +192,19 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		}
 	}
 
+	mergeCategories(categories) {
+		return categories.sort().reduce((acc, cur) => {
+			if (acc[acc.length - 1] !== undefined &&
+				acc[acc.length - 1][1] === cur)
+			{
+				acc[acc.length - 1][1] = cur + 10;
+			} else {
+				acc.push([cur, cur + 10]);
+			}
+			return acc;
+		}, []);
+	}
+
 	getAxeDescription() {
 		// bin the ranges of numbers together
 		const categories = ([...this.filter.selectedCategories]);
@@ -198,16 +212,7 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const chartName = { chartName: this.localize('currentFinalGradeCard:currentGrade') };
 		if (categories.length === 0) return this.localize('alert:axeNotFiltering', chartName);
 
-		const pairs = categories.sort().reduce((acc, cur) => {
-			// if we can find the cur in a pair then we have a chain
-			const pair = acc.find((pair) => pair[1] === cur);
-			if (pair !== undefined) {
-				pair[1] = cur + 10;
-			} else {
-				acc.push([cur, cur + 10]);
-			}
-			return acc;
-		}, []);
+		const pairs = this.mergeCategories(categories);
 
 		const descriptions = pairs.map(pair => pair.join(this.localize('alert:this-To-That'))).join(', ');
 		return `${this.localize('alert:axeDescriptionRange', chartName)} ${descriptions}`;

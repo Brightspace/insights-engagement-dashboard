@@ -227,6 +227,26 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		</div>`;
 	}
 
+	mergeCategories(categories) {
+		return categories.sort().reverse().reduce((acc, cur) => {
+			// if we can find the cur in a pair then we have a chain
+			const desc = DATA_DESCRIPTIONS[cur];
+			if (typeof(desc) === 'string') {
+				acc.push([desc]);
+				return acc;
+			}
+			if (acc[acc.length - 1] !== undefined &&
+				typeof(acc[acc.length - 1]) !== 'string' &&
+				acc[acc.length - 1][1] === desc[0])
+			{
+				acc[acc.length - 1][1] = desc[1];
+			} else {
+				acc.push([desc[0], desc[1]]);
+			}
+			return acc;
+		}, []);
+	}
+
 	getAxeDescription() {
 
 		if (DATA_DESCRIPTIONS[0] === '') {
@@ -236,25 +256,10 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		}
 		// bin the ranges of numbers together
 		const categories = ([...this.filter.selectedCategories]);
-
-		const chartName = { chartName : this.localize('courseLastAccessCard:courseAccess') };
 		if (categories.length === 0) return this.localize('alert:axeNotFiltering', chartName);
 
-		const pairs = categories.sort().reverse().reduce((acc, cur) => {
-			// if we can find the cur in a pair then we have a chain
-			const desc = DATA_DESCRIPTIONS[cur];
-			if (typeof(desc) === 'string') {
-				acc.push([desc]);
-				return acc;
-			}
-			const pair = acc.find((pair) => pair[1] === desc[0]);
-			if (pair !== undefined) {
-				pair[1] = desc[1];
-			} else {
-				acc.push([desc[0], desc[1]]);
-			}
-			return acc;
-		}, []);
+		const pairs = this.mergeCategories(categories);
+		const chartName = { chartName : this.localize('courseLastAccessCard:courseAccess') };
 
 		const message = this.localize('alert:axeDescriptionRange', chartName);
 		const descriptions = pairs.map(pair => pair.join(this.localize('alert:this-To-That'))).join(', ');

@@ -15,8 +15,8 @@ class FilterEvent {
 		this._isRendered = false;
 		this._id = '';
 		this._killTimeout = undefined;
-		this._defer = () => {};
-		this._finished = new Promise(res => this._defer = res);
+		this._remove = () => {};
+		this._finished = new Promise(res => this._remove = res);
 		this.closing = false;
 	}
 
@@ -25,7 +25,7 @@ class FilterEvent {
 		if (!this._isRendered) {
 			this._isRendered = true;
 			this._killTimeout = setTimeout(() => {
-				this._defer(); // resolve the promise, removing the event from the queue
+				this._remove();
 			}, 4000);
 		}
 
@@ -51,7 +51,7 @@ class FilterEvent {
 		if (!this.closing) {
 			clearTimeout(this._killTimeout);
 			setTimeout(() => {
-				this._defer(); // resolve the promise, removing the event from the queue
+				this._remove();
 			}, 300);
 		}
 		this.closing = true;
