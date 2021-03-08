@@ -65,4 +65,31 @@ describe('settings', () => {
 		const rect = await visualDiff.getRect(page, 'd2l-insights-engagement-dashboard');
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
+
+	it('User Level Metrics Desktop', async function() {
+		await page.evaluate(() => {
+			document.querySelector('d2l-insights-engagement-dashboard')
+				.shadowRoot.querySelector('d2l-insights-engagement-dashboard-settings')
+				.shadowRoot.querySelector('d2l-tabs')
+				.shadowRoot.querySelector('d2l-tab-internal[text="User Level Metrics"]')
+				.click();
+		});
+		await page.setViewport({
+			width: 1275,
+			height: 2300,
+			deviceScaleFactor: 1
+		});
+		const rect = await visualDiff.getRect(page, 'd2l-insights-engagement-dashboard');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
+	it('User Level Metrics Mobile', async function() {
+		await page.setViewport({
+			width: 682,
+			height: 3300,
+			deviceScaleFactor: 1
+		});
+		const rect = await visualDiff.getRect(page, 'd2l-insights-engagement-dashboard');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
 });
