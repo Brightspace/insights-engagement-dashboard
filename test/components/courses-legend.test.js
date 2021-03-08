@@ -96,7 +96,6 @@ describe('d2l-insights-course-legend', () => {
 			await new Promise(res => setTimeout(res, 50));
 			filter.set([6606]);
 			const description = el.getAxeDescription();
-			console.log(description);
 			expect(description).to.equal('Viewing learner data in these courses Course 1 (Id: 6606)');
 		});
 	});
