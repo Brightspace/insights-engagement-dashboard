@@ -225,7 +225,7 @@ export default {
 
 	"coursesLegend:coursesLegendFilter": "Cours",
 
-	"contentViewsCard:contentViewOverTime": "Affichage du contenu sur une période",
+	"contentViewsCard:contentViewOverTime": "Consultations du contenu sur une période",
 	"contentViewsCard:viewCount": "Nombre de vues",
 	"contentViewsCard:date": "Date",
 
@@ -233,9 +233,7 @@ export default {
 	"gradesTrendCard:gradesOverTime": "Notes sur une période",
 	"gradesTrendCard:currentGrade": "Note actuelle (%)",
 
-	"chart:loading": "Loading...",
-	"chart:decimalPoint": ".",
-	"chart:resetZoom": "Reset zoom",
-	"chart:resetZoomTitle": "Reset zoom level 1:1",
-	"chart:thousandsSeparator": " ",
+	"chart:loading": "Chargement en cours...",
+	"chart:resetZoom": "Réinitialiser le zoom",
+	"chart:resetZoomTitle": "Réinitialiser le zoom niveau 1:1",
 };

@@ -225,7 +225,7 @@ export default {
 
 	"coursesLegend:coursesLegendFilter": "Cyrsiau",
 
-	"contentViewsCard:contentViewOverTime": "Gwedd Cynnwys Dros Amser",
+	"contentViewsCard:contentViewOverTime": "Ymweliadau Cynnwys Dros Amser",
 	"contentViewsCard:viewCount": "Cyfrif Gwedd",
 	"contentViewsCard:date": "Dyddiad",
 
@@ -234,8 +234,6 @@ export default {
 	"gradesTrendCard:currentGrade": "Gradd Bresennol (%)",
 
 	"chart:loading": "Wrthi'n llwytho...",
-	"chart:decimalPoint": ".",
-	"chart:resetZoom": "Reset zoom",
-	"chart:resetZoomTitle": "Reset zoom level 1:1",
-	"chart:thousandsSeparator": " ",
+	"chart:resetZoom": "Ailosod y nodwedd chwyddo",
+	"chart:resetZoomTitle": "Ailosod lefel y nodwedd chwyddo 1:1",
 };

@@ -233,9 +233,7 @@ export default {
 	"gradesTrendCard:gradesOverTime": "Notas ao longo do tempo",
 	"gradesTrendCard:currentGrade": "Nota atual (%)",
 
-	"chart:loading": "Loading...",
-	"chart:decimalPoint": ".",
+	"chart:loading": "Carregando…",
 	"chart:resetZoom": "Redefinir zoom",
-	"chart:resetZoomTitle": "Reset zoom level 1:1",
-	"chart:thousandsSeparator": " ",
+	"chart:resetZoomTitle": "Redefinir nível de zoom 1:1",
 };

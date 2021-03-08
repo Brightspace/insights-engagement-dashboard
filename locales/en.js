@@ -241,10 +241,8 @@ export default {
 	"gradesTrendCard:currentGrade": "Current Grade (%)",
 
 	"chart:loading": "Loading...",
-	"chart:decimalPoint": ".",
 	"chart:resetZoom": "Reset zoom",
 	"chart:resetZoomTitle": "Reset zoom level 1:1",
-	"chart:thousandsSeparator": " ",
 
 	"alert:updatedFilter" : "{chartName} filter updated.",
 	"alert:axeDescriptionRange" : "Viewing learners with {chartName} in these categories ",

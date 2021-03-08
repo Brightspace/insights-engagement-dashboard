@@ -9,7 +9,6 @@ import './content-views-card.js';
 import './grades-trend-card.js';
 import './summary-card';
 import './access-trend-card';
-import './user-drill-errors';
 
 import { bodySmallStyles, heading2Styles, heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { computed, decorate } from 'mobx';
@@ -143,7 +142,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			.d2l-insights-user-drill-view-action-button-group {
 				flex-grow: 1;
 				margin: 0.7em;
-				max-width: 160px;
+				max-width: 300px;
 			}
 
 			.d2l-insights-view-filters-container {
@@ -261,10 +260,11 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_averageGrade({ wide, tall }) {
+		const isNoGrade = this.averageGradeForUser === null || this.averageGradeForUser === undefined;
 		return html`<d2l-labs-summary-card
 			card-title="${this.localize('averageGradeSummaryCard:averageGrade')}"
-			card-value="${this.averageGradeForUser === null ? '' : this.averageGradeForUser}"
-			card-message="${this.averageGradeForUser === null ? this.localize('averageGradeSummaryCard:noGradeInfoAvailable') : this.localize('averageGradeSummaryCard:averageGradeText')}"
+			card-value="${isNoGrade ? '' : this.averageGradeForUser}"
+			card-message="${isNoGrade ? this.localize('averageGradeSummaryCard:noGradeInfoAvailable') : this.localize('averageGradeSummaryCard:averageGradeText')}"
 			?wide="${wide}"
 			?tall="${tall}"
 			?skeleton="${this.skeleton}">
@@ -358,6 +358,19 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return allSelectedCourses.length !== 0 ? allSelectedCourses : this.allCourses;
 	}
 
+	get isQueryError() {
+		// if main query failed
+		if (this.data && this.data.isQueryError) {
+			return true;
+		}
+
+		if (this._userData.isQueryError) {
+			return true;
+		}
+
+		return false;
+	}
+
 	render() {
 		if (this.newFilteredOrgUnitIds.some(id => !this.lastFilteredOrgUnitIds.includes(id))) {
 			this.lastFilteredOrgUnitIds = this.newFilteredOrgUnitIds;
@@ -375,6 +388,16 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 					@d2l-insights-message-container-button-click=${this._loadDefaultView}>
 				</d2l-insights-message-container>
 			`;
+		}
+
+		if (this.isQueryError) {
+			return html `
+				<d2l-insights-message-container
+					type="link"
+					text="${this.localize('dashboard:queryFailed')}"
+					link-text="${this.localize('dashboard:queryFailedLink')}"
+					href="https://www.d2l.com/support/">
+				</d2l-insights-message-container>`;
 		}
 
 		const displayName = this.user.userId ? `${this.user.firstName} ${this.user.lastName}` : '';
@@ -401,6 +424,11 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 						text=${this.localize('dashboard:exportToCsv')}
 						@click="${this._exportToCsvHandler}">
 					</d2l-button-subtle>
+					<d2l-button-subtle
+						icon="d2l-tier1:gear"
+						text=${this.localize('settings:title')}
+						@click="${this._openSettingsPage}">
+					</d2l-button-subtle>
 				</d2l-action-button-group>
 
 			</div>
@@ -417,8 +445,6 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			<div class="d2l-insights-view-filters-container">
 				<slot name="applied-filters"></slot>
 			</div>
-
-			${ !this._userData.isQueryError ? html`
 
 			<h3>${this.localize('userDrill:summaryView')}</h3>
 
@@ -474,12 +500,6 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			${this._renderContent()}
 
 			<slot name="alerts"></slot>
-
-		` : html `
-				<d2l-insights-engagement-user-drill-errors
-					.userData="${this._userData}">
-				</d2l-insights-engagement-user-drill-errors>
-			` }
 		</div>`;
 	}
 
@@ -520,6 +540,12 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		// prevent href navigation
 		e.preventDefault();
 		return false;
+	}
+
+	_openSettingsPage() {
+		if (this.viewState) {
+			this.viewState.setSettingsView();
+		}
 	}
 }
 

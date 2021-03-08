@@ -129,10 +129,23 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				enabled: false,
 			},
 			tooltip: {
-				enabled: false
+				enabled: true,
+				backgroundColor: 'var(--d2l-color-ferrite)',
+				borderWidth: 0,
+				borderRadius: 15,
+				shadow: false,
+				padding: 10,
+
+				style: {
+					color: 'var(--d2l-color-white)',
+					fontSize: '10px',
+					fontFamily: 'Lato',
+					lineHeight: '18px'
+				}
 			},
 			xAxis: {
-				tickInterval:  7 * 24 * 3600 * 1000, //week
+				startOnTick: true,
+				endOnTick: true,
 				type: 'datetime',
 				labels: {
 					formatter: function() {
@@ -165,10 +178,11 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 						fontFamily: 'Lato'
 					}
 				},
-				max: 100,
-				tickPositions: [0, 25, 50, 75, 100],
-				startOnTick: true,
-				endOnTick: true,
+				max: this.isDemo ? 100 : undefined,
+
+				tickPositioner: function() {
+					return that._emptyData ? [0, 25, 50, 75, 100] : undefined;
+				},
 				gridLineWidth: 1,
 				gridLineColor: 'var(--d2l-color-mica)',
 				labels: {
@@ -213,6 +227,11 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get _trendData() {
 		return this.userData
 			.contentViews
+			.map(courseData => ({
+				...courseData,
+				orgUnitId: courseData.orgUnitId ? Number(courseData.orgUnitId) : 0,
+				data: courseData.data.map(point => ({ x: point[0], y: point[1] }))
+			}))
 			.filter(courseData => this._filteredOrgUnitIds.has(courseData.orgUnitId));
 	}
 
@@ -239,8 +258,12 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return orgUnit ? orgUnit[ORG_UNIT.NAME] : '';
 	}
 
+	get _emptyData() {
+		return !this.data._data || !this.userData.contentViews || this._trendData.length === 0;
+	}
+
 	get _series() {
-		if (!this.data._data) return [];
+		if (this._emptyData) return [{ data:[] }];
 
 		const colors = [...UserTrendColorsIterator(0, 1, this._userOrgUnitIds.length)];
 		const selected = (course) => this.selectedCourses.has(course.orgUnitId) || this.selectedCourses.size === 0;
@@ -248,6 +271,9 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this._trendData
 			.map((course) => ({
 				...course,
+				marker: {
+					enabled: course.data && course.data.length === 1
+				},
 				// It is read as `Course 1, series 1 of 3 with 8 data points.`
 				name: this._orgUnitName(course.orgUnitId),
 				color: selected(course) ? colors[this._userOrgUnitIds.findIndex(orgId => orgId === course.orgUnitId)] : 'var(--d2l-color-mica)' }));

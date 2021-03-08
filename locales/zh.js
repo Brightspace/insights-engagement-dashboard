@@ -225,7 +225,7 @@ export default {
 
 	"coursesLegend:coursesLegendFilter": "课程",
 
-	"contentViewsCard:contentViewOverTime": "不同时间的内容查看",
+	"contentViewsCard:contentViewOverTime": "不同时间的内容视图",
 	"contentViewsCard:viewCount": "查看次数",
 	"contentViewsCard:date": "日期",
 
@@ -234,8 +234,6 @@ export default {
 	"gradesTrendCard:currentGrade": "当前成绩 (%)",
 
 	"chart:loading": "正在加载...",
-	"chart:decimalPoint": ".",
-	"chart:resetZoom": "Reset zoom",
-	"chart:resetZoomTitle": "Reset zoom level 1:1",
-	"chart:thousandsSeparator": " ",
+	"chart:resetZoom": "重置缩放",
+	"chart:resetZoomTitle": "按 1:1 重置缩放级别",
 };

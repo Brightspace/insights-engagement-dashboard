@@ -30,7 +30,6 @@ export class ViewState {
 
 	setSettingsView() {
 		this.currentView = 'settings';
-		this.userViewUserId = 0;
 		// odd, but after second navigation to user view
 		// autorun reaction stops observing properties form ViewState
 		// therefore this line is needed
@@ -71,5 +70,6 @@ decorate(ViewState, {
 	userViewUserId: observable,
 	currentView: observable,
 	setUserView: action,
-	setHomeView: action
+	setHomeView: action,
+	setSettingsView: action
 });

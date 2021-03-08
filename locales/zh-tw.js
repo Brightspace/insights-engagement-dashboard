@@ -233,9 +233,7 @@ export default {
 	"gradesTrendCard:gradesOverTime": "隨時間變化的成績",
 	"gradesTrendCard:currentGrade": "目前成績 (%)",
 
-	"chart:loading": "Loading...",
-	"chart:decimalPoint": ".",
-	"chart:resetZoom": "Reset zoom",
-	"chart:resetZoomTitle": "Reset zoom level 1:1",
-	"chart:thousandsSeparator": " ",
+	"chart:loading": "正在載入...",
+	"chart:resetZoom": "重設縮放",
+	"chart:resetZoomTitle": "重設縮放比例 1:1",
 };
