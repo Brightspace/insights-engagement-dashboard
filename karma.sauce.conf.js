@@ -21,7 +21,8 @@ const customLaunchers = {
 	edge: {
 		base: 'SauceLabs',
 		browserName: 'microsoftedge',
-		platform: 'Windows 10'
+		platform: 'Windows 10',
+		screenResolution: '1280x1024'
 	}
 };
 
