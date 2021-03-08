@@ -127,7 +127,6 @@ class UserDrillCoursesTable extends SortMixin(SkeletonMixin(Localizer(MobxLitEle
 		this._sortOrder = e.detail.order;
 		// convert from index in visible columns to general column index matching TABLE_COLUMNS
 		this._sortColumn = this._getVisibleColumns()[e.detail.column];
-		// TODO: should be this._currentPage = 0? that's what it is in users-table.js
 		this._currentPage = 1;
 	}
 
