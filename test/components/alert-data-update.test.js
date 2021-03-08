@@ -3,6 +3,17 @@ import { FilterEventQueue, filterEventQueue } from '../../components/alert-data-
 import { trySelectAll } from '../tools';
 
 describe('d2l-insights-alert-data-updated', () => {
+
+	let storeMatch = undefined;
+	before(() => {
+		storeMatch = window.matchMedia;
+		window.matchMedia = () => ({ matches: false });
+	});
+
+	after(() => {
+		window.matchMedia = storeMatch;
+	});
+
 	describe('alert managment', () => {
 		it('should show one alert', async() => {
 			const el = await fixture(html`<d2l-insights-alert-data-updated .dataEvents="${filterEventQueue}"></d2l-insights-alert-data-updated>`);
