@@ -254,12 +254,12 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			DATA_DESCRIPTIONS[1] = this.localize('courseLastAccessCard:accessibilityMoreThanFourteenDaysAgo');
 			DATA_DESCRIPTIONS[6] = this.localize('courseLastAccessCard:accessibilityLessThanOne');
 		}
-		// bin the ranges of numbers together
+		const chartName = { chartName : this.localize('courseLastAccessCard:courseAccess') };
+
 		const categories = ([...this.filter.selectedCategories]);
 		if (categories.length === 0) return this.localize('alert:axeNotFiltering', chartName);
 
 		const pairs = this.mergeCategories(categories);
-		const chartName = { chartName : this.localize('courseLastAccessCard:courseAccess') };
 
 		const message = this.localize('alert:axeDescriptionRange', chartName);
 		const descriptions = pairs.map(pair => pair.join(this.localize('alert:this-To-That'))).join(', ');

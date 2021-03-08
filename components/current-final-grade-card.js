@@ -9,7 +9,6 @@ import { MobxLitElement } from '@adobe/lit-mobx';
 import { RECORD } from '../consts';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 import { UrlState } from '../model/urlState';
-import { merge } from '@brightspace-ui/intl/lib/common';
 
 const filterId = 'd2l-insights-current-final-grade-card';
 
