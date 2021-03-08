@@ -206,7 +206,10 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 							legendItemClick: function(e) {
 								const point = this;
 								that.filter.toggleCategory(point.id);
-								filterEventQueue.add('Discussion Activity filter applied', that.getAxeDescription());
+								filterEventQueue.add(
+									that.localize('alert:updatedFilter', { chartName: that.localize('discussionActivityCard:cardTitle') }),
+									that.getAxeDescription()
+								);
 								e.preventDefault();
 							}
 						}
@@ -221,7 +224,10 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 							click: function() {
 								const point = this;
 								that.filter.toggleCategory(point.id);
-								filterEventQueue.add('Discussion Activity filter applied', that.getAxeDescription());
+								filterEventQueue.add(
+									that.localize('alert:updatedFilter', { chartName: that.localize('discussionActivityCard:cardTitle') }),
+									that.getAxeDescription()
+								);
 							}
 						}
 					},

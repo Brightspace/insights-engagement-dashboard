@@ -91,4 +91,51 @@ describe('d2l-insights-course-last-access-card', () => {
 		});
 	});
 
+	describe('axe descrptions', () => {
+
+		before(() => disableUrlStateForTesting());
+		after(() => enableUrlState());
+
+		it('should create an axe description', async() => {
+			setStateForTesting('caf', '');
+
+			const courseAccessEl = await fixture(html`<d2l-insights-course-last-access-card .data="${data}"></d2l-insights-course-last-access-card>`);
+
+			filter.selectedCategories.clear();
+			filter.toggleCategory(0);
+
+			const description = courseAccessEl.getAxeDescription();
+
+			expect(description).to.equal('Viewing learners with Course Access in these categories  Never');
+		});
+
+		it('should merge categories in axe description', async() => {
+			setStateForTesting('caf', '');
+
+			const courseAccessEl = await fixture(html`<d2l-insights-course-last-access-card .data="${data}"></d2l-insights-course-last-access-card>`);
+
+			filter.selectedCategories.clear();
+			filter.toggleCategory(5);
+			filter.toggleCategory(4);
+
+			const description = courseAccessEl.getAxeDescription();
+
+			expect(description).to.equal('Viewing learners with Course Access in these categories  1 to 5');
+		});
+
+		it('should seperate skipped categories in axe description', async() => {
+			setStateForTesting('caf', '');
+
+			const courseAccessEl = await fixture(html`<d2l-insights-course-last-access-card .data="${data}"></d2l-insights-course-last-access-card>`);
+
+			filter.selectedCategories.clear();
+			filter.toggleCategory(5);
+			filter.toggleCategory(3);
+
+			const description = courseAccessEl.getAxeDescription();
+
+			expect(description).to.equal('Viewing learners with Course Access in these categories  1 to 3, 5 to 7');
+		});
+	});
+
 });

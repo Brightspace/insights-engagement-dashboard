@@ -65,6 +65,10 @@ export class SelectedCourses {
 		values.forEach(value => this.selected.add(value));
 	}
 
+	map(func) {
+		return Array.from(this.selected).map(func);
+	}
+
 	//for Urlstate
 	get persistenceKey() {
 		return 'clf';
@@ -192,6 +196,13 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return Array.from(
 			new Set(userRecords.map(recordOrgUnitId))
 		).map(orgUnitInfo);
+	}
+
+	getAxeDescription() {
+		const courses = this.selectedCourses.map(
+			id => this.courses.find(course => course.orgUnitId === id)
+		).map(course => course.name).join(',');
+		return this.localize('alert:axeDescriptionCourses') + courses;
 	}
 
 	//LIFECYCLE

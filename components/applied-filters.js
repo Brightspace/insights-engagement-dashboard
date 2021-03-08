@@ -9,6 +9,7 @@ import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { repeat } from 'lit-html/directives/repeat';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
+import { filterEventQueue } from './alert-data-update.js';
 
 const clearAllOptionId = 'clear-all';
 
@@ -70,22 +71,33 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 			</div>
 
 			${!this.skeleton
-				? html`
-					<d2l-labs-applied-filters
-						for="d2l-insights-applied-filters-dropdown"
-						label-text="${this.localize('appliedFilters:labelText')}">
-					</d2l-labs-applied-filters>`
-				: html``
-			}
+			? html`
+				<d2l-labs-applied-filters
+					for="d2l-insights-applied-filters-dropdown"
+					label-text="${this.localize('appliedFilters:labelText')}">
+				</d2l-labs-applied-filters>`
+			: html``
+		}
 		`;
 	}
 
 	_filterChangeHandler(event) {
+
+		// const filter = this.data.filters.find(f => ({
+		// 	id: f.id,
+		// 	title: this.localize(f.title),
+		// 	isApplied: f.isApplied,
+		// }));
+
+		const filter = this.data.filters.find(filter => filter.id === event.detail.menuItemKey);
+
 		if (event.detail.menuItemKey === clearAllOptionId) {
 			this.data.clearFilters();
 			return;
 		}
-
+		filterEventQueue.add(
+			this.localize('alert:axeNotFiltering', { chartName: this.localize(filter.title) })
+		);
 		this.data.getFilter(event.detail.menuItemKey).isApplied = event.detail.selected;
 	}
 }

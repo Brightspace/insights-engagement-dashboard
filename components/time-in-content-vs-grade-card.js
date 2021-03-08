@@ -3,12 +3,12 @@ import { computed, decorate, observable } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
 import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
+import { filterEventQueue } from './alert-data-update';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { RECORD } from '../consts';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 import { UrlState } from '../model/urlState';
-import { filterEventQueue } from './alert-data-update';
 
 const filterId = 'd2l-insights-time-in-content-vs-grade-card';
 
@@ -232,8 +232,9 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 					click: function(event) {
 						const quadrant = that.filter.calculateQuadrant(Math.floor(event.xAxis[0].value), Math.floor(event.yAxis[0].value));
 						that.filter.toggleQuadrant();
+						const chartName = { chartName: that.localize('timeInContentVsGradeCard:timeInContentVsGrade') };
 						filterEventQueue.add(
-							that.localize('timeInContentVsGradeCard:alertUpdate'),
+							that.localize('alert:updatedFilter', chartName),
 							that.getAxeDescription(quadrant)
 						);
 					},

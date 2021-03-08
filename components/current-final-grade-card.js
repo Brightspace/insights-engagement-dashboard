@@ -309,7 +309,10 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 							click: function() {
 								// noinspection JSPotentiallyInvalidUsageOfClassThis
 								that.filter.toggleCategory(Math.ceil(this.category));
-								filterEventQueue.add('Current Grade filter applied', that.getAxeDescription());
+								filterEventQueue.add(
+									that.localize('alert:updatedFilter', { chartName: that.localize('discussionActivityCard:cardTitle') }),
+									that.getAxeDescription()
+								);
 							}
 						}
 					}

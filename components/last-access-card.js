@@ -109,7 +109,9 @@ class LastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_valueClickHandler() {
 		this.filter.isApplied = !this.filter.isApplied;
-		filterEventQueue.add('Last System Access filter applied');
+		filterEventQueue.add(
+			this.localize('alert:updatedFilter', { chartName: this.localize('dashboard:lastSystemAccessHeading') })
+		);
 	}
 }
 customElements.define('d2l-insights-last-access-card', LastAccessCard);

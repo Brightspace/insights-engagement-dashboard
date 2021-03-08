@@ -34,6 +34,7 @@ export default {
 
 	"orgUnitFilter:nameAllSelected": "Org Unit: All",
 	"orgUnitFilter:nameSomeSelected": "Org Unit: Selections Applied",
+	"orgUnitFilter:name": "Org Unit",
 
 	"semesterFilter:name": "Semester",
 	"semesterFilter:semesterName": "{orgUnitName} (Id: {orgUnitId})",
@@ -94,7 +95,6 @@ export default {
 	"timeInContentVsGradeCard:rightTop": " {numberOfUsers} user enrollments are getting an above average grade and spending above average time in content.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} user enrollments are getting a below average grade and spending below average time in content.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} user enrollments are getting a below average grade and spending above average time in content.",
-	"timeInContentVsGradeCard:alertUpdate": "Time in Content vs. Grade Updated filter applied",
 	"timeInContentVsGradeCard:highTimeHighGrade": "high time in content and high grade",
 	"timeInContentVsGradeCard:highTimeLowGrade": "high time in content and low grade",
 	"timeInContentVsGradeCard:lowTimeHighGrade": "low time in content and high grade",
@@ -194,6 +194,7 @@ export default {
 	"userDrill:noData": "No data in filtered ranges. Refine your selection.",
 	"userDrill:manyCoursesAlert": "This dashboard is most useful with less than 10 courses. Please refine your selected courses for a better experience.",
 	"userDrill:summaryView": "Summary View",
+	"userDrill:course": "Course",
 	"activeCoursesTable:title": "Active Courses",
 	"activeCoursesTable:loadingPlaceholder": "Loading",
 	"activeCoursesTable:course": "Course Name",
@@ -245,9 +246,11 @@ export default {
 	"chart:resetZoomTitle": "Reset zoom level 1:1",
 	"chart:thousandsSeparator": " ",
 
+	"alert:updatedFilter" : "{chartName} filter updated.",
 	"alert:axeDescriptionRange" : "Viewing learners with {chartName} in these categories ",
 	"alert:axeDescription" : "Viewing learners with ",
-	"alert:axeNotFiltering" : "Not filtering by {chartName}",
+	"alert:axeNotFiltering" : "Stopped Filtering by {chartName}.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
-	"alert:this-To-That" : " to "
+	"alert:this-To-That" : " to ",
+	"alert:axeDescriptionCourses" : "Viewing learner data in these courses "
 };

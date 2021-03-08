@@ -19,6 +19,7 @@ import { createComposeEmailPopup } from './email-integration';
 import { ExportData } from '../model/exportData';
 import { fetchUserData as fetchDemoUserData } from '../model/fake-dataApiClient.js';
 import { fetchUserData } from '../model/dataApiClient.js';
+import { filterEventQueue } from './alert-data-update';
 import { formatPercent } from '@brightspace-ui/intl';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
@@ -287,6 +288,9 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_overdueAssignmentsValueClickHandler() {
 		const overdueAssignmentsFilter = this.data.getFilter(OVERDUE_ASSIGNMENTS_FILTER_ID);
+		const chartName = { chartName: this.localize('dashboard:overdueAssignmentsHeading') };
+
+		filterEventQueue.add(`${this.localize('alert:updatedFilter', chartName)}`);
 		overdueAssignmentsFilter.isApplied = !overdueAssignmentsFilter.isApplied;
 	}
 
@@ -468,6 +472,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				></d2l-insights-courses-legend>
 
 			${this._renderContent()}
+
+			<slot name="alerts"></slot>
 
 		` : html `
 				<d2l-insights-engagement-user-drill-errors

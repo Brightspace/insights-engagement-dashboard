@@ -352,7 +352,10 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 						events: {
 							click: function() {
 								that.filter.toggleCategory(this.index);
-								filterEventQueue.add('Course Access filter applied', that.getAxeDescription());
+								filterEventQueue.add(
+									that.localize('alert:updatedFilter', { chartName: that.localize('courseLastAccessCard:courseAccess') }),
+									that.getAxeDescription()
+								);
 							}
 						}
 					}

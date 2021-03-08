@@ -60,27 +60,32 @@ class FilterEvent {
 
 class FilterEventQueue {
 	constructor(limit = 2) {
-		this._limit = limit;
+		this._limit = limit; // allows for manual overrides when testing
 		this._events = [];
 		this._callback = () => {};
-
-		// if we are using reduced motion, only show 1 alert.
-		const reducedMotion = window.matchMedia('(prefers-reduced-motion)');
-		if (reducedMotion.matches) this._limit = 1;
 	}
 
 	get events() {
 		return this._events;
 	}
 
+	get limit() {
+		const reducedMotion = window.matchMedia('(prefers-reduced-motion)').matches;
+		const isMobile = window.matchMedia('(max-width: 660px)').matches;
+		if (reducedMotion || isMobile) return 1;
+
+		return this._limit;
+	}
+
 	add(message, description) {
+		if (description === true) description = message;
 		const event = new FilterEvent(message, description);
 		this._events.push(event);
 		event.finished.then(() => {
 			this._events.shift();
 		});
-		if (this._events.length > this._limit) {
-			for (let i = 0; i < this._events.length - this._limit; i++) {
+		if (this._events.length > this.limit) {
+			for (let i = 0; i < this._events.length - this.limit; i++) {
 				this._events[i].markForRemoval();
 			}
 		}
@@ -176,5 +181,6 @@ customElements.define('d2l-insights-alert-data-updated', AlertDataUpdate);
 const filterEventQueue = new FilterEventQueue();
 
 export {
-	filterEventQueue
+	filterEventQueue,
+	FilterEventQueue
 };

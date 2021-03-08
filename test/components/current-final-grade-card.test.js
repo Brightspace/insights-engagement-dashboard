@@ -31,6 +31,10 @@ describe('d2l-insights-current-final-grade-card', () => {
 	describe('render', () => {
 		it('should render as expected', async() => {
 			const el = await fixture(html`<d2l-insights-current-final-grade-card .data="${data}"></d2l-insights-current-final-grade-card>`);
+
+			const filter = el.filter;
+			filter.selectedCategories.clear();
+
 			await new Promise(resolve => setTimeout(resolve, 200)); // allow fetch to run
 			const title = (el.shadowRoot.querySelectorAll('div.d2l-insights-current-final-grade-title'));
 			expect(title[0].innerText).to.equal('Current Grade');
@@ -40,6 +44,7 @@ describe('d2l-insights-current-final-grade-card', () => {
 		});
 
 		it('should colour selected bars', async() => {
+			filter.selectedCategories.clear();
 			filter.selectCategory(30);
 			filter.selectCategory(50);
 			const el = await fixture(html`<d2l-insights-current-final-grade-card .data="${data}"></d2l-insights-current-final-grade-card>`);
@@ -152,6 +157,53 @@ describe('d2l-insights-current-final-grade-card', () => {
 				const state = params.get(filter.persistenceKey);
 				expect(state).to.equal('1,4,5');
 			});
+		});
+	});
+
+	describe('axe descrptions', () => {
+
+		before(() => disableUrlStateForTesting());
+		after(() => enableUrlState());
+
+		it('should create an axe description', async() => {
+			setStateForTesting('cgf', '');
+
+			const finalGradeEl = await fixture(html`<d2l-insights-current-final-grade-card .data="${data}" skeleton></d2l-insights-current-final-grade-card>`);
+
+			filter.selectedCategories.clear();
+			filter.toggleCategory(0);
+
+			const description = finalGradeEl.getAxeDescription();
+
+			expect(description).to.equal('Viewing learners with Current Grade in these categories  0 to 10');
+		});
+
+		it('should merge categories in axe description', async() => {
+			setStateForTesting('cgf', '');
+
+			const finalGradeEl = await fixture(html`<d2l-insights-current-final-grade-card .data="${data}" skeleton></d2l-insights-current-final-grade-card>`);
+
+			filter.selectedCategories.clear();
+			filter.toggleCategory(20);
+			filter.toggleCategory(30);
+
+			const description = finalGradeEl.getAxeDescription();
+
+			expect(description).to.equal('Viewing learners with Current Grade in these categories  20 to 40');
+		});
+
+		it('should seperate skipped categories in axe description', async() => {
+			setStateForTesting('cgf', '');
+
+			const finalGradeEl = await fixture(html`<d2l-insights-current-final-grade-card .data="${data}" skeleton></d2l-insights-current-final-grade-card>`);
+
+			filter.selectedCategories.clear();
+			filter.toggleCategory(20);
+			filter.toggleCategory(40);
+
+			const description = finalGradeEl.getAxeDescription();
+
+			expect(description).to.equal('Viewing learners with Current Grade in these categories  20 to 30, 40 to 50');
 		});
 	});
 });

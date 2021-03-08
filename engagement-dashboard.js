@@ -275,6 +275,10 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				<div slot="applied-filters">
 					${this._renderAppliedFilters()}
 				</div>
+
+				<div slot="alerts">
+					${this._renderAlerts()}
+				</div>
 			</d2l-insights-user-drill-view>
 		`;
 	}
@@ -297,6 +301,16 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	_renderAppliedFilters() {
 		return html `
 			<d2l-insights-applied-filters .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-applied-filters>
+		`;
+	}
+
+	_renderAlerts() {
+		return html`
+		<d2l-insights-alert-data-updated
+			.dataEvents="${filterEventQueue}"
+			?skeleton="${this._isLoading}"
+		>
+		</d2l-insights-alert-data-updated>
 		`;
 	}
 
@@ -391,11 +405,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 					${this.localize('defaultViewPopup:buttonOk')}
 				</d2l-button>
 			</d2l-dialog-confirm>
-			<d2l-insights-alert-data-updated
-				.dataEvents="${filterEventQueue}"
-				?skeleton="${this._isLoading}"
-			>
-			</d2l-insights-alert-data-updated>
+			${this._renderAlerts()}
 		`;
 	}
 
@@ -582,13 +592,13 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 	_orgUnitFilterChange(event) {
 		event.stopPropagation();
-		filterEventQueue.add('Org Unit filter applied');
+		filterEventQueue.add(this.localize('alert:updatedFilter', { chartName: this.localize('orgUnitFilter:name') }));
 		this._serverData.selectedOrgUnitIds = event.target.selected;
 	}
 
 	_semesterFilterChange(event) {
 		event.stopPropagation();
-		filterEventQueue.add('Semester filter applied');
+		filterEventQueue.add(this.localize('alert:updatedFilter', { chartName: this.localize('semesterFilter:name') }));
 		this._serverData.selectedSemesterIds = event.target.selected;
 	}
 

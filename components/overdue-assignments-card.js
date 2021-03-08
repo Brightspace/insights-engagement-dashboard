@@ -95,7 +95,10 @@ class OverdueAssignmentsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_valueClickHandler() {
 		this.filter.isApplied = !this.filter.isApplied;
-		filterEventQueue.add('Overdue Assignments filter applied');
+		const chartName = { chartName: this.localize('dashboard:overdueAssignmentsHeading') };
+		filterEventQueue.add(
+			this.localize('alert:updatedFilter', chartName)
+		);
 	}
 }
 decorate(OverdueAssignmentsCard, {
