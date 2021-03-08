@@ -1,14 +1,15 @@
 import '@brightspace-ui/core/components/offscreen/offscreen.js';
 
 import '../components/summary-card';
-import '../components/svg/average-grade-summary.svg';
 import '../components/svg/grades-trend.svg';
 import '../components/svg/course-access-trend.svg';
 import '../components/svg/content-views-trend.svg';
 
 import { bodySmallStyles, bodyStandardStyles, heading3Styles } from '@brightspace-ui/core/components/typography/styles';
 import { css, html, LitElement } from 'lit-element/lit-element';
+import { formatPercent } from '@brightspace-ui/intl';
 import { Localizer } from '../locales/localizer';
+import { numberFormatOptions } from './user-drill-view';
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin';
 
 class UserLevelCardSelectionList extends RtlMixin(Localizer(LitElement)) {
@@ -92,7 +93,14 @@ class UserLevelCardSelectionList extends RtlMixin(Localizer(LitElement)) {
 
 				<d2l-list-item key="showAverageGradeSummaryCard" selectable ?selected="${this.showAverageGradeSummaryCard}">
 					<div class="d2l-insights-list-flex-container">
-						<d2l-insights-average-grade-summary-thumbnail class="d2l-demo-card" aria-hidden="true"></d2l-insights-average-grade-summary-thumbnail>
+						<d2l-labs-summary-card
+							class="d2l-demo-card"
+							card-title="${this.localize('averageGradeSummaryCard:averageGrade')}"
+							card-value="${formatPercent(68.02 / 100, numberFormatOptions)}"
+							card-message="${this.localize('averageGradeSummaryCard:averageGradeText')}"
+							aria-hidden="true"
+						>
+						</d2l-labs-summary-card>
 						<div class="d2l-card-selection-text">
 							<h3 class="d2l-heading-3 d2l-card-selection-title" aria-hidden="true">
 								${this.localize('settings:avgGradeSummary')}
@@ -151,7 +159,7 @@ class UserLevelCardSelectionList extends RtlMixin(Localizer(LitElement)) {
 
 	get settings() {
 		return {
-			showAverageGradeSummaryCard: this.showAverageGradeSummaryCard,
+			showAvgGradeSummaryCard: this.showAverageGradeSummaryCard, // note name change to match LMS api
 			showContentViewsTrendCard: this.showContentViewsTrendCard,
 			showCourseAccessTrendCard: this.showCourseAccessTrendCard,
 			showGradesTrendCard: this.showGradesTrendCard

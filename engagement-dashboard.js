@@ -574,7 +574,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			this.showLastAccessCol = e.detail.showLastAccessCol;
 			this.lastAccessThresholdDays = e.detail.lastAccessThresholdDays;
 			this.includeRoles = (e.detail.includeRoles || []).join(',');
-			this.showAverageGradeSummaryCard = e.detail.showAverageGradeSummaryCard;
+			this.showAverageGradeSummaryCard = e.detail.showAvgGradeSummaryCard;
 			this.showContentViewsTrendCard = e.detail.showContentViewsTrendCard;
 			this.showCourseAccessTrendCard = e.detail.showCourseAccessTrendCard;
 			this.showGradesTrendCard = e.detail.showGradesTrendCard;

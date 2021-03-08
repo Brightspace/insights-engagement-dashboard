@@ -20,7 +20,7 @@ describe('d2l-insights-engagement-user-card-selection-list', () => {
 
 	describe('get settings', () => {
 		const defaultSettingsTemplate = {
-			showAverageGradeSummaryCard: false,
+			showAvgGradeSummaryCard: false,
 			showContentViewsTrendCard: false,
 			showCourseAccessTrendCard: false,
 			showGradesTrendCard: false
@@ -42,7 +42,7 @@ describe('d2l-insights-engagement-user-card-selection-list', () => {
 				></d2l-insights-engagement-user-card-selection-list>`);
 
 				expect(el.settings).to.deep.equal({
-					showAverageGradeSummaryCard: true,
+					showAvgGradeSummaryCard: true,
 					showContentViewsTrendCard: true,
 					showCourseAccessTrendCard: true,
 					showGradesTrendCard: true

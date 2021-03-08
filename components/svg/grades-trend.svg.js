@@ -10,6 +10,7 @@ class GradesTrendSvg extends RtlMixin(Localizer(LitElement)) {
 
 	render() {
 		return html`
+			<span class="d2l-insights-thumbnail-title">${this.localize('gradesTrendCard:gradesOverTime')}</span>
 			<svg xmlns="http://www.w3.org/2000/svg" width="293" height="150" viewBox="0 0 293 150">
 				<defs>
 					<clipPath id="clip-path">
@@ -22,7 +23,6 @@ class GradesTrendSvg extends RtlMixin(Localizer(LitElement)) {
 							<rect width="293" height="150" rx="10" stroke="none"/>
 							<rect x="0.5" y="0.5" width="292" height="149" rx="9.5" fill="none"/>
 						</g>
-						<text id="Current_Final_Grade"  transform="translate(24.022 12)" fill="#494c4e" font-size="14" font-family="Lato-Bold, Lato" font-weight="700" letter-spacing="0.014em"><tspan x="0" y="14">${this.localize('gradesTrendCard:gradesOverTime')}</tspan></text>
 						<g id="Chart" transform="translate(53.791 39.816)">
 							<path id="Line_4"  d="M.479.5h213.2" transform="translate(-0.479 -0.5)" fill="none" stroke="#979797" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1"/>
 							<path id="Line_4-2"  d="M.479.5h213.2" transform="translate(-0.479 19.158)" fill="none" stroke="#979797" stroke-linecap="square" stroke-miterlimit="10" stroke-width="1"/>

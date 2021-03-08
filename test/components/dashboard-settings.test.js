@@ -89,7 +89,7 @@ describe('d2l-insights-engagement-dashboard-settings', () => {
 				showSystemAccessCard: true,
 				showTicCol: false,
 				showTicGradesCard: false,
-				showAverageGradeSummaryCard: false,
+				showAvgGradeSummaryCard: false,
 				showContentViewsTrendCard: false,
 				showCourseAccessTrendCard: false,
 				showGradesTrendCard: true
