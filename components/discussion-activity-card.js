@@ -5,6 +5,7 @@ import { css, html } from 'lit-element/lit-element.js';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
 import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { CategoryFilter } from '../model/categoryFilter';
+import { filterEventQueue } from './alert-data-update';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { RECORD } from '../consts';
@@ -160,6 +161,23 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		</div>`;
 	}
 
+	getAxeDescription() {
+		const categories = [...this.filter.selectedCategories];
+		const terms = [];
+		if (categories.includes(7)) {
+			terms.push(this.localize('discussionActivityCard:threads'));
+		} if (categories.includes(8)) {
+			terms.push(this.localize('discussionActivityCard:replies'));
+		} if (categories.includes(9)) {
+			terms.push(this.localize('discussionActivityCard:reads'));
+		}
+
+		const chartName = { chartName : this.localize('discussionActivityCard:cardTitle') };
+		if (categories.length === 0) return this.localize('alert:axeNotFiltering', chartName);
+
+		return `${this.localize('alert:axeDescriptionRange', chartName)} ${terms.join(', ')} `;
+	}
+
 	get chartOptions() {
 		const that = this;
 		return {
@@ -188,6 +206,10 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 							legendItemClick: function(e) {
 								const point = this;
 								that.filter.toggleCategory(point.id);
+								filterEventQueue.add(
+									that.localize('alert:updatedFilter', { chartName: that.localize('discussionActivityCard:cardTitle') }),
+									that.getAxeDescription()
+								);
 								e.preventDefault();
 							}
 						}
@@ -202,6 +224,10 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 							click: function() {
 								const point = this;
 								that.filter.toggleCategory(point.id);
+								filterEventQueue.add(
+									that.localize('alert:updatedFilter', { chartName: that.localize('discussionActivityCard:cardTitle') }),
+									that.getAxeDescription()
+								);
 							}
 						}
 					},

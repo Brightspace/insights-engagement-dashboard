@@ -3,6 +3,7 @@ import { computed, decorate, observable } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
 import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
+import { filterEventQueue } from './alert-data-update';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { RECORD } from '../consts';
@@ -198,6 +199,28 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 			<d2l-labs-chart class="d2l-insights-summary-card-body" .options="${this.chartOptions}" ?skeleton="${this.skeleton}"></d2l-labs-chart>`;
 	}
 
+	getAxeDescription(quadrant) {
+		const chartName = { chartName : this.localize('timeInContentVsGradeCard:timeInContentVsGrade') };
+		if (!this.filter.isApplied) return this.localize('alert:axeNotFiltering', chartName);
+
+		let description = this.localize('alert:axeDescription');
+		switch (quadrant) {
+			case 'rightTop':
+				description += this.localize('timeInContentVsGradeCard:highTimeHighGrade');
+				break;
+			case 'rightBottom':
+				description += this.localize('timeInContentVsGradeCard:highTimeLowGrade');
+				break;
+			case 'leftTop':
+				description += this.localize('timeInContentVsGradeCard:lowTimeHighGrade');
+				break;
+			case 'leftBottom':
+				description += this.localize('timeInContentVsGradeCard:lowTimeLowGrade');
+				break;
+		}
+		return description;
+	}
+
 	get chartOptions() {
 		const that = this;
 		return {
@@ -207,7 +230,13 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 				width: 583,
 				events: {
 					click: function(event) {
-						that.filter.toggleQuadrant(that.filter.calculateQuadrant(Math.floor(event.xAxis[0].value), Math.floor(event.yAxis[0].value)));
+						const quadrant = that.filter.calculateQuadrant(Math.floor(event.xAxis[0].value), Math.floor(event.yAxis[0].value));
+						that.filter.toggleQuadrant();
+						const chartName = { chartName: that.localize('timeInContentVsGradeCard:timeInContentVsGrade') };
+						filterEventQueue.add(
+							that.localize('alert:updatedFilter', chartName),
+							that.getAxeDescription(quadrant)
+						);
 					},
 				}
 			},

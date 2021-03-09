@@ -4,11 +4,12 @@ import { css, html } from 'lit-element/lit-element.js';
 import { ORG_UNIT, RECORD, UserTrendColorsIterator } from '../consts';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
 import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles';
+import { CoursesHelper } from './courses-legend';
+import { filterEventQueue } from './alert-data-update';
 import { formatDate } from '@brightspace-ui/intl/lib/dateTime';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
-
 class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	static get properties() {
@@ -78,6 +79,14 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	get _yAxisTitle() {
 		return this.localize('accessTrendCard:yAxisTitle');
+	}
+
+	get courses() {
+		return CoursesHelper.getUsersCourses(this.skeleton, this._serverData, this.data, this.user);
+	}
+
+	get axeDescription() {
+		return CoursesHelper.getAxeDescription(this.courses, this.selectedCourses, this);
 	}
 
 	render() {
@@ -219,6 +228,8 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 								// e.point.series -  when a user clicks point by mouse
 
 								that._toggleFilterEventHandler(e.target.series || e.point.series);
+								const chartName = { chartName: that.localize('userDrill:course') };
+								filterEventQueue.add(that.localize('alert:updatedFilter', chartName), that.axeDescription);
 							}
 						}
 					}

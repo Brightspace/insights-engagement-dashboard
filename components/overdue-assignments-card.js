@@ -1,4 +1,5 @@
 import { computed, decorate, observable } from 'mobx';
+import { filterEventQueue } from './alert-data-update';
 import { html } from 'lit-element';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
@@ -94,6 +95,10 @@ class OverdueAssignmentsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_valueClickHandler() {
 		this.filter.isApplied = !this.filter.isApplied;
+		const chartName = { chartName: this.localize('dashboard:overdueAssignmentsHeading') };
+		filterEventQueue.add(
+			this.localize('alert:updatedFilter', chartName)
+		);
 	}
 }
 decorate(OverdueAssignmentsCard, {

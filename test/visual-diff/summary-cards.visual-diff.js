@@ -40,7 +40,7 @@ describe('summary cards', () => {
 				document.querySelector('d2l-insights-engagement-dashboard').removeAttribute(name);
 			}, name);
 			// wait for dashboard to render changes
-			await new Promise(res => setTimeout(res, 10));
+			await new Promise(res => setTimeout(res, 50));
 		};
 	});
 

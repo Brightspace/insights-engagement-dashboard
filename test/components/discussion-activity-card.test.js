@@ -95,4 +95,24 @@ describe('d2l-insights-discussion-activity-card', () => {
 			expect(state).to.equal('4,5');
 		});
 	});
+
+	describe('axe descrptions', () => {
+
+		before(() => disableUrlStateForTesting());
+		after(() => enableUrlState());
+
+		it('should create an axe description', async() => {
+			setStateForTesting('caf', '');
+
+			const discussionEl = await fixture(html`<d2l-insights-discussion-activity-card .data="${data}"></d2l-insights-discussion-activity-card>`);
+
+			filter.selectedCategories.clear();
+			filter.toggleCategory(7);
+
+			const description = discussionEl.getAxeDescription();
+
+			expect(description).to.equal('Viewing learners with Discussion Activity in these categories  Threads ');
+		});
+
+	});
 });

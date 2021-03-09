@@ -34,6 +34,7 @@ export default {
 
 	"orgUnitFilter:nameAllSelected": "Org Unit: All",
 	"orgUnitFilter:nameSomeSelected": "Org Unit: Selections Applied",
+	"orgUnitFilter:name": "Org Unit",
 
 	"semesterFilter:name": "Semester",
 	"semesterFilter:semesterName": "{orgUnitName} (Id: {orgUnitId})",
@@ -94,6 +95,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": " {numberOfUsers} user enrollments are getting an above average grade and spending above average time in content.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} user enrollments are getting a below average grade and spending below average time in content.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} user enrollments are getting a below average grade and spending above average time in content.",
+	"timeInContentVsGradeCard:highTimeHighGrade": "high time in content and high grade",
+	"timeInContentVsGradeCard:highTimeLowGrade": "high time in content and low grade",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "low time in content and high grade",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "low time in content and low grade",
 
 	"currentFinalGradeCard:currentGrade": "Current Grade",
 	"currentFinalGradeCard:numberOfStudents": "Number of Users",
@@ -115,6 +120,7 @@ export default {
 	"courseLastAccessCard:oneToThreeDaysAgo": "1-3 days ago",
 	"courseLastAccessCard:lessThanOneDayAgo": "< 1 day ago",
 	"courseLastAccessCard:accessibilityLessThanOne": "Less than 1 day ago",
+	"courseLastAccessCard:accessibilityMoreThanFourteenDaysAgo": "More than 14 days ago",
 	"courseLastAccessCard:tooltipNeverAccessed": "{numberOfUsers} users have never accessed the course",
 	"courseLastAccessCard:tooltipMoreThanFourteenDays": "{numberOfUsers} users last accessed the course more than 14 days ago",
 	"courseLastAccessCard:toolTipSevenToFourteenDays": "{numberOfUsers} users last accessed the course 7 to 14 days ago",
@@ -195,6 +201,7 @@ export default {
 	"userDrill:noData": "No data in filtered ranges. Refine your selection.",
 	"userDrill:manyCoursesAlert": "This dashboard is most useful with less than 10 courses. Please refine your selected courses for a better experience.",
 	"userDrill:summaryView": "Summary View",
+	"userDrill:course": "Course",
 	"activeCoursesTable:title": "Active Courses",
 	"activeCoursesTable:loadingPlaceholder": "Loading",
 	"activeCoursesTable:course": "Course Name",
@@ -245,4 +252,13 @@ export default {
 	"chart:loading": "Loading...",
 	"chart:resetZoom": "Reset zoom",
 	"chart:resetZoomTitle": "Reset zoom level 1:1",
+
+	"alert:updatedFilter" : "{chartName} filter updated.",
+	"alert:axeDescriptionRange" : "Viewing learners with {chartName} in these categories ",
+	"alert:axeDescription" : "Viewing learners with ",
+	"alert:axeNotFiltering" : "Stopped Filtering by {chartName}.",
+	// this "to" that, and this "to" that <- translate the word "to" in this context
+	"alert:this-To-That" : " to ",
+	"alert:axeDescriptionCourses" : "Viewing learner data in these courses ",
+	"alert:axeDescriptionCoursesOff" : "Viewing learner data in all courses."
 };

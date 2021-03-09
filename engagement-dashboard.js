@@ -1,6 +1,7 @@
 import '@brightspace-ui/core/components/dialog/dialog-confirm';
 import 'd2l-button-group/d2l-action-button-group';
 
+import './components/alert-data-update.js';
 import './components/histogram-card.js';
 import './components/ou-filter.js';
 import './components/debug-card.js';
@@ -35,6 +36,7 @@ import { ExportData } from './model/exportData';
 import { fetchData } from './model/dataApiClient.js';
 import { fetchData as fetchDemoData } from './model/fake-dataApiClient.js';
 import { FilteredData } from './model/filteredData';
+import { filterEventQueue } from './components/alert-data-update';
 import { heading3Styles } from '@brightspace-ui/core/components/typography/styles';
 import { Localizer } from './locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
@@ -291,6 +293,10 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				<div slot="applied-filters">
 					${this._renderAppliedFilters()}
 				</div>
+
+				<div slot="alerts">
+					${this._renderAlerts()}
+				</div>
 			</d2l-insights-user-drill-view>
 		`;
 	}
@@ -313,6 +319,16 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	_renderAppliedFilters() {
 		return html `
 			<d2l-insights-applied-filters .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-applied-filters>
+		`;
+	}
+
+	_renderAlerts() {
+		return html`
+		<d2l-insights-alert-data-updated
+			.dataEvents="${filterEventQueue}"
+			?skeleton="${this._isLoading}"
+		>
+		</d2l-insights-alert-data-updated>
 		`;
 	}
 
@@ -344,6 +360,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	}
 
 	_renderHomeView() {
+
 		return html`
 
 			<d2l-insights-aria-loading-progress .data="${this._data}"></d2l-insights-aria-loading-progress>
@@ -410,6 +427,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 					${this.localize('defaultViewPopup:buttonOk')}
 				</d2l-button>
 			</d2l-dialog-confirm>
+			${this._renderAlerts()}
 		`;
 	}
 
@@ -600,11 +618,13 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 	_orgUnitFilterChange(event) {
 		event.stopPropagation();
+		filterEventQueue.add(this.localize('alert:updatedFilter', { chartName: this.localize('orgUnitFilter:name') }));
 		this._serverData.selectedOrgUnitIds = event.target.selected;
 	}
 
 	_semesterFilterChange(event) {
 		event.stopPropagation();
+		filterEventQueue.add(this.localize('alert:updatedFilter', { chartName: this.localize('semesterFilter:name') }));
 		this._serverData.selectedSemesterIds = event.target.selected;
 	}
 
