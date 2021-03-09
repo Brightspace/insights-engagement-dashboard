@@ -23,7 +23,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7",
     "@babel/plugin-proposal-class-properties": "^7.13.0",
-    "@brightspace-ui/stylelint-config": "0.0.3",
+    "@brightspace-ui/stylelint-config": "0.1.0",
     "@open-wc/testing": "^2",
     "@open-wc/testing-karma": "^4.0.1",
     "@polymer/polymer": "^3.4.1",
