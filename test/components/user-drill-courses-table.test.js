@@ -91,6 +91,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.isActiveTable="${Boolean(true)}"
 						.isStudentSuccessSys="${Boolean(true)}"
 						.selectedCourses="${selectedCourses}"
+						discussions-col	grade-col last-access-col tic-col
 					>
 					</d2l-insights-user-drill-courses-table>
 				`);
@@ -113,6 +114,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.user="${user}"
 						.isActiveTable="${Boolean(true)}"
 						.isStudentSuccessSys="${Boolean(true)}"
+						discussions-col	grade-col last-access-col tic-col
 						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
@@ -135,6 +137,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.user="${user}"
 						.isActiveTable="${Boolean(true)}"
 						.isStudentSuccessSys="${Boolean(false)}"
+						discussions-col	grade-col last-access-col tic-col
 						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
@@ -157,6 +160,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.user="${user}"
 						.isActiveTable="${Boolean(true)}"
 						.isStudentSuccessSys="${Boolean(false)}"
+						discussions-col	grade-col last-access-col tic-col
 						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
@@ -173,6 +177,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 					.user="${user}"
 					.isActiveTable="${Boolean(true)}"
 					.isStudentSuccessSys="${Boolean(true)}"
+					discussions-col	grade-col last-access-col tic-col
 					.selectedCourses="${selectedCourses}">
 				</d2l-insights-user-drill-courses-table>
 			`;
@@ -182,6 +187,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 					.user="${user}"
 					.isActiveTable="${Boolean(true)}"
 					.isStudentSuccessSys="${Boolean(false)}"
+					discussions-col	grade-col last-access-col tic-col
 					.selectedCourses="${selectedCourses}">
 				</d2l-insights-user-drill-courses-table>
 			`;
@@ -241,6 +247,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.user="${user}"
 						.isActiveTable="${Boolean(true)}"
 						.isStudentSuccessSys="${Boolean(true)}"
+						discussions-col	grade-col last-access-col tic-col
 						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
@@ -264,6 +271,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.data="${data}"
 						.user="${user}"
 						.isActiveTable="${Boolean(false)}"
+						discussions-col	grade-col last-access-col tic-col
 						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
@@ -287,6 +295,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.user="${user}"
 						.isActiveTable="${Boolean(false)}"
 						.isStudentSuccessSys="${Boolean(true)}"
+						discussions-col	grade-col last-access-col tic-col
 						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
@@ -311,6 +320,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.data="${emptyData}"
 						.user="${user}"
 						.isActiveTable="${Boolean(false)}"
+						discussions-col	grade-col last-access-col tic-col
 						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
@@ -327,6 +337,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 					.user="${user}"
 					.isActiveTable="${Boolean(false)}"
 					.isStudentSuccessSys="${Boolean(true)}"
+					discussions-col	grade-col last-access-col tic-col
 					.selectedCourses="${selectedCourses}">
 				</d2l-insights-user-drill-courses-table>
 			`;
@@ -336,6 +347,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 					.user="${user}"
 					.isActiveTable="${Boolean(false)}"
 					.isStudentSuccessSys="${Boolean(false)}"
+					discussions-col	grade-col last-access-col tic-col
 					.selectedCourses="${selectedCourses}">
 				</d2l-insights-user-drill-courses-table>
 			`;
@@ -393,6 +405,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.data="${data}"
 						.user="${user}"
 						.isActiveTable="${Boolean(false)}"
+						discussions-col	grade-col last-access-col tic-col
 						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
@@ -447,6 +460,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.user="${user}"
 						.isActiveTable="${Boolean(false)}"
 						.isStudentSuccessSys="${Boolean(true)}"
+						discussions-col	grade-col last-access-col tic-col
 						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
@@ -463,6 +477,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.user="${user}"
 						.isActiveTable="${Boolean(true)}"
 						.isStudentSuccessSys="${Boolean(true)}"
+						discussions-col	grade-col last-access-col tic-col
 						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
@@ -479,6 +494,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.user="${user}"
 						.isActiveTable="${Boolean(true)}"
 						.isStudentSuccessSys="${Boolean(false)}"
+						discussions-col	grade-col last-access-col tic-col
 						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
@@ -508,6 +524,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 						.user="${user}"
 						.isActiveTable="${Boolean(true)}"
 						.isStudentSuccessSys="${Boolean(false)}"
+						discussions-col	grade-col last-access-col tic-col
 						.selectedCourses="${selectedCourses}">
 					</d2l-insights-user-drill-courses-table>
 				`);
