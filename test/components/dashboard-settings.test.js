@@ -63,6 +63,9 @@ describe('d2l-insights-engagement-dashboard-settings', () => {
 			columnConfig.showCoursesCol = true;
 			columnConfig.showGradeCol = true;
 
+			const userCardConfig = el.shadowRoot.querySelector('d2l-insights-engagement-user-card-selection-list');
+			userCardConfig.showGradesTrendCard = true;
+
 			await roleConfig.updateComplete;
 			await cardConfig.updateComplete;
 			await columnConfig.updateComplete;
@@ -85,7 +88,11 @@ describe('d2l-insights-engagement-dashboard-settings', () => {
 				showResultsCard: false,
 				showSystemAccessCard: true,
 				showTicCol: false,
-				showTicGradesCard: false
+				showTicGradesCard: false,
+				showAvgGradeSummaryCard: false,
+				showContentViewsTrendCard: false,
+				showCourseAccessTrendCard: false,
+				showGradesTrendCard: true
 			});
 		});
 	});

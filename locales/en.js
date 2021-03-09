@@ -165,6 +165,7 @@ export default {
 	"settings:description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
 	"settings:tabTitleSummaryMetrics": "Summary Metrics",
 	"settings:tabTitleResultsTableMetrics": "Results Table Metrics",
+	"settings:tabTitleUserLevelMetrics": "User Level Metrics",
 	"settings:saveAndClose": "Save and Close",
 	"settings:save": "Save",
 	"settings:cancel": "Cancel",
@@ -180,6 +181,7 @@ export default {
 	"settings:systemAccessEditLabel": "Edit system access threshold",
 
 	"settings:avgGrade": "Average Grade",
+	"settings:avgGradeSummary": "Average Grade Summary",
 	"settings:avgTimeInContent": "Average Time in Content",
 	"settings:avgDiscussionActivity": "Average Discussion Participation",
 	"settings:lastAccessedSystem": "System Last Access",
@@ -189,6 +191,11 @@ export default {
 	"settings:lastAccessedSystemDescription": "The System Last Access indicator displays the timestamp, in Brightspace local time, of the last time the user accessed the system in any way.",
 	"settings:invalidSystemAccessValueToast": "Your settings could not be saved. System Access thresholds need to be between 1 and 30.",
 	"settings:serverSideErrorToast": "Something went wrong. Your settings could not be saved.",
+
+	"settings:avgGradeSummaryDescription": "The Average Grade Summary card presents the current average grade for the student across courses that are filtered on.",
+	"settings:gradesOverTimeDescription": "The Grades Over Time card shows how the learner's grades have changed over time.",
+	"settings:accessOverTimeDescription": "The Course Access Over Time card shows how the learner's course access frequency has changed over time.",
+	"settings:contentViewsOverTimeDescription": "The Content Views Over Time card shows how view counts for content have changed over time.",
 
 	"userDrill:noUser": "This user could not be loaded. Go to the Engagement Dashboard to view the list of users.",
 	"userDrill:noData": "No data in filtered ranges. Refine your selection.",
@@ -225,6 +232,8 @@ export default {
 
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "assignments are currently overdue.",
 	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
+	"averageGradeSummaryCard:averageGradeTextLine1" : "grade averaged from",
+	"averageGradeSummaryCard:averageGradeTextLine2" : "the courses in view.",
 	"averageGradeSummaryCard:averageGrade" : "Average Grade",
 	"averageGradeSummaryCard:noGradeInfoAvailable" : "No grade information available.",
 	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner last accessed the system.",

@@ -275,7 +275,9 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				},
 				name: this._orgUnitName(course.orgUnitId),
 				//if grades data are not available for some course, the colors will remain consistent
-				color: selected(course) ? colors[this._userOrgUnitIds.findIndex(orgId => orgId === course.orgUnitId)] : 'var(--d2l-color-mica)' }));
+				color: selected(course) ? colors[this._userOrgUnitIds.findIndex(orgId => orgId === course.orgUnitId)] : 'var(--d2l-color-mica)',
+				zIndex: selected(course) ? 1 : undefined
+			}));
 	}
 }
 decorate(GradesTrendCard, {

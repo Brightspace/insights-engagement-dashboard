@@ -111,7 +111,6 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		return {
 			chart: {
-				type: 'area',
 				height: 260,
 				width: 583,
 				zoomType: 'x'
@@ -216,6 +215,9 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			plotOptions: {
 
 				series: {
+					marker: {
+						enabled: false
+					},
 
 					point: {
 						events: {
@@ -232,26 +234,6 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 						}
 					}
 				},
-
-				area: {
-					trackByArea: true,
-
-					states: {
-						hover: {
-							enabled: true,
-							halo: {
-								size: 0
-							}
-						},
-						inactive: {
-							enabled: false
-						}
-					},
-
-					marker: {
-						enabled: false
-					}
-				}
 			},
 
 			accessibility: {
@@ -318,8 +300,9 @@ class AccessTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				},
 				// It is read as `Course 1, series 1 of 3 with 8 data points.`
 				name: this._orgUnitName(course.orgUnitId),
-				lineColor:  'var(--d2l-color-white)',
-				color: selected(course) ? colors[this._userOrgUnitIds.findIndex(orgId => orgId === course.orgUnitId)] : 'var(--d2l-color-mica)' }));
+				color: selected(course) ? colors[this._userOrgUnitIds.findIndex(orgId => orgId === course.orgUnitId)] : 'var(--d2l-color-mica)',
+				zIndex: selected(course) ? 1 : undefined
+			}));
 	}
 }
 decorate(AccessTrendCard, {
