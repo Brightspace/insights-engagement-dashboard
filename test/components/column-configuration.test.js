@@ -18,20 +18,61 @@ describe('d2l-insights-engagement-column-configuration', () => {
 		});
 	});
 
-	describe('card selection', () => {
-		it('should update properties when columns are selected', async() => {
+	describe('render', () => {
+		it('should show predicted grade option if s3 is enabled', async() => {
+			const el = await fixture(html`
+				<d2l-insights-engagement-column-configuration student-success-system-enabled>
+				</d2l-insights-engagement-column-configuration>
+			`);
+
+			const listItem = el.shadowRoot.querySelector('d2l-list-item[key="showPredictedGradeCol"]');
+			expect(listItem).to.not.be.null;
+		});
+
+		it('should hide predicted grade option if s3 is not enabled', async() => {
 			const el = await fixture(html`<d2l-insights-engagement-column-configuration></d2l-insights-engagement-column-configuration>`);
-			const listItem = el.shadowRoot.querySelector('d2l-list-item[key="showTicCol"]');
+			const listItem = el.shadowRoot.querySelector('d2l-list-item[key="showPredictedGradeCol"]');
+			expect(listItem).to.be.null;
+		});
+	});
 
-			listItem.setSelected(true);
-			await el.updateComplete;
-			expect(el.showTicCol).to.be.true;
-			expect(el.showGradeCol).to.be.false;
+	describe('card selection', () => {
 
-			listItem.setSelected(false);
-			await el.updateComplete;
-			expect(el.showTicCol).to.be.false;
-			expect(el.showGradeCol).to.be.false;
+		const testCases = [
+			'showTicCol',
+			'showGradeCol',
+			// 'showCoursesCol', // NB: showing/hiding the courses column isn't configurable.
+			'showLastAccessCol',
+			'showDiscussionsCol',
+			'showPredictedGradeCol'
+		];
+
+		testCases.forEach(column => {
+			it(`should update properties when ${column} is selected or deselected`, async() => {
+				const el = await fixture(html`
+					<d2l-insights-engagement-column-configuration student-success-system-enabled>
+					</d2l-insights-engagement-column-configuration>
+				`);
+
+				const listItem = el.shadowRoot.querySelector(`d2l-list-item[key="${column}"]`);
+				const otherColumns = testCases.filter(testCase => testCase !== column);
+
+				listItem.setSelected(true);
+				await el.updateComplete;
+
+				expect(el[column]).to.be.true;
+				otherColumns.forEach(otherColumn => {
+					expect(el[otherColumn]).to.be.false;
+				});
+
+				listItem.setSelected(false);
+				await el.updateComplete;
+
+				expect(el[column]).to.be.false;
+				otherColumns.forEach(otherColumn => {
+					expect(el[otherColumn]).to.be.false;
+				});
+			});
 		});
 	});
 });

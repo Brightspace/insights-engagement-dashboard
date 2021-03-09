@@ -24,6 +24,8 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 	static get properties() {
 		return {
 			isDemo: { type: Boolean, attribute: 'demo' },
+			s3Enabled: { type: Boolean, attribute: 'student-success-system-enabled' },
+
 			showCourseAccessCard: { type: Boolean, attribute: 'course-access-card', reflect: true },
 			showCoursesCol: { type: Boolean, attribute: 'courses-col', reflect: true },
 			showDiscussionsCard: { type: Boolean, attribute: 'discussions-card', reflect: true },
@@ -42,6 +44,7 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 			showContentViewsTrendCard: { type: Boolean, attribute: 'content-views-trend-card', reflect: true },
 			showCourseAccessTrendCard: { type: Boolean, attribute: 'course-access-trend-card', reflect: true },
 			showGradesTrendCard: { type: Boolean, attribute: 'grades-trend-card', reflect: true },
+			showPredictedGradeCol: { type: Boolean, attribute: 'predicted-grade-col', reflect: true },
 			_toastMessagetext: { type: String, attribute: false }
 		};
 	}
@@ -151,6 +154,7 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 		super();
 
 		this.isDemo = false;
+		this.s3Enabled = false;
 
 		this.showCourseAccessCard = false;
 		this.showCoursesCol = false;
@@ -170,6 +174,7 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 		this.showContentViewsTrendCard = false;
 		this.showCourseAccessTrendCard = false;
 		this.showGradesTrendCard = false;
+		this.showPredictedGradeCol = false;
 	}
 
 	render() {
@@ -205,6 +210,8 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 								?grade-col="${this.showGradeCol}"
 								?last-access-col="${this.showLastAccessCol}"
 								?tic-col="${this.showTicCol}"
+								?predicted-grade-col="${this.showPredictedGradeCol}"
+								?student-success-system-enabled="${this.s3Enabled}"
 								?demo="${this.isDemo}"
 							></d2l-insights-engagement-column-configuration>
 						</d2l-tab-panel>
@@ -258,16 +265,12 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 	async _handleSaveAndClose() {
 		const cardSelectionList = this.shadowRoot.querySelector('d2l-insights-engagement-card-selection-list');
 		const userCardSelectionList = this.shadowRoot.querySelector('d2l-insights-engagement-user-card-selection-list');
-
 		const columnConfig = this.shadowRoot.querySelector('d2l-insights-engagement-column-configuration');
+
 		const settings = {
 			...cardSelectionList.settings,
 			...userCardSelectionList.settings,
-			showCoursesCol: columnConfig.showCoursesCol,
-			showGradeCol: columnConfig.showGradeCol,
-			showTicCol: columnConfig.showTicCol,
-			showDiscussionsCol: columnConfig.showDiscussionsCol,
-			showLastAccessCol: columnConfig.showLastAccessCol,
+			...columnConfig.settings,
 			includeRoles: this._selectedRoleIds
 		};
 
