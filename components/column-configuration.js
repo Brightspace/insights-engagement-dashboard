@@ -15,12 +15,15 @@ function thirtyHoursAgo() {
 class ColumnConfiguration extends RtlMixin(Localizer(LitElement)) {
 	static get properties() {
 		return {
+			isDemo: { type: Boolean, attribute: 'demo' },
+			s3Enabled: { type: Boolean, attribute: 'student-success-system-enabled' },
+
 			showCoursesCol: { type: Boolean, attribute: 'courses-col', reflect: true },
 			showDiscussionsCol: { type: Boolean, attribute: 'discussions-col', reflect: true },
 			showGradeCol: { type: Boolean, attribute: 'grade-col', reflect: true },
 			showLastAccessCol: { type: Boolean, attribute: 'last-access-col', reflect: true },
 			showTicCol: { type: Boolean, attribute: 'tic-col', reflect: true },
-			isDemo: { type: Boolean, attribute: 'demo' }
+			showPredictedGradeCol: { type: Boolean, attribute: 'predicted-grade-col', reflect: true }
 		};
 	}
 
@@ -66,11 +69,15 @@ class ColumnConfiguration extends RtlMixin(Localizer(LitElement)) {
 	constructor() {
 		super();
 
+		this.isDemo = false;
+		this.s3Enabled = false;
+
 		this.showCoursesCol = false;
 		this.showDiscussionsCol = false;
 		this.showGradeCol = false;
 		this.showLastAccessCol = false;
 		this.showTicCol = false;
+		this.showPredictedGradeCol = false;
 	}
 
 	render() {
@@ -115,6 +122,7 @@ class ColumnConfiguration extends RtlMixin(Localizer(LitElement)) {
 						</div>
 					</div>
 				</d2l-list-item>
+				${this._predictedGradeListItem}
 			</d2l-list>
 		`;
 	}
@@ -142,6 +150,35 @@ class ColumnConfiguration extends RtlMixin(Localizer(LitElement)) {
 				</td>
 			</tr>
 		</table>`;
+	}
+
+	get _predictedGradeListItem() {
+		if (this.s3Enabled) {
+			return html`
+				<d2l-list-item key="showPredictedGradeCol" selectable ?selected="${this.showPredictedGradeCol}">
+					<div class="d2l-insights-config-list-item">
+						<div class="d2l-column-example">${formatPercent(0.9175, numberFormatOptions)}</div>
+						<div class="d2l-column-selection-text">
+							<h3 class="d2l-heading-3">${this.localize('settings:predictedGrade')}</h3>
+							<p class="d2l-body-standard">${this.localize('settings:predictedGradeDescription')}</p>
+						</div>
+					</div>
+				</d2l-list-item>
+			`;
+		}
+
+		return html``;
+	}
+
+	get settings() {
+		return {
+			showCoursesCol: this.showCoursesCol,
+			showDiscussionsCol: this.showDiscussionsCol,
+			showGradeCol: this.showGradeCol,
+			showLastAccessCol: this.showLastAccessCol,
+			showTicCol: this.showTicCol,
+			showPredictedGradeCol: this.showPredictedGradeCol
+		};
 	}
 
 	_handleSelectionChange(event) {

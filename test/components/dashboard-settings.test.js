@@ -92,7 +92,8 @@ describe('d2l-insights-engagement-dashboard-settings', () => {
 				showAvgGradeSummaryCard: false,
 				showContentViewsTrendCard: false,
 				showCourseAccessTrendCard: false,
-				showGradesTrendCard: true
+				showGradesTrendCard: true,
+				showPredictedGradeCol: false
 			});
 		});
 	});
