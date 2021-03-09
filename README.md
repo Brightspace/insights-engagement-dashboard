@@ -22,17 +22,24 @@ Displays engagement statistics and visualizations for Brightspace users. Part of
 | orgUnitId | Number | 0 | The root org unit id. |
 | telemetryEndpoint | String | {empty} | The URL of the telemetry service. |
 | telemetryId | String | {empty} | The ID to use when sending telemetry info to the telemetry service. |
+| metronEndpoint | String | {empty} | The metron API endpoint used to access data. |
+| s3Enabled | Boolean | false | Whether student success system (S3) is enabled. |
 | showCourseAccessCard | Boolean | true | Shows the course access card. |
 | showDiscussionsCard | Boolean | true | Shows the discussion activity card. |
 | showGradesCard | Boolean | true | Shows the grades card. |
 | showOverdueCard | Boolean | true | Shows the overdue assignments card. |
 | showResultsCard | Boolean | true | Shows the results card. |
 | showSystemAccessCard | Boolean | true | Shows the system access card. |
-| showCoursesCol | Boolean | true | Shows the Courses column in the users table. |
-| showDiscussionsCol | Boolean | true | Shows the Discussion activity column in the users table. |
-| showGradeCol | Boolean | true | Shows the Final Grade column in the users table. |
-| showLastAccessCol | Boolean | true | Shows the System Last Access column in the users table. |
-| showTicCol | Boolean | true | Shows the Time in Content column in the users table. |
+| showAverageGradeSummaryCard | Boolean | true | (User Drill) Shows the average grade summary card. |
+| showContentViewsTrendCard | Boolean | true | (User Drill) Shows the content views trend card. |
+| showCourseAccessTrendCard | Boolean | true | (User Drill) Shows the course access trend card. |
+| showGradesTrendCard | Boolean | true | (User Drill) Shows the grades trend card. |
+| showCoursesCol | Boolean | true | No effect (the courses column is always shown). |
+| showDiscussionsCol | Boolean | true | Shows the Discussion activity column in the users table and the user drill courses table. |
+| showGradeCol | Boolean | true | Shows the Final Grade column in the users table and the Current Grade column in the user drill courses table. |
+| showLastAccessCol | Boolean | true | Shows the System Last Access column in the users table, and the Course Last Access column in the user drill courses table. |
+| showTicCol | Boolean | true | Shows the Time in Content column in the users table and the user drill courses table. |
+| showPredictedGradeCol | Boolean | true | Shows the Predicted Grade column in the user drill courses table. |
 | lastAccessThresholdDays | Number | 14 | The number of days since the last system access to show in the system access card. |
 | includeRoles | String | {empty, i.e. all roles} | A list of role ids to include in the dashboard data. Roles that are not in the list will not be shown in the dashboard. |
 

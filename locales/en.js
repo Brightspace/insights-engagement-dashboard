@@ -185,10 +185,12 @@ export default {
 	"settings:avgTimeInContent": "Average Time in Content",
 	"settings:avgDiscussionActivity": "Average Discussion Participation",
 	"settings:lastAccessedSystem": "System Last Access",
+	"settings:predictedGrade": "Predicted Grade",
 	"settings:avgGradeDescription": "The Average Grade indicator presents the current average grade for the user across all the courses included in the applied filters.",
 	"settings:avgTimeInContentDescription": "The Average Time in Content indicator shows the average time spent in content, as an average of total time per course, for the user across all the courses included in the applied filters.  This metric is reported in minutes.",
 	"settings:avgDiscussionActivityDescription": "The Average Discussion Participation indicator presents user statistics for how often the user creates a thread, reads a post or replies to a post across all the courses included in the applied filters.  This metric averages the total count per course.",
 	"settings:lastAccessedSystemDescription": "The System Last Access indicator displays the timestamp, in Brightspace local time, of the last time the user accessed the system in any way.",
+	"settings:predictedGradeDescription": "The Predicted Grade indicator presents the average predicted final grade for the user across all the courses included in the applied filters. Data for this metric is produced from the Student Success System.",
 	"settings:invalidSystemAccessValueToast": "Your settings could not be saved. System Access thresholds need to be between 1 and 30.",
 	"settings:serverSideErrorToast": "Something went wrong. Your settings could not be saved.",
 
