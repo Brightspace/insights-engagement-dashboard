@@ -157,7 +157,7 @@ class AlertDataUpdate extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this.lastFilters = [];
 	}
 
-	_render_event(e) {
+	_renderEvent(e) {
 		const classes = {
 			'd2l-insights-event': true,
 			'd2l-insights-event-close': e.closing
@@ -171,7 +171,7 @@ class AlertDataUpdate extends SkeletonMixin(Localizer(MobxLitElement)) {
 	render() {
 		return html`
 			<div class="d2l-insights-event-container">
-				${repeat(this.dataEvents.events, (event) => event.id, (event) => this._render_event(event))}
+				${repeat(this.dataEvents.events, (event) => event.id, (event) => this._renderEvent(event))}
 			</div>
 		`;
 	}
