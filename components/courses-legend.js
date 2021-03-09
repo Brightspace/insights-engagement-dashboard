@@ -3,6 +3,7 @@ import { css, html } from 'lit-element';
 import { ORG_UNIT, RECORD, UserTrendColorsIterator } from '../consts';
 import { bodySmallStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { classMap } from 'lit-html/directives/class-map';
+import { context } from '../model/context';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
@@ -173,6 +174,11 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 		];
 	}
 
+	constructor() {
+		super();
+		context.add('course-legend', this);
+	}
+
 	get serverData() {
 		return this.data._data.serverData;
 	}
@@ -199,6 +205,11 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	getAxeDescription() {
+
+		if (this.selectedCourses.size === 0) {
+			return this.localize('alert:axeDescriptionCoursesOff');
+		}
+
 		const courses = this.selectedCourses.map(
 			id => this.courses.find(course => course.orgUnitId === id)
 		).map(course => course.name).join(',');

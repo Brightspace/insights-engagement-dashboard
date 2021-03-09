@@ -250,5 +250,6 @@ export default {
 	"alert:axeNotFiltering" : "Stopped Filtering by {chartName}.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : " to ",
-	"alert:axeDescriptionCourses" : "Viewing learner data in these courses "
+	"alert:axeDescriptionCourses" : "Viewing learner data in these courses ",
+	"alert:axeDescriptionCoursesOff" : "Viewing learner data in all courses."
 };

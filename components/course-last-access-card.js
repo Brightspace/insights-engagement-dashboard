@@ -13,7 +13,8 @@ import { UrlState } from '../model/urlState';
 const filterId = 'd2l-insights-course-last-access-card';
 const demoDate = 1608700239822; //for Visual-Diff test
 const DATA_BUCKETS = [0, 0, 0, 0, 0, 0, 0];
-const DATA_DESCRIPTIONS = ['', '', [7, 14], [5, 7], [3, 5], [1, 3], ''];
+
+const DATA_DESCRIPTIONS = ['courseLastAccessCard:never', 'courseLastAccessCard:accessibilityMoreThanFourteenDaysAgo', [7, 14], [5, 7], [3, 5], [1, 3], 'courseLastAccessCard:accessibilityLessThanOne'];
 
 function lastAccessDateBucket(record, isDemo) {
 	const currentDate = isDemo ? demoDate : Date.now();
@@ -232,7 +233,7 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			// if we can find the cur in a pair then we have a chain
 			const desc = DATA_DESCRIPTIONS[cur];
 			if (typeof(desc) === 'string') {
-				acc.push([desc]);
+				acc.push([this.localize(desc)]);
 				return acc;
 			}
 			if (acc[acc.length - 1] !== undefined &&
@@ -249,11 +250,6 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	getAxeDescription() {
 
-		if (DATA_DESCRIPTIONS[0] === '') {
-			DATA_DESCRIPTIONS[0] = this.localize('courseLastAccessCard:never');
-			DATA_DESCRIPTIONS[1] = this.localize('courseLastAccessCard:accessibilityMoreThanFourteenDaysAgo');
-			DATA_DESCRIPTIONS[6] = this.localize('courseLastAccessCard:accessibilityLessThanOne');
-		}
 		const chartName = { chartName : this.localize('courseLastAccessCard:courseAccess') };
 
 		const categories = ([...this.filter.selectedCategories]);
