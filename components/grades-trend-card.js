@@ -4,7 +4,7 @@ import { css, html } from 'lit-element/lit-element.js';
 import { ORG_UNIT, RECORD, UserTrendColorsIterator } from '../consts';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
 import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles';
-import { context } from '../model/context';
+import { CoursesHelper } from './courses-legend';
 import { filterEventQueue } from './alert-data-update';
 import { formatDate } from '@brightspace-ui/intl/lib/dateTime';
 import { Localizer } from '../locales/localizer';
@@ -80,8 +80,12 @@ class GradesTrendCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this.localize('gradesTrendCard:date');
 	}
 
+	get courses() {
+		return CoursesHelper.getUsersCourses(this.skeleton, this._serverData, this.data, this.user);
+	}
+
 	get axeDescription() {
-		return context.get('course-legend').getAxeDescription();
+		return CoursesHelper.getAxeDescription(this.courses, this.selectedCourses, this);
 	}
 
 	render() {

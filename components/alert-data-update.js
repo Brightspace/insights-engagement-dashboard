@@ -154,7 +154,6 @@ class AlertDataUpdate extends SkeletonMixin(Localizer(MobxLitElement)) {
 	constructor() {
 		super();
 		this.dataEvents = {};
-		this.lastFilters = [];
 	}
 
 	_renderEvent(e) {

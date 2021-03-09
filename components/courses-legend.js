@@ -3,12 +3,44 @@ import { css, html } from 'lit-element';
 import { ORG_UNIT, RECORD, UserTrendColorsIterator } from '../consts';
 import { bodySmallStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { classMap } from 'lit-html/directives/class-map';
-import { context } from '../model/context';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { UrlState } from '../model/urlState';
 
+export class CoursesHelper {
+	static getUsersCourses(skeleton, serverData, data, user) {
+
+		if (skeleton) return new Array(20).fill({ orgUnitId: -1, name: '&nbsp' });
+
+		const recordOrgUnitId = record => record[RECORD.ORG_UNIT_ID];
+		const orgUnitInfo = orgUnitId => {
+			const orgUnit = serverData.orgUnits.find(unit => unit[ORG_UNIT.ID] === orgUnitId);
+			return {
+				name: `${orgUnit[ORG_UNIT.NAME]} (Id: ${orgUnitId})`,
+				orgUnitId
+			};
+		};
+
+		const userRecords = data.recordsByUser.get(user.userId);
+		if (!userRecords) return [];
+		// get a unique set of orgId's then get the name of those org units.
+		return Array.from(
+			new Set(userRecords.map(recordOrgUnitId))
+		).map(orgUnitInfo);
+	}
+
+	static getAxeDescription(courses, selectedCourses, that) {
+		if (selectedCourses.size === 0) {
+			return that.localize('alert:axeDescriptionCoursesOff');
+		}
+
+		const courseNames = selectedCourses.map(
+			id => courses.find(course => course.orgUnitId === id)
+		).map(course => course.name).join(', ');
+		return that.localize('alert:axeDescriptionCourses') + courseNames;
+	}
+}
 export class SelectedCourses {
 	constructor() {
 		this.selected = new Set();
@@ -88,6 +120,7 @@ export class SelectedCourses {
 		const newValues = value.split(',').map(category => Number(category));
 		this.set(newValues);
 	}
+
 }
 decorate(SelectedCourses, {
 	selected: observable,
@@ -174,46 +207,16 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 		];
 	}
 
-	constructor() {
-		super();
-		context.add('course-legend', this);
-	}
-
 	get serverData() {
 		return this.data._data.serverData;
 	}
 
 	get courses() {
-
-		if (this.skeleton) return new Array(20).fill({ orgUnitId: -1, name: '&nbsp' });
-
-		const recordOrgUnitId = record => record[RECORD.ORG_UNIT_ID];
-		const orgUnitInfo = orgUnitId => {
-			const orgUnit = this.serverData.orgUnits.find(unit => unit[ORG_UNIT.ID] === orgUnitId);
-			return {
-				name: `${orgUnit[ORG_UNIT.NAME]} (Id: ${orgUnitId})`,
-				orgUnitId
-			};
-		};
-
-		const userRecords = this.data.recordsByUser.get(this.user.userId);
-		if (!userRecords) return [];
-		// get a unique set of orgId's then get the name of those org units.
-		return Array.from(
-			new Set(userRecords.map(recordOrgUnitId))
-		).map(orgUnitInfo);
+		return CoursesHelper.getUsersCourses(this.skeleton, this.serverData, this.data, this.user);
 	}
 
 	getAxeDescription() {
-
-		if (this.selectedCourses.size === 0) {
-			return this.localize('alert:axeDescriptionCoursesOff');
-		}
-
-		const courses = this.selectedCourses.map(
-			id => this.courses.find(course => course.orgUnitId === id)
-		).map(course => course.name).join(',');
-		return this.localize('alert:axeDescriptionCourses') + courses;
+		return CoursesHelper.getAxeDescription(this.courses, this.selectedCourses, this);
 	}
 
 	//LIFECYCLE
