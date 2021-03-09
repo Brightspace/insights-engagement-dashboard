@@ -20,6 +20,7 @@ import './components/discussion-activity-card.js';
 import './components/course-last-access-card.js';
 import './components/results-card.js';
 import './components/overdue-assignments-card.js';
+import './components/content-view-histogram.js';
 
 import { css, html } from 'lit-element/lit-element.js';
 import { DefaultViewState, ViewState } from './model/view-state';
@@ -374,6 +375,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				${this._gradesCard}
 				${this._ticGradesCard}
 				${this._courseAccessCard}
+				<d2l-labs-content-view-histogram></d2l-labs-content-view-histogram>
 			</div>
 			${this._userTable}
 			<d2l-insights-default-view-popup
