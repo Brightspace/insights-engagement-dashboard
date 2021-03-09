@@ -35,7 +35,6 @@ const demoDate = 1608000000000; //for unit test
 /**
  * @property {Object} data - an instance of Data from model/data.js
  * @property {Object} user - {firstName, lastName, username, userId}
- * @property {Boolean} isStudentSuccessSys - checking 'Access Student Success System' for org
  * @property {Object} orgUnitId - the org unit the user belongs too
  */
 class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
@@ -44,7 +43,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			user: { type: Object, attribute: false },
 			data: { type: Object, attribute: false },
 			isDemo: { type: Boolean, attribute: 'demo' },
-			isStudentSuccessSys: { type: Boolean, attribute: false },
+			s3Enabled: { type: Boolean, attribute: 'student-success-system-enabled' },
 			orgUnitId: { type: Number, attribute: 'org-unit-id' },
 			viewState: { type: Object, attribute: false },
 			metronEndpoint: { type: String, attribute: 'metron-endpoint' },
@@ -57,7 +56,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			showDiscussionsCol: { type: Boolean, attribute: 'discussions-col', reflect: true },
 			showGradeCol: { type: Boolean, attribute: 'grade-col', reflect: true },
 			showLastAccessCol: { type: Boolean, attribute: 'last-access-col', reflect: true },
-			showTicCol: { type: Boolean, attribute: 'tic-col', reflect: true }
+			showTicCol: { type: Boolean, attribute: 'tic-col', reflect: true },
+			showPredictedGradeCol: { type: Boolean, attribute: 'predicted-grade-col', reflect: true }
 		};
 	}
 
@@ -72,13 +72,13 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			firstName: null,
 			lastName: null
 		};
-		this.isStudentSuccessSys = false;
 		this.orgUnitId = 0;
 		this.viewState = null;
 
 		this.selectedCourses = new SelectedCourses();
 		this.lastFilteredOrgUnitIds = [];
 		this.metronEndpoint = '';
+		this.s3Enabled = false;
 
 		this.showOverdueCard = false;
 		this.showSystemAccessCard = false;
@@ -90,6 +90,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this.showGradeCol = false;
 		this.showLastAccessCol = false;
 		this.showTicCol = false;
+		this.showPredictedGradeCol = false;
 	}
 
 	static get styles() {
@@ -551,12 +552,13 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				.data="${this.data}"
 				.user="${this.user}"
 				.isActiveTable=${Boolean(true)}
-				.isStudentSuccessSys="${this.isStudentSuccessSys}"
-				?skeleton="${this.skeleton}"
+				?student-success-system-enabled="${this.s3Enabled}"
 				?discussions-col="${this.showDiscussionsCol}"
 				?grade-col="${this.showGradeCol}"
 				?last-access-col="${this.showLastAccessCol}"
 				?tic-col="${this.showTicCol}"
+				?predicted-grade-col="${this.showPredictedGradeCol}"
+				?skeleton="${this.skeleton}"
 				.selectedCourses="${this.selectedCourses}">
 			</d2l-insights-user-drill-courses-table>
 
@@ -565,11 +567,12 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				.data="${this.data}"
 				.user="${this.user}"
 				.isActiveTable=${Boolean(false)}
-				.isStudentSuccessSys="${this.isStudentSuccessSys}"
+				?student-success-system-enabled="${this.s3Enabled}"
 				?discussions-col="${this.showDiscussionsCol}"
 				?grade-col="${this.showGradeCol}"
 				?last-access-col="${this.showLastAccessCol}"
 				?tic-col="${this.showTicCol}"
+				?predicted-grade-col="${this.showPredictedGradeCol}"
 				?skeleton="${this.skeleton}"
 				.selectedCourses="${this.selectedCourses}">
 			</d2l-insights-user-drill-courses-table>
