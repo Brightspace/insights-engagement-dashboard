@@ -375,7 +375,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				${this._gradesCard}
 				${this._ticGradesCard}
 				${this._courseAccessCard}
-				<d2l-labs-content-view-histogram></d2l-labs-content-view-histogram>
+				<d2l-labs-content-view-histogram .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-labs-content-view-histogram>
 			</div>
 			${this._userTable}
 			<d2l-insights-default-view-popup

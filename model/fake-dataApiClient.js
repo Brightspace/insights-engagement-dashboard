@@ -18,24 +18,24 @@ function getDelayFromUrlHash() {
 export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView = false }) {
 	const demoData = {
 		records: [
-			[1, 100, 500, 1, 55, 1000, Date.now(), 0, 0, 0, null],
-			[1, 200, 600, 0, 33, 2000, 1607528563207, 0, 0, 0, null],
-			[1, 300, 500, 0, null, 1000, null, 0, 0, 0, null],
-			[1, 400, 500, 0, 30, 5000, null, 0, 0, 0, null],
-			[1, 500, 500, 0, 65, 5000, null, 2, 0, 40, null],
-			[1, 500, 600, 0, 51, 4000, null, 0, 0, 0, 0.7],
-			[2, 100, 500, 0, 60, 1100, null, 2, 4, 0, null],
-			[2, 200, 700, 1, 38, 4000, null, 0, 0, 0, 0.8],
-			[1, 200, 700, 1, 71, 4000, null, 0, 0, 0, null],
-			[1, 100, 700, 1, 81, 1000, null, 3, 2, 1, null],
-			[2, 100, 700, 1, 91, 1200, null, 1, 33, 1, null],
-			[2, 300, 500, 0, 9, 7200, null, 1, 3, 5, null],
-			[2, 300, 700, 0, 3, 0, 289298332, 0, 0, 0, null],
-			[2, 400, 700, 0, 100, 7200, Date.now() - 432000001, 0, 0, 0, 0.9],
-			[2, 500, 700, 0, 88, 4000, null, 4, 4, 1, null],
-			[8, 200, 700, 0, null, 0, null, 55, 2, 3, null],
-			[6, 600, 700, 0, 95, 2000, Date.now() - 8560938122, 0, 0, 0, null],
-			[1, 400, 700, 1, 75, 2000, null, 2, 1, 4, null]
+			[1, 100, 500, 1, 55, 1000, Date.now(), 0, 0, 0, null, 10],
+			[1, 200, 600, 0, 33, 2000, 1607528563207, 0, 0, 0, null, 22],
+			[1, 300, 500, 0, null, 1000, null, 0, 0, 0, null, 4],
+			[1, 400, 500, 0, 30, 5000, null, 0, 0, 0, null, 17],
+			[1, 500, 500, 0, 65, 5000, null, 2, 0, 40, null, 8],
+			[1, 500, 600, 0, 51, 4000, null, 0, 0, 0, 0.7, 23],
+			[2, 100, 500, 0, 60, 1100, null, 2, 4, 0, null, 5],
+			[2, 200, 700, 1, 38, 4000, null, 0, 0, 0, 0.8, 16],
+			[1, 200, 700, 1, 71, 4000, null, 0, 0, 0, null, 4],
+			[1, 100, 700, 1, 81, 1000, null, 3, 2, 1, null, 12],
+			[2, 100, 700, 1, 91, 1200, null, 1, 33, 1, null, 3],
+			[2, 300, 500, 0, 9, 7200, null, 1, 3, 5, null, 22],
+			[2, 300, 700, 0, 3, 0, 289298332, 0, 0, 0, null, 55],
+			[2, 400, 700, 0, 100, 7200, Date.now() - 432000001, 0, 0, 0, 0.9, 2],
+			[2, 500, 700, 0, 88, 4000, null, 4, 4, 1, null, 7],
+			[8, 200, 700, 0, null, 0, null, 55, 2, 3, null, 9],
+			[6, 600, 700, 0, 95, 2000, Date.now() - 8560938122, 0, 0, 0, null, 12],
+			[1, 400, 700, 1, 75, 2000, null, 2, 1, 4, null, 44]
 		],
 		orgUnits: [
 			[1, 'Course 1', 3, [3, 4], false],
@@ -51,17 +51,17 @@ export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView 
 			[6606, 'Dev', 1, [0], false]
 		],
 		users: [ // some of which are out of order
-			[100,  'ATest', 'AStudent', 'AStudent', 1601193037132],
-			[300,  'CTest', 'CStudent', 'CStudent', 1603193037132],
-			[200,  'BTest', 'BStudent', 'BStudent', 1607528565300],
-			[400,  'DTest', 'DStudent', 'DStudent', null],
-			[500,  'ETest', 'EStudent', 'EStudent', 1546318800000],
-			[600,  'GTest', 'GStudent', 'GStudent', 1589998800000],
-			[700,  'FTest', 'FStudent', 'FStudent', 1599998800000],
-			[800,  'HTest', 'HStudent', 'HStudent', 1600008800000],
-			[900,  'ITest', 'IStudent', 'IStudent', 1604558800000],
-			[1000, 'KTest', 'KStudent', 'KStudent', 1604958800000],
-			[1100, 'JTest', 'JStudent', 'JStudent', 1594958800000]
+			[100,  'ATest', 'AStudent', 'AStudent', 1601193037132, 0],
+			[300,  'CTest', 'CStudent', 'CStudent', 1603193037132, 5],
+			[200,  'BTest', 'BStudent', 'BStudent', 1607528565300, 8],
+			[400,  'DTest', 'DStudent', 'DStudent', null, 200],
+			[500,  'ETest', 'EStudent', 'EStudent', 1546318800000, 200],
+			[600,  'GTest', 'GStudent', 'GStudent', 1589998800000, 27],
+			[700,  'FTest', 'FStudent', 'FStudent', 1599998800000, 57],
+			[800,  'HTest', 'HStudent', 'HStudent', 1600008800000, 8],
+			[900,  'ITest', 'IStudent', 'IStudent', 1604558800000, 0],
+			[1000, 'KTest', 'KStudent', 'KStudent', 1604958800000, 20],
+			[1100, 'JTest', 'JStudent', 'JStudent', 1594958800000, 54]
 		],
 		semesterTypeId: 25,
 		numDefaultSemesters: 4,
@@ -72,7 +72,7 @@ export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView 
 		isDefaultView: defaultView,
 		isStudentSuccessSys: true
 	};
-	return new Promise(resolve => setTimeout(() => resolve(demoData), getDelayFromUrlHash() || 100));
+	return new Promise(resolve => setTimeout(() => resolve(demoData), getDelayFromUrlHash() || 1000));
 }
 
 /**

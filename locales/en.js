@@ -130,6 +130,15 @@ export default {
 	"courseLastAccessCard:toolTipOneToThreeDaysSingleUser": "1 user last accessed the course 1 to 3 days ago",
 	"courseLastAccessCard:toolTipLessThanOneDaySingleUser": "1 user last accessed the course less than 1 day ago",
 
+	"contentViewHistogram:title": "Content View",
+	"contentViewHistogram:contentViews": "Number of Content Topic Views",
+	"contentViewHistogram:userCount": "Number of Users",
+	"contentViewHistogram:usersInRange": "{numUsers} users have accessed the content {start} to {end} times",
+	"contentViewHistogram:userInRange": "1 user has accessed the content {start} to {end} times",
+	"contentViewHistogram:usersZeroTimes": "{numUsers} users have accessed the content 0 times",
+	"contentViewHistogram:userZeroTimes": "1 user has accessed the content 0 times",
+	"contentViewHistogram:textLabel": "This chart displays the total number of content views for all users in the selected courses",
+
 	"discussionActivityCard:cardTitle": "Discussion Activity",
 	"discussionActivityCard:threads": "Threads",
 	"discussionActivityCard:replies": "Replies",
