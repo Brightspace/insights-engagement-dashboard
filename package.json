@@ -37,7 +37,6 @@
     "eslint-plugin-lit-a11y": "^1.0.1",
     "eslint-plugin-sort-class-members": "^1",
     "fetch-mock": "^9.10.5",
-    "frau-ci": "^1",
     "karma-sauce-launcher": "^4",
     "lit-analyzer": "^1.2.0",
     "sinon": "^9.0.3",
