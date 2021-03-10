@@ -551,7 +551,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			<d2l-insights-user-drill-courses-table
 				.data="${this.data}"
 				.user="${this.user}"
-				.isActiveTable=${Boolean(true)}
+				active-table
 				?student-success-system-enabled="${this.s3Enabled}"
 				?discussions-col="${this.showDiscussionsCol}"
 				?grade-col="${this.showGradeCol}"
@@ -566,7 +566,6 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			<d2l-insights-user-drill-courses-table
 				.data="${this.data}"
 				.user="${this.user}"
-				.isActiveTable=${Boolean(false)}
 				?student-success-system-enabled="${this.s3Enabled}"
 				?discussions-col="${this.showDiscussionsCol}"
 				?grade-col="${this.showGradeCol}"

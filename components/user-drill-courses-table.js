@@ -40,7 +40,7 @@ class UserDrillCoursesTable extends SortMixin(SkeletonMixin(Localizer(MobxLitEle
 		return {
 			data: { type: Object, attribute: false },
 			user: { type: Object, attribute: false },
-			isActiveTable: { type: Boolean, attribute: false, reflect: true },
+			isActiveTable: { type: Boolean, attribute: 'active-table', reflect: true },
 			_currentPage: { type: Number, attribute: false },
 			_pageSize: { type: Number, attribute: false },
 			selectedCourses: { type: Object, attribute: false },
@@ -77,6 +77,8 @@ class UserDrillCoursesTable extends SortMixin(SkeletonMixin(Localizer(MobxLitEle
 		this._sortColumn = TABLE_COLUMNS.COURSE_NAME;
 		this._currentPage = 1;
 		this._pageSize = DEFAULT_PAGE_SIZE;
+
+		this.isActiveTable = false;
 
 		this.showDiscussionsCol = false;
 		this.showGradeCol = false;

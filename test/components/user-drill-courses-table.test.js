@@ -388,7 +388,7 @@ function getTableHtml({ data, s3Enabled, isActive }) {
 		<d2l-insights-user-drill-courses-table
 			.data="${data}"
 			.user="${user}"
-			.isActiveTable="${Boolean(isActive)}"
+			?active-table="${isActive}"
 			?student-success-system-enabled="${s3Enabled}"
 			discussions-col	grade-col last-access-col tic-col predicted-grade-col
 			.selectedCourses="${selectedCourses}">
