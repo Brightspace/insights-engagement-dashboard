@@ -40,15 +40,17 @@ class UserDrillCoursesTable extends SortMixin(SkeletonMixin(Localizer(MobxLitEle
 		return {
 			data: { type: Object, attribute: false },
 			user: { type: Object, attribute: false },
-			isActiveTable: { type: Boolean, attribute: false, reflect: true },
+			isActiveTable: { type: Boolean, attribute: 'active-table', reflect: true },
 			_currentPage: { type: Number, attribute: false },
 			_pageSize: { type: Number, attribute: false },
-			isStudentSuccessSys: { type: Boolean, attribute: false },
 			selectedCourses: { type: Object, attribute: false },
+
+			s3Enabled: { type: Boolean, attribute: 'student-success-system-enabled' },
 			showDiscussionsCol: { type: Boolean, attribute: 'discussions-col', reflect: true },
 			showGradeCol: { type: Boolean, attribute: 'grade-col', reflect: true },
 			showLastAccessCol: { type: Boolean, attribute: 'last-access-col', reflect: true },
-			showTicCol: { type: Boolean, attribute: 'tic-col', reflect: true }
+			showTicCol: { type: Boolean, attribute: 'tic-col', reflect: true },
+			showPredictedGradeCol: { type: Boolean, attribute: 'predicted-grade-col', reflect: true },
 		};
 	}
 
@@ -76,11 +78,14 @@ class UserDrillCoursesTable extends SortMixin(SkeletonMixin(Localizer(MobxLitEle
 		this._currentPage = 1;
 		this._pageSize = DEFAULT_PAGE_SIZE;
 
-		this.isStudentSuccessSys = false;
+		this.isActiveTable = false;
+
 		this.showDiscussionsCol = false;
 		this.showGradeCol = false;
 		this.showLastAccessCol = false;
 		this.showTicCol = false;
+		this.showPredictedGradeCol = false;
+		this.s3Enabled = false;
 
 		this.sorts = [
 			courseNameSort,
@@ -199,12 +204,12 @@ class UserDrillCoursesTable extends SortMixin(SkeletonMixin(Localizer(MobxLitEle
 	}
 
 	_getVisibleColumns(isExport) {
-		const includePredictedGrade = this.isActiveTable || isExport;
+		const includePredictedGrade = (this.isActiveTable || isExport) && this.s3Enabled && this.showPredictedGradeCol;
 		const includeSemester = !this.isActiveTable || isExport;
 		const columns = [TABLE_COLUMNS.COURSE_NAME];
 
 		if (this.showGradeCol) columns.push(TABLE_COLUMNS.CURRENT_GRADE);
-		if (includePredictedGrade && this.isStudentSuccessSys) columns.push(TABLE_COLUMNS.PREDICTED_GRADE);
+		if (includePredictedGrade) columns.push(TABLE_COLUMNS.PREDICTED_GRADE);
 		if (this.showTicCol) columns.push(TABLE_COLUMNS.TIME_IN_CONTENT);
 		if (this.showDiscussionsCol) columns.push(TABLE_COLUMNS.DISCUSSION_ACTIVITY);
 		if (this.showLastAccessCol) columns.push(TABLE_COLUMNS.COURSE_LAST_ACCESS);
@@ -281,7 +286,7 @@ class UserDrillCoursesTable extends SortMixin(SkeletonMixin(Localizer(MobxLitEle
 		const headers = [this.localize('activeCoursesTable:course')];
 
 		if (this.showGradeCol) headers.push(this.localize('activeCoursesTable:grade'));
-		if (this.isStudentSuccessSys) headers.push(this.localize('activeCoursesTable:predictedGrade'));
+		if (this.s3Enabled && this.showPredictedGradeCol) headers.push(this.localize('activeCoursesTable:predictedGrade'));
 		if (this.showTicCol) headers.push(this.localize('activeCoursesTable:timeInContent'));
 		if (this.showDiscussionsCol) {
 			headers.push(this.localize('discussionActivityCard:threads'));
