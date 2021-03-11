@@ -1,16 +1,16 @@
-import './table.js';
+import {MobxLitElement} from '@adobe/lit-mobx';
 import '@brightspace-ui-labs/pagination/pagination';
 import '@brightspace-ui/core/components/inputs/input-text';
-import { action, computed, decorate, observable, reaction } from 'mobx';
-import { css, html } from 'lit-element';
-import { defaultSort, SortMixin, userNameSort } from '../model/sorts.js';
-import { formatNumber, formatPercent } from '@brightspace-ui/intl';
-import { RECORD, USER } from '../consts';
-import { COLUMN_TYPES } from './table';
-import { formatDateTimeFromTimestamp } from '@brightspace-ui/intl/lib/dateTime.js';
-import { Localizer } from '../locales/localizer';
-import { MobxLitElement } from '@adobe/lit-mobx';
-import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
+import {SkeletonMixin} from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
+import {formatNumber, formatPercent} from '@brightspace-ui/intl';
+import {formatDateTimeFromTimestamp} from '@brightspace-ui/intl/lib/dateTime.js';
+import {css, html} from 'lit-element';
+import {action, computed, decorate, observable, reaction} from 'mobx';
+import {RECORD, USER} from '../consts';
+import {Localizer} from '../locales/localizer';
+import {defaultSort, SortMixin, userNameSort} from '../model/sorts.js';
+import {COLUMN_TYPES} from './table';
+import './table.js';
 
 export const TABLE_USER = {
 	SELECTOR_VALUE: 0,
@@ -43,7 +43,7 @@ function unique(arr) {
  * @property {Number} _pageSize
  * @property {Number} _sortColumn - The index of the column that is currently sorted
  * @property {String} _sortOrder - either 'asc' or 'desc'
- * @property {Array} selectedUserIds - ids of users that are selected in the table
+ * @property {Set} selectedUserIds - ids of users that are selected in the table
  */
 class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 
@@ -52,7 +52,7 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 			data: { type: Object, attribute: false },
 			_currentPage: { type: Number, attribute: false },
 			_pageSize: { type: Number, attribute: false },
-			selectedUserIds: { type: Array, attribute: false },
+			selectedUserIds: { type: Object, attribute: false },
 
 			// user preferences:
 			showCoursesCol: { type: Boolean, attribute: 'courses-col', reflect: true },
@@ -99,7 +99,7 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 		this._pageSize = DEFAULT_PAGE_SIZE;
 		this._sortOrder = 'desc';
 		this._sortColumn = TABLE_USER.NAME_INFO;
-		this.selectedUserIds = [];
+		this.selectedUserIds = new Set();
 		this.showCoursesCol = false;
 		this.showDiscussionsCol = false;
 		this.showGradeCol = false;
@@ -121,10 +121,12 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 			() => this.data.users,
 			() => { this._resetSelectedUserIds(); }
 		);
+
+		this.selectorAriaLabel = this.localize('usersTable:selectorAriaLabel');
 	}
 
 	get _itemsCount() {
-		return this.userDataForDisplayFormatted.length;
+		return this._sortedData.length;
 	}
 
 	get _maxPages() {
@@ -134,7 +136,7 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 
 	// should be reset whenever data, page or sorting state changes
 	_resetSelectedUserIds() {
-		this.selectedUserIds = [];
+		this.selectedUserIds = new Set();
 	}
 
 	// don't use displayData.length to get the itemsCount. When we display a skeleton view, displayData.length is
@@ -152,8 +154,7 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 			const start = this._pageSize * (this._currentPage - 1);
 			const end = this._pageSize * (this._currentPage); // it's ok if this goes over the end of the array
 			const visibleColumns = this._visibleColumns;
-			return this.userDataForDisplayFormatted
-				.slice(start, end)
+			return this._formatForTable(this._sortedData.slice(start, end))
 				.map(user => visibleColumns.map(column => user[column]));
 		}
 
@@ -176,8 +177,14 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 		const userLastFirstName = `${user[USER.LAST_NAME]}, ${user[USER.FIRST_NAME]}`;
 		const selectorInfo = {
 			value: userId,
-			ariaLabel: this.localize('usersTable:selectorAriaLabel', { userLastFirstName }),
-			selected: this.selectedUserIds.includes(userId)
+			// localization is quite slow when there is a list of 50k users - the slow part is
+			// parsing the translated expression to AST so the user name can be subbed in
+			// doing our own more limited substitution improves perf a lot, provided the template
+			// is not translated in the loop. These changes save close to a half-second on 50k records
+			// in chrome on my dev machine.
+			// TODO: test that translation still works!
+			ariaLabel: this.selectorAriaLabel.replace('$userLastFirstName$', userLastFirstName),
+			selected: this.selectedUserIds.has(userId) // using a Set saves about 10-15ms on 50k users
 		};
 		const userInfo = [user[USER.ID], user[USER.FIRST_NAME], user[USER.LAST_NAME], user[USER.USERNAME]];
 		const userRecords = recordsByUser.get(user[USER.ID]);
@@ -219,18 +226,27 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 	}
 
 	// @computed
-	get userDataForDisplay() {
-		// map to a 2D userData array, with column 1 as a sub-array of [id, FirstName, LastName, UserName]
-		// then sort by the selected sorting function
-		const sortFunction = this._chosenSortFunction(this._sortColumn, this._sortOrder);
-		return this.data.users
-			.map(this._preProcessData, this)
-			.sort(sortFunction)
+	get userDataForExport() {
+		const sortedData = this._sortedData;
+		return sortedData
 			.map(this._formatDataForDisplay, this);
 	}
 
-	get userDataForDisplayFormatted() {
-		return this.userDataForDisplay.map(data => {
+	get _sortedData() {
+		// map to a 2D userData array, with column 1 as a sub-array of [id, FirstName, LastName, UserName]
+		// then sort by the selected sorting function
+		const sortFunction = this._chosenSortFunction(this._sortColumn, this._sortOrder);
+		return this._preprocessedData.sort(sortFunction);
+	}
+
+	// @calculated - but always seems to be recalculated anyway, so possible optimization target
+	get _preprocessedData() {
+		return this.data.users
+			.map(this._preProcessData, this);
+	}
+
+	_formatForTable(page) {
+		return page.map(data => {
 			return [
 				data[TABLE_USER.SELECTOR_VALUE],
 				[`${data[TABLE_USER.NAME_INFO][USER.LAST_NAME]}, ${data[TABLE_USER.NAME_INFO][USER.FIRST_NAME]}`,
@@ -245,7 +261,7 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 
 	get dataForExport() {
 		const visibleColumns = this._visibleColumns;
-		return this.userDataForDisplay
+		return this.userDataForExport
 			.map(user => visibleColumns.flatMap(column => {
 				const val = user[column];
 				if (column === TABLE_USER.NAME_INFO) {
@@ -394,9 +410,9 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 	_handleSelectChanged(event) {
 		const changedUserIds = event.detail.values.map(value => Number(value));
 		if (event.detail.selected) {
-			this.selectedUserIds = unique([...this.selectedUserIds, ...changedUserIds]);
+			this.selectedUserIds = new Set([...this.selectedUserIds, ...changedUserIds]);
 		} else {
-			this.selectedUserIds = this.selectedUserIds.filter(userId => !changedUserIds.includes(userId));
+			this.selectedUserIds = new Set([...this.selectedUserIds].filter(userId => !changedUserIds.includes(userId)));
 		}
 	}
 
@@ -414,10 +430,11 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 }
 decorate(UsersTable, {
 	selectedUserIds: observable,
-	userDataForDisplay: computed,
-	userDataForDisplayFormatted: computed,
+	userDataForExport: computed,
 	headersForExport: computed,
 	dataForExport: computed,
+	_preprocessedData: computed,
+	_sortedData: computed,
 	_sortColumn: observable,
 	_sortOrder: observable,
 	_handleColumnSort: action
