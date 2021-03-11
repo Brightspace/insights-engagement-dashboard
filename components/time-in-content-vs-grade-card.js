@@ -201,10 +201,14 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 		const maxTimeInContent = this.filter.tiCVsGrades.reduce((max, arr) => {
 			return Math.max(max, arr[0]);
 		}, -Infinity);
-		return [['leftBottom', this.filter.avgTimeInContent / 2, 25],
-			['rightBottom', this.filter.avgTimeInContent / 2, 75],
-			['leftTop', (maxTimeInContent + this.filter.avgTimeInContent) / 2, 25],
-			['rightTop', (maxTimeInContent + this.filter.avgTimeInContent) / 2, 75]];
+		const leftTic = this.filter.avgTimeInContent / 2;
+		const rightTic = (maxTimeInContent + this.filter.avgTimeInContent) / 2;
+		const bottomGrade = this.filter.avgGrade / 2;
+		const topGrade = (100 + this.filter.avgGrade) / 2;
+		return [['leftBottom', leftTic, bottomGrade],
+			['leftTop', leftTic, topGrade],
+			['rightBottom', rightTic, bottomGrade],
+			['rightTop', rightTic, topGrade]];
 	}
 
 	get filter() {
@@ -212,7 +216,7 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 	}
 
 	_descriptiveTextByQuadrant(quadrant, numberOfUsers) {
-		const quadrantTerm = `components.insights-time-in-content-vs-grade-card.${quadrant}`;
+		const quadrantTerm = `timeInContentVsGradeCard:${quadrant}`;
 		return this.localize(quadrantTerm, { numberOfUsers });
 	}
 
@@ -256,7 +260,7 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 				events: {
 					click: function(event) {
 						const quadrant = that.filter.calculateQuadrant(Math.floor(event.xAxis[0].value), Math.floor(event.yAxis[0].value));
-						that.filter.toggleQuadrant();
+						that.filter.toggleQuadrant(quadrant);
 						const chartName = { chartName: that.localize('timeInContentVsGradeCard:timeInContentVsGrade') };
 						filterEventQueue.add(
 							that.localize('alert:updatedFilter', chartName),
@@ -404,8 +408,8 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 				// 2. They are the points screen-readers interact with.
 				name: 'midPoint',
 				data: this._dataMidPoints.map(x => ({
-					x: x[2],
-					y: x[1],
+					x: x[1],
+					y: x[2],
 					custom: {
 						quadrant: x[0],
 						// TODO (handle grouping)
