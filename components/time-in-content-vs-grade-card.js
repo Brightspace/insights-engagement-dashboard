@@ -66,15 +66,41 @@ export class TimeInContentVsGradeFilter {
 		}
 
 		let quadrant;
-		if (tic < this.avgTimeInContent && grade < this.avgGrade) quadrant = 'leftBottom';
-		else if (tic <= this.avgTimeInContent && grade >= this.avgGrade) quadrant = 'leftTop';
-		else if (tic > this.avgTimeInContent && grade > this.avgGrade) quadrant = 'rightTop';
+		// this function gets called in a loop, so avoiding the tiny overhead of multiple mobx gets
+		// per call on these is worthwhile
+		const avgTimeInContent = this.avgTimeInContent;
+		const avgGrade = this.avgGrade;
+		if (tic < avgTimeInContent && grade < avgGrade) quadrant = 'leftBottom';
+		else if (tic <= avgTimeInContent && grade >= avgGrade) quadrant = 'leftTop';
+		else if (tic > avgTimeInContent && grade > avgGrade) quadrant = 'rightTop';
 		else quadrant = 'rightBottom';
 		return quadrant;
 	}
 
 	getDataForQuadrant(quadrant) {
-		return this.tiCVsGrades.filter(r => this.calculateQuadrant(r[TIC], r[GRADE]) === quadrant);
+		const fullData = this.tiCVsGrades.filter(r => this.calculateQuadrant(r[TIC], r[GRADE]) === quadrant);
+		// If there are 50k data points, it takes several seconds to render them.
+		// The highcharts boost module seems not to have all the features we need, so reduce the number of data
+		// points by rounding and coalescing. Note that the highstock module can also do data grouping, so that
+		// could be investigated in future.
+		// The rounding here should have little effect on UX because we only allow interaction with the quadrants,
+		// TODO: is this breaking tooltips and selection? (seems like it was already broken)
+		if (fullData.length > 1000) {
+			// round grades to 2% increments; round tic to 15 minute intervals
+			const roundedData = fullData.map(([tic, grade]) => [Math.floor(tic / 15) * 15, Math.floor(grade / 2) * 2]);
+			// now drop duplicates
+			const sorted = roundedData.sort(([tic1, grade1], [tic2, grade2]) => (tic1 === tic2 ? grade1 - grade2 : tic1 - tic2));
+			let [lastTic, lastGrade] = sorted[0];
+			const grouped = [sorted[0]];
+			for (let i = 1; i < sorted.length; i++) {
+				const [tic, grade] = sorted[i];
+				if (tic === lastTic && grade === lastGrade) continue;
+				grouped.push(sorted[i]);
+				[lastTic, lastGrade] = sorted[i];
+			}
+			return grouped;
+		}
+		return fullData;
 	}
 
 	filter(record) {
