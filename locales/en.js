@@ -74,7 +74,7 @@ export default {
 	"usersTable:totalUsers": "Total Users: {num}",
 	"usersTable:lastAccessedSys" : "Last Accessed System",
 	"usersTable:null" : "NULL",
-	"usersTable:selectorAriaLabel": "Select $userLastFirstName$", // TODO: search-and-replace this in all language files
+	"usersTable:selectorAriaLabel": "Select {userLastFirstName}",
 	"usersTable:noGrades": "No grades",
 
 	"table:selectAll": "Select all",

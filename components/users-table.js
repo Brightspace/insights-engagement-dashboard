@@ -1,16 +1,17 @@
-import {MobxLitElement} from '@adobe/lit-mobx';
 import '@brightspace-ui-labs/pagination/pagination';
 import '@brightspace-ui/core/components/inputs/input-text';
-import {SkeletonMixin} from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
-import {formatNumber, formatPercent} from '@brightspace-ui/intl';
-import {formatDateTimeFromTimestamp} from '@brightspace-ui/intl/lib/dateTime.js';
-import {css, html} from 'lit-element';
-import {action, computed, decorate, observable, reaction} from 'mobx';
-import {RECORD, USER} from '../consts';
-import {Localizer} from '../locales/localizer';
-import {defaultSort, SortMixin, userNameSort} from '../model/sorts.js';
-import {COLUMN_TYPES} from './table';
 import './table.js';
+
+import { action, computed, decorate, observable, reaction } from 'mobx';
+import { css, html } from 'lit-element';
+import { defaultSort, SortMixin, userNameSort } from '../model/sorts.js';
+import { formatNumber, formatPercent } from '@brightspace-ui/intl';
+import { RECORD, USER } from '../consts';
+import { COLUMN_TYPES } from './table';
+import { formatDateTimeFromTimestamp } from '@brightspace-ui/intl/lib/dateTime.js';
+import { Localizer } from '../locales/localizer';
+import { MobxLitElement } from '@adobe/lit-mobx';
+import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 
 export const TABLE_USER = {
 	SELECTOR_VALUE: 0,
@@ -29,10 +30,6 @@ const DEFAULT_PAGE_SIZE = 20;
 function avgOf(records, field) {
 	const total = records.reduce((sum, r) => sum + r[field], 0);
 	return total / records.length;
-}
-
-function unique(arr) {
-	return [...new Set(arr)];
 }
 
 /**
@@ -126,7 +123,7 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 	}
 
 	get _itemsCount() {
-		return this._sortedData.length;
+		return this._preprocessedData.length;
 	}
 
 	get _maxPages() {
@@ -171,20 +168,16 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 	}
 
 	_preProcessData(user) {
+		// this method preps data that is then used for sorting; this means it runs on
+		// every user (up to 50k with default limits) and should not do extra work.
 		const recordsByUser = this.data.recordsByUser;
 
 		const userId = user[USER.ID];
 		const userLastFirstName = `${user[USER.LAST_NAME]}, ${user[USER.FIRST_NAME]}`;
 		const selectorInfo = {
-			value: userId,
-			// localization is quite slow when there is a list of 50k users - the slow part is
-			// parsing the translated expression to AST so the user name can be subbed in
-			// doing our own more limited substitution improves perf a lot, provided the template
-			// is not translated in the loop. These changes save close to a half-second on 50k records
-			// in chrome on my dev machine.
-			// TODO: test that translation still works!
-			ariaLabel: this.selectorAriaLabel.replace('$userLastFirstName$', userLastFirstName),
-			selected: this.selectedUserIds.has(userId) // using a Set saves about 10-15ms on 50k users
+			// we don't use this column for sorting, so don't so additional work until formatting for
+			// display, which runs after paging
+			userId, userLastFirstName
 		};
 		const userInfo = [user[USER.ID], user[USER.FIRST_NAME], user[USER.LAST_NAME], user[USER.USERNAME]];
 		const userRecords = recordsByUser.get(user[USER.ID]);
@@ -207,15 +200,24 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 		];
 	}
 
-	_formatDataForDisplay(user) {
+	_formatDataForDisplay(user, isForExport) {
+		// runs for each user being drawn on the current page or exported
 		const lastSysAccessFormatted = user[TABLE_USER.LAST_ACCESSED_SYS]
 			? formatDateTimeFromTimestamp(user[TABLE_USER.LAST_ACCESSED_SYS], { format: 'medium' })
 			: this.localize('usersTable:null');
 		const averageGrade = user[TABLE_USER.AVG_GRADE]
 			? formatPercent(user[TABLE_USER.AVG_GRADE] / 100, numberFormatOptions)
 			: this.localize('usersTable:noGrades');
+		const selectorData = user[TABLE_USER.SELECTOR_VALUE];
+		// save time during export by not building aria strings which will not be used anyway
+		const selectorInfo = isForExport ? {} : {
+			value: selectorData.userId,
+			ariaLabel: this.localize('usersTable:selectorAriaLabel', { userLastFirstName: selectorData.userLastFirstName }),
+			selected: this.selectedUserIds.has(selectorData.userId)
+		};
+
 		return [
-			user[TABLE_USER.SELECTOR_VALUE],
+			selectorInfo,
 			user[TABLE_USER.NAME_INFO],
 			user[TABLE_USER.COURSES],
 			averageGrade,
@@ -226,28 +228,22 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 	}
 
 	// @computed
-	get userDataForExport() {
-		const sortedData = this._sortedData;
-		return sortedData
-			.map(this._formatDataForDisplay, this);
-	}
-
 	get _sortedData() {
-		// map to a 2D userData array, with column 1 as a sub-array of [id, FirstName, LastName, UserName]
-		// then sort by the selected sorting function
 		const sortFunction = this._chosenSortFunction(this._sortColumn, this._sortOrder);
 		return this._preprocessedData.sort(sortFunction);
 	}
 
-	// @calculated - but always seems to be recalculated anyway, so possible optimization target
+	// @computed
 	get _preprocessedData() {
+		// map to a 2D userData array, with column 1 as a sub-array of [id, FirstName, LastName, UserName]
 		return this.data.users
 			.map(this._preProcessData, this);
 	}
 
 	_formatForTable(page) {
-		return page.map(data => {
-			return [
+		return page
+			.map(u => this._formatDataForDisplay(u))
+			.map(data => [
 				data[TABLE_USER.SELECTOR_VALUE],
 				[`${data[TABLE_USER.NAME_INFO][USER.LAST_NAME]}, ${data[TABLE_USER.NAME_INFO][USER.FIRST_NAME]}`,
 					`${data[TABLE_USER.NAME_INFO][USER.USERNAME]} - ${data[TABLE_USER.NAME_INFO][USER.ID]}`],
@@ -255,13 +251,15 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 				data[TABLE_USER.AVG_GRADE],
 				data[TABLE_USER.AVG_TIME_IN_CONTENT],
 				data[TABLE_USER.AVG_DISCUSSION_ACTIVITY],
-				data[TABLE_USER.LAST_ACCESSED_SYS]];
-		});
+				data[TABLE_USER.LAST_ACCESSED_SYS]
+			]);
 	}
 
 	get dataForExport() {
 		const visibleColumns = this._visibleColumns;
-		return this.userDataForExport
+		const sortedData = this._sortedData;
+		return sortedData
+			.map(u => this._formatDataForDisplay(u, true))
 			.map(user => visibleColumns.flatMap(column => {
 				const val = user[column];
 				if (column === TABLE_USER.NAME_INFO) {
@@ -430,7 +428,6 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 }
 decorate(UsersTable, {
 	selectedUserIds: observable,
-	userDataForExport: computed,
 	headersForExport: computed,
 	dataForExport: computed,
 	_preprocessedData: computed,
