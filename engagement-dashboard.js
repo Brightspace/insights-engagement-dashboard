@@ -274,7 +274,6 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				?demo="${this.isDemo}"
 				.data="${this._data}"
 				.user="${user}"
-				.isStudentSuccessSys="${this._serverData.serverData.isStudentSuccessSys}"
 				org-unit-id="${this.orgUnitId}"
 				.viewState="${this._viewState}"
 				.metronEndpoint="${this.metronEndpoint}"
