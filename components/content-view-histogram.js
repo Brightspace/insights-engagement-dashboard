@@ -5,6 +5,7 @@ import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 import { USER } from '../consts';
+import { ThemeMixin } from '@brightspace-ui/core/mixins/theme-mixin';
 const filterId = 'd2l-insights-content-view-histogram';
 
 class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
@@ -64,23 +65,81 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 		if (point.y === 1 && range[0] === '0') {
 			return this.localize('contentViewHistogram:userZeroTimes');
 		} else if (point.y === 1 && range[0] !== '0') {
-			return this.localize('contentViewHistogram:userInRange', { start: range[0], end: range[1] });
+			return this.localize('contentViewHistogram:userInRange', { start: range[1], end: range[0] });
 		} else if (range[0] === '0') {
 			return this.localize('contentViewHistogram:usersZeroTimes', { numUsers: point.y });
 		} else {
-			return this.localize('contentViewHistogram:usersInRange', { numUsers: point.y, start: range[0], end: range[1] });
+			return this.localize('contentViewHistogram:usersInRange', { numUsers: point.y, start: range[1], end: range[0] });
 		}
 	}
 
 	get bins() {
 		// changing these ranges will change the bins throught the chart.
-		return [
-			[200, 150],
-			[150, 100],
-			[100, 50],
-			[50, 10],
-			[10, 0],
-		];
+		const peaks = [50, 100, 200, 500, 1000];
+		const values = this.courseAccessWithoutOutliers();
+		const largestAccess = values[values.length - 1];
+		let upperBin = peaks.find(peak => peak >= largestAccess);
+		if (upperBin === undefined) upperBin = 1000;
+		const range = upperBin / 5;
+		const bins = [];
+
+		for (let i = 1; i <= 5; i++) {
+			bins.push([range * i, range * (i - 1)]);
+		}
+
+		if (this.courseAccessOutliers.length !== 0 || largestAccess > 1000) {
+			bins.push([Number.POSITIVE_INFINITY, upperBin]);
+		}
+
+		return bins.reverse();
+	}
+
+	_median(a) {
+		const result = a[Math.floor((a.length - 1) / 2)];
+		return result;
+	}
+
+	get courseAccesses() {
+		return this.data
+			.withoutFilter(filterId)
+			.users.map(record => record[USER.TOTAL_COURSE_ACCESS]).sort((a, b) => a - b);
+	}
+
+	get _Q1() {
+		if (this.courseAccesses.length < 2) return [];
+		return this._median(
+			this.courseAccesses.splice(
+				0,
+				Math.round(this.courseAccesses.length / 2) - 1
+			)
+		);
+	}
+
+	get _Q3() {
+		if (this.courseAccesses.length < 2) return [];
+		return this._median(
+			this.courseAccesses.splice(
+				Math.round(this.courseAccesses.length / 2),
+				this.courseAccesses.length
+			)
+		);
+	}
+
+	calculateIQRWhisker() {
+		const IQR = this._Q3 - this._Q1;
+		return IQR * 1.5;
+	}
+
+	courseAccessWithoutOutliers() {
+		const IQRWhisker = this.calculateIQRWhisker();
+		const upperBound = this._Q3 + IQRWhisker;
+		return this.courseAccesses.filter(access => access < upperBound);
+	}
+
+	get courseAccessOutliers() {
+		const IQRWhisker = this.calculateIQRWhisker();
+		const upperBound = this._Q3 + IQRWhisker;
+		return this.courseAccesses.filter(access => access >= upperBound);
 	}
 
 	get dataBuckets() {
@@ -88,7 +147,14 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get categories() {
-		return this.bins.reduce((acc, cur) => acc.concat([cur.join('-')]), []).concat(['0']);
+		return this.bins.reduce((acc, cur) => {
+			if (cur[0] === Number.POSITIVE_INFINITY) {
+				acc.push(`> ${cur[1]}`);
+			} else {
+				acc.push(`${cur[0]}-${cur[1] + 1}`);
+			}
+			return acc;
+		}, []).concat(['0']);
 	}
 
 	get _chartDataBuckets() {
@@ -152,6 +218,7 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 			},
 			yAxis: {
 				tickAmount: 5,
+				allowDecimals: false,
 				title: {
 					style: axisStyle,
 					text: this.localize('contentViewHistogram:userCount')
