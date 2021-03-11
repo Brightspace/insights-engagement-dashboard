@@ -23,7 +23,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7",
     "@babel/plugin-proposal-class-properties": "^7.13.0",
-    "@brightspace-ui/stylelint-config": "0.0.3",
+    "@brightspace-ui/stylelint-config": "0.1.0",
     "@open-wc/testing": "^2",
     "@open-wc/testing-karma": "^4.0.1",
     "@polymer/polymer": "^3.4.1",
@@ -37,11 +37,10 @@
     "eslint-plugin-lit-a11y": "^1.0.1",
     "eslint-plugin-sort-class-members": "^1",
     "fetch-mock": "^9.10.5",
-    "frau-ci": "^1",
     "karma-sauce-launcher": "^4",
     "lit-analyzer": "^1.2.0",
     "sinon": "^9.0.3",
-    "stylelint": "^13.6.1"
+    "stylelint": "^13.12.0"
   },
   "dependencies": {
     "@adobe/lit-mobx": "0.0.x",
