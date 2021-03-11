@@ -83,8 +83,7 @@ export class TimeInContentVsGradeFilter {
 		// The highcharts boost module seems not to have all the features we need, so reduce the number of data
 		// points by rounding and coalescing. Note that the highstock module can also do data grouping, so that
 		// could be investigated in future.
-		// The rounding here should have little effect on UX because we only allow interaction with the quadrants,
-		// TODO: is this breaking tooltips and selection? (seems like it was already broken)
+		// The rounding here should have little effect on UX because we only allow interaction with the quadrants
 		if (fullData.length > 1000) {
 			// round grades to 2% increments; round tic to 15 minute intervals
 			const roundedData = fullData.map(([tic, grade]) => [Math.floor(tic / 15) * 15, Math.floor(grade / 2) * 2]);
@@ -409,6 +408,7 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 					y: x[1],
 					custom: {
 						quadrant: x[0],
+						// TODO (handle grouping)
 						size: this.filter.getDataForQuadrant(x[0]).length
 					}
 				})),
