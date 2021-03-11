@@ -175,7 +175,7 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 		const userId = user[USER.ID];
 		const userLastFirstName = `${user[USER.LAST_NAME]}, ${user[USER.FIRST_NAME]}`;
 		const selectorInfo = {
-			// we don't use this column for sorting, so don't so additional work until formatting for
+			// we don't use this column for sorting, so don't do additional work until formatting for
 			// display, which runs after paging
 			userId, userLastFirstName
 		};
