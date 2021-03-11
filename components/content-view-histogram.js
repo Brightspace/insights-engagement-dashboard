@@ -5,7 +5,6 @@ import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 import { USER } from '../consts';
-import { ThemeMixin } from '@brightspace-ui/core/mixins/theme-mixin';
 const filterId = 'd2l-insights-content-view-histogram';
 
 class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
