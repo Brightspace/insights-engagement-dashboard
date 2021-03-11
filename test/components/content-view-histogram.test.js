@@ -44,6 +44,21 @@ describe('content-view-histogram', () => {
 			await expect(el.bins).to.eql(expectedBins);
 		});
 
+		it('should create 0-50 bins for no data', async() => {
+			const localData = makeDataFromUserViews([]);
+			const el = await fixture(html`<d2l-labs-content-view-histogram .data="${localData}"></d2l-labs-content-view-histogram>`);
+
+			const expectedBins = [
+				[50, 40],
+				[40, 30],
+				[30, 20],
+				[20, 10],
+				[10, 0],
+			];
+
+			await expect(el.bins).to.eql(expectedBins);
+		});
+
 		it('should bin data in the range 0-100', async() => {
 			const localData = makeDataFromUserViews([0, 10, 30, 50, 70, 90]);
 			const el = await fixture(html`<d2l-labs-content-view-histogram .data="${localData}"></d2l-labs-content-view-histogram>`);

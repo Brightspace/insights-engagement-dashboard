@@ -79,6 +79,7 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const largestAccess = values[values.length - 1];
 		let upperBin = peaks.find(peak => peak >= largestAccess);
 		if (upperBin === undefined) upperBin = 1000;
+		if (values.length === 0) upperBin = 50;
 		const range = upperBin / 5;
 		const bins = [];
 
@@ -101,7 +102,8 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get courseAccesses() {
 		return this.data
 			.withoutFilter(filterId)
-			.users.map(record => record[USER.TOTAL_COURSE_ACCESS]).sort((a, b) => a - b);
+			.users.map(record => record[USER.TOTAL_COURSE_ACCESS]).sort((a, b) => a - b)
+			.filter(value => value !== undefined && value !== null);
 	}
 
 	get _Q1() {
@@ -130,6 +132,7 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	courseAccessWithoutOutliers() {
+		if (this.courseAccesses.length < 5) return this.courseAccesses;
 		const IQRWhisker = this.calculateIQRWhisker();
 		const upperBound = this._Q3 + IQRWhisker;
 		return this.courseAccesses.filter(access => access < upperBound);
@@ -157,7 +160,6 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _chartDataBuckets() {
-		// buckets go from top to bottom, 200 views to 0
 
 		const findBin = (record) => {
 			const totalCount = record[USER.TOTAL_COURSE_ACCESS];
