@@ -13,11 +13,7 @@ export class Data {
 		this._metronEndpoint = metronEndpoint;
 		this.orgUnitTree = new Tree({});
 		this.userDictionary = null;
-
-		// @observables
-		this.isQueryError = false;
-		this.isLoading = true;
-		this.serverData = {
+		this._serverData = {
 			records: [],
 			orgUnits: [],
 			users: [],
@@ -37,11 +33,26 @@ export class Data {
 			isStudentSuccessSys: false
 		};
 
+		// @observables
+		this.isQueryError = false;
+		this.isLoading = true;
+		// because this.serverData itself is only updated onServerDataReload, we can safely use a simple
+		// counter to let mobx know it has changed, rather than incurring the overhead of mobx-ifying
+		// all the server data. This gives considerable speedup across the app for 50k enrollments.
+		// TODO: double-check this assumption, and enforce if possible
+		this._serverDataProxy = 0;
+
 		this._selectorFilters = {
 			role: new RoleSelectorFilter(this),
 			semester: new SemesterSelectorFilter(this),
 			orgUnit: new OrgUnitSelectorFilter(this)
 		};
+	}
+
+	get serverData() {
+		// eslint-disable-next-line no-unused-vars
+		const forceMobxToCheckTheProxy = this._serverDataProxy;
+		return this._serverData;
 	}
 
 	async loadData({ newRoleIds = null, newSemesterIds = null, newOrgUnitIds = null, defaultView = false }) {
@@ -84,7 +95,8 @@ export class Data {
 
 		this.userDictionary = new Map(newServerData.users.map(user => [user[USER.ID], user]));
 		this.isLoading = false;
-		this.serverData = newServerData;
+		this._serverData = newServerData;
+		this._serverDataProxy++;
 		this._selectorFilters.semester.selected = this.serverData.selectedSemestersIds || [];
 	}
 
@@ -162,7 +174,7 @@ export class Data {
 }
 
 decorate(Data, {
-	serverData: observable,
+	_serverDataProxy: observable,
 	orgUnitTree: observable,
 	isLoading: observable,
 	isQueryError: observable,
