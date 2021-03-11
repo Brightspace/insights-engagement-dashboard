@@ -401,7 +401,6 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 	get _series() {
 		const that = this;
 		const scatterData = this._scatterData;
-		console.log(JSON.stringify(scatterData));
 		return [
 			...this._scatterSeries,
 			{
