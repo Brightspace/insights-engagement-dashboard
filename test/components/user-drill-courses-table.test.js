@@ -10,26 +10,24 @@ const semesterOrgUnitId = 100;
 
 const data = {
 	records: [
-		// ouId, userId, roleId, overdue, grade, tic, last access, threads, replies, reads, predicted
-
 		// active courses
 		[101, USER_ID, ROLE_ID, 0, 80, 6600, 1607979700000, 3, 3, 3, 0.90],
 		[102, USER_ID, ROLE_ID, 0, 85, 5400, 1607979760000, 2, 2, 2, 0.60],
 		[103, USER_ID, ROLE_ID, 0, null, 4200, 1607979820000, 5, 5, 5, 0.75],
-		[104, USER_ID, ROLE_ID, 0, 70, 4800, 1607979640000, 7, 7, 7], // no predicted grade
+		[104, USER_ID, ROLE_ID, 0, 70, 4800, 1607979640000, 7, 7, 7, null], // no predicted grade
 		[105, USER_ID, ROLE_ID, 0, 88, null, 1607979880000, 4, 4, 4, 0.20],
 		[106, USER_ID, ROLE_ID, 0, 48, 7800, null, 9, 9, 9, 0.55],
 
-		[199, 2, ROLE_ID, 0, 90, 6000, 1607979698265, 1, 2, 3], // should be ignored - not the current user
+		[199, 2, ROLE_ID, 0, 90, 6000, 1607979698265, 1, 2, 3, null], // should be ignored - not the current user
 
 		// inactive courses
-		[11, USER_ID, ROLE_ID, 0, 80, 6600, 1607979700000, 3, 3, 3],
-		[12, USER_ID, ROLE_ID, 0, 85, 5400, null, 2, 2, 2],
-		[13, USER_ID, ROLE_ID, 0, 75, 4200, 1607979820000, 5, 5, 5],
-		[14, USER_ID, ROLE_ID, 0, null, 4800, 1607979640000, 7, 7, 7],
-		[15, USER_ID, ROLE_ID, 0, 88, 7200, 1607979880000, 4, 4, 4],
+		[11, USER_ID, ROLE_ID, 0, 80, 6600, 1607979700000, 3, 3, 3, null],
+		[12, USER_ID, ROLE_ID, 0, 85, 5400, null, 2, 2, 2, null],
+		[13, USER_ID, ROLE_ID, 0, 75, 4200, 1607979820000, 5, 5, 5, null],
+		[14, USER_ID, ROLE_ID, 0, null, 4800, 1607979640000, 7, 7, 7, null],
+		[15, USER_ID, ROLE_ID, 0, 88, 7200, 1607979880000, 4, 4, 4, null],
 
-		[99, 2, ROLE_ID, 0, 90, 6000, 1607979698265, 5, 6, 7], // should be ignored - not the current user
+		[99, 2, ROLE_ID, 0, 90, 6000, 1607979698265, 5, 6, 7, null], // should be ignored - not the current user
 	],
 	orgUnitTree: {
 		isActive: (orgUnitId) => orgUnitId >= 100,
@@ -84,17 +82,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 	describe('active courses table', () => {
 		describe('accessibility', () => {
 			it('should pass all axe tests', async() => {
-				const [el] = await setupTable(html`
-					<d2l-insights-user-drill-courses-table
-						.data="${data}"
-						.user="${user}"
-						.isActiveTable="${Boolean(true)}"
-						.isStudentSuccessSys="${Boolean(true)}"
-						.selectedCourses="${selectedCourses}"
-						discussions-col	grade-col last-access-col tic-col
-					>
-					</d2l-insights-user-drill-courses-table>
-				`);
+				const [el] = await setupTable(getTableHtml({ data, s3Enabled: true, isActive: true }));
 
 				// see users-table a11y test for explanation
 				await expect(el).to.be.accessible({
@@ -107,17 +95,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 		});
 
 		describe('render table with correct data', () => {
-			it('should pass correct data to inner table if S3 enabled', async() => {
-				const [, innerTable] = await setupTable(html`
-					<d2l-insights-user-drill-courses-table
-						.data="${data}"
-						.user="${user}"
-						.isActiveTable="${Boolean(true)}"
-						.isStudentSuccessSys="${Boolean(true)}"
-						discussions-col	grade-col last-access-col tic-col
-						.selectedCourses="${selectedCourses}">
-					</d2l-insights-user-drill-courses-table>
-				`);
+			it('should pass correct data to inner table if S3 enabled and show predicted grade is true', async() => {
+				const [, innerTable] = await setupTable(getTableHtml({ data, s3Enabled: true, isActive: true }));
 
 				expect(innerTable.data).to.deep.equal(expected.active);
 				expect(innerTable.columnInfo.map(info => info.headerText)).to.deep.equal([
@@ -131,16 +110,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 			});
 
 			it('should pass correct data to inner table if S3 disabled', async() => {
-				const [, innerTable] = await setupTable(html`
-					<d2l-insights-user-drill-courses-table
-						.data="${data}"
-						.user="${user}"
-						.isActiveTable="${Boolean(true)}"
-						.isStudentSuccessSys="${Boolean(false)}"
-						discussions-col	grade-col last-access-col tic-col
-						.selectedCourses="${selectedCourses}">
-					</d2l-insights-user-drill-courses-table>
-				`);
+				const [, innerTable] = await setupTable(getTableHtml({ data, s3Enabled: false, isActive: true }));
 
 				const expectedWithoutPredictedGrade = expected.active.map(row => row.filter((val, idx) => idx !== 2));
 				expect(innerTable.data).to.deep.equal(expectedWithoutPredictedGrade);
@@ -154,16 +124,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 			});
 
 			it('should display no data error message if there was no data', async() => {
-				const el = await fixture(html`
-					<d2l-insights-user-drill-courses-table
-						.data="${emptyData}"
-						.user="${user}"
-						.isActiveTable="${Boolean(true)}"
-						.isStudentSuccessSys="${Boolean(false)}"
-						discussions-col	grade-col last-access-col tic-col
-						.selectedCourses="${selectedCourses}">
-					</d2l-insights-user-drill-courses-table>
-				`);
+				const el = await fixture(getTableHtml({ data: emptyData, s3Enabled: true, isActive: true }));
 
 				const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');
 				expect(errorMessage.text).to.equal('No active course data in filtered ranges.');
@@ -171,26 +132,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 		});
 
 		describe('sorting', () => {
-			const tableHtml = html`
-				<d2l-insights-user-drill-courses-table
-					.data="${data}"
-					.user="${user}"
-					.isActiveTable="${Boolean(true)}"
-					.isStudentSuccessSys="${Boolean(true)}"
-					discussions-col	grade-col last-access-col tic-col
-					.selectedCourses="${selectedCourses}">
-				</d2l-insights-user-drill-courses-table>
-			`;
-			const noS3TableHtml = html`
-				<d2l-insights-user-drill-courses-table
-					.data="${data}"
-					.user="${user}"
-					.isActiveTable="${Boolean(true)}"
-					.isStudentSuccessSys="${Boolean(false)}"
-					discussions-col	grade-col last-access-col tic-col
-					.selectedCourses="${selectedCourses}">
-				</d2l-insights-user-drill-courses-table>
-			`;
+			const tableHtml = getTableHtml({ data, s3Enabled: true, isActive: true });
+			const noS3TableHtml = getTableHtml({ data, s3Enabled: false, isActive: true });
 
 			const testCases = [
 				['Course name', undefined, 0],
@@ -241,16 +184,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 			}
 
 			before(async() => {
-				[el, innerTable] = await setupTable(html`
-					<d2l-insights-user-drill-courses-table
-						.data="${data}"
-						.user="${user}"
-						.isActiveTable="${Boolean(true)}"
-						.isStudentSuccessSys="${Boolean(true)}"
-						discussions-col	grade-col last-access-col tic-col
-						.selectedCourses="${selectedCourses}">
-					</d2l-insights-user-drill-courses-table>
-				`);
+				[el, innerTable] = await setupTable(getTableHtml({ data, s3Enabled: true, isActive: true }));
 				pageSelector = el.shadowRoot.querySelector('d2l-labs-pagination');
 			});
 
@@ -266,15 +200,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 	describe('inactive courses table', () => {
 		describe('accessibility', () => {
 			it('should pass all axe tests', async() => {
-				const [el] = await setupTable(html`
-					<d2l-insights-user-drill-courses-table
-						.data="${data}"
-						.user="${user}"
-						.isActiveTable="${Boolean(false)}"
-						discussions-col	grade-col last-access-col tic-col
-						.selectedCourses="${selectedCourses}">
-					</d2l-insights-user-drill-courses-table>
-				`);
+				const [el] = await setupTable(getTableHtml({ data, s3Enabled: true, isActive: false }));
 
 				// see users-table a11y test for explanation
 				await expect(el).to.be.accessible({
@@ -288,21 +214,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 
 		describe('render', () => {
 			it('should pass correct data to inner table', async() => {
-
-				const el = await fixture(html`
-					<d2l-insights-user-drill-courses-table
-						.data="${data}"
-						.user="${user}"
-						.isActiveTable="${Boolean(false)}"
-						.isStudentSuccessSys="${Boolean(true)}"
-						discussions-col	grade-col last-access-col tic-col
-						.selectedCourses="${selectedCourses}">
-					</d2l-insights-user-drill-courses-table>
-				`);
-				await new Promise(resolve => setTimeout(resolve, 200));
-				await el.updateComplete;
-
-				const innerTable = el.shadowRoot.querySelector('d2l-insights-table');
+				const [, innerTable] = await setupTable(getTableHtml({ data, s3Enabled: true, isActive: false }));
 				expect(innerTable.data).to.deep.equal(expected.inactive);
 				expect(innerTable.columnInfo.map(info => info.headerText)).to.deep.equal([
 					'Course Name',
@@ -315,15 +227,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 			});
 
 			it('should display no data error message if there was no data', async() => {
-				const el = await fixture(html`
-					<d2l-insights-user-drill-courses-table
-						.data="${emptyData}"
-						.user="${user}"
-						.isActiveTable="${Boolean(false)}"
-						discussions-col	grade-col last-access-col tic-col
-						.selectedCourses="${selectedCourses}">
-					</d2l-insights-user-drill-courses-table>
-				`);
+				const el = await fixture(getTableHtml({ data: emptyData, s3Enabled: true, isActive: false }));
 
 				const errorMessage = el.shadowRoot.querySelector('d2l-insights-message-container');
 				expect(errorMessage.text).to.equal('No inactive course data in filtered ranges.');
@@ -331,26 +235,8 @@ describe('d2l-insights-user-drill-courses-table', () => {
 		});
 
 		describe('sorting', () => {
-			const tableHtml = html`
-				<d2l-insights-user-drill-courses-table
-					.data="${data}"
-					.user="${user}"
-					.isActiveTable="${Boolean(false)}"
-					.isStudentSuccessSys="${Boolean(true)}"
-					discussions-col	grade-col last-access-col tic-col
-					.selectedCourses="${selectedCourses}">
-				</d2l-insights-user-drill-courses-table>
-			`;
-			const noS3TableHtml = html`
-				<d2l-insights-user-drill-courses-table
-					.data="${data}"
-					.user="${user}"
-					.isActiveTable="${Boolean(false)}"
-					.isStudentSuccessSys="${Boolean(false)}"
-					discussions-col	grade-col last-access-col tic-col
-					.selectedCourses="${selectedCourses}">
-				</d2l-insights-user-drill-courses-table>
-			`;
+			const tableHtml = getTableHtml({ data, s3Enabled: true, isActive: false });
+			const noS3TableHtml = getTableHtml({ data, s3Enabled: false, isActive: false });
 
 			const testCases = [
 				['Course name', undefined],
@@ -400,15 +286,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 			}
 
 			before(async() => {
-				[el, innerTable, headers] = await setupTable(html`
-					<d2l-insights-user-drill-courses-table
-						.data="${data}"
-						.user="${user}"
-						.isActiveTable="${Boolean(false)}"
-						discussions-col	grade-col last-access-col tic-col
-						.selectedCourses="${selectedCourses}">
-					</d2l-insights-user-drill-courses-table>
-				`);
+				[el, innerTable, headers] = await setupTable(getTableHtml({ data, s3Enabled: true, isActive: false }));
 				pageSelector = el.shadowRoot.querySelector('d2l-labs-pagination');
 			});
 
@@ -453,58 +331,34 @@ describe('d2l-insights-user-drill-courses-table', () => {
 		});
 
 		describe('export', () => {
-			it('should get headersForExport and dataForExport[0] for inactive course when isStudentSuccessSys equals true', async() => {
-				const el = await fixture(html`
-					<d2l-insights-user-drill-courses-table
-						.data="${data}"
-						.user="${user}"
-						.isActiveTable="${Boolean(false)}"
-						.isStudentSuccessSys="${Boolean(true)}"
-						discussions-col	grade-col last-access-col tic-col
-						.selectedCourses="${selectedCourses}">
-					</d2l-insights-user-drill-courses-table>
-				`);
+			it('should get headersForExport and dataForExport[0] for inactive course when s3 is enabled', async() => {
+				const el = await fixture(getTableHtml({ data, s3Enabled: true, isActive: false }));
 				await new Promise(resolve => setTimeout(resolve, 200));
 				await el.updateComplete;
 				expect(el.dataForExport[0]).to.deep.equal(
 					['Course 11 (Id: 11)', '80 %', 'No predicted grade', '110', 3, 3, 3, getLocalDateTime(1607979700000), 'Semester 100 (Id: 100)', false]);
 				expect(el.headersForExport).to.deep.equal(['Course Name', 'Grade', 'Predicted Grade', 'Time in Content (mins)', 'Threads', 'Reads', 'Replies', 'Course Last Access', 'Semester', 'Is Active Course']);
 			});
-			it('should get headersForExport and dataForExport[0] for active course when isStudentSuccessSys equals true', async() => {
-				const el = await fixture(html`
-					<d2l-insights-user-drill-courses-table
-						.data="${data}"
-						.user="${user}"
-						.isActiveTable="${Boolean(true)}"
-						.isStudentSuccessSys="${Boolean(true)}"
-						discussions-col	grade-col last-access-col tic-col
-						.selectedCourses="${selectedCourses}">
-					</d2l-insights-user-drill-courses-table>
-				`);
+
+			it('should get headersForExport and dataForExport[0] for active course when s3 is enabled', async() => {
+				const el = await fixture(getTableHtml({ data, s3Enabled: true, isActive: true }));
 				await new Promise(resolve => setTimeout(resolve, 200));
 				await el.updateComplete;
 				expect(el.dataForExport[0]).to.deep.equal(
 					[ 'Course 101 (Id: 101)', '80 %', '90 %', '110', 3, 3, 3, getLocalDateTime(1607979700000), 'Semester 100 (Id: 100)', true]);
 				expect(el.headersForExport).to.deep.equal(['Course Name', 'Grade', 'Predicted Grade', 'Time in Content (mins)', 'Threads', 'Reads', 'Replies', 'Course Last Access', 'Semester', 'Is Active Course']);
 			});
-			it('should get headersForExport and dataForExport[0] for active course when isStudentSuccessSys equals false', async() => {
-				const el = await fixture(html`
-					<d2l-insights-user-drill-courses-table
-						.data="${data}"
-						.user="${user}"
-						.isActiveTable="${Boolean(true)}"
-						.isStudentSuccessSys="${Boolean(false)}"
-						discussions-col	grade-col last-access-col tic-col
-						.selectedCourses="${selectedCourses}">
-					</d2l-insights-user-drill-courses-table>
-				`);
+
+			it('should get headersForExport and dataForExport[0] for active course when s3 is not enabled', async() => {
+				const el = await fixture(getTableHtml({ data, s3Enabled: false, isActive: true }));
 				await new Promise(resolve => setTimeout(resolve, 200));
 				await el.updateComplete;
 				expect(el.dataForExport[0]).to.deep.equal(
 					[ 'Course 101 (Id: 101)', '80 %', '110', 3, 3, 3, getLocalDateTime(1607979700000), 'Semester 100 (Id: 100)', true]);
 				expect(el.headersForExport).to.deep.equal(['Course Name', 'Grade', 'Time in Content (mins)', 'Threads', 'Reads', 'Replies', 'Course Last Access', 'Semester', 'Is Active Course']);
 			});
-			it('should get headersForExport and dataForExport[0] for active course when isStudentSuccessSys equals false and course has no semester', async() => {
+
+			it('should get headersForExport and dataForExport[0] for active course when s3 is not enabled and course has no semester', async() => {
 				const data = {
 					records: [
 						[101, USER_ID, ROLE_ID, 0, 80, 6600, 1607979700000, 3, 3, 3, 0.90]
@@ -518,16 +372,7 @@ describe('d2l-insights-user-drill-courses-table', () => {
 					semesterTypeId : 5
 				};
 
-				const el = await fixture(html`
-					<d2l-insights-user-drill-courses-table
-						.data="${data}"
-						.user="${user}"
-						.isActiveTable="${Boolean(true)}"
-						.isStudentSuccessSys="${Boolean(false)}"
-						discussions-col	grade-col last-access-col tic-col
-						.selectedCourses="${selectedCourses}">
-					</d2l-insights-user-drill-courses-table>
-				`);
+				const el = await fixture(getTableHtml({ data, s3Enabled: false, isActive: true }));
 				await new Promise(resolve => setTimeout(resolve, 200));
 				await el.updateComplete;
 				expect(el.dataForExport[0]).to.deep.equal(
@@ -537,6 +382,19 @@ describe('d2l-insights-user-drill-courses-table', () => {
 		});
 	});
 });
+
+function getTableHtml({ data, s3Enabled, isActive }) {
+	return html`
+		<d2l-insights-user-drill-courses-table
+			.data="${data}"
+			.user="${user}"
+			?active-table="${isActive}"
+			?student-success-system-enabled="${s3Enabled}"
+			discussions-col	grade-col last-access-col tic-col predicted-grade-col
+			.selectedCourses="${selectedCourses}">
+		</d2l-insights-user-drill-courses-table>
+	`;
+}
 
 async function setupTable(tableHtml) {
 	const el = await fixture(tableHtml);
