@@ -51,11 +51,11 @@ export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView 
 			[6606, 'Dev', 1, [0], false]
 		],
 		users: [ // some of which are out of order
-			[100,  'ATest', 'AStudent', 'AStudent', 1601193037132, 10],
-			[300,  'CTest', 'CStudent', 'CStudent', 1603193037132, 20],
+			[100,  'ATest', 'AStudent', 'AStudent', 1601193037132, 5],
+			[300,  'CTest', 'CStudent', 'CStudent', 1603193037132, 15],
 			[200,  'BTest', 'BStudent', 'BStudent', 1607528565300, 25],
-			[400,  'DTest', 'DStudent', 'DStudent', null, 30],
-			[500,  'ETest', 'EStudent', 'EStudent', 1546318800000, 40],
+			[400,  'DTest', 'DStudent', 'DStudent', null, 25],
+			[500,  'ETest', 'EStudent', 'EStudent', 1546318800000, 35],
 			[600,  'GTest', 'GStudent', 'GStudent', 1589998800000, 27],
 			[700,  'FTest', 'FStudent', 'FStudent', 1599998800000, 57],
 			[800,  'HTest', 'HStudent', 'HStudent', 1600008800000, 8],

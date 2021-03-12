@@ -61,7 +61,11 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		const range = this.categories[point.x].split('-');
 
-		if (point.y === 1 && range[0] === '0') {
+		if (point.y === 1 && range[0].includes('>')) {
+			return this.localize('contentViewHistogram:userGreaterTimes', { start: range[0].replace('>', '') });
+		} else if (range[0].includes('>')) {
+			return this.localize('contentViewHistogram:usersGreaterTimes', { numUsers: point.y, start: range[0].replace('>', '') });
+		} else if (point.y === 1 && range[0] === '0') {
 			return this.localize('contentViewHistogram:userZeroTimes');
 		} else if (point.y === 1 && range[0] !== '0') {
 			return this.localize('contentViewHistogram:userInRange', { start: range[1], end: range[0] });
