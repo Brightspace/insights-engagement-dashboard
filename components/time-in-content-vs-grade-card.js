@@ -86,8 +86,8 @@ export class TimeInContentVsGradeFilter {
 		// The highcharts boost module seems not to have all the features we need, so we reduce the number of data
 		// points by rounding and coalescing. Note that the highstock module can also do data grouping, so that
 		// could be investigated in future.
-		// The rounding here should have little effect on UX because we only allow interaction with the quadrants
-		// round grades to 2% increments; round tic to 15 minute intervals
+		// The rounding here should have little effect on UX because we only allow interaction with the quadrants.
+		// Round grades to 2% increments; round tic to 15 minute intervals
 		const roundedData = fullData.map(([tic, grade]) => [Math.floor(tic / 15) * 15, Math.floor(grade / 2) * 2]);
 		// now drop duplicates
 		const sorted = roundedData.sort(([tic1, grade1], [tic2, grade2]) => (tic1 === tic2 ? grade1 - grade2 : tic1 - tic2));
@@ -99,6 +99,7 @@ export class TimeInContentVsGradeFilter {
 			grouped.push(sorted[i]);
 			[lastTic, lastGrade] = sorted[i];
 		}
+
 		return { data: grouped, size: fullData.length };
 	}
 
@@ -470,7 +471,7 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 			}
 		}));
 	}
-// TODO: update/expand tests
+
 	get _scatterData() {
 		const quadrants = {};
 		['leftBottom', 'leftTop', 'rightTop', 'rightBottom']

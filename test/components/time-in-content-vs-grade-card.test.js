@@ -1,5 +1,6 @@
 import { disableUrlStateForTesting, enableUrlState, setStateForTesting } from '../../model/urlState';
 import { elementUpdated, expect, fixture, html } from '@open-wc/testing';
+import { autorun } from 'mobx';
 import { records } from '../model/mocks';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 import { TimeInContentVsGradeFilter } from '../../components/time-in-content-vs-grade-card';
@@ -67,8 +68,36 @@ describe('TimeInContentVsGradeFilter', () => {
 			{ quadrant: 'rightTop', expected: [[116, 93], [100, 75], [66, 84]] },
 			{ quadrant: 'rightBottom', expected: [[33, 22], [41, 33], [66, 44], [75, 55], [58, 41], [83, 55], [50, 39]] }
 		].forEach(params => it(`returns data for ${params.quadrant}`, () => {
-			expect(sut.getDataForQuadrant(params.quadrant)).to.deep.equal(params.expected);
+			expect(sut.getDataForQuadrant(params.quadrant)).to.deep.equal({ data: params.expected, size: params.expected.length });
 		}));
+
+		it('should coalesce large data sets', () => {
+			// generate just a few clusters of data per quadrant, but many overall
+			const lotsOfRecords = Array.from(Array(40000), (_, i) => {
+				const gradeCluster = 20 + (i % 8) * 10; // 20-90 in 10% increments
+				const ticCluster = 100 + (i % 4) * 200; // 100-700 in 200 minute increments
+				const gradePercent = gradeCluster + (i % 100) * 0.01; // up to 1.98 more than the cluster base
+				const ticMinutes = ticCluster + (i % 100) * 0.1; // up to 10 minutes more than the cluster base
+				return [
+					1, 100, 100, 0, gradePercent, ticMinutes * 60, null, 17, 18, 19
+				];
+			});
+
+			const big = new TimeInContentVsGradeFilter({ records: lotsOfRecords });
+			// performance: if we don't put these computed properties in a reaction, mobx doesn't
+			// cache them and they are recalculated for every data point, causing this test to time out
+			const mobxDisposer = autorun(() => {
+				big.avgGrade;
+				big.avgTimeInContent;
+			});
+
+			const dataForQuadrant = big.getDataForQuadrant('leftBottom');
+			mobxDisposer();
+			expect(dataForQuadrant).to.deep.equal({
+				size: 10000,
+				data: [[90, 20], [105, 20], [300, 30]]
+			});
+		});
 	});
 
 	describe('tiCVsGrades',  () => {
