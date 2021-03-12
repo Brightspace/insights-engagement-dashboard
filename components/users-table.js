@@ -1,6 +1,7 @@
-import './table.js';
 import '@brightspace-ui-labs/pagination/pagination';
 import '@brightspace-ui/core/components/inputs/input-text';
+import './table.js';
+
 import { action, computed, decorate, observable, reaction } from 'mobx';
 import { css, html } from 'lit-element';
 import { defaultSort, SortMixin, userNameSort } from '../model/sorts.js';
@@ -31,10 +32,6 @@ function avgOf(records, field) {
 	return total / records.length;
 }
 
-function unique(arr) {
-	return [...new Set(arr)];
-}
-
 /**
  * The mobx data object is doing filtering logic
  *
@@ -43,7 +40,7 @@ function unique(arr) {
  * @property {Number} _pageSize
  * @property {Number} _sortColumn - The index of the column that is currently sorted
  * @property {String} _sortOrder - either 'asc' or 'desc'
- * @property {Array} selectedUserIds - ids of users that are selected in the table
+ * @property {Set} selectedUserIds - ids of users that are selected in the table
  */
 class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 
@@ -52,7 +49,7 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 			data: { type: Object, attribute: false },
 			_currentPage: { type: Number, attribute: false },
 			_pageSize: { type: Number, attribute: false },
-			selectedUserIds: { type: Array, attribute: false },
+			selectedUserIds: { type: Object, attribute: false },
 
 			// user preferences:
 			showCoursesCol: { type: Boolean, attribute: 'courses-col', reflect: true },
@@ -99,7 +96,7 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 		this._pageSize = DEFAULT_PAGE_SIZE;
 		this._sortOrder = 'desc';
 		this._sortColumn = TABLE_USER.NAME_INFO;
-		this.selectedUserIds = [];
+		this.selectedUserIds = new Set();
 		this.showCoursesCol = false;
 		this.showDiscussionsCol = false;
 		this.showGradeCol = false;
@@ -121,10 +118,12 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 			() => this.data.users,
 			() => { this._resetSelectedUserIds(); }
 		);
+
+		this.selectorAriaLabel = this.localize('usersTable:selectorAriaLabel');
 	}
 
 	get _itemsCount() {
-		return this.userDataForDisplayFormatted.length;
+		return this._preprocessedData.length;
 	}
 
 	get _maxPages() {
@@ -134,7 +133,7 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 
 	// should be reset whenever data, page or sorting state changes
 	_resetSelectedUserIds() {
-		this.selectedUserIds = [];
+		this.selectedUserIds = new Set();
 	}
 
 	// don't use displayData.length to get the itemsCount. When we display a skeleton view, displayData.length is
@@ -152,8 +151,7 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 			const start = this._pageSize * (this._currentPage - 1);
 			const end = this._pageSize * (this._currentPage); // it's ok if this goes over the end of the array
 			const visibleColumns = this._visibleColumns;
-			return this.userDataForDisplayFormatted
-				.slice(start, end)
+			return this._formatForTable(this._sortedData.slice(start, end))
 				.map(user => visibleColumns.map(column => user[column]));
 		}
 
@@ -170,14 +168,16 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 	}
 
 	_preProcessData(user) {
+		// this method preps data that is then used for sorting; this means it runs on
+		// every user (up to 50k with default limits) and should not do extra work.
 		const recordsByUser = this.data.recordsByUser;
 
 		const userId = user[USER.ID];
 		const userLastFirstName = `${user[USER.LAST_NAME]}, ${user[USER.FIRST_NAME]}`;
 		const selectorInfo = {
-			value: userId,
-			ariaLabel: this.localize('usersTable:selectorAriaLabel', { userLastFirstName }),
-			selected: this.selectedUserIds.includes(userId)
+			// we don't use this column for sorting, so don't do additional work until formatting for
+			// display, which runs after paging
+			userId, userLastFirstName
 		};
 		const userInfo = [user[USER.ID], user[USER.FIRST_NAME], user[USER.LAST_NAME], user[USER.USERNAME]];
 		const userRecords = recordsByUser.get(user[USER.ID]);
@@ -200,15 +200,24 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 		];
 	}
 
-	_formatDataForDisplay(user) {
+	_formatDataForDisplay(user, isForExport) {
+		// runs for each user being drawn on the current page or exported
 		const lastSysAccessFormatted = user[TABLE_USER.LAST_ACCESSED_SYS]
 			? formatDateTimeFromTimestamp(user[TABLE_USER.LAST_ACCESSED_SYS], { format: 'medium' })
 			: this.localize('usersTable:null');
 		const averageGrade = user[TABLE_USER.AVG_GRADE]
 			? formatPercent(user[TABLE_USER.AVG_GRADE] / 100, numberFormatOptions)
 			: this.localize('usersTable:noGrades');
+		const selectorData = user[TABLE_USER.SELECTOR_VALUE];
+		// save time during export by not building aria strings which will not be used anyway
+		const selectorInfo = isForExport ? {} : {
+			value: selectorData.userId,
+			ariaLabel: this.localize('usersTable:selectorAriaLabel', { userLastFirstName: selectorData.userLastFirstName }),
+			selected: this.selectedUserIds.has(selectorData.userId)
+		};
+
 		return [
-			user[TABLE_USER.SELECTOR_VALUE],
+			selectorInfo,
 			user[TABLE_USER.NAME_INFO],
 			user[TABLE_USER.COURSES],
 			averageGrade,
@@ -219,19 +228,22 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 	}
 
 	// @computed
-	get userDataForDisplay() {
-		// map to a 2D userData array, with column 1 as a sub-array of [id, FirstName, LastName, UserName]
-		// then sort by the selected sorting function
+	get _sortedData() {
 		const sortFunction = this._chosenSortFunction(this._sortColumn, this._sortOrder);
-		return this.data.users
-			.map(this._preProcessData, this)
-			.sort(sortFunction)
-			.map(this._formatDataForDisplay, this);
+		return this._preprocessedData.sort(sortFunction);
 	}
 
-	get userDataForDisplayFormatted() {
-		return this.userDataForDisplay.map(data => {
-			return [
+	// @computed
+	get _preprocessedData() {
+		// map to a 2D userData array, with column 1 as a sub-array of [id, FirstName, LastName, UserName]
+		return this.data.users
+			.map(this._preProcessData, this);
+	}
+
+	_formatForTable(page) {
+		return page
+			.map(u => this._formatDataForDisplay(u))
+			.map(data => [
 				data[TABLE_USER.SELECTOR_VALUE],
 				[`${data[TABLE_USER.NAME_INFO][USER.LAST_NAME]}, ${data[TABLE_USER.NAME_INFO][USER.FIRST_NAME]}`,
 					`${data[TABLE_USER.NAME_INFO][USER.USERNAME]} - ${data[TABLE_USER.NAME_INFO][USER.ID]}`],
@@ -239,13 +251,15 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 				data[TABLE_USER.AVG_GRADE],
 				data[TABLE_USER.AVG_TIME_IN_CONTENT],
 				data[TABLE_USER.AVG_DISCUSSION_ACTIVITY],
-				data[TABLE_USER.LAST_ACCESSED_SYS]];
-		});
+				data[TABLE_USER.LAST_ACCESSED_SYS]
+			]);
 	}
 
 	get dataForExport() {
 		const visibleColumns = this._visibleColumns;
-		return this.userDataForDisplay
+		const sortedData = this._sortedData;
+		return sortedData
+			.map(u => this._formatDataForDisplay(u, true))
 			.map(user => visibleColumns.flatMap(column => {
 				const val = user[column];
 				if (column === TABLE_USER.NAME_INFO) {
@@ -394,9 +408,9 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 	_handleSelectChanged(event) {
 		const changedUserIds = event.detail.values.map(value => Number(value));
 		if (event.detail.selected) {
-			this.selectedUserIds = unique([...this.selectedUserIds, ...changedUserIds]);
+			this.selectedUserIds = new Set([...this.selectedUserIds, ...changedUserIds]);
 		} else {
-			this.selectedUserIds = this.selectedUserIds.filter(userId => !changedUserIds.includes(userId));
+			this.selectedUserIds = new Set([...this.selectedUserIds].filter(userId => !changedUserIds.includes(userId)));
 		}
 	}
 
@@ -414,10 +428,10 @@ class UsersTable extends SortMixin(SkeletonMixin(Localizer(MobxLitElement))) {
 }
 decorate(UsersTable, {
 	selectedUserIds: observable,
-	userDataForDisplay: computed,
-	userDataForDisplayFormatted: computed,
 	headersForExport: computed,
 	dataForExport: computed,
+	_preprocessedData: computed,
+	_sortedData: computed,
 	_sortColumn: observable,
 	_sortOrder: observable,
 	_handleColumnSort: action
