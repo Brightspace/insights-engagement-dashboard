@@ -62,6 +62,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			s3Enabled: { type: Boolean, attribute: 'student-success-system-enabled' },
 
 			// user preferences:
+			showContentViewCard: { type: Boolean, attribute: 'content-view-card', reflect: true },
 			showCourseAccessCard: { type: Boolean, attribute: 'course-access-card', reflect: true },
 			showCoursesCol: { type: Boolean, attribute: 'courses-col', reflect: true },
 			showDiscussionsCard: { type: Boolean, attribute: 'discussions-card', reflect: true },
@@ -343,6 +344,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				?demo="${this.isDemo}"
 				@d2l-insights-settings-view-back="${this._backToHomeHandler}"
 				?course-access-card="${this.showCourseAccessCard}"
+				?content-view-card="${this.showContentViewCard}"
 				?courses-col="${this.showCoursesCol}"
 				?discussions-card="${this.showDiscussionsCard}"
 				?discussions-col="${this.showDiscussionsCol}"

@@ -26,6 +26,7 @@ describe('d2l-insights-engagement-card-selection-list', () => {
 			showSystemAccessCard: false,
 			showGradesCard: false,
 			showTicGradesCard: false,
+			showContentViewCard: false,
 			showCourseAccessCard: false,
 			lastAccessThresholdDays: 14
 		};
@@ -39,6 +40,7 @@ describe('d2l-insights-engagement-card-selection-list', () => {
 
 			it('should return values if properties are passed', async() => {
 				const el = await fixture(html`<d2l-insights-engagement-card-selection-list
+					content-view-card
 					course-access-card
 					discussions-card
 					grades-card
@@ -50,6 +52,7 @@ describe('d2l-insights-engagement-card-selection-list', () => {
 				></d2l-insights-engagement-card-selection-list>`);
 
 				expect(el.settings).to.deep.equal({
+					showContentViewCard: true,
 					showResultsCard: true,
 					showOverdueCard: true,
 					showDiscussionsCard: true,

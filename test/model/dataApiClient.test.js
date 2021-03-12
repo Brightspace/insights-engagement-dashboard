@@ -296,7 +296,8 @@ describe('Lms', () => {
 				showGradeCol: false,
 				showTicCol: true,
 				showDiscussionsCol: true,
-				showLastAccessCol: true
+				showLastAccessCol: true,
+				showContentViewCard: true
 			};
 			window.localStorage.setItem('XSRF.Token', 'token');
 			fetchMock.put(
