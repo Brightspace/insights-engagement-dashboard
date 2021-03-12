@@ -42,7 +42,6 @@ import { Localizer } from './locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { OverdueAssignmentsFilter } from './components/overdue-assignments-card';
 import { TimeInContentVsGradeFilter } from './components/time-in-content-vs-grade-card';
-import { toJS } from 'mobx';
 import { USER } from './consts.js';
 
 /**
@@ -638,14 +637,14 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 	_handleEmailButtonPress() {
 		const usersTable = this.shadowRoot.querySelector('d2l-insights-users-table');
-		const selectedUserIds = usersTable.selectedUserIds;
+		const selectedUserIds = [...usersTable.selectedUserIds];
 
 		if (!selectedUserIds.length) {
 			const noUsersSelectedDialog = this.shadowRoot.querySelector('#no-users-selected-dialog');
 			noUsersSelectedDialog.opened = true;
 		} else {
 			// we use the root OU id because that's where we expect users to have email permissions
-			createComposeEmailPopup(toJS(selectedUserIds), this._serverData.orgUnitTree.rootId);
+			createComposeEmailPopup(selectedUserIds, this._serverData.orgUnitTree.rootId);
 		}
 	}
 

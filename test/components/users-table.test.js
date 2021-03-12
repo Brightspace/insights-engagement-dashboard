@@ -429,21 +429,21 @@ describe('d2l-insights-users-table', () => {
 			const checkboxAll = innerTable.shadowRoot.querySelector('th > d2l-input-checkbox');
 
 			checkbox1.simulateClick();
-			expect(el.selectedUserIds).to.deep.equal([300]);
+			expect([...el.selectedUserIds]).to.deep.equal([300]);
 
 			checkbox2.simulateClick();
-			expect(el.selectedUserIds).to.deep.equal([300, 100]);
+			expect([...el.selectedUserIds]).to.deep.equal([300, 100]);
 
 			// should only select the first 20 items
 			checkboxAll.simulateClick();
 			await new Promise(resolve => setTimeout(resolve, 200));
 			await innerTable.updateComplete;
-			expect(el.selectedUserIds).to.deep.equal(expected.map(data => data[0].value).slice(0, 20));
+			expect([...el.selectedUserIds]).to.deep.equal(expected.map(data => data[0].value).slice(0, 20));
 
 			checkboxAll.simulateClick();
 			await new Promise(resolve => setTimeout(resolve, 200));
 			await innerTable.updateComplete;
-			expect(el.selectedUserIds).to.deep.equal([]);
+			expect([...el.selectedUserIds]).to.deep.equal([]);
 		});
 	});
 
