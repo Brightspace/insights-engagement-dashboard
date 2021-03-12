@@ -36,10 +36,9 @@ export class Data {
 		// @observables
 		this.isQueryError = false;
 		this.isLoading = true;
-		// because this.serverData itself is only updated onServerDataReload, we can safely use a simple
+		// because this._serverData itself is only updated onServerDataReload, we can safely use a simple
 		// counter to let mobx know it has changed, rather than incurring the overhead of mobx-ifying
 		// all the server data. This gives considerable speedup across the app for 50k enrollments.
-		// TODO: double-check this assumption, and enforce if possible
 		this._serverDataProxy = 0;
 
 		this._selectorFilters = {
