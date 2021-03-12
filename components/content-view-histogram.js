@@ -1,4 +1,6 @@
+import { computed, decorate, observable } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
+import { getOutliers, removeOutliers } from '../model/stats.js';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
 import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles';
 import { Localizer } from '../locales/localizer';
@@ -76,10 +78,11 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 		}
 	}
 
+	//computed
 	get bins() {
 		// changing these ranges will change the bins throught the chart.
 		const peaks = [50, 100, 200, 500, 1000];
-		const values = this.courseAccessWithoutOutliers();
+		const values = this.courseAccessWithoutOutliers;
 		const largestAccess = values[values.length - 1];
 		let upperBin = peaks.find(peak => peak >= largestAccess);
 		if (upperBin === undefined) upperBin = 1000;
@@ -98,54 +101,25 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return bins.reverse();
 	}
 
-	_median(a) {
-		const result = a[Math.floor((a.length - 1) / 2)];
-		return result;
+	// computed
+	get sortedUserRecords() {
+		return this.data
+			.withoutFilter(filterId)
+			.users
+			.filter(record => record[USER.TOTAL_COURSE_ACCESS] !== undefined && record[USER.TOTAL_COURSE_ACCESS] !== null)
+			.sort((aRecord, bRecord) => aRecord[USER.TOTAL_COURSE_ACCESS] - bRecord[USER.TOTAL_COURSE_ACCESS]);
 	}
 
 	get courseAccesses() {
-		return this.data
-			.withoutFilter(filterId)
-			.users.map(record => record[USER.TOTAL_COURSE_ACCESS]).sort((a, b) => a - b)
-			.filter(value => value !== undefined && value !== null);
+		return this.sortedUserRecords.map(record => record[USER.TOTAL_COURSE_ACCESS]);
 	}
 
-	get _Q1() {
-		if (this.courseAccesses.length < 2) return [];
-		return this._median(
-			this.courseAccesses.splice(
-				0,
-				Math.round(this.courseAccesses.length / 2) - 1
-			)
-		);
-	}
-
-	get _Q3() {
-		if (this.courseAccesses.length < 2) return [];
-		return this._median(
-			this.courseAccesses.splice(
-				Math.round(this.courseAccesses.length / 2),
-				this.courseAccesses.length
-			)
-		);
-	}
-
-	calculateIQRWhisker() {
-		const IQR = this._Q3 - this._Q1;
-		return IQR * 1.5;
-	}
-
-	courseAccessWithoutOutliers() {
-		if (this.courseAccesses.length < 5) return this.courseAccesses;
-		const IQRWhisker = this.calculateIQRWhisker();
-		const upperBound = this._Q3 + IQRWhisker;
-		return this.courseAccesses.filter(access => access < upperBound);
+	get courseAccessWithoutOutliers() {
+		return removeOutliers(this.courseAccesses);
 	}
 
 	get courseAccessOutliers() {
-		const IQRWhisker = this.calculateIQRWhisker();
-		const upperBound = this._Q3 + IQRWhisker;
-		return this.courseAccesses.filter(access => access >= upperBound);
+		return getOutliers(this.courseAccesses);
 	}
 
 	get dataBuckets() {
@@ -166,16 +140,13 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get _chartDataBuckets() {
 
 		const findBin = (record) => {
-			const totalCount = record[USER.TOTAL_COURSE_ACCESS];
-			if (totalCount === 0) return this.bins.length;
-			return this.bins.findIndex(bin => totalCount <= bin[0] && totalCount > bin[1]);
+			if (record === 0) return this.bins.length;
+			return this.bins.findIndex(bin => record <= bin[0] && record > bin[1]);
 		};
 
 		const buckets = [...this.dataBuckets];
 
-		return this.data
-			.withoutFilter(filterId)
-			.users
+		return this.courseAccesses
 			.reduce((acc, record) => {
 				acc[findBin(record)] += 1;
 				return acc;
@@ -294,5 +265,12 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 		></d2l-labs-chart>`;
 	}
 }
+
+decorate(ContentViewHistogram, {
+	sortedUserRecords: computed,
+	courseAccessWithoutOutliers: computed,
+	bins: computed,
+	data: observable
+});
 
 customElements.define('d2l-labs-content-view-histogram', ContentViewHistogram);
