@@ -18,6 +18,7 @@ import { createComposeEmailPopup } from './email-integration';
 import { ExportData } from '../model/exportData';
 import { fetchUserData as fetchDemoUserData } from '../model/fake-dataApiClient.js';
 import { fetchUserData } from '../model/dataApiClient.js';
+import { filterEventQueue } from './alert-data-update';
 import { formatPercent } from '@brightspace-ui/intl';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
@@ -34,7 +35,6 @@ const demoDate = 1608000000000; //for unit test
 /**
  * @property {Object} data - an instance of Data from model/data.js
  * @property {Object} user - {firstName, lastName, username, userId}
- * @property {Boolean} isStudentSuccessSys - checking 'Access Student Success System' for org
  * @property {Object} orgUnitId - the org unit the user belongs too
  */
 class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
@@ -43,10 +43,21 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			user: { type: Object, attribute: false },
 			data: { type: Object, attribute: false },
 			isDemo: { type: Boolean, attribute: 'demo' },
-			isStudentSuccessSys: { type: Boolean, attribute: false },
+			s3Enabled: { type: Boolean, attribute: 'student-success-system-enabled' },
 			orgUnitId: { type: Number, attribute: 'org-unit-id' },
 			viewState: { type: Object, attribute: false },
-			metronEndpoint: { type: String, attribute: 'metron-endpoint' }
+			metronEndpoint: { type: String, attribute: 'metron-endpoint' },
+			showAverageGradeSummaryCard: { type: Boolean, attribute: 'average-grade-summary-card', reflect: true },
+			showContentViewsTrendCard: { type: Boolean, attribute: 'content-views-trend-card', reflect: true },
+			showCourseAccessTrendCard: { type: Boolean, attribute: 'course-access-trend-card', reflect: true },
+			showGradesTrendCard: { type: Boolean, attribute: 'grades-trend-card', reflect: true },
+			showSystemAccessCard: { type: Boolean, attribute: 'system-access-card', reflect: true },
+			showOverdueCard: { type: Boolean, attribute: 'overdue-card', reflect: true },
+			showDiscussionsCol: { type: Boolean, attribute: 'discussions-col', reflect: true },
+			showGradeCol: { type: Boolean, attribute: 'grade-col', reflect: true },
+			showLastAccessCol: { type: Boolean, attribute: 'last-access-col', reflect: true },
+			showTicCol: { type: Boolean, attribute: 'tic-col', reflect: true },
+			showPredictedGradeCol: { type: Boolean, attribute: 'predicted-grade-col', reflect: true }
 		};
 	}
 
@@ -61,13 +72,25 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			firstName: null,
 			lastName: null
 		};
-		this.isStudentSuccessSys = false;
 		this.orgUnitId = 0;
 		this.viewState = null;
 
 		this.selectedCourses = new SelectedCourses();
 		this.lastFilteredOrgUnitIds = [];
 		this.metronEndpoint = '';
+		this.s3Enabled = false;
+
+		this.showOverdueCard = false;
+		this.showSystemAccessCard = false;
+		this.showAverageGradeSummaryCard = false;
+		this.showContentViewsTrendCard = false;
+		this.showCourseAccessTrendCard = false;
+		this.showGradesTrendCard = false;
+		this.showDiscussionsCol = false;
+		this.showGradeCol = false;
+		this.showLastAccessCol = false;
+		this.showTicCol = false;
+		this.showPredictedGradeCol = false;
 	}
 
 	static get styles() {
@@ -287,6 +310,9 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_overdueAssignmentsValueClickHandler() {
 		const overdueAssignmentsFilter = this.data.getFilter(OVERDUE_ASSIGNMENTS_FILTER_ID);
+		const chartName = { chartName: this.localize('dashboard:overdueAssignmentsHeading') };
+
+		filterEventQueue.add(`${this.localize('alert:updatedFilter', chartName)}`);
 		overdueAssignmentsFilter.isApplied = !overdueAssignmentsFilter.isApplied;
 	}
 
@@ -311,9 +337,9 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get summaryCards() {
 		return [
 			{ enabled: true, htmlFn: (w) => this._coursesInView(w) },
-			{ enabled: true, htmlFn: (w) => this._averageGrade(w) },
-			{ enabled: true, htmlFn: (w) => this._overdueAssignments(w) },
-			{ enabled: true, htmlFn: (w) => this._lastSysAccess(w) }
+			{ enabled: this.showAverageGradeSummaryCard, htmlFn: (w) => this._averageGrade(w) },
+			{ enabled: this.showOverdueCard, htmlFn: (w) => this._overdueAssignments(w) },
+			{ enabled: this.showSystemAccessCard, htmlFn: (w) => this._lastSysAccess(w) }
 		];
 	}
 
@@ -360,11 +386,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			return true;
 		}
 
-		if (this._userData.isQueryError) {
-			return true;
-		}
-
-		return false;
+		return this._userData.isQueryError;
 	}
 
 	render() {
@@ -444,58 +466,77 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 			<h3>${this.localize('userDrill:summaryView')}</h3>
 
-			<d2l-alert
-				has-close-button
-				?hidden=${this.hideCourseAlert}
-			>
-				${this.localize('userDrill:manyCoursesAlert')}
-			</d2l-alert>
+				<d2l-alert
+					has-close-button
+					?hidden=${this.hideCourseAlert}
+				>
+					${this.localize('userDrill:manyCoursesAlert')}
+				</d2l-alert>
 
-			<div class="d2l-insights-summary-chart-layout">
-				<d2l-summary-cards-container
-					?hidden="${this.hidden}"
-					?skeleton="${this.skeleton}"
+				<div class="d2l-insights-summary-chart-layout">
+					<d2l-summary-cards-container
+						?hidden="${this.hidden}"
+						?skeleton="${this.skeleton}"
 
-					.cards="${this.summaryCards}"
-				></d2l-summary-cards-container>
+						.cards="${this.summaryCards}"
+					></d2l-summary-cards-container>
 
-				<d2l-insights-grades-trend-card
-					?hidden="${this.hidden}"
-					?skeleton="${this._userData.isLoading}"
-					.data="${this.data}"
-					.user="${this.user}"
-					.userData="${this._userData}"
-					.selectedCourses="${this.selectedCourses}"
-				></d2l-insights-grades-trend-card>
-				<d2l-insights-content-views-card
-					?hidden="${this.hidden}"
-					?skeleton="${this._userData.isLoading}"
-					.data="${this.data}"
-					.user="${this.user}"
-					.userData="${this._userData}"
-					.selectedCourses="${this.selectedCourses}"
-				></d2l-insights-content-views-card>
-				<d2l-insights-access-trend-card
-					?hidden="${this.hidden}"
-					?skeleton="${this._userData.isLoading}"
-					.data="${this.data}"
-					.user="${this.user}"
-					.userData="${this._userData}"
-					.selectedCourses="${this.selectedCourses}"
-					?demo="${this.isDemo}"
-				></d2l-insights-access-trend-card>
+					${this._gradesTrendCard}
+					${this._contentViewsTrendCard}
+					${this._accessTrendCard}
 
-			</div>
-				<d2l-insights-courses-legend
-					.data="${this.data}"
-					.user="${this.user}"
-					.selectedCourses="${this.selectedCourses}"
-					?skeleton="${this.skeleton}"
-				></d2l-insights-courses-legend>
-
-			${this._renderContent()}
-
+				</div>
+				${this._legend}
+				${this._renderContent()}
+			<slot name="alerts"></slot>
 		</div>`;
+	}
+
+	get _gradesTrendCard() {
+		if (!this.showGradesTrendCard) return '';
+		return html`<d2l-insights-grades-trend-card
+			?hidden="${this.hidden}"
+			?skeleton="${this._userData.isLoading}"
+			.data="${this.data}"
+			.user="${this.user}"
+			.userData="${this._userData}"
+			.selectedCourses="${this.selectedCourses}"
+		></d2l-insights-grades-trend-card>`;
+	}
+
+	get _contentViewsTrendCard() {
+		if (!this.showContentViewsTrendCard) return '';
+		return html`<d2l-insights-content-views-card
+			?hidden="${this.hidden}"
+			?skeleton="${this._userData.isLoading}"
+			.data="${this.data}"
+			.user="${this.user}"
+			.userData="${this._userData}"
+			.selectedCourses="${this.selectedCourses}"
+		></d2l-insights-content-views-card>`;
+	}
+
+	get _accessTrendCard() {
+		if (!this.showCourseAccessTrendCard) return '';
+		return html`<d2l-insights-access-trend-card
+			?hidden="${this.hidden}"
+			?skeleton="${this._userData.isLoading}"
+			.data="${this.data}"
+			.user="${this.user}"
+			.userData="${this._userData}"
+			.selectedCourses="${this.selectedCourses}"
+			?demo="${this.isDemo}"
+		></d2l-insights-access-trend-card>`;
+	}
+
+	get _legend() {
+		if (!this.showGradesTrendCard && !this.showContentViewsTrendCard && !this.showCourseAccessTrendCard) return '';
+		return html`<d2l-insights-courses-legend
+			.data="${this.data}"
+			.user="${this.user}"
+			.selectedCourses="${this.selectedCourses}"
+			?skeleton="${this.skeleton}"
+		></d2l-insights-courses-legend>`;
 	}
 
 	_renderContent() {
@@ -510,8 +551,13 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			<d2l-insights-user-drill-courses-table
 				.data="${this.data}"
 				.user="${this.user}"
-				.isActiveTable=${Boolean(true)}
-				.isStudentSuccessSys="${this.isStudentSuccessSys}"
+				active-table
+				?student-success-system-enabled="${this.s3Enabled}"
+				?discussions-col="${this.showDiscussionsCol}"
+				?grade-col="${this.showGradeCol}"
+				?last-access-col="${this.showLastAccessCol}"
+				?tic-col="${this.showTicCol}"
+				?predicted-grade-col="${this.showPredictedGradeCol}"
 				?skeleton="${this.skeleton}"
 				.selectedCourses="${this.selectedCourses}">
 			</d2l-insights-user-drill-courses-table>
@@ -520,8 +566,12 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 			<d2l-insights-user-drill-courses-table
 				.data="${this.data}"
 				.user="${this.user}"
-				.isActiveTable=${Boolean(false)}
-				.isStudentSuccessSys="${this.isStudentSuccessSys}"
+				?student-success-system-enabled="${this.s3Enabled}"
+				?discussions-col="${this.showDiscussionsCol}"
+				?grade-col="${this.showGradeCol}"
+				?last-access-col="${this.showLastAccessCol}"
+				?tic-col="${this.showTicCol}"
+				?predicted-grade-col="${this.showPredictedGradeCol}"
 				?skeleton="${this.skeleton}"
 				.selectedCourses="${this.selectedCourses}">
 			</d2l-insights-user-drill-courses-table>

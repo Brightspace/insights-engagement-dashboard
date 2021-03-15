@@ -3,6 +3,7 @@ import { computed, decorate, observable } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
 import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
+import { filterEventQueue } from './alert-data-update';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { RECORD } from '../consts';
@@ -175,10 +176,14 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 		const maxTimeInContent = this.filter.tiCVsGrades.reduce((max, arr) => {
 			return Math.max(max, arr[0]);
 		}, -Infinity);
-		return [['leftBottom', this.filter.avgTimeInContent / 2, 25],
-			['rightBottom', this.filter.avgTimeInContent / 2, 75],
-			['leftTop', (maxTimeInContent + this.filter.avgTimeInContent) / 2, 25],
-			['rightTop', (maxTimeInContent + this.filter.avgTimeInContent) / 2, 75]];
+		const leftTic = this.filter.avgTimeInContent / 2;
+		const rightTic = (maxTimeInContent + this.filter.avgTimeInContent) / 2;
+		const bottomGrade = this.filter.avgGrade / 2;
+		const topGrade = (100 + this.filter.avgGrade) / 2;
+		return [['leftBottom', leftTic, bottomGrade],
+			['leftTop', leftTic, topGrade],
+			['rightBottom', rightTic, bottomGrade],
+			['rightTop', rightTic, topGrade]];
 	}
 
 	get filter() {
@@ -186,7 +191,7 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 	}
 
 	_descriptiveTextByQuadrant(quadrant, numberOfUsers) {
-		const quadrantTerm = `components.insights-time-in-content-vs-grade-card.${quadrant}`;
+		const quadrantTerm = `timeInContentVsGradeCard:${quadrant}`;
 		return this.localize(quadrantTerm, { numberOfUsers });
 	}
 
@@ -198,6 +203,28 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 			<d2l-labs-chart class="d2l-insights-summary-card-body" .options="${this.chartOptions}" ?skeleton="${this.skeleton}"></d2l-labs-chart>`;
 	}
 
+	getAxeDescription(quadrant) {
+		const chartName = { chartName : this.localize('timeInContentVsGradeCard:timeInContentVsGrade') };
+		if (!this.filter.isApplied) return this.localize('alert:axeNotFiltering', chartName);
+
+		let description = this.localize('alert:axeDescription');
+		switch (quadrant) {
+			case 'rightTop':
+				description += this.localize('timeInContentVsGradeCard:highTimeHighGrade');
+				break;
+			case 'rightBottom':
+				description += this.localize('timeInContentVsGradeCard:highTimeLowGrade');
+				break;
+			case 'leftTop':
+				description += this.localize('timeInContentVsGradeCard:lowTimeHighGrade');
+				break;
+			case 'leftBottom':
+				description += this.localize('timeInContentVsGradeCard:lowTimeLowGrade');
+				break;
+		}
+		return description;
+	}
+
 	get chartOptions() {
 		const that = this;
 		return {
@@ -207,7 +234,13 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 				width: 583,
 				events: {
 					click: function(event) {
-						that.filter.toggleQuadrant(that.filter.calculateQuadrant(Math.floor(event.xAxis[0].value), Math.floor(event.yAxis[0].value)));
+						const quadrant = that.filter.calculateQuadrant(Math.floor(event.xAxis[0].value), Math.floor(event.yAxis[0].value));
+						that.filter.toggleQuadrant(quadrant);
+						const chartName = { chartName: that.localize('timeInContentVsGradeCard:timeInContentVsGrade') };
+						filterEventQueue.add(
+							that.localize('alert:updatedFilter', chartName),
+							that.getAxeDescription(quadrant)
+						);
 					},
 				}
 			},
@@ -350,8 +383,8 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 				// 2. They are the points screen-readers interact with.
 				name: 'midPoint',
 				data: this._dataMidPoints.map(x => ({
-					x: x[2],
-					y: x[1],
+					x: x[1],
+					y: x[2],
 					custom: {
 						quadrant: x[0],
 						size: this.filter.getDataForQuadrant(x[0]).length

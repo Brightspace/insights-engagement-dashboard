@@ -34,6 +34,7 @@ export default {
 
 	"orgUnitFilter:nameAllSelected": "Org Unit: All",
 	"orgUnitFilter:nameSomeSelected": "Org Unit: Selections Applied",
+	"orgUnitFilter:name": "Org Unit",
 
 	"semesterFilter:name": "Semester",
 	"semesterFilter:semesterName": "{orgUnitName} (Id: {orgUnitId})",
@@ -94,6 +95,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": " {numberOfUsers} user enrollments are getting an above average grade and spending above average time in content.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} user enrollments are getting a below average grade and spending below average time in content.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} user enrollments are getting a below average grade and spending above average time in content.",
+	"timeInContentVsGradeCard:highTimeHighGrade": "high time in content and high grade",
+	"timeInContentVsGradeCard:highTimeLowGrade": "high time in content and low grade",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "low time in content and high grade",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "low time in content and low grade",
 
 	"currentFinalGradeCard:currentGrade": "Current Grade",
 	"currentFinalGradeCard:numberOfStudents": "Number of Users",
@@ -115,6 +120,7 @@ export default {
 	"courseLastAccessCard:oneToThreeDaysAgo": "1-3 days ago",
 	"courseLastAccessCard:lessThanOneDayAgo": "< 1 day ago",
 	"courseLastAccessCard:accessibilityLessThanOne": "Less than 1 day ago",
+	"courseLastAccessCard:accessibilityMoreThanFourteenDaysAgo": "More than 14 days ago",
 	"courseLastAccessCard:tooltipNeverAccessed": "{numberOfUsers} users have never accessed the course",
 	"courseLastAccessCard:tooltipMoreThanFourteenDays": "{numberOfUsers} users last accessed the course more than 14 days ago",
 	"courseLastAccessCard:toolTipSevenToFourteenDays": "{numberOfUsers} users last accessed the course 7 to 14 days ago",
@@ -170,6 +176,7 @@ export default {
 	"settings:description": "Set which metrics display in the Summary and Result Detail section of the Engagement Dashboard.",
 	"settings:tabTitleSummaryMetrics": "Summary Metrics",
 	"settings:tabTitleResultsTableMetrics": "Results Table Metrics",
+	"settings:tabTitleUserLevelMetrics": "User Level Metrics",
 	"settings:saveAndClose": "Save and Close",
 	"settings:save": "Save",
 	"settings:cancel": "Cancel",
@@ -185,20 +192,29 @@ export default {
 	"settings:systemAccessEditLabel": "Edit system access threshold",
 
 	"settings:avgGrade": "Average Grade",
+	"settings:avgGradeSummary": "Average Grade Summary",
 	"settings:avgTimeInContent": "Average Time in Content",
 	"settings:avgDiscussionActivity": "Average Discussion Participation",
 	"settings:lastAccessedSystem": "System Last Access",
+	"settings:predictedGrade": "Predicted Grade",
 	"settings:avgGradeDescription": "The Average Grade indicator presents the current average grade for the user across all the courses included in the applied filters.",
 	"settings:avgTimeInContentDescription": "The Average Time in Content indicator shows the average time spent in content, as an average of total time per course, for the user across all the courses included in the applied filters.  This metric is reported in minutes.",
 	"settings:avgDiscussionActivityDescription": "The Average Discussion Participation indicator presents user statistics for how often the user creates a thread, reads a post or replies to a post across all the courses included in the applied filters.  This metric averages the total count per course.",
 	"settings:lastAccessedSystemDescription": "The System Last Access indicator displays the timestamp, in Brightspace local time, of the last time the user accessed the system in any way.",
+	"settings:predictedGradeDescription": "The Predicted Grade indicator presents the average predicted final grade for the user across all the courses included in the applied filters. Data for this metric is produced from the Student Success System.",
 	"settings:invalidSystemAccessValueToast": "Your settings could not be saved. System Access thresholds need to be between 1 and 30.",
 	"settings:serverSideErrorToast": "Something went wrong. Your settings could not be saved.",
+
+	"settings:avgGradeSummaryDescription": "The Average Grade Summary card presents the current average grade for the student across courses that are filtered on.",
+	"settings:gradesOverTimeDescription": "The Grades Over Time card shows how the learner's grades have changed over time.",
+	"settings:accessOverTimeDescription": "The Course Access Over Time card shows how the learner's course access frequency has changed over time.",
+	"settings:contentViewsOverTimeDescription": "The Content Views Over Time card shows how view counts for content have changed over time.",
 
 	"userDrill:noUser": "This user could not be loaded. Go to the Engagement Dashboard to view the list of users.",
 	"userDrill:noData": "No data in filtered ranges. Refine your selection.",
 	"userDrill:manyCoursesAlert": "This dashboard is most useful with less than 10 courses. Please refine your selected courses for a better experience.",
 	"userDrill:summaryView": "Summary View",
+	"userDrill:course": "Course",
 	"activeCoursesTable:title": "Active Courses",
 	"activeCoursesTable:loadingPlaceholder": "Loading",
 	"activeCoursesTable:course": "Course Name",
@@ -229,6 +245,8 @@ export default {
 
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "assignments are currently overdue.",
 	"averageGradeSummaryCard:averageGradeText" : "grade averaged from the courses in view.",
+	"averageGradeSummaryCard:averageGradeTextLine1" : "grade averaged from",
+	"averageGradeSummaryCard:averageGradeTextLine2" : "the courses in view.",
 	"averageGradeSummaryCard:averageGrade" : "Average Grade",
 	"averageGradeSummaryCard:noGradeInfoAvailable" : "No grade information available.",
 	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "days since the learner last accessed the system.",
@@ -247,4 +265,13 @@ export default {
 	"chart:loading": "Loading...",
 	"chart:resetZoom": "Reset zoom",
 	"chart:resetZoomTitle": "Reset zoom level 1:1",
+
+	"alert:updatedFilter" : "{chartName} filter updated.",
+	"alert:axeDescriptionRange" : "Viewing learners with {chartName} in these categories ",
+	"alert:axeDescription" : "Viewing learners with ",
+	"alert:axeNotFiltering" : "Stopped Filtering by {chartName}.",
+	// this "to" that, and this "to" that <- translate the word "to" in this context
+	"alert:this-To-That" : " to ",
+	"alert:axeDescriptionCourses" : "Viewing learner data in these courses ",
+	"alert:axeDescriptionCoursesOff" : "Viewing learner data in all courses."
 };

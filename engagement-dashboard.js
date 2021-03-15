@@ -1,6 +1,7 @@
 import '@brightspace-ui/core/components/dialog/dialog-confirm';
 import 'd2l-button-group/d2l-action-button-group';
 
+import './components/alert-data-update.js';
 import './components/histogram-card.js';
 import './components/ou-filter.js';
 import './components/debug-card.js';
@@ -36,12 +37,12 @@ import { ExportData } from './model/exportData';
 import { fetchData } from './model/dataApiClient.js';
 import { fetchData as fetchDemoData } from './model/fake-dataApiClient.js';
 import { FilteredData } from './model/filteredData';
+import { filterEventQueue } from './components/alert-data-update';
 import { heading3Styles } from '@brightspace-ui/core/components/typography/styles';
 import { Localizer } from './locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { OverdueAssignmentsFilter } from './components/overdue-assignments-card';
 import { TimeInContentVsGradeFilter } from './components/time-in-content-vs-grade-card';
-import { toJS } from 'mobx';
 import { USER } from './consts.js';
 
 /**
@@ -58,6 +59,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			telemetryEndpoint: { type: String, attribute: 'telemetry-endpoint' },
 			telemetryId: { type: String, attribute: 'telemetry-id' },
 			metronEndpoint: { type: String, attribute: 'metron-endpoint' },
+			s3Enabled: { type: Boolean, attribute: 'student-success-system-enabled' },
 
 			// user preferences:
 			showCourseAccessCard: { type: Boolean, attribute: 'course-access-card', reflect: true },
@@ -73,7 +75,12 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			showTicCol: { type: Boolean, attribute: 'tic-col', reflect: true },
 			showTicGradesCard: { type: Boolean, attribute: 'tic-grades-card', reflect: true },
 			lastAccessThresholdDays: { type: Number, attribute: 'last-access-threshold-days', reflect: true },
-			includeRoles: { type: String, attribute: 'include-roles', reflect: true }
+			includeRoles: { type: String, attribute: 'include-roles', reflect: true },
+			showAverageGradeSummaryCard: { type: Boolean, attribute: 'average-grade-summary-card', reflect: true },
+			showContentViewsTrendCard: { type: Boolean, attribute: 'content-views-trend-card', reflect: true },
+			showCourseAccessTrendCard: { type: Boolean, attribute: 'course-access-trend-card', reflect: true },
+			showGradesTrendCard: { type: Boolean, attribute: 'grades-trend-card', reflect: true },
+			showPredictedGradeCol: { type: Boolean, attribute: 'predicted-grade-col', reflect: true }
 		};
 	}
 
@@ -88,6 +95,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		this.telemetryEndpoint = '';
 		this.telemetryId = '';
 		this.metronEndpoint = '';
+		this.s3Enabled = false;
 
 		this.showCourseAccessCard = false;
 		this.showCoursesCol = false;
@@ -103,6 +111,11 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		this.showTicGradesCard = false;
 		this.lastAccessThresholdDays = 14;
 		this.includeRoles = '';
+		this.showAverageGradeSummaryCard = false;
+		this.showContentViewsTrendCard = false;
+		this.showCourseAccessTrendCard = false;
+		this.showGradesTrendCard = false;
+		this.showPredictedGradeCol = false;
 
 		this._viewState = new ViewState({});
 		// if current view is not provided in url
@@ -261,11 +274,22 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				?demo="${this.isDemo}"
 				.data="${this._data}"
 				.user="${user}"
-				.isStudentSuccessSys="${this._serverData.serverData.isStudentSuccessSys}"
 				org-unit-id="${this.orgUnitId}"
 				.viewState="${this._viewState}"
 				.metronEndpoint="${this.metronEndpoint}"
 				@d2l-insights-user-drill-view-back="${this._backToHomeHandler}"
+				?average-grade-summary-card="${this.showAverageGradeSummaryCard}"
+				?grades-trend-card="${this.showGradesTrendCard}"
+				?course-access-trend-card="${this.showCourseAccessTrendCard}"
+				?content-views-trend-card="${this.showContentViewsTrendCard}"
+				?system-access-card="${this.showSystemAccessCard}"
+				?overdue-card="${this.showOverdueCard}"
+				?discussions-col="${this.showDiscussionsCol}"
+				?grade-col="${this.showGradeCol}"
+				?last-access-col="${this.showLastAccessCol}"
+				?tic-col="${this.showTicCol}"
+				?predicted-grade-col="${this.showPredictedGradeCol}"
+				?student-success-system-enabled="${this.s3Enabled}"
 			>
 				<div slot="filters">
 					${this._renderFilters()}
@@ -273,6 +297,10 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 				<div slot="applied-filters">
 					${this._renderAppliedFilters()}
+				</div>
+
+				<div slot="alerts">
+					${this._renderAlerts()}
 				</div>
 			</d2l-insights-user-drill-view>
 		`;
@@ -299,6 +327,16 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		`;
 	}
 
+	_renderAlerts() {
+		return html`
+		<d2l-insights-alert-data-updated
+			.dataEvents="${filterEventQueue}"
+			?skeleton="${this._isLoading}"
+		>
+		</d2l-insights-alert-data-updated>
+		`;
+	}
+
 	_renderSettingsView() {
 		return html`
 			<d2l-insights-engagement-dashboard-settings
@@ -318,11 +356,18 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				?tic-grades-card="${this.showTicGradesCard}"
 				last-access-threshold-days="${this.lastAccessThresholdDays}"
 				.includeRoles="${this._serverData.selectedRoleIds}"
+				?average-grade-summary-card="${this.showAverageGradeSummaryCard}"
+				?grades-trend-card="${this.showGradesTrendCard}"
+				?course-access-trend-card="${this.showCourseAccessTrendCard}"
+				?content-views-trend-card="${this.showContentViewsTrendCard}"
+				?predicted-grade-col="${this.showPredictedGradeCol}"
+				?student-success-system-enabled="${this.s3Enabled}"
 			></d2l-insights-engagement-dashboard-settings>
 		`;
 	}
 
 	_renderHomeView() {
+
 		return html`
 
 			<d2l-insights-aria-loading-progress .data="${this._data}"></d2l-insights-aria-loading-progress>
@@ -390,6 +435,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 					${this.localize('defaultViewPopup:buttonOk')}
 				</d2l-button>
 			</d2l-dialog-confirm>
+			${this._renderAlerts()}
 		`;
 	}
 
@@ -554,6 +600,11 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			this.showLastAccessCol = e.detail.showLastAccessCol;
 			this.lastAccessThresholdDays = e.detail.lastAccessThresholdDays;
 			this.includeRoles = (e.detail.includeRoles || []).join(',');
+			this.showAverageGradeSummaryCard = e.detail.showAvgGradeSummaryCard;
+			this.showContentViewsTrendCard = e.detail.showContentViewsTrendCard;
+			this.showCourseAccessTrendCard = e.detail.showCourseAccessTrendCard;
+			this.showGradesTrendCard = e.detail.showGradesTrendCard;
+			this.showPredictedGradeCol = e.detail.showPredictedGradeCol;
 
 			this._serverData.selectedRoleIds = e.detail.includeRoles;
 			// update LastSystemAccess filter's threshold, as it may have changed (e.g. if new settings were saved)
@@ -576,24 +627,26 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 	_orgUnitFilterChange(event) {
 		event.stopPropagation();
+		filterEventQueue.add(this.localize('alert:updatedFilter', { chartName: this.localize('orgUnitFilter:name') }));
 		this._serverData.selectedOrgUnitIds = event.target.selected;
 	}
 
 	_semesterFilterChange(event) {
 		event.stopPropagation();
+		filterEventQueue.add(this.localize('alert:updatedFilter', { chartName: this.localize('semesterFilter:name') }));
 		this._serverData.selectedSemesterIds = event.target.selected;
 	}
 
 	_handleEmailButtonPress() {
 		const usersTable = this.shadowRoot.querySelector('d2l-insights-users-table');
-		const selectedUserIds = usersTable.selectedUserIds;
+		const selectedUserIds = [...usersTable.selectedUserIds];
 
 		if (!selectedUserIds.length) {
 			const noUsersSelectedDialog = this.shadowRoot.querySelector('#no-users-selected-dialog');
 			noUsersSelectedDialog.opened = true;
 		} else {
 			// we use the root OU id because that's where we expect users to have email permissions
-			createComposeEmailPopup(toJS(selectedUserIds), this._serverData.orgUnitTree.rootId);
+			createComposeEmailPopup(selectedUserIds, this._serverData.orgUnitTree.rootId);
 		}
 	}
 

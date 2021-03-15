@@ -7,6 +7,7 @@ import '@brightspace-ui/core/components/inputs/input-number';
 import './card-selection-list';
 import './role-list.js';
 import './column-configuration';
+import './user-level-card-selection-list';
 import './custom-toast-message';
 
 import { css, html, LitElement } from 'lit-element';
@@ -23,6 +24,8 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 	static get properties() {
 		return {
 			isDemo: { type: Boolean, attribute: 'demo' },
+			s3Enabled: { type: Boolean, attribute: 'student-success-system-enabled' },
+
 			showCourseAccessCard: { type: Boolean, attribute: 'course-access-card', reflect: true },
 			showCoursesCol: { type: Boolean, attribute: 'courses-col', reflect: true },
 			showDiscussionsCard: { type: Boolean, attribute: 'discussions-card', reflect: true },
@@ -37,6 +40,11 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 			showTicGradesCard: { type: Boolean, attribute: 'tic-grades-card', reflect: true },
 			lastAccessThresholdDays: { type: Number, attribute: 'last-access-threshold-days', reflect: true },
 			includeRoles: { type: Array, attribute: false },
+			showAverageGradeSummaryCard: { type: Boolean, attribute: 'average-grade-summary-card', reflect: true },
+			showContentViewsTrendCard: { type: Boolean, attribute: 'content-views-trend-card', reflect: true },
+			showCourseAccessTrendCard: { type: Boolean, attribute: 'course-access-trend-card', reflect: true },
+			showGradesTrendCard: { type: Boolean, attribute: 'grades-trend-card', reflect: true },
+			showPredictedGradeCol: { type: Boolean, attribute: 'predicted-grade-col', reflect: true },
 			_toastMessagetext: { type: String, attribute: false }
 		};
 	}
@@ -146,6 +154,7 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 		super();
 
 		this.isDemo = false;
+		this.s3Enabled = false;
 
 		this.showCourseAccessCard = false;
 		this.showCoursesCol = false;
@@ -161,6 +170,11 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 		this.showTicGradesCard = false;
 		this.lastAccessThresholdDays = 14;
 		this.includeRoles = [];
+		this.showAverageGradeSummaryCard = false;
+		this.showContentViewsTrendCard = false;
+		this.showCourseAccessTrendCard = false;
+		this.showGradesTrendCard = false;
+		this.showPredictedGradeCol = false;
 	}
 
 	render() {
@@ -196,8 +210,19 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 								?grade-col="${this.showGradeCol}"
 								?last-access-col="${this.showLastAccessCol}"
 								?tic-col="${this.showTicCol}"
+								?predicted-grade-col="${this.showPredictedGradeCol}"
+								?student-success-system-enabled="${this.s3Enabled}"
 								?demo="${this.isDemo}"
 							></d2l-insights-engagement-column-configuration>
+						</d2l-tab-panel>
+
+						<d2l-tab-panel text="${this.localize('settings:tabTitleUserLevelMetrics')}">
+							<d2l-insights-engagement-user-card-selection-list
+								?average-grade-summary-card="${this.showAverageGradeSummaryCard}"
+								?grades-trend-card="${this.showGradesTrendCard}"
+								?course-access-trend-card="${this.showCourseAccessTrendCard}"
+								?content-views-trend-card="${this.showContentViewsTrendCard}"
+							></d2l-insights-engagement-user-card-selection-list>
 						</d2l-tab-panel>
 					</d2l-tabs>
 				</div>
@@ -239,15 +264,13 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 
 	async _handleSaveAndClose() {
 		const cardSelectionList = this.shadowRoot.querySelector('d2l-insights-engagement-card-selection-list');
-
+		const userCardSelectionList = this.shadowRoot.querySelector('d2l-insights-engagement-user-card-selection-list');
 		const columnConfig = this.shadowRoot.querySelector('d2l-insights-engagement-column-configuration');
+
 		const settings = {
 			...cardSelectionList.settings,
-			showCoursesCol: columnConfig.showCoursesCol,
-			showGradeCol: columnConfig.showGradeCol,
-			showTicCol: columnConfig.showTicCol,
-			showDiscussionsCol: columnConfig.showDiscussionsCol,
-			showLastAccessCol: columnConfig.showLastAccessCol,
+			...userCardSelectionList.settings,
+			...columnConfig.settings,
 			includeRoles: this._selectedRoleIds
 		};
 

@@ -42,6 +42,7 @@ describe('d2l-insights-course-legend', () => {
 				.user="${{ userId: 200 }}"
 				.data="${data}">
 			</d2l-insights-courses-legend>`);
+			filter.set([]);
 			await expect(el).to.be.accessible();
 		});
 	});
@@ -81,6 +82,21 @@ describe('d2l-insights-course-legend', () => {
 			legendItems[1].click();
 
 			expect([...el.selectedCourses.selected]).to.eql([]);
+		});
+	});
+
+	describe('axe description', () => {
+		it('should read out selected courses', async() => {
+			const el = await fixture(html`
+			<d2l-insights-courses-legend
+				.selectedCourses="${filter}"
+				.user="${{ userId: 200 }}"
+				.data="${data}">
+			</d2l-insights-courses-legend>`);
+			await new Promise(res => setTimeout(res, 50));
+			filter.set([6606]);
+			const description = el.getAxeDescription();
+			expect(description).to.equal('Viewing learner data in these courses Course 1 (Id: 6606)');
 		});
 	});
 });
