@@ -94,7 +94,7 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 			bins.push([range * i, range * (i - 1)]);
 		}
 
-		if (this.courseAccessOutliers.length !== 0 || largestAccess > 1000) {
+		if (this.courseAccessOutliers.length !== 0 || largestAccess > peaks[peaks.length - 1]) {
 			bins.push([Number.POSITIVE_INFINITY, upperBin]);
 		}
 
@@ -103,6 +103,7 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	// computed
 	get sortedUserRecords() {
+
 		return this.data
 			.withoutFilter(filterId)
 			.users
@@ -131,7 +132,7 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 			if (cur[0] === Number.POSITIVE_INFINITY) {
 				acc.push(`> ${cur[1]}`);
 			} else {
-				acc.push(`${cur[0]}-${cur[1] + 1}`);
+				acc.push(`${cur[1] + 1}-${cur[0]}`);
 			}
 			return acc;
 		}, []).concat(['0']);
