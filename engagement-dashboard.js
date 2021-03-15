@@ -21,6 +21,7 @@ import './components/discussion-activity-card.js';
 import './components/course-last-access-card.js';
 import './components/results-card.js';
 import './components/overdue-assignments-card.js';
+import './components/content-view-histogram.js';
 
 import { css, html } from 'lit-element/lit-element.js';
 import { DefaultViewState, ViewState } from './model/view-state';
@@ -42,7 +43,6 @@ import { Localizer } from './locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { OverdueAssignmentsFilter } from './components/overdue-assignments-card';
 import { TimeInContentVsGradeFilter } from './components/time-in-content-vs-grade-card';
-import { toJS } from 'mobx';
 import { USER } from './consts.js';
 
 /**
@@ -422,6 +422,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				${this._gradesCard}
 				${this._ticGradesCard}
 				${this._courseAccessCard}
+				<d2l-labs-content-view-histogram .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-labs-content-view-histogram>
 			</div>
 			${this._userTable}
 			<d2l-insights-default-view-popup
@@ -640,14 +641,14 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 	_handleEmailButtonPress() {
 		const usersTable = this.shadowRoot.querySelector('d2l-insights-users-table');
-		const selectedUserIds = usersTable.selectedUserIds;
+		const selectedUserIds = [...usersTable.selectedUserIds];
 
 		if (!selectedUserIds.length) {
 			const noUsersSelectedDialog = this.shadowRoot.querySelector('#no-users-selected-dialog');
 			noUsersSelectedDialog.opened = true;
 		} else {
 			// we use the root OU id because that's where we expect users to have email permissions
-			createComposeEmailPopup(toJS(selectedUserIds), this._serverData.orgUnitTree.rootId);
+			createComposeEmailPopup(selectedUserIds, this._serverData.orgUnitTree.rootId);
 		}
 	}
 
