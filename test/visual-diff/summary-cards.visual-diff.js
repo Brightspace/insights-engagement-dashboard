@@ -16,12 +16,10 @@ describe('summary cards', () => {
 			deviceScaleFactor: 1
 		});
 		await page.goto(
-			`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-insights-engagement-dashboard.visual-diff.html`,
+			`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-insights-engagement-dashboard.visual-diff.html?v=home%2C0&ouf=3`,
 			{ waitUntil: ['networkidle0', 'load'] }
 		);
 		// Accept the default view popup and close it.
-		await page.keyboard.press('Tab');
-		await page.keyboard.press('Enter');
 		await page.bringToFront();
 
 		rect = await page.evaluate(() => {

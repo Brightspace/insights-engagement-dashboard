@@ -51,17 +51,17 @@ export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView 
 			[6606, 'Dev', 1, [0], false]
 		],
 		users: [ // some of which are out of order
-			[100,  'ATest', 'AStudent', 'AStudent', 1601193037132],
-			[300,  'CTest', 'CStudent', 'CStudent', 1603193037132],
-			[200,  'BTest', 'BStudent', 'BStudent', 1607528565300],
-			[400,  'DTest', 'DStudent', 'DStudent', null],
-			[500,  'ETest', 'EStudent', 'EStudent', 1546318800000],
-			[600,  'GTest', 'GStudent', 'GStudent', 1589998800000],
-			[700,  'FTest', 'FStudent', 'FStudent', 1599998800000],
-			[800,  'HTest', 'HStudent', 'HStudent', 1600008800000],
-			[900,  'ITest', 'IStudent', 'IStudent', 1604558800000],
-			[1000, 'KTest', 'KStudent', 'KStudent', 1604958800000],
-			[1100, 'JTest', 'JStudent', 'JStudent', 1594958800000]
+			[100,  'ATest', 'AStudent', 'AStudent', 1601193037132, 5],
+			[300,  'CTest', 'CStudent', 'CStudent', 1603193037132, 15],
+			[200,  'BTest', 'BStudent', 'BStudent', 1607528565300, 25],
+			[400,  'DTest', 'DStudent', 'DStudent', null, 25],
+			[500,  'ETest', 'EStudent', 'EStudent', 1546318800000, 200],
+			[600,  'GTest', 'GStudent', 'GStudent', 1589998800000, 27],
+			[700,  'FTest', 'FStudent', 'FStudent', 1599998800000, 57],
+			[800,  'HTest', 'HStudent', 'HStudent', 1600008800000, 8],
+			[900,  'ITest', 'IStudent', 'IStudent', 1604558800000, 0],
+			[1000, 'KTest', 'KStudent', 'KStudent', 1604958800000, 20],
+			[1100, 'JTest', 'JStudent', 'JStudent', 1594958800000, 54]
 		],
 		semesterTypeId: 25,
 		numDefaultSemesters: 4,
@@ -72,7 +72,7 @@ export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView 
 		isDefaultView: defaultView,
 		isStudentSuccessSys: true
 	};
-	return new Promise(resolve => setTimeout(() => resolve(demoData), getDelayFromUrlHash() || 100));
+	return new Promise(resolve => setTimeout(() => resolve(demoData), getDelayFromUrlHash() || 1000));
 }
 
 /**
