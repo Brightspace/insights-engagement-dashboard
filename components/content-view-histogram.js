@@ -4,6 +4,7 @@ import { getOutliers, removeOutliers } from '../model/stats.js';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
 import { CategoryFilter } from '../model/categoryFilter';
 import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles';
+import { filterEventQueue } from './alert-data-update';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
@@ -19,8 +20,10 @@ export class ContentViewHistogramFilter extends CategoryFilter {
 		const filterFunc = (record, _, userRecords) => {
 			let recordBin = 0;
 			const userId = record[RECORD.USER_ID];
+			// skip the n*n search, we've done this before
 			if (userId in userBinCache) {
 				recordBin = userBinCache[userId];
+			// we don't have a bin for this user yet
 			} else {
 				const userRecord = userRecords.find(r => r[USER.ID] === userId);
 				const views = userRecord[USER.TOTAL_COURSE_ACCESS];
@@ -32,7 +35,7 @@ export class ContentViewHistogramFilter extends CategoryFilter {
 		};
 		super(
 			filterId,
-			'courseLastAccessCard:courseAccess',
+			'contentViewHistogram:title',
 			filterFunc,
 			'cvhf',
 			undefined // set all later
@@ -176,7 +179,6 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 		for (let i = 1; i <= 5; i++) {
 			bins.push([range * i, range * (i - 1)]);
 		}
-		console.log(this.allCourseAccessOutliers);
 		if (this.allCourseAccessOutliers.length !== 0 || largestAccess > peaks[peaks.length - 1]) {
 			bins.push([Number.POSITIVE_INFINITY, upperBin]);
 		}
@@ -260,11 +262,57 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get colors() {
 		if (!this.filter.isApplied) return ['var(--d2l-color-celestine)'];
 
-		return this.bins.map((v,i) =>
+		return new Array(this.bins.length + 1).fill(0).map((v,i) =>
 			this.filter.selectedCategories.has(i) ?
 				'var(--d2l-color-celestine)' :
 				'var(--d2l-color-mica)'
 		);
+	}
+
+	mergeCategories(categories) {
+		console.log(categories);
+		const result = categories.sort().reverse().reduce((acc, cur) => {
+			// take the category and find the bin
+			// turn the bin range into a pair
+			const curRanges = cur < this.bins.length ? this.bins[cur] : [0,-1];
+			if (acc[acc.length - 1] !== undefined &&
+				acc[acc.length - 1][0] === curRanges[1])
+			{
+				acc[acc.length - 1][0] = curRanges[0];
+			} else {
+				acc.push([curRanges[0], curRanges[1] + 1]);
+			}
+			return acc;
+
+			console.log(curRanges);
+		}, []);
+		console.log(result);
+		return result.map(pair => pair.reverse());
+	}
+
+	getAxeDescription() {
+
+		const chartName = { chartName : this._cardTitle };
+
+		const categories = ([...this.filter.selectedCategories]);
+		if (categories.length === 0) return this.localize('alert:axeNotFiltering', chartName);
+
+		const pairs = this.mergeCategories(categories);
+
+		const message = this.localize('alert:axeDescriptionRange', chartName);
+		const descriptions = pairs.map(
+			pair => {
+				if(pair[1] === Number.POSITIVE_INFINITY) {
+					return this.localize('alert:greaterThanThis', { num: pair[0] - 1 });
+				} else if ( pair[1] === 0 ){
+					return 0
+				}
+				return pair.join(this.localize('alert:this-To-That'))
+			}
+		).join(', ');
+
+		console.log(`${message} ${descriptions}`);
+		return `${message} ${descriptions}`;
 	}
 
 	get chartOptions() {
@@ -358,8 +406,12 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 					point: {
 						events: {
 							click: function() {
-								console.log(this.index);
+								console.log(this)
 								that.filter.toggleCategory(this.index);
+								filterEventQueue.add(
+									that.localize('alert:updatedFilter', { chartName: that._cardTitle }),
+									that.getAxeDescription()
+								);
 							}
 						}
 					}
