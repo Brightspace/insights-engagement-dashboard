@@ -13,10 +13,10 @@ import { UrlState } from '../model/urlState';
 
 const filterId = 'd2l-insights-content-view-histogram';
 
+let userBinCache = {}
 // we need to map the bin index to a real bin...
 export class ContentViewHistogramFilter extends CategoryFilter {
 	constructor() {
-		const userBinCache = {};
 		const filterFunc = (record, _, userRecords) => {
 			let recordBin = 0;
 			const userId = record[RECORD.USER_ID];
@@ -31,6 +31,7 @@ export class ContentViewHistogramFilter extends CategoryFilter {
 				recordBin = this.bins.findIndex(bin => views <= bin[0] && views > bin[1]);
 				userBinCache[userId] = recordBin;
 			}
+			console.log(userBinCache);
 			return this.selectedCategories.has(recordBin);
 		};
 		super(
@@ -53,6 +54,7 @@ export class ContentViewHistogramFilter extends CategoryFilter {
 		} else {
 			this._binScheme = scheme[1];
 		}
+		userBinCache = {}
 	}
 
 	get bins() {
@@ -62,13 +64,15 @@ export class ContentViewHistogramFilter extends CategoryFilter {
 			bins.push([range * i, range * (i - 1)]);
 		}
 		if (super._all.size === 7) bins.push([Number.POSITIVE_INFINITY, this._binScheme]);
-		return bins;
+		console.log(bins);
+		return bins.reverse();
 	}
 
 	setAll(all) {
 		// because there can be 6 or 7 bins we need to
 		// set the all state before the component has rendered
 		super._all = new Set(all);
+		userBinCache = {}
 	}
 
 	//for Urlstate
@@ -270,7 +274,6 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	mergeCategories(categories) {
-		console.log(categories);
 		const result = categories.sort().reverse().reduce((acc, cur) => {
 			// take the category and find the bin
 			// turn the bin range into a pair
@@ -284,9 +287,7 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 			}
 			return acc;
 
-			console.log(curRanges);
 		}, []);
-		console.log(result);
 		return result.map(pair => pair.reverse());
 	}
 
@@ -311,7 +312,6 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 			}
 		).join(', ');
 
-		console.log(`${message} ${descriptions}`);
 		return `${message} ${descriptions}`;
 	}
 
@@ -406,7 +406,6 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 					point: {
 						events: {
 							click: function() {
-								console.log(this)
 								that.filter.toggleCategory(this.index);
 								filterEventQueue.add(
 									that.localize('alert:updatedFilter', { chartName: that._cardTitle }),
@@ -434,6 +433,7 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		// the filter depends on the bin scheme so we need to update it.
 		this.filter.binScheme = this.bins[0];
+		console.log(this.filter._binScheme)
 		this.filter.setAll(new Array(this.bins.length + 1).fill(0).map((v , i) => i));
 
 		return html`
