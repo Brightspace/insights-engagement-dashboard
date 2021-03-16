@@ -422,7 +422,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				${this._gradesCard}
 				${this._ticGradesCard}
 				${this._courseAccessCard}
-				<d2l-labs-content-view-histogram .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-labs-content-view-histogram>
+				${this._contentViewCard}
 			</div>
 			${this._userTable}
 			<d2l-insights-default-view-popup
@@ -478,6 +478,11 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	get _ticGradesCard() {
 		if (!this.showTicGradesCard || this._isNoUserResults) return '';
 		return html`<div><d2l-insights-time-in-content-vs-grade-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-time-in-content-vs-grade-card></div>`;
+	}
+
+	get _contentViewCard() {
+		if (!this.showContentViewCard || this._isNoUserResults) return '';
+		return html`<d2l-labs-content-view-histogram .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-labs-content-view-histogram>`;
 	}
 
 	get _userTable() {

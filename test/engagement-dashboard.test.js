@@ -68,7 +68,7 @@ describe('d2l-insights-engagement-dashboard', () => {
 		});
 
 		const allCards = [
-			//'content-view-card', TODO uncomment when the card is merged to the master
+			'content-view-card',
 			'course-last-access-card',
 			'discussion-activity-card',
 			'current-final-grade-card',
@@ -112,7 +112,8 @@ describe('d2l-insights-engagement-dashboard', () => {
 						, 'd2l-summary-cards-container');
 
 					await Promise.all(allCards.map(async card => {
-						let renderedCard = await trySelect(el.shadowRoot, `d2l-insights-${card}`, 10);
+						const componentTag = card === 'content-view-card' ? 'd2l-labs-content-view-histogram' : `d2l-insights-${card}`;
+						let renderedCard = await trySelect(el.shadowRoot, componentTag, 10);
 						const smallCard = smallCards.find(c => c.card === card);
 						if (smallCard) {
 							renderedCard = await trySelect(summaryContainerEl.shadowRoot, `d2l-insights-${card}`, 10);
