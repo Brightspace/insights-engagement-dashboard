@@ -1,37 +1,28 @@
 import { action, computed, decorate, observable } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
 import { getOutliers, removeOutliers } from '../model/stats.js';
+import { RECORD, USER } from '../consts';
 import { BEFORE_CHART_FORMAT } from './chart/chart';
-import { CategoryFilter } from '../model/categoryFilter';
 import { bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles';
+import { CategoryFilter } from '../model/categoryFilter';
 import { filterEventQueue } from './alert-data-update';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
-import { RECORD, USER } from '../consts';
 import { UrlState } from '../model/urlState';
 
 const filterId = 'd2l-insights-content-view-histogram';
 
-let userBinCache = {}
 // we need to map the bin index to a real bin...
 export class ContentViewHistogramFilter extends CategoryFilter {
 	constructor() {
-		const filterFunc = (record, _, userRecords) => {
+		const filterFunc = (record, userDictionary) => {
 			let recordBin = 0;
 			const userId = record[RECORD.USER_ID];
-			// skip the n*n search, we've done this before
-			if (userId in userBinCache) {
-				recordBin = userBinCache[userId];
-			// we don't have a bin for this user yet
-			} else {
-				const userRecord = userRecords.find(r => r[USER.ID] === userId);
-				const views = userRecord[USER.TOTAL_COURSE_ACCESS];
-				if (views === 0) return this.bins.length;
-				recordBin = this.bins.findIndex(bin => views <= bin[0] && views > bin[1]);
-				userBinCache[userId] = recordBin;
-			}
-			console.log(userBinCache);
+			const userRecord = userDictionary.get(userId);
+			const views = userRecord[USER.TOTAL_COURSE_ACCESS];
+			if (views === 0) return this.bins.length;
+			recordBin = this.bins.findIndex(bin => views <= bin[0] && views > bin[1]);
 			return this.selectedCategories.has(recordBin);
 		};
 		super(
@@ -44,7 +35,6 @@ export class ContentViewHistogramFilter extends CategoryFilter {
 
 		this._binScheme = 50;
 
-
 		this._urlState = new UrlState(this);
 	}
 
@@ -54,25 +44,21 @@ export class ContentViewHistogramFilter extends CategoryFilter {
 		} else {
 			this._binScheme = scheme[1];
 		}
-		userBinCache = {}
 	}
 
 	get bins() {
-		let bins = [];
-		const range = this._binScheme / 5;
-		for (let i = 1; i <= 5; i++) {
-			bins.push([range * i, range * (i - 1)]);
-		}
-		if (super._all.size === 7) bins.push([Number.POSITIVE_INFINITY, this._binScheme]);
-		console.log(bins);
-		return bins.reverse();
+		return this._bins;
 	}
 
-	setAll(all) {
-		// because there can be 6 or 7 bins we need to
-		// set the all state before the component has rendered
-		super._all = new Set(all);
-		userBinCache = {}
+	set bins(bins) {
+		this._bins = bins;
+		const scheme = bins[0];
+		if (scheme[0] !== Number.POSITIVE_INFINITY) {
+			this._binScheme = scheme[0];
+		} else {
+			this._binScheme = scheme[1];
+		}
+		super._all = new Set((new Array(bins.length + 1).fill(0).map((v, i) => i)));
 	}
 
 	//for Urlstate
@@ -93,7 +79,7 @@ export class ContentViewHistogramFilter extends CategoryFilter {
 
 decorate(ContentViewHistogramFilter, {
 	setAll: action
-})
+});
 
 class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 
@@ -171,6 +157,7 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 	//computed
 	get bins() {
 		// changing these ranges will change the bins throught the chart.
+		this.skeleton;
 		const peaks = [50, 100, 200, 500, 1000];
 		const values = this.allCourseAccessWithoutOutliers;
 		const largestAccess = values[values.length - 1];
@@ -201,13 +188,14 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get serverData() {
-		return this.data._data.serverData
+		return this.data._data.serverData;
 	}
 
 	// computed
 	get sortedUserRecords() {
-		return this.serverData
-			.users
+		if (!this.data.userDictionary) return [];
+		return [...this.data
+			.userDictionary.values()]
 			.filter(record => record[USER.TOTAL_COURSE_ACCESS] !== undefined && record[USER.TOTAL_COURSE_ACCESS] !== null)
 			.sort((aRecord, bRecord) => aRecord[USER.TOTAL_COURSE_ACCESS] - bRecord[USER.TOTAL_COURSE_ACCESS]);
 	}
@@ -266,10 +254,10 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 	get colors() {
 		if (!this.filter.isApplied) return ['var(--d2l-color-celestine)'];
 
-		return new Array(this.bins.length + 1).fill(0).map((v,i) =>
-			this.filter.selectedCategories.has(i) ?
+		return new Array(this.bins.length + 1).fill(0).map((v, i) =>
+			(this.filter.selectedCategories.has(i) ?
 				'var(--d2l-color-celestine)' :
-				'var(--d2l-color-mica)'
+				'var(--d2l-color-mica)')
 		);
 	}
 
@@ -277,7 +265,7 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const result = categories.sort().reverse().reduce((acc, cur) => {
 			// take the category and find the bin
 			// turn the bin range into a pair
-			const curRanges = cur < this.bins.length ? this.bins[cur] : [0,-1];
+			const curRanges = cur < this.bins.length ? this.bins[cur] : [0, -1];
 			if (acc[acc.length - 1] !== undefined &&
 				acc[acc.length - 1][0] === curRanges[1])
 			{
@@ -303,12 +291,12 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const message = this.localize('alert:axeDescriptionRange', chartName);
 		const descriptions = pairs.map(
 			pair => {
-				if(pair[1] === Number.POSITIVE_INFINITY) {
+				if (pair[1] === Number.POSITIVE_INFINITY) {
 					return this.localize('alert:greaterThanThis', { num: pair[0] - 1 });
-				} else if ( pair[1] === 0 ){
-					return 0
+				} else if (pair[1] === 0) {
+					return 0;
 				}
-				return pair.join(this.localize('alert:this-To-That'))
+				return pair.join(this.localize('alert:this-To-That'));
 			}
 		).join(', ');
 
@@ -430,11 +418,8 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	render() {
-
 		// the filter depends on the bin scheme so we need to update it.
-		this.filter.binScheme = this.bins[0];
-		console.log(this.filter._binScheme)
-		this.filter.setAll(new Array(this.bins.length + 1).fill(0).map((v , i) => i));
+		this.filter.bins = this.bins;
 
 		return html`
 		<div class="d2l-insights-content-views-title d2l-skeletize d2l-skeletize-45 d2l-body-standard">${this._cardTitle}</div>
@@ -447,11 +432,12 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 decorate(ContentViewHistogram, {
 	filteredSortedUserRecords: computed,
-	sortedUserRecords: computed,
+	//sortedUserRecords: computed,
 	allCourseAccessWithoutOutliers: computed,
-	allCourseAccessOutliers: computed,
+	//allCourseAccessOutliers: computed,
 	bins: computed,
-	data: observable
+	data: observable,
+	skeleton: observable
 });
 
 customElements.define('d2l-labs-content-view-histogram', ContentViewHistogram);

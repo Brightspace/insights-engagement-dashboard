@@ -50,7 +50,7 @@ export class FilteredData {
 
 	get records() {
 		const appliedFilters = this.filters.filter(f => f.isApplied);
-		return this._data.records.filter(r => appliedFilters.every(f => f.filter(r, this.userDictionary, this._data.serverData.users)));
+		return this._data.records.filter(r => appliedFilters.every(f => f.filter(r, this.userDictionary)));
 	}
 
 	get recordsByUser() {

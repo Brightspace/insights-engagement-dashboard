@@ -2,16 +2,34 @@ import '../../components/content-view-histogram';
 import { expect, fixture, html } from '@open-wc/testing';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
+const emptyMap = () => {
+	const map = new Map();
+	map.set(0, new Array(6).fill(0));
+	map.set(1, new Array(6).fill(0));
+	map.set(2, new Array(6).fill(0));
+	map.set(3, new Array(6).fill(0));
+	map.set(4, new Array(6).fill(0));
+	return map;
+};
+
+const mapFromViews = (views) => {
+	const map = new Map();
+	views.forEach((v, i) => map.set(i, [i, 0, 0, 0, 0, v]));
+	return map;
+};
+
 const data = {
 	withoutFilter: () => ({
 		users: Array(6).fill(0)
-	})
+	}),
+	userDictionary: emptyMap()
 };
 
 const makeDataFromUserViews = (views) => ({
 	withoutFilter: () => ({
-		users: views.map(view => [0, 0, 0, 0, 0, view])
-	})
+		users: views.map((view, i) => [i, 0, 0, 0, 0, view])
+	}),
+	userDictionary: mapFromViews(views)
 });
 
 describe('content-view-histogram', () => {
