@@ -187,7 +187,7 @@ export default {
 	"settings:overdueAssignmentsDesc": "The Overdue Assignments card shows the number of users who have one or more assignments overdue in the courses that are filtered on.",
 	"settings:systemAccessDesc": "The System Access card shows the last access the user had in any way.",
 	"settings:discActivityDesc": "The Discussion Activity card shows passive and active social engagement in each course that is filtered on. This metric reports when a user creates a thread, replies to an existing post, or reads a post.",
-	"settings:contentViewDesc": "The Content View card shows how many content topics has been viewed for each enrolment per user.",
+	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
 
 	"settings:systemAccessEdit": "Show users who have not accessed the system in the last {num} days.",
 	"settings:systemAccessEditLabel": "Edit system access threshold",
@@ -274,7 +274,5 @@ export default {
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : " to ",
 	"alert:axeDescriptionCourses" : "Viewing learner data in these courses ",
-	"alert:axeDescriptionCoursesOff" : "Viewing learner data in all courses.",
-
-	"contentViewCard:cardTitle": "Content View"
+	"alert:axeDescriptionCoursesOff" : "Viewing learner data in all courses."
 };

@@ -9,7 +9,7 @@ class ContentViewCardThumbnailSvg extends RtlMixin(Localizer(LitElement)) {
 	}
 	render() {
 		return html`
-			<span class="d2l-insights-thumbnail-title">${this.localize('contentViewCard:cardTitle')}</span>
+			<span class="d2l-insights-thumbnail-title">${this.localize('contentViewHistogram:title')}</span>
 			<svg xmlns="http://www.w3.org/2000/svg" width="283.5" height="144">
 				<g data-name="Content View">
 					<g data-name="Rectangle 495" fill="#fff" stroke="#e3e9f1">

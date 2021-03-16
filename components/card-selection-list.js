@@ -153,9 +153,9 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 						<d2l-insights-content-view-card-thumbnail class="d2l-demo-card" aria-hidden="true"></d2l-insights-content-view-card-thumbnail>
 						<div class="d2l-card-selection-text">
 							<h3 class="d2l-heading-3 d2l-card-selection-title" aria-hidden="true">
-								${this.localize('contentViewCard:cardTitle')}
+								${this.localize('contentViewHistogram:title')}
 							</h3>
-							<d2l-offscreen>${this.localize('contentViewCard:cardTitle')}</d2l-offscreen>
+							<d2l-offscreen>${this.localize('contentViewHistogram:title')}</d2l-offscreen>
 							<p class="d2l-body-standard">${this.localize('settings:contentViewDesc')}</p>
 						</div>
 					</div>
