@@ -180,7 +180,6 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	// computed
 	get sortedUserRecords() {
-		this.data.users; // force mobx updates ;
 		if (!this.data.userDictionary) return [];
 		return [...this.data
 			.userDictionary.values()]

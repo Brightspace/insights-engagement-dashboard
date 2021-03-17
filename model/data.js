@@ -12,7 +12,6 @@ export class Data {
 		this.recordProvider = recordProvider;
 		this._metronEndpoint = metronEndpoint;
 		this.orgUnitTree = new Tree({});
-		this.userDictionary = null;
 
 		// @observables
 		this.isQueryError = false;
@@ -82,7 +81,6 @@ export class Data {
 				null
 		});
 
-		this.userDictionary = new Map(newServerData.users.map(user => [user[USER.ID], user]));
 		this.isLoading = false;
 		this.serverData = newServerData;
 		this._selectorFilters.semester.selected = this.serverData.selectedSemestersIds || [];
@@ -97,6 +95,10 @@ export class Data {
 
 	get selectedRoleIds() {
 		return this._selectorFilters.role.selected;
+	}
+
+	get userDictionary() {
+		return new Map(this.serverData.users.map(user => [user[USER.ID], user]));
 	}
 
 	set selectedSemesterIds(newSemesterIds) {
@@ -170,5 +172,6 @@ decorate(Data, {
 	selectedOrgUnitIds: computed,
 	selectedRoleIds: computed,
 	selectedSemesterIds: computed,
-	onServerDataReload: action
+	onServerDataReload: action,
+	userDictionary: computed
 });
