@@ -38,14 +38,6 @@ export class ContentViewHistogramFilter extends CategoryFilter {
 		this._urlState = new UrlState(this);
 	}
 
-	set binScheme(scheme) {
-		if (scheme[0] !== Number.POSITIVE_INFINITY) {
-			this._binScheme = scheme[0];
-		} else {
-			this._binScheme = scheme[1];
-		}
-	}
-
 	get bins() {
 		return this._bins;
 	}
