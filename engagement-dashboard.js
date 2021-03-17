@@ -98,6 +98,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		this.metronEndpoint = '';
 		this.s3Enabled = false;
 
+		this.showContentViewCard = false;
 		this.showCourseAccessCard = false;
 		this.showCoursesCol = false;
 		this.showDiscussionsCard = false;
@@ -612,6 +613,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			this.showCourseAccessTrendCard = e.detail.showCourseAccessTrendCard;
 			this.showGradesTrendCard = e.detail.showGradesTrendCard;
 			this.showPredictedGradeCol = e.detail.showPredictedGradeCol;
+			this.showContentViewCard = e.detail.showContentViewCard;
 
 			this._serverData.selectedRoleIds = e.detail.includeRoles;
 			// update LastSystemAccess filter's threshold, as it may have changed (e.g. if new settings were saved)
