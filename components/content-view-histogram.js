@@ -13,7 +13,6 @@ import { UrlState } from '../model/urlState';
 
 const filterId = 'd2l-insights-content-view-histogram';
 
-// we need to map the bin index to a real bin...
 export class ContentViewHistogramFilter extends CategoryFilter {
 	constructor() {
 		const filterFunc = (record, userDictionary) => {
@@ -179,12 +178,9 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 			.sort((aRecord, bRecord) => aRecord[USER.TOTAL_COURSE_ACCESS] - bRecord[USER.TOTAL_COURSE_ACCESS]);
 	}
 
-	get serverData() {
-		return this.data._data.serverData;
-	}
-
 	// computed
 	get sortedUserRecords() {
+		this.data.users; // force mobx updates ;
 		if (!this.data.userDictionary) return [];
 		return [...this.data
 			.userDictionary.values()]
@@ -424,9 +420,9 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 decorate(ContentViewHistogram, {
 	filteredSortedUserRecords: computed,
-	//sortedUserRecords: computed,
+	sortedUserRecords: computed,
 	allCourseAccessWithoutOutliers: computed,
-	//allCourseAccessOutliers: computed,
+	allCourseAccessOutliers: computed,
 	bins: computed,
 	data: observable,
 	skeleton: observable
