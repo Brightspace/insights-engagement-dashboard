@@ -69,7 +69,6 @@ describe('content-view-histogram', () => {
 			filter.toggleCategory(4);
 			filter.toggleCategory(5);
 
-			console.log([...filter.selectedCategories]);
 			expect([...filter.selectedCategories]).to.eql([]);
 		});
 
