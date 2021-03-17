@@ -207,7 +207,8 @@ export async function saveSettings(settings) {
 		'showGradeCol',
 		'showTicCol',
 		'showDiscussionsCol',
-		'showLastAccessCol'
+		'showLastAccessCol',
+		'showContentViewCard'
 	];
 	requiredFields.forEach(field => {
 		if (settings[field] !== true && settings[field] !== false) {

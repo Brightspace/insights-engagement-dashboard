@@ -5,6 +5,7 @@ import '../components/svg/course-access-thumbnail.svg';
 import '../components/svg/current-grade-thumbnail.svg';
 import '../components/svg/tic-vs-grade-thumbnail.svg';
 import '../components/svg/disc-activity-thumbnail.svg';
+import '../components/svg/content-view-card.svg';
 
 import { bodySmallStyles, bodyStandardStyles, heading3Styles } from '@brightspace-ui/core/components/typography/styles';
 import { css, html, LitElement } from 'lit-element/lit-element';
@@ -18,6 +19,7 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 	static get properties() {
 		return {
 			showCourseAccessCard: { type: Boolean, attribute: 'course-access-card', reflect: true },
+			showContentViewCard: { type: Boolean, attribute: 'content-view-card', reflect: true },
 			showDiscussionsCard: { type: Boolean, attribute: 'discussions-card', reflect: true },
 			showGradesCard: { type: Boolean, attribute: 'grades-card', reflect: true },
 			showOverdueCard: { type: Boolean, attribute: 'overdue-card', reflect: true },
@@ -91,6 +93,7 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 		super();
 
 		this.showCourseAccessCard = false;
+		this.showContentViewCard = false;
 		this.showDiscussionsCard = false;
 		this.showGradesCard = false;
 		this.showOverdueCard = false;
@@ -141,6 +144,19 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 							</h3>
 							<d2l-offscreen>${this.localize('timeInContentVsGradeCard:timeInContentVsGrade')}</d2l-offscreen>
 							<p class="d2l-body-standard">${this.localize('settings:ticVsGradeDesc')}</p>
+						</div>
+					</div>
+				</d2l-list-item>
+
+				<d2l-list-item key="showContentViewCard" selectable ?selected="${this.showContentViewCard}">
+					<div class="d2l-insights-list-flex-container">
+						<d2l-insights-content-view-card-thumbnail class="d2l-demo-card" aria-hidden="true"></d2l-insights-content-view-card-thumbnail>
+						<div class="d2l-card-selection-text">
+							<h3 class="d2l-heading-3 d2l-card-selection-title" aria-hidden="true">
+								${this.localize('contentViewHistogram:title')}
+							</h3>
+							<d2l-offscreen>${this.localize('contentViewHistogram:title')}</d2l-offscreen>
+							<p class="d2l-body-standard">${this.localize('settings:contentViewDesc')}</p>
 						</div>
 					</div>
 				</d2l-list-item>
@@ -251,7 +267,8 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 			showGradesCard: this.showGradesCard,
 			showTicGradesCard: this.showTicGradesCard,
 			showCourseAccessCard: this.showCourseAccessCard,
-			lastAccessThresholdDays: this.lastAccessThresholdDays
+			lastAccessThresholdDays: this.lastAccessThresholdDays,
+			showContentViewCard: this.showContentViewCard
 		};
 	}
 }

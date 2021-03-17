@@ -62,6 +62,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			s3Enabled: { type: Boolean, attribute: 'student-success-system-enabled' },
 
 			// user preferences:
+			showContentViewCard: { type: Boolean, attribute: 'content-view-card', reflect: true },
 			showCourseAccessCard: { type: Boolean, attribute: 'course-access-card', reflect: true },
 			showCoursesCol: { type: Boolean, attribute: 'courses-col', reflect: true },
 			showDiscussionsCard: { type: Boolean, attribute: 'discussions-card', reflect: true },
@@ -97,6 +98,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		this.metronEndpoint = '';
 		this.s3Enabled = false;
 
+		this.showContentViewCard = false;
 		this.showCourseAccessCard = false;
 		this.showCoursesCol = false;
 		this.showDiscussionsCard = false;
@@ -343,6 +345,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				?demo="${this.isDemo}"
 				@d2l-insights-settings-view-back="${this._backToHomeHandler}"
 				?course-access-card="${this.showCourseAccessCard}"
+				?content-view-card="${this.showContentViewCard}"
 				?courses-col="${this.showCoursesCol}"
 				?discussions-card="${this.showDiscussionsCard}"
 				?discussions-col="${this.showDiscussionsCol}"
@@ -420,7 +423,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				${this._gradesCard}
 				${this._ticGradesCard}
 				${this._courseAccessCard}
-				<d2l-labs-content-view-histogram .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-labs-content-view-histogram>
+				${this._contentViewCard}
 			</div>
 			${this._userTable}
 			<d2l-insights-default-view-popup
@@ -476,6 +479,11 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	get _ticGradesCard() {
 		if (!this.showTicGradesCard || this._isNoUserResults) return '';
 		return html`<div><d2l-insights-time-in-content-vs-grade-card .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-time-in-content-vs-grade-card></div>`;
+	}
+
+	get _contentViewCard() {
+		if (!this.showContentViewCard || this._isNoUserResults) return '';
+		return html`<d2l-labs-content-view-histogram .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-labs-content-view-histogram>`;
 	}
 
 	get _userTable() {
@@ -605,6 +613,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			this.showCourseAccessTrendCard = e.detail.showCourseAccessTrendCard;
 			this.showGradesTrendCard = e.detail.showGradesTrendCard;
 			this.showPredictedGradeCol = e.detail.showPredictedGradeCol;
+			this.showContentViewCard = e.detail.showContentViewCard;
 
 			this._serverData.selectedRoleIds = e.detail.includeRoles;
 			// update LastSystemAccess filter's threshold, as it may have changed (e.g. if new settings were saved)

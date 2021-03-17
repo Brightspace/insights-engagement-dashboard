@@ -1,4 +1,5 @@
 import '../engagement-dashboard.js';
+import { disableUrlStateForTesting, enableUrlState } from '../model/urlState';
 import { expect, fixture, html } from '@open-wc/testing';
 import { LastAccessFilter } from '../components/last-access-card';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
@@ -12,7 +13,7 @@ describe('d2l-insights-engagement-dashboard', () => {
 			const el = await fixture(html`<d2l-insights-engagement-dashboard
 				course-access-card courses-col discussions-card discussions-col
 				grade-col grades-card last-access-col overdue-card results-card
-				system-access-card tic-col tic-grades-card
+				system-access-card tic-col tic-grades-card content-view-card
  				demo
  			></d2l-insights-engagement-dashboard>`);
 			// close the default view dialog that shows up. It causes browsers on OSX to assign aria-attributes and
@@ -43,6 +44,9 @@ describe('d2l-insights-engagement-dashboard', () => {
 	});
 
 	describe('prefs', () => {
+		before(() => disableUrlStateForTesting());
+		after(() => enableUrlState());
+
 		it('should provide configured roles to the data object', async() => {
 			const el = await fixture(html`<d2l-insights-engagement-dashboard
 					include-roles="900, 1000, 11"
@@ -64,6 +68,7 @@ describe('d2l-insights-engagement-dashboard', () => {
 		});
 
 		const allCards = [
+			'content-view-card',
 			'course-last-access-card',
 			'discussion-activity-card',
 			'current-final-grade-card',
@@ -86,9 +91,10 @@ describe('d2l-insights-engagement-dashboard', () => {
 			['results-card', 'last-access-card'],
 			...allCards.map(omitCard => allCards.filter(card => card !== omitCard))
 		]
-			.forEach(cards =>
+			.forEach((cards) =>
 				it(`should show selected cards (${cards})`, async() => {
 					const el = await fixture(html`<d2l-insights-engagement-dashboard
+						?content-view-card="${cards.includes('content-view-card')}"
 						?course-access-card="${cards.includes('course-last-access-card')}"
 						?discussions-card="${cards.includes('discussion-activity-card')}"
 						?grades-card="${cards.includes('current-final-grade-card')}"
@@ -105,8 +111,9 @@ describe('d2l-insights-engagement-dashboard', () => {
 					const summaryContainerEl = await trySelect(el.shadowRoot
 						, 'd2l-summary-cards-container');
 
-					allCards.forEach(async card => {
-						let renderedCard = await trySelect(el.shadowRoot, `d2l-insights-${card}`, 10);
+					await Promise.all(allCards.map(async card => {
+						const componentTag = card === 'content-view-card' ? 'd2l-labs-content-view-histogram' : `d2l-insights-${card}`;
+						let renderedCard = await trySelect(el.shadowRoot, componentTag, 10);
 						const smallCard = smallCards.find(c => c.card === card);
 						if (smallCard) {
 							renderedCard = await trySelect(summaryContainerEl.shadowRoot, `d2l-insights-${card}`, 10);
@@ -116,7 +123,7 @@ describe('d2l-insights-engagement-dashboard', () => {
 						} else {
 							expect(renderedCard, card).to.not.exist;
 						}
-					});
+					}));
 				})
 			);
 

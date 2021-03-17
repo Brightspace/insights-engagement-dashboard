@@ -78,6 +78,7 @@ describe('d2l-insights-engagement-dashboard-settings', () => {
 				includeRoles: [17, 19, 23],
 				lastAccessThresholdDays: 5,
 				showCourseAccessCard: false,
+				showContentViewCard: false,
 				showCoursesCol: true,
 				showDiscussionsCard: false,
 				showDiscussionsCol: false,
