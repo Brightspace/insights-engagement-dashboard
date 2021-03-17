@@ -66,15 +66,41 @@ export class TimeInContentVsGradeFilter {
 		}
 
 		let quadrant;
-		if (tic < this.avgTimeInContent && grade < this.avgGrade) quadrant = 'leftBottom';
-		else if (tic <= this.avgTimeInContent && grade >= this.avgGrade) quadrant = 'leftTop';
-		else if (tic > this.avgTimeInContent && grade > this.avgGrade) quadrant = 'rightTop';
+		// this function gets called in a loop, so avoiding the tiny overhead of multiple mobx gets
+		// per call on these is worthwhile
+		const avgTimeInContent = this.avgTimeInContent;
+		const avgGrade = this.avgGrade;
+		if (tic < avgTimeInContent && grade < avgGrade) quadrant = 'leftBottom';
+		else if (tic <= avgTimeInContent && grade >= avgGrade) quadrant = 'leftTop';
+		else if (tic > avgTimeInContent && grade > avgGrade) quadrant = 'rightTop';
 		else quadrant = 'rightBottom';
 		return quadrant;
 	}
 
 	getDataForQuadrant(quadrant) {
-		return this.tiCVsGrades.filter(r => this.calculateQuadrant(r[TIC], r[GRADE]) === quadrant);
+		const fullData = this.tiCVsGrades.filter(r => this.calculateQuadrant(r[TIC], r[GRADE]) === quadrant);
+
+		if (fullData.length <= 1000) return { data: fullData, size: fullData.length };
+
+		// If there are 50k data points, it takes several seconds to render them.
+		// The highcharts boost module seems not to have all the features we need, so we reduce the number of data
+		// points by rounding and coalescing. Note that the highstock module can also do data grouping, so that
+		// could be investigated in future.
+		// The rounding here should have little effect on UX because we only allow interaction with the quadrants.
+		// Round grades to 2% increments; round tic to 15 minute intervals
+		const roundedData = fullData.map(([tic, grade]) => [Math.floor(tic / 15) * 15, Math.floor(grade / 2) * 2]);
+		// now drop duplicates
+		const sorted = roundedData.sort(([tic1, grade1], [tic2, grade2]) => (tic1 === tic2 ? grade1 - grade2 : tic1 - tic2));
+		let [lastTic, lastGrade] = sorted[0];
+		const grouped = [sorted[0]];
+		for (let i = 1; i < sorted.length; i++) {
+			const [tic, grade] = sorted[i];
+			if (tic === lastTic && grade === lastGrade) continue;
+			grouped.push(sorted[i]);
+			[lastTic, lastGrade] = sorted[i];
+		}
+
+		return { data: grouped, size: fullData.length };
 	}
 
 	filter(record) {
@@ -375,6 +401,7 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 
 	get _series() {
 		const that = this;
+		const scatterData = this._scatterData;
 		return [
 			...this._scatterSeries,
 			{
@@ -387,7 +414,7 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 					y: x[2],
 					custom: {
 						quadrant: x[0],
-						size: this.filter.getDataForQuadrant(x[0]).length
+						size: scatterData[x[0]].size
 					}
 				})),
 				accessibility: {
@@ -417,9 +444,10 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 
 	get _scatterSeries() {
 		const that = this;
-		return this._scatterData.map(s => ({
-			name: s.name,
-			data: s.data,
+		const quadrants = this._scatterData;
+		return Object.keys(quadrants).map(s => ({
+			name: s,
+			data: quadrants[s].data,
 			accessibility: {
 				enabled: false,
 				keyboardNavigation: {
@@ -428,7 +456,7 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 			},
 			marker: {
 				radius: 5,
-				fillColor: (!this.filter.isApplied || this.filter.quadrant === s.name) ?
+				fillColor: (!this.filter.isApplied || this.filter.quadrant === s) ?
 					'var(--d2l-color-amethyst-plus-1)' :
 					'var(--d2l-color-mica)',
 				symbol: 'circle'
@@ -445,11 +473,10 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 	}
 
 	get _scatterData() {
-		return ['leftBottom', 'leftTop', 'rightTop', 'rightBottom']
-			.map(quadrant => ({
-				name: quadrant,
-				data: this.filter.getDataForQuadrant(quadrant)
-			}));
+		const quadrants = {};
+		['leftBottom', 'leftTop', 'rightTop', 'rightBottom']
+			.forEach(quadrant => quadrants[quadrant] = this.filter.getDataForQuadrant(quadrant));
+		return quadrants;
 	}
 }
 decorate(TimeInContentVsGradeCard, {

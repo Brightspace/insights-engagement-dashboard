@@ -26,6 +26,7 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 			isDemo: { type: Boolean, attribute: 'demo' },
 			s3Enabled: { type: Boolean, attribute: 'student-success-system-enabled' },
 
+			showContentViewCard: { type: Boolean, attribute: 'content-view-card', reflect: true },
 			showCourseAccessCard: { type: Boolean, attribute: 'course-access-card', reflect: true },
 			showCoursesCol: { type: Boolean, attribute: 'courses-col', reflect: true },
 			showDiscussionsCard: { type: Boolean, attribute: 'discussions-card', reflect: true },
@@ -156,6 +157,7 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 		this.isDemo = false;
 		this.s3Enabled = false;
 
+		this.showContentViewCard = false;
 		this.showCourseAccessCard = false;
 		this.showCoursesCol = false;
 		this.showDiscussionsCard = false;
@@ -192,6 +194,7 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 							</d2l-insights-role-list>
 
 							<d2l-insights-engagement-card-selection-list
+								?content-view-card="${this.showContentViewCard}"
 								?course-access-card="${this.showCourseAccessCard}"
 								?discussions-card="${this.showDiscussionsCard}"
 								?grades-card="${this.showGradesCard}"
