@@ -20,8 +20,11 @@ export class ContentViewHistogramFilter extends CategoryFilter {
 			const userId = record[RECORD.USER_ID];
 			const userRecord = userDictionary.get(userId);
 			const views = userRecord[USER.TOTAL_COURSE_ACCESS];
-			if (views === 0) return this.bins.length;
-			recordBin = this.bins.findIndex(bin => views <= bin[0] && views > bin[1]);
+			if (views === 0) {
+				recordBin = this.bins.length;
+			} else {
+				recordBin = this.bins.findIndex(bin => views <= bin[0] && views > bin[1]);
+			}
 			return this.selectedCategories.has(recordBin);
 		};
 		super(
@@ -32,8 +35,6 @@ export class ContentViewHistogramFilter extends CategoryFilter {
 			undefined // set all later
 		);
 
-		this._binScheme = 50;
-
 		this._urlState = new UrlState(this);
 	}
 
@@ -43,12 +44,6 @@ export class ContentViewHistogramFilter extends CategoryFilter {
 
 	set bins(bins) {
 		this._bins = bins;
-		const scheme = bins[0];
-		if (scheme[0] !== Number.POSITIVE_INFINITY) {
-			this._binScheme = scheme[0];
-		} else {
-			this._binScheme = scheme[1];
-		}
 		super._all = new Set((new Array(bins.length + 1).fill(0).map((v, i) => i)));
 	}
 
@@ -180,7 +175,6 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	// computed
 	get sortedUserRecords() {
-		if (!this.data.userDictionary) return [];
 		return [...this.data
 			.userDictionary.values()]
 			.filter(record => record[USER.TOTAL_COURSE_ACCESS] !== undefined && record[USER.TOTAL_COURSE_ACCESS] !== null)
