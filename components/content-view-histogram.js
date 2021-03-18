@@ -120,10 +120,6 @@ export class ContentViewHistogramFilter extends CategoryFilter {
 		const categories = value.split(',').map(category => Number(category));
 		this.setCategories(categories);
 	}
-
-	setAll(all) {
-		super.setAll(all);
-	}
 }
 
 class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
