@@ -35,6 +35,8 @@ export class Data {
 		// @observables
 		this.isQueryError = false;
 		this.isLoading = true;
+		this._userDictionary = new Map();
+
 		// because this._serverData itself is only updated onServerDataReload, we can safely use a simple
 		// counter to let mobx know it has changed, rather than incurring the overhead of mobx-ifying
 		// all the server data. This gives considerable speedup across the app for 50k enrollments.
@@ -95,6 +97,9 @@ export class Data {
 		this._serverData = newServerData;
 		this._serverDataProxy++;
 		this._selectorFilters.semester.selected = this.serverData.selectedSemestersIds || [];
+
+		this._userDictionary.clear();
+		newServerData.users.map(user => this._userDictionary.set(user[USER.ID], user));
 	}
 
 	set selectedRoleIds(newRoleIds) {
@@ -109,7 +114,7 @@ export class Data {
 	}
 
 	get userDictionary() {
-		return new Map(this.serverData.users.map(user => [user[USER.ID], user]));
+		return this._userDictionary;
 	}
 
 	set selectedSemesterIds(newSemesterIds) {
@@ -176,6 +181,7 @@ export class Data {
 
 decorate(Data, {
 	_serverDataProxy: observable,
+	_userDictionary: observable,
 	orgUnitTree: observable,
 	isLoading: observable,
 	isQueryError: observable,
@@ -184,5 +190,4 @@ decorate(Data, {
 	selectedRoleIds: computed,
 	selectedSemesterIds: computed,
 	onServerDataReload: action,
-	userDictionary: computed
 });

@@ -13,18 +13,86 @@ import { UrlState } from '../model/urlState';
 
 const filterId = 'd2l-insights-content-view-histogram';
 
+class ContentViewHistogramBinUtility {
+
+	constructor() {
+		this._userDictionary;
+	}
+
+	static get instance() {
+		if (!this._instance) {
+			this._instance = new ContentViewHistogramBinUtility();
+		}
+		return this._instance;
+	}
+
+	recordBin(record) {
+		let recordBin = 0;
+		const userId = record[RECORD.USER_ID];
+		const userRecord = this._userDictionary.get(userId);
+		const views = userRecord[USER.TOTAL_COURSE_ACCESS];
+		if (views === 0) {
+			recordBin = this.bins.length;
+		} else {
+			recordBin = this.bins.findIndex(bin => views <= bin [0] && views > bin[1]);
+		}
+		return recordBin;
+	}
+
+	get _sortedUserRecords() {
+		return [...this._userDictionary.values()]
+			.filter(record => record[USER.TOTAL_COURSE_ACCESS] !== undefined && record[USER.TOTAL_COURSE_ACCESS] !== null)
+			.sort((aRecord, bRecord) => aRecord[USER.TOTAL_COURSE_ACCESS] - bRecord[USER.TOTAL_COURSE_ACCESS]);
+	}
+
+	get allCourseAccesses() {
+		return this._sortedUserRecords.map(record => record[USER.TOTAL_COURSE_ACCESS]);
+	}
+
+	get allCourseAccessWithoutOutliers() {
+		return removeOutliers(this.allCourseAccesses);
+	}
+
+	get allCourseAccessOutliers() {
+		return getOutliers(this.allCourseAccesses);
+	}
+
+	get bins() {
+		if (this._userDictionary === undefined) return undefined;
+		// the userDictionary is the same, so we return the last bins result.
+
+		const peaks = [50, 100, 200, 500, 1000];
+		const values = this.allCourseAccessWithoutOutliers;
+		const largestAccess = values[values.length - 1];
+		let upperBin = peaks.find(peak => peak >= largestAccess);
+		if (upperBin === undefined) upperBin = 1000;
+		if (values.length === 0) upperBin = 50;
+		const range = upperBin / 5;
+		const bins = [];
+
+		for (let i = 1; i <= 5; i++) {
+			bins.push([range * i, range * (i - 1)]);
+		}
+		if (this.allCourseAccessOutliers.length !== 0 || largestAccess > peaks[peaks.length - 1]) {
+			bins.push([Number.POSITIVE_INFINITY, upperBin]);
+		}
+		return bins.reverse();
+	}
+
+	set userDictionary(dict) {
+		this._userDictionary = dict;
+	}
+}
+
+decorate(ContentViewHistogramBinUtility, {
+	bins: computed
+});
+
 export class ContentViewHistogramFilter extends CategoryFilter {
 	constructor() {
 		const filterFunc = (record, userDictionary) => {
-			let recordBin = 0;
-			const userId = record[RECORD.USER_ID];
-			const userRecord = userDictionary.get(userId);
-			const views = userRecord[USER.TOTAL_COURSE_ACCESS];
-			if (views === 0) {
-				recordBin = this.bins.length;
-			} else {
-				recordBin = this.bins.findIndex(bin => views <= bin[0] && views > bin[1]);
-			}
+			this.binUtility.userDictionary = userDictionary;
+			const recordBin = this.binUtility.recordBin(record);
 			return this.selectedCategories.has(recordBin);
 		};
 		super(
@@ -34,17 +102,8 @@ export class ContentViewHistogramFilter extends CategoryFilter {
 			'cvhf',
 			undefined // set all later
 		);
-
+		this.binUtility = ContentViewHistogramBinUtility.instance;
 		this._urlState = new UrlState(this);
-	}
-
-	get bins() {
-		return this._bins;
-	}
-
-	set bins(bins) {
-		this._bins = bins;
-		super._all = new Set((new Array(bins.length + 1).fill(0).map((v, i) => i)));
 	}
 
 	//for Urlstate
@@ -60,6 +119,10 @@ export class ContentViewHistogramFilter extends CategoryFilter {
 		}
 		const categories = value.split(',').map(category => Number(category));
 		this.setCategories(categories);
+	}
+
+	setAll(all) {
+		super.setAll(all);
 	}
 }
 
@@ -78,6 +141,7 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 	constructor() {
 		super();
 		this.data = {};
+		this.binUtility = ContentViewHistogramBinUtility.instance;
 	}
 
 	static get styles() {
@@ -142,25 +206,9 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	//computed
 	get bins() {
-		// changing these ranges will change the bins throught the chart.
-		this.skeleton;
-		const peaks = [50, 100, 200, 500, 1000];
-		const values = this.allCourseAccessWithoutOutliers;
-		const largestAccess = values[values.length - 1];
-		let upperBin = peaks.find(peak => peak >= largestAccess);
-		if (upperBin === undefined) upperBin = 1000;
-		if (values.length === 0) upperBin = 50;
-		const range = upperBin / 5;
-		const bins = [];
-
-		for (let i = 1; i <= 5; i++) {
-			bins.push([range * i, range * (i - 1)]);
-		}
-		if (this.allCourseAccessOutliers.length !== 0 || largestAccess > peaks[peaks.length - 1]) {
-			bins.push([Number.POSITIVE_INFINITY, upperBin]);
-		}
-
-		return bins.reverse();
+		if (!this.binUtility.hasRecords) this.binUtility.userDictionary = this.data.userDictionary;
+		this.filter.setAll(new Set(new Array(this.binUtility.bins.length + 1).fill(0).map((v, i) => i)));
+		return this.binUtility.bins;
 	}
 
 	// computed
@@ -173,28 +221,8 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 			.sort((aRecord, bRecord) => aRecord[USER.TOTAL_COURSE_ACCESS] - bRecord[USER.TOTAL_COURSE_ACCESS]);
 	}
 
-	// computed
-	get sortedUserRecords() {
-		return [...this.data
-			.userDictionary.values()]
-			.filter(record => record[USER.TOTAL_COURSE_ACCESS] !== undefined && record[USER.TOTAL_COURSE_ACCESS] !== null)
-			.sort((aRecord, bRecord) => aRecord[USER.TOTAL_COURSE_ACCESS] - bRecord[USER.TOTAL_COURSE_ACCESS]);
-	}
-
 	get filteredCourseAccesses() {
 		return this.filteredSortedUserRecords.map(record => record[USER.TOTAL_COURSE_ACCESS]);
-	}
-
-	get allCourseAccesses() {
-		return this.sortedUserRecords.map(record => record[USER.TOTAL_COURSE_ACCESS]);
-	}
-
-	get allCourseAccessWithoutOutliers() {
-		return removeOutliers(this.allCourseAccesses);
-	}
-
-	get allCourseAccessOutliers() {
-		return getOutliers(this.allCourseAccesses);
 	}
 
 	get filteredCourseAccessOutliers() {
@@ -202,10 +230,12 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get dataBuckets() {
+		if (this.bins === undefined) return [];
 		return new Array(this.bins.length + 1).fill(0);
 	}
 
 	get categories() {
+		if (this.bins === undefined) return [];
 		return this.bins.reduce((acc, cur) => {
 			if (cur[0] === Number.POSITIVE_INFINITY) {
 				acc.push(`> ${cur[1]}`);
@@ -217,6 +247,8 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	get _chartDataBuckets() {
+
+		if (this.skeleton || this.bins === undefined) return [];
 
 		const findBin = (record) => {
 			if (record === 0) return this.bins.length;
@@ -400,8 +432,6 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	render() {
 		// the filter depends on the bin scheme so we need to update it.
-		this.filter.bins = this.bins;
-
 		return html`
 		<div class="d2l-insights-content-views-title d2l-skeletize d2l-skeletize-45 d2l-body-standard">${this._cardTitle}</div>
 		<d2l-labs-chart
@@ -413,10 +443,6 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 decorate(ContentViewHistogram, {
 	filteredSortedUserRecords: computed,
-	sortedUserRecords: computed,
-	allCourseAccessWithoutOutliers: computed,
-	allCourseAccessOutliers: computed,
-	bins: computed,
 	data: observable,
 	skeleton: observable
 });
