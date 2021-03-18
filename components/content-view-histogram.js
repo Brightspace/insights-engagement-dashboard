@@ -1,4 +1,4 @@
-import { action, computed, decorate, observable } from 'mobx';
+import { computed, decorate, observable } from 'mobx';
 import { css, html } from 'lit-element/lit-element.js';
 import { getOutliers, removeOutliers } from '../model/stats.js';
 import { RECORD, USER } from '../consts';
@@ -125,10 +125,6 @@ export class ContentViewHistogramFilter extends CategoryFilter {
 		super.setAll(all);
 	}
 }
-
-decorate(ContentViewHistogramFilter, {
-	setAll: action
-});
 
 class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 
