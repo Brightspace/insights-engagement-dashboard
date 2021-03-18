@@ -99,7 +99,7 @@ export class Data {
 		this._selectorFilters.semester.selected = this.serverData.selectedSemestersIds || [];
 
 		this._userDictionary.clear();
-		newServerData.users.map(user => this._userDictionary.set(user[USER.ID], user));
+		newServerData.users.forEach(user => this._userDictionary.set(user[USER.ID], user));
 	}
 
 	set selectedRoleIds(newRoleIds) {
