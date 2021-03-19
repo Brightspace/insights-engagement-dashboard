@@ -179,7 +179,6 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	//computed
 	get bins() {
-		this.filter.setAll(new Set(new Array(this.filter.bins.length + 1).fill(0).map((v, i) => i)));
 		return this.filter.bins;
 	}
 

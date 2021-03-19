@@ -551,8 +551,8 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				.withFilter(new CurrentFinalGradesFilter())
 				.withFilter(new DiscussionActivityFilter());
 
-			this.__data = rowFilteredData.withFilter(new TimeInContentVsGradeFilter(rowFilteredData))
-				.withFilter(new ContentViewHistogramFilter(rowFilteredData));
+			const rowFilteredDataIntermediate = rowFilteredData.withFilter(new ContentViewHistogramFilter(rowFilteredData));
+			this.__data = rowFilteredDataIntermediate.withFilter(new TimeInContentVsGradeFilter(rowFilteredDataIntermediate));
 		}
 
 		return this.__data;
