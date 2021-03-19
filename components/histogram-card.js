@@ -158,8 +158,6 @@ class HistogramCard extends MobxLitElement {
 	}
 
 	render() {
-		console.log(`histogram-card render ${this.data.id}`);
-
 		// NB: relying on mobx rather than lit-element properties to handle update detection: it will trigger a redraw for
 		// any change to a relevant observed property of the Data object
 		return html`<div class="d2l-insights-summary-card" ?applied="${this.data.isApplied}" ?loading="${this.data.isLoading}">

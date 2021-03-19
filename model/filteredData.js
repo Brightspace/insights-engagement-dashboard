@@ -68,6 +68,10 @@ export class FilteredData {
 		return this._data.userDictionary;
 	}
 
+	get userEnrollmentDictionary() {
+		return this._data.userEnrollmentDictionary;
+	}
+
 	get users() {
 		const userIdsInView = unique(this.records.map(record => record[RECORD.USER_ID]));
 		return userIdsInView.map(userId => this.userDictionary.get(userId));

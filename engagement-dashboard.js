@@ -28,6 +28,7 @@ import { DefaultViewState, ViewState } from './model/view-state';
 import { getPerformanceLoadPageMeasures, TelemetryHelper } from './model/telemetry-helper';
 import { isDefault, UrlState } from './model/urlState';
 import { LastAccessFilter, filterId as lastAccessFilterId } from './components/last-access-card';
+import { ContentViewHistogramFilter } from './components/content-view-histogram';
 import { CourseLastAccessFilter } from './components/course-last-access-card';
 import { createComposeEmailPopup } from './components/email-integration';
 import { CurrentFinalGradesFilter } from './components/current-final-grade-card';
@@ -550,7 +551,8 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				.withFilter(new CurrentFinalGradesFilter())
 				.withFilter(new DiscussionActivityFilter());
 
-			this.__data = rowFilteredData.withFilter(new TimeInContentVsGradeFilter(rowFilteredData));
+			const rowFilteredDataIntermediate = rowFilteredData.withFilter(new ContentViewHistogramFilter(rowFilteredData));
+			this.__data = rowFilteredDataIntermediate.withFilter(new TimeInContentVsGradeFilter(rowFilteredDataIntermediate));
 		}
 
 		return this.__data;

@@ -1,18 +1,34 @@
-import '../../components/content-view-histogram';
 import { expect, fixture, html } from '@open-wc/testing';
+import { ContentViewHistogramFilter } from '../../components/content-view-histogram';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
-const data = {
-	withoutFilter: () => ({
-		users: Array(6).fill(0)
-	})
+const filter = new ContentViewHistogramFilter();
+
+const mapFromViews = (views) => {
+	const map = new Map();
+	views.forEach((v, i) => map.set(i, [i, 0, 0, 0, 0, v]));
+	return map;
 };
 
-const makeDataFromUserViews = (views) => ({
-	withoutFilter: () => ({
-		users: views.map(view => [0, 0, 0, 0, 0, view])
-	})
-});
+const records = [
+	[0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+	[0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+	[0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+	[0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+	[0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+];
+
+const makeDataFromUserViews = (views) => {
+	const data = {
+		userDictionary: mapFromViews(views),
+		userEnrollmentDictionary: mapFromViews(views),
+		records: [...records],
+		getFilter: id => (id === filter.id ? filter : null),
+		withoutFilter: id => (id === filter.id ? { users: views.map((view, i) => [i, 0, 0, 0, 0, view]) } : null)
+	};
+	filter._data = data;
+	return data;
+};
 
 describe('content-view-histogram', () => {
 	describe('constructor', () => {
@@ -23,8 +39,65 @@ describe('content-view-histogram', () => {
 
 	describe('accessibility', () => {
 		it('should pass all axe tests', async() => {
-			const el = await fixture(html`<d2l-labs-content-view-histogram .data="${data}"></d2l-labs-content-view-histogram>`);
+			const localData = makeDataFromUserViews([0, 5, 15, 25, 35, 45]);
+			const el = await fixture(html`<d2l-labs-content-view-histogram .data="${localData}"></d2l-labs-content-view-histogram>`);
+			const filter = el.filter;
+			filter._data = localData;
 			await expect(el).to.be.accessible();
+		});
+	});
+
+	describe('filter', () => {
+		it('should reset filter when all toggled', async() => {
+			const localData = makeDataFromUserViews([0, 5, 15, 25, 35, 45]);
+			const el = await fixture(html`<d2l-labs-content-view-histogram .data="${localData}"></d2l-labs-content-view-histogram>`);
+			const filter = el.filter;
+			filter._data = localData;
+			filter.bins;
+			filter.selectedCategories.clear();
+
+			filter.toggleCategory(0);
+			filter.toggleCategory(1);
+			filter.toggleCategory(2);
+			filter.toggleCategory(3);
+			filter.toggleCategory(4);
+			filter.toggleCategory(5);
+
+			expect([...filter.selectedCategories]).to.eql([]);
+		});
+
+		it('should filter results based on bin', async() => {
+			const localData = makeDataFromUserViews([0, 5, 15, 25, 35, 45]);
+			const el = await fixture(html`<d2l-labs-content-view-histogram .data="${localData}"></d2l-labs-content-view-histogram>`);
+			const filter = el.filter;
+			filter._data = localData;
+			filter.bins;
+			filter.selectedCategories.clear();
+
+			filter.toggleCategory(1);
+			// select bin 1 (data in range 30-40)
+			const results = localData.records.filter(r => filter.filter(r, localData.userDictionary));
+			// userID 4 has value 35, expect to be the only result
+			expect(results).to.eql([[0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0]]);
+		});
+
+		it('should change bar color during filtering', async() => {
+			const localData = makeDataFromUserViews([0, 5, 15, 25, 35, 45]);
+			const el = await fixture(html`<d2l-labs-content-view-histogram .data="${localData}"></d2l-labs-content-view-histogram>`);
+			const filter = el.filter;
+			filter._data = localData;
+			filter.bins;
+			filter.selectedCategories.clear();
+
+			filter.selectedCategories.add(0);
+			filter.selectedCategories.add(1);
+			expect(el.colors).to.eql([
+				'var(--d2l-color-celestine)',
+				'var(--d2l-color-celestine)',
+				'var(--d2l-color-mica)',
+				'var(--d2l-color-mica)',
+				'var(--d2l-color-mica)',
+				'var(--d2l-color-mica)']);
 		});
 	});
 
@@ -149,6 +222,82 @@ describe('content-view-histogram', () => {
 			];
 
 			await expect(el.bins).to.eql(expectedBins);
+		});
+	});
+
+	describe('axe descrptions', () => {
+
+		it('should create an axe description', async() => {
+
+			const localData = makeDataFromUserViews([0, 5, 15, 25, 35, 45]);
+			const el = await fixture(html`<d2l-labs-content-view-histogram .data="${localData}"></d2l-labs-content-view-histogram>`);
+			const filter = el.filter;
+
+			filter.selectedCategories.clear();
+			filter.toggleCategory(0);
+
+			const description = el.getAxeDescription();
+
+			expect(description).to.equal('Viewing learners with Content View in these categories  41 to 50');
+		});
+
+		it('should merge categories in axe description', async() => {
+
+			const localData = makeDataFromUserViews([0, 5, 15, 25, 35, 45]);
+			const el = await fixture(html`<d2l-labs-content-view-histogram .data="${localData}"></d2l-labs-content-view-histogram>`);
+			const filter = el.filter;
+
+			filter.selectedCategories.clear();
+			filter.toggleCategory(0);
+			filter.toggleCategory(1);
+
+			const description = el.getAxeDescription();
+
+			expect(description).to.equal('Viewing learners with Content View in these categories  31 to 50');
+		});
+
+		it('should seperate skipped categories in axe description and 0 read on its own', async() => {
+
+			const localData = makeDataFromUserViews([0, 5, 15, 25, 35, 45]);
+			const el = await fixture(html`<d2l-labs-content-view-histogram .data="${localData}"></d2l-labs-content-view-histogram>`);
+			const filter = el.filter;
+
+			filter.selectedCategories.clear();
+			filter.toggleCategory(5);
+			filter.toggleCategory(3);
+
+			const description = el.getAxeDescription();
+
+			expect(description).to.equal('Viewing learners with Content View in these categories  0, 11 to 20');
+		});
+
+		it('should say greater than for outlier bin', async() => {
+
+			const localData = makeDataFromUserViews([0, 5, 15, 25, 35, 200]);
+			const el = await fixture(html`<d2l-labs-content-view-histogram .data="${localData}"></d2l-labs-content-view-histogram>`);
+			const filter = el.filter;
+
+			filter.selectedCategories.clear();
+			filter.toggleCategory(0);
+
+			const description = el.getAxeDescription();
+
+			expect(description).to.equal('Viewing learners with Content View in these categories  greater than 50');
+		});
+
+		it('should group greater than for outlier bin and smaller bin', async() => {
+
+			const localData = makeDataFromUserViews([0, 5, 15, 25, 35, 200]);
+			const el = await fixture(html`<d2l-labs-content-view-histogram .data="${localData}"></d2l-labs-content-view-histogram>`);
+			const filter = el.filter;
+
+			filter.selectedCategories.clear();
+			filter.toggleCategory(0);
+			filter.toggleCategory(1);
+
+			const description = el.getAxeDescription();
+
+			expect(description).to.equal('Viewing learners with Content View in these categories  greater than 40');
 		});
 	});
 });

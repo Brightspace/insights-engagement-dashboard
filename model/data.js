@@ -1,5 +1,5 @@
 import { action, computed, decorate, observable } from 'mobx';
-import { COURSE_OFFERING, USER } from '../consts';
+import { COURSE_OFFERING, RECORD, USER } from '../consts';
 import { fetchCachedChildren, fetchLastSearch } from './dataApiClient.js';
 import { OrgUnitSelectorFilter, RoleSelectorFilter, SemesterSelectorFilter } from './selectorFilters.js';
 import { Tree } from '../components/tree-filter';
@@ -12,7 +12,6 @@ export class Data {
 		this.recordProvider = recordProvider;
 		this._metronEndpoint = metronEndpoint;
 		this.orgUnitTree = new Tree({});
-		this.userDictionary = null;
 		this._serverData = {
 			records: [],
 			orgUnits: [],
@@ -36,6 +35,7 @@ export class Data {
 		// @observables
 		this.isQueryError = false;
 		this.isLoading = true;
+
 		// because this._serverData itself is only updated onServerDataReload, we can safely use a simple
 		// counter to let mobx know it has changed, rather than incurring the overhead of mobx-ifying
 		// all the server data. This gives considerable speedup across the app for 50k enrollments.
@@ -92,7 +92,6 @@ export class Data {
 				null
 		});
 
-		this.userDictionary = new Map(newServerData.users.map(user => [user[USER.ID], user]));
 		this.isLoading = false;
 		this._serverData = newServerData;
 		this._serverDataProxy++;
@@ -108,6 +107,28 @@ export class Data {
 
 	get selectedRoleIds() {
 		return this._selectorFilters.role.selected;
+	}
+
+	get userDictionary() {
+		this._serverDataProxy;
+		return new Map(this._serverData.users.map(user => [user[USER.ID], user]));
+	}
+
+	get userEnrollmentDictionary() {
+		this._serverDataProxy;
+
+		const selectedCourses = this.orgUnitTree.allSelectedCourses;
+		if (selectedCourses.length === 0) return this.userDictionary;
+
+		const userEnrollments = new Map();
+		this._serverData.records.forEach(record => {
+			const orgUnitId = record[RECORD.ORG_UNIT_ID];
+			const userId = record[RECORD.USER_ID];
+			if (selectedCourses.includes(orgUnitId)) {
+				userEnrollments.set(userId, this.userDictionary.get(userId));
+			}
+		});
+		return userEnrollments;
 	}
 
 	set selectedSemesterIds(newSemesterIds) {
@@ -181,5 +202,7 @@ decorate(Data, {
 	selectedOrgUnitIds: computed,
 	selectedRoleIds: computed,
 	selectedSemesterIds: computed,
-	onServerDataReload: action
+	userDictionary: computed,
+	userEnrollmentDictionary: computed,
+	onServerDataReload: action,
 });

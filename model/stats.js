@@ -38,7 +38,7 @@ export function removeOutliers(array) {
 }
 
 export function getOutliers(array) {
-	if (array.length < 5) return [];
+	if (array.length < 3) return [];
 	const upperBound = getUpperBound(array);
 	return array.filter(value => value >= upperBound);
 }

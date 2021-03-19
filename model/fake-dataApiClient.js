@@ -72,7 +72,7 @@ export async function fetchData({ roleIds, semesterIds, orgUnitIds, defaultView 
 		isDefaultView: defaultView,
 		isStudentSuccessSys: true
 	};
-	return new Promise(resolve => setTimeout(() => resolve(demoData), getDelayFromUrlHash() || 100));
+	return new Promise(resolve => setTimeout(() => resolve(demoData), getDelayFromUrlHash() || 10));
 }
 
 /**
