@@ -4,26 +4,10 @@ import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-help
 
 const filter = new ContentViewHistogramFilter();
 
-const emptyMap = () => {
-	const map = new Map();
-	map.set(0, new Array(6).fill(0));
-	map.set(1, new Array(6).fill(0));
-	map.set(2, new Array(6).fill(0));
-	map.set(3, new Array(6).fill(0));
-	map.set(4, new Array(6).fill(0));
-	return map;
-};
-
 const mapFromViews = (views) => {
 	const map = new Map();
 	views.forEach((v, i) => map.set(i, [i, 0, 0, 0, 0, v]));
 	return map;
-};
-
-const data = {
-	userDictionary: emptyMap(),
-	getFilter: id => (id === filter.id ? filter : null),
-	withoutFilter: id => (id === filter.id ? { users: Array(6).fill(0) } : null)
 };
 
 const records = [
