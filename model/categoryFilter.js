@@ -30,7 +30,6 @@ export class CategoryFilter {
 
 		if (!this._all) return false;
 		const intersection = [...this._all].filter(v => this.selectedCategories.has(v));
-
 		if (intersection.length === this._all.size) return true;
 		return false;
 	}

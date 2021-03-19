@@ -34,12 +34,17 @@ const records = [
 	[0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 ];
 
-const makeDataFromUserViews = (views) => ({
-	userDictionary: mapFromViews(views),
-	records: [...records],
-	getFilter: id => (id === filter.id ? filter : null),
-	withoutFilter: id => (id === filter.id ? { users: views.map((view, i) => [i, 0, 0, 0, 0, view]) } : null)
-});
+const makeDataFromUserViews = (views) => {
+	const data = {
+		userDictionary: mapFromViews(views),
+		userEnrollmentDictionary: mapFromViews(views),
+		records: [...records],
+		getFilter: id => (id === filter.id ? filter : null),
+		withoutFilter: id => (id === filter.id ? { users: views.map((view, i) => [i, 0, 0, 0, 0, view]) } : null)
+	};
+	filter._data = data;
+	return data;
+};
 
 describe('content-view-histogram', () => {
 	describe('constructor', () => {
@@ -50,7 +55,10 @@ describe('content-view-histogram', () => {
 
 	describe('accessibility', () => {
 		it('should pass all axe tests', async() => {
-			const el = await fixture(html`<d2l-labs-content-view-histogram .data="${data}"></d2l-labs-content-view-histogram>`);
+			const localData = makeDataFromUserViews([0, 5, 15, 25, 35, 45]);
+			const el = await fixture(html`<d2l-labs-content-view-histogram .data="${localData}"></d2l-labs-content-view-histogram>`);
+			const filter = el.filter;
+			filter._data = localData;
 			await expect(el).to.be.accessible();
 		});
 	});
@@ -60,6 +68,8 @@ describe('content-view-histogram', () => {
 			const localData = makeDataFromUserViews([0, 5, 15, 25, 35, 45]);
 			const el = await fixture(html`<d2l-labs-content-view-histogram .data="${localData}"></d2l-labs-content-view-histogram>`);
 			const filter = el.filter;
+			filter._data = localData;
+			filter.bins;
 			filter.selectedCategories.clear();
 
 			filter.toggleCategory(0);
@@ -76,6 +86,8 @@ describe('content-view-histogram', () => {
 			const localData = makeDataFromUserViews([0, 5, 15, 25, 35, 45]);
 			const el = await fixture(html`<d2l-labs-content-view-histogram .data="${localData}"></d2l-labs-content-view-histogram>`);
 			const filter = el.filter;
+			filter._data = localData;
+			filter.bins;
 			filter.selectedCategories.clear();
 
 			filter.toggleCategory(1);
@@ -89,6 +101,8 @@ describe('content-view-histogram', () => {
 			const localData = makeDataFromUserViews([0, 5, 15, 25, 35, 45]);
 			const el = await fixture(html`<d2l-labs-content-view-histogram .data="${localData}"></d2l-labs-content-view-histogram>`);
 			const filter = el.filter;
+			filter._data = localData;
+			filter.bins;
 			filter.selectedCategories.clear();
 
 			filter.selectedCategories.add(0);

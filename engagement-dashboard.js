@@ -549,10 +549,10 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				.withFilter(new LastAccessFilter(this.lastAccessThresholdDays, this.isDemo))
 				.withFilter(new CourseLastAccessFilter(this.isDemo))
 				.withFilter(new CurrentFinalGradesFilter())
-				.withFilter(new DiscussionActivityFilter())
-				.withFilter(new ContentViewHistogramFilter());
+				.withFilter(new DiscussionActivityFilter());
 
-			this.__data = rowFilteredData.withFilter(new TimeInContentVsGradeFilter(rowFilteredData));
+			this.__data = rowFilteredData.withFilter(new TimeInContentVsGradeFilter(rowFilteredData))
+				.withFilter(new ContentViewHistogramFilter(rowFilteredData));
 		}
 
 		return this.__data;

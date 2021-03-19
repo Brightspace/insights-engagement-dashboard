@@ -13,23 +13,28 @@ import { UrlState } from '../model/urlState';
 
 const filterId = 'd2l-insights-content-view-histogram';
 
-class ContentViewHistogramBinUtility {
+export class ContentViewHistogramFilter extends CategoryFilter {
+	constructor(data) {
+		super(
+			filterId,
+			'contentViewHistogram:title',
+			(record) => {
+				const recordsBin = this.recordBin(record);
+				return this.selectedCategories.has(recordsBin);
+			},
+			'cvhf',
+			undefined
+		);
 
-	constructor() {
-		this._userDictionary;
+		this._data = data;
+		this._urlState = new UrlState(this);
 	}
 
-	static get instance() {
-		if (!this._instance) {
-			this._instance = new ContentViewHistogramBinUtility();
-		}
-		return this._instance;
-	}
-
+	// dynamic binning
 	recordBin(record) {
 		let recordBin = 0;
 		const userId = record[RECORD.USER_ID];
-		const userRecord = this._userDictionary.get(userId);
+		const userRecord = this._data.userDictionary.get(userId);
 		const views = userRecord[USER.TOTAL_COURSE_ACCESS];
 		if (views === 0) {
 			recordBin = this.bins.length;
@@ -40,7 +45,7 @@ class ContentViewHistogramBinUtility {
 	}
 
 	get _sortedUserRecords() {
-		return [...this._userDictionary.values()]
+		return [...this._data.userEnrollmentDictionary.values()]
 			.filter(record => record[USER.TOTAL_COURSE_ACCESS] !== undefined && record[USER.TOTAL_COURSE_ACCESS] !== null)
 			.sort((aRecord, bRecord) => aRecord[USER.TOTAL_COURSE_ACCESS] - bRecord[USER.TOTAL_COURSE_ACCESS]);
 	}
@@ -58,8 +63,7 @@ class ContentViewHistogramBinUtility {
 	}
 
 	get bins() {
-		if (this._userDictionary === undefined) return undefined;
-		// the userDictionary is the same, so we return the last bins result.
+		if (this._data.userDictionary === undefined) return undefined;
 
 		const peaks = [50, 100, 200, 500, 1000];
 		const values = this.allCourseAccessWithoutOutliers;
@@ -76,34 +80,8 @@ class ContentViewHistogramBinUtility {
 		if (this.allCourseAccessOutliers.length !== 0 || largestAccess > peaks[peaks.length - 1]) {
 			bins.push([Number.POSITIVE_INFINITY, upperBin]);
 		}
+		super.setAll(new Set(new Array(bins.length + 1).fill(0).map((v, i) => i)));
 		return bins.reverse();
-	}
-
-	set userDictionary(dict) {
-		this._userDictionary = dict;
-	}
-}
-
-decorate(ContentViewHistogramBinUtility, {
-	bins: computed
-});
-
-export class ContentViewHistogramFilter extends CategoryFilter {
-	constructor() {
-		const filterFunc = (record, userDictionary) => {
-			this.binUtility.userDictionary = userDictionary;
-			const recordBin = this.binUtility.recordBin(record);
-			return this.selectedCategories.has(recordBin);
-		};
-		super(
-			filterId,
-			'contentViewHistogram:title',
-			filterFunc,
-			'cvhf',
-			undefined // set all later
-		);
-		this.binUtility = ContentViewHistogramBinUtility.instance;
-		this._urlState = new UrlState(this);
 	}
 
 	//for Urlstate
@@ -122,6 +100,10 @@ export class ContentViewHistogramFilter extends CategoryFilter {
 	}
 }
 
+decorate(ContentViewHistogramFilter, {
+	bins: computed,
+	_data: observable
+});
 class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	static get properties() {
@@ -133,7 +115,6 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 	constructor() {
 		super();
 		this.data = {};
-		this.binUtility = ContentViewHistogramBinUtility.instance;
 	}
 
 	static get styles() {
@@ -198,9 +179,8 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	//computed
 	get bins() {
-		if (!this.binUtility.hasRecords) this.binUtility.userDictionary = this.data.userDictionary;
-		this.filter.setAll(new Set(new Array(this.binUtility.bins.length + 1).fill(0).map((v, i) => i)));
-		return this.binUtility.bins;
+		this.filter.setAll(new Set(new Array(this.filter.bins.length + 1).fill(0).map((v, i) => i)));
+		return this.filter.bins;
 	}
 
 	// computed
@@ -435,8 +415,9 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 decorate(ContentViewHistogram, {
 	filteredSortedUserRecords: computed,
+	filteredCourseAccesses: computed,
+	skeleton: observable,
 	data: observable,
-	skeleton: observable
 });
 
 customElements.define('d2l-labs-content-view-histogram', ContentViewHistogram);

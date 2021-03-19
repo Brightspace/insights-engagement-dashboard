@@ -1,5 +1,5 @@
 import { action, computed, decorate, observable } from 'mobx';
-import { COURSE_OFFERING, USER } from '../consts';
+import { COURSE_OFFERING, RECORD, USER } from '../consts';
 import { fetchCachedChildren, fetchLastSearch } from './dataApiClient.js';
 import { OrgUnitSelectorFilter, RoleSelectorFilter, SemesterSelectorFilter } from './selectorFilters.js';
 import { Tree } from '../components/tree-filter';
@@ -35,7 +35,6 @@ export class Data {
 		// @observables
 		this.isQueryError = false;
 		this.isLoading = true;
-		this._userDictionary = new Map();
 
 		// because this._serverData itself is only updated onServerDataReload, we can safely use a simple
 		// counter to let mobx know it has changed, rather than incurring the overhead of mobx-ifying
@@ -97,9 +96,6 @@ export class Data {
 		this._serverData = newServerData;
 		this._serverDataProxy++;
 		this._selectorFilters.semester.selected = this.serverData.selectedSemestersIds || [];
-
-		this._userDictionary.clear();
-		newServerData.users.forEach(user => this._userDictionary.set(user[USER.ID], user));
 	}
 
 	set selectedRoleIds(newRoleIds) {
@@ -114,7 +110,25 @@ export class Data {
 	}
 
 	get userDictionary() {
-		return this._userDictionary;
+		this._serverDataProxy;
+		return new Map(this._serverData.users.map(user => [user[USER.ID], user]));
+	}
+
+	get userEnrollmentDictionary() {
+		this._serverDataProxy;
+
+		const selectedCourses = this.orgUnitTree.allSelectedCourses;
+		if (selectedCourses.length === 0) return this.userDictionary;
+
+		const userEnrollments = new Map();
+		this._serverData.records.forEach(record => {
+			const orgUnitId = record[RECORD.ORG_UNIT_ID];
+			const userId = record[RECORD.USER_ID];
+			if (selectedCourses.includes(orgUnitId)) {
+				userEnrollments.set(userId, this.userDictionary.get(userId));
+			}
+		});
+		return userEnrollments;
 	}
 
 	set selectedSemesterIds(newSemesterIds) {
@@ -181,7 +195,6 @@ export class Data {
 
 decorate(Data, {
 	_serverDataProxy: observable,
-	_userDictionary: observable,
 	orgUnitTree: observable,
 	isLoading: observable,
 	isQueryError: observable,
@@ -189,5 +202,7 @@ decorate(Data, {
 	selectedOrgUnitIds: computed,
 	selectedRoleIds: computed,
 	selectedSemesterIds: computed,
+	userDictionary: computed,
+	userEnrollmentDictionary: computed,
 	onServerDataReload: action,
 });
