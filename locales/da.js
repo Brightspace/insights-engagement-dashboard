@@ -34,6 +34,7 @@ export default {
 
 	"orgUnitFilter:nameAllSelected": "Organisationsenhed: Alle",
 	"orgUnitFilter:nameSomeSelected": "Organisationsenhed: Valgte anvendt",
+	"orgUnitFilter:name": "Org Unit",
 
 	"semesterFilter:name": "Semester",
 	"semesterFilter:semesterName": "{orgUnitName} (Id: {orgUnitId})",
@@ -94,6 +95,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "{numberOfUsers} brugertilmeldinger får en højere karakter end gennemsnittet og bruger mere tid end gennemsnittet i indhold.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} brugertilmeldinger får en lavere karakter end gennemsnittet og bruger mindre tid end gennemsnittet i indhold.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} brugertilmeldinger får en lavere karakter end gennemsnittet og bruger mere tid end gennemsnittet i indhold.",
+	"timeInContentVsGradeCard:highTimeHighGrade": "high time in content and high grade",
+	"timeInContentVsGradeCard:highTimeLowGrade": "high time in content and low grade",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "low time in content and high grade",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "low time in content and low grade",
 
 	"currentFinalGradeCard:currentGrade": "Aktuel karakter",
 	"currentFinalGradeCard:numberOfStudents": "Antal brugere",
@@ -115,6 +120,7 @@ export default {
 	"courseLastAccessCard:oneToThreeDaysAgo": "1-3 dage siden",
 	"courseLastAccessCard:lessThanOneDayAgo": "< 1 dag siden",
 	"courseLastAccessCard:accessibilityLessThanOne": "For mindre end 1 dag siden",
+	"courseLastAccessCard:accessibilityMoreThanFourteenDaysAgo": "More than 14 days ago",
 	"courseLastAccessCard:tooltipNeverAccessed": "{numberOfUsers} brugere har aldrig åbnet kurset",
 	"courseLastAccessCard:tooltipMoreThanFourteenDays": "{numberOfUsers} brugere har sidst åbnet kurset for mere end 14 dage siden",
 	"courseLastAccessCard:toolTipSevenToFourteenDays": "{numberOfUsers} brugere åbnede sidst kurset for 7 til 14 dage siden",
@@ -129,6 +135,17 @@ export default {
 	"courseLastAccessCard:toolTipThreeToFiveDaysSingleUser": "1 bruger har sidst åbnet kurset for 3 til 5 dage siden",
 	"courseLastAccessCard:toolTipOneToThreeDaysSingleUser": "1 bruger har sidst åbnet kurset for 1 til 3 dage siden",
 	"courseLastAccessCard:toolTipLessThanOneDaySingleUser": "1 bruger har sidst åbnet kurset for mindre end 1 dag siden",
+
+	"contentViewHistogram:title": "Content View",
+	"contentViewHistogram:textLabel": "This chart displays the total number of content views for all users in the selected courses",
+	"contentViewHistogram:contentViews": "Number of Content Topic Views",
+	"contentViewHistogram:userCount": "Antal brugere",
+	"contentViewHistogram:usersInRange": "{numUsers} users have accessed the content {start} to {end} times",
+	"contentViewHistogram:userInRange": "1 user has accessed the content {start} to {end} times",
+	"contentViewHistogram:usersZeroTimes": "{numUsers} users have accessed the content 0 times",
+	"contentViewHistogram:userZeroTimes": "1 user has accessed the content 0 times",
+	"contentViewHistogram:usersGreaterTimes": "{numUsers} users have accessed the content greater than {start} times",
+	"contentViewHistogram:userGreaterTimes": "1 user has accessed the content greater than {start} times",
 
 	"discussionActivityCard:cardTitle": "Diskussionsaktivitet",
 	"discussionActivityCard:threads": "Tråde",
@@ -159,6 +176,7 @@ export default {
 	"settings:description": "Angiv, hvilke målinger der skal vises i afsnittene Oversigt og Resultatdetaljer i kontrolpanelet Engagement.",
 	"settings:tabTitleSummaryMetrics": "Oversigt over målinger",
 	"settings:tabTitleResultsTableMetrics": "Målinger for resultattabel",
+	"settings:tabTitleUserLevelMetrics": "User Level Metrics",
 	"settings:saveAndClose": "Gem og luk",
 	"settings:save": "Gem",
 	"settings:cancel": "Annuller",
@@ -169,25 +187,35 @@ export default {
 	"settings:overdueAssignmentsDesc": "Forsinkede opgaver-kortet viser antallet af brugere, som har en eller flere opgaver, der er forsinkede på de kurser, der filtreres efter.",
 	"settings:systemAccessDesc": "Systemadgangskortet viser, sidste gang brugeren åbnede systemet overhovedet.",
 	"settings:discActivityDesc": "Diskussionsaktivitetskortet viser passiv og aktiv social interaktion på hvert kursus, der filtreres efter. Denne måling angiver, når en bruger opretter en tråd, svarer på et eksisterende indlæg eller læser et indlæg.",
+	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
 
 	"settings:systemAccessEdit": "Vis de brugere, som ikke har åbnet systemet inden for de seneste {num} dage.",
 	"settings:systemAccessEditLabel": "Rediger tærsklen for systemadgang",
 
 	"settings:avgGrade": "Gennemsnitskarakter",
+	"settings:avgGradeSummary": "Average Grade Summary",
 	"settings:avgTimeInContent": "Gennemsnitlig tid i indhold",
 	"settings:avgDiscussionActivity": "Gennemsnitlig diskussionsdeltagelse",
 	"settings:lastAccessedSystem": "Seneste åbning af system",
+	"settings:predictedGrade": "Forventet karakter",
 	"settings:avgGradeDescription": "Indikatoren for gennemsnitskarakter viser brugerens aktuelle gennemsnitlige karakter på tværs af alle kurser, der er inkluderet i de anvendte filtre.",
 	"settings:avgTimeInContentDescription": "Indikatoren for den gennemsnitlige tid i indhold viser den gennemsnitlige tid, der er brugt i indhold, som et gennemsnit af brugerens samlede tid pr. kursus på tværs af alle de kurser, der er inkluderet i de anvendte filtre. Denne måling angives i minutter.",
 	"settings:avgDiscussionActivityDescription": "Indikatoren for den gennemsnitlige deltagelse i diskussioner viser brugerstatistikker for, hvor ofte brugeren opretter en tråd, læser et indlæg eller svarer på et indlæg på tværs af alle de kurser, der er inkluderet i de anvendte filtre. Denne måling beregner gennemsnittet af det samlede antal pr. kursus.",
 	"settings:lastAccessedSystemDescription": "Indikatoren for Seneste åbning af system viser tidspunktet i lokaltid i Brightspace, for hvornår brugeren senest åbnede systemet overhovedet.",
+	"settings:predictedGradeDescription": "The Predicted Grade indicator presents the average predicted final grade for the user across all the courses included in the applied filters. Data for this metric is produced from the Student Success System.",
 	"settings:invalidSystemAccessValueToast": "Dine indstillinger kunne ikke gemmes. Tærskler for systemadgang skal være mellem 1 og 30.",
 	"settings:serverSideErrorToast": "Noget gik galt. Dine indstillinger kunne ikke gemmes.",
+
+	"settings:avgGradeSummaryDescription": "The Average Grade Summary card presents the current average grade for the student across courses that are filtered on.",
+	"settings:gradesOverTimeDescription": "The Grades Over Time card shows how the learner's grades have changed over time.",
+	"settings:accessOverTimeDescription": "The Course Access Over Time card shows how the learner's course access frequency has changed over time.",
+	"settings:contentViewsOverTimeDescription": "The Content Views Over Time card shows how view counts for content have changed over time.",
 
 	"userDrill:noUser": "Denne bruger kunne ikke indlæses. Gå til kontrolpanelet Engagement for at se listen over brugere.",
 	"userDrill:noData": "Ingen data i filtrerede klasser. Afgræns dit valg.",
 	"userDrill:manyCoursesAlert": "Dette kontrolpanel er mest nyttigt med under 10 kurser. Afgræns dine valgte kurser for at få en bedre oplevelse.",
 	"userDrill:summaryView": "Oversigtsvisning",
+	"userDrill:course": "Course",
 	"activeCoursesTable:title": "Aktive kurser",
 	"activeCoursesTable:loadingPlaceholder": "Indlæser",
 	"activeCoursesTable:course": "Kursusnavn",
@@ -218,6 +246,8 @@ export default {
 
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "opgaver er i øjeblikket forsinkede.",
 	"averageGradeSummaryCard:averageGradeText" : "karaktergennemsnit fra kurser i visningen.",
+	"averageGradeSummaryCard:averageGradeTextLine1" : "grade averaged from",
+	"averageGradeSummaryCard:averageGradeTextLine2" : "the courses in view.",
 	"averageGradeSummaryCard:averageGrade" : "Gennemsnitskarakter",
 	"averageGradeSummaryCard:noGradeInfoAvailable" : "Der er ingen tilgængelige karakteroplysninger.",
 	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "dage siden eleven senest åbnede systemet.",
@@ -236,4 +266,14 @@ export default {
 	"chart:loading": "Indlæser ...",
 	"chart:resetZoom": "Nulstil zoom",
 	"chart:resetZoomTitle": "Nulstil zoomniveau 1:1",
+
+	"alert:updatedFilter" : "{chartName} filter updated.",
+	"alert:axeDescriptionRange" : "Viewing learners with {chartName} in these categories ",
+	"alert:axeDescription" : "Viewing learners with ",
+	"alert:axeNotFiltering" : "Stopped Filtering by {chartName}.",
+	// this "to" that, and this "to" that <- translate the word "to" in this context
+	"alert:this-To-That" : "for",
+	"alert:greaterThanThis" : "greater than {num}",
+	"alert:axeDescriptionCourses" : "Viewing learner data in these courses ",
+	"alert:axeDescriptionCoursesOff" : "Viewing learner data in all courses."
 };

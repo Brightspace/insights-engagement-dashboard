@@ -34,6 +34,7 @@ export default {
 
 	"orgUnitFilter:nameAllSelected": "구성단위: 전체",
 	"orgUnitFilter:nameSomeSelected": "구성단위: 선택 사항이 적용됨",
+	"orgUnitFilter:name": "Org Unit",
 
 	"semesterFilter:name": "학기",
 	"semesterFilter:semesterName": "{orgUnitName}(ID: {orgUnitId})",
@@ -94,6 +95,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "{numberOfUsers}명의 사용자 등록 인원이 평균 이상이며 콘텐츠 참여 시간이 평균 이상입니다.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers}명의 사용자 등록 인원이 평균 이하이며 콘텐츠 참여 시간이 평균 이하입니다.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers}명의 사용자 등록 인원이 평균 이하이며 콘텐츠 참여 시간이 평균 이상입니다.",
+	"timeInContentVsGradeCard:highTimeHighGrade": "high time in content and high grade",
+	"timeInContentVsGradeCard:highTimeLowGrade": "high time in content and low grade",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "low time in content and high grade",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "low time in content and low grade",
 
 	"currentFinalGradeCard:currentGrade": "현재 평점",
 	"currentFinalGradeCard:numberOfStudents": "사용자 수",
@@ -115,6 +120,7 @@ export default {
 	"courseLastAccessCard:oneToThreeDaysAgo": "1~3일 전",
 	"courseLastAccessCard:lessThanOneDayAgo": "< 1일 전",
 	"courseLastAccessCard:accessibilityLessThanOne": "1일 이내임",
+	"courseLastAccessCard:accessibilityMoreThanFourteenDaysAgo": "More than 14 days ago",
 	"courseLastAccessCard:tooltipNeverAccessed": "{numberOfUsers}명의 사용자가 강의에 접근한 적이 없습니다.",
 	"courseLastAccessCard:tooltipMoreThanFourteenDays": "{numberOfUsers}명의 사용자가 강의에 마지막으로 접근한 지 14일이 넘었습니다.",
 	"courseLastAccessCard:toolTipSevenToFourteenDays": "{numberOfUsers}명의 사용자가 7~14일 전에 마지막으로 강의에 접근했습니다.",
@@ -129,6 +135,17 @@ export default {
 	"courseLastAccessCard:toolTipThreeToFiveDaysSingleUser": "1명의 사용자가 3~5일 전에 마지막으로 강의에 접근했습니다.",
 	"courseLastAccessCard:toolTipOneToThreeDaysSingleUser": "1명의 사용자가 1~3일 전에 마지막으로 강의에 접근했습니다.",
 	"courseLastAccessCard:toolTipLessThanOneDaySingleUser": "1명의 사용자가 강의에 마지막으로 접근한 지 1일이 되지 않았습니다.",
+
+	"contentViewHistogram:title": "Content View",
+	"contentViewHistogram:textLabel": "This chart displays the total number of content views for all users in the selected courses",
+	"contentViewHistogram:contentViews": "Number of Content Topic Views",
+	"contentViewHistogram:userCount": "사용자 수",
+	"contentViewHistogram:usersInRange": "{numUsers} users have accessed the content {start} to {end} times",
+	"contentViewHistogram:userInRange": "1 user has accessed the content {start} to {end} times",
+	"contentViewHistogram:usersZeroTimes": "{numUsers} users have accessed the content 0 times",
+	"contentViewHistogram:userZeroTimes": "1 user has accessed the content 0 times",
+	"contentViewHistogram:usersGreaterTimes": "{numUsers} users have accessed the content greater than {start} times",
+	"contentViewHistogram:userGreaterTimes": "1 user has accessed the content greater than {start} times",
 
 	"discussionActivityCard:cardTitle": "토론 활동",
 	"discussionActivityCard:threads": "스레드 수",
@@ -159,6 +176,7 @@ export default {
 	"settings:description": "참여 대시보드의 요약 및 결과 상세 정보 섹션에 표시할 지표를 설정합니다.",
 	"settings:tabTitleSummaryMetrics": "요약 지표",
 	"settings:tabTitleResultsTableMetrics": "결과 테이블 지표",
+	"settings:tabTitleUserLevelMetrics": "User Level Metrics",
 	"settings:saveAndClose": "저장 및 닫기",
 	"settings:save": "저장",
 	"settings:cancel": "취소",
@@ -169,25 +187,35 @@ export default {
 	"settings:overdueAssignmentsDesc": "과제 기한 경과 카드는 필터링된 강의에서 기한이 경과한 과제가 하나 이상 있는 사용자 수를 표시합니다.",
 	"settings:systemAccessDesc": "시스템 접근 카드는 사용자의 최종 접근을 표시합니다.",
 	"settings:discActivityDesc": "토론 활동 카드는 필터링된 강의의 비활성 및 활성 소셜 참여를 표시합니다. 사용자가 스레드를 생성하거나, 기존 게시물에 회신하거나, 게시물을 읽을 때 이 지표가 보고합니다.",
+	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
 
 	"settings:systemAccessEdit": "지난 {num}일 동안 시스템에 접근하지 않은 사용자를 표시합니다.",
 	"settings:systemAccessEditLabel": "시스템 접근 임계값 편집",
 
 	"settings:avgGrade": "평균 평점",
+	"settings:avgGradeSummary": "Average Grade Summary",
 	"settings:avgTimeInContent": "평균 콘텐츠 시간",
 	"settings:avgDiscussionActivity": "평균 토론 참가",
 	"settings:lastAccessedSystem": "시스템 최종 접근",
+	"settings:predictedGrade": "예상 평점",
 	"settings:avgGradeDescription": "평균 평점 표시기는 적용된 필터에 포함된 모든 강의에 대한 사용자의 현재 평균 평점을 표시합니다.",
 	"settings:avgTimeInContentDescription": "평균 콘텐츠 시간 표시기는 적용된 필터에 포함된 모든 강의의 사용자에 대해 강의당 평균 총 시간으로 콘텐츠에 소요된 평균 시간을 표시합니다. 이 메트릭은 몇 분 내에 보고됩니다.",
 	"settings:avgDiscussionActivityDescription": "평균 토론 참가 표시기는 적용된 필터에 포함된 모든 강의에서 사용자가 스레드를 생성하거나, 게시물을 읽거나, 게시물에 응답하는 빈도에 대한 사용자 통계를 표시합니다. 이 지표는 강의당 총 개수를 평균합니다.",
 	"settings:lastAccessedSystemDescription": "시스템 최종 접근 표시기는 사용자가 시스템에 마지막으로 접근한 시간의 타임스탬프를 Brightspace 로컬 시간으로 표시합니다.",
+	"settings:predictedGradeDescription": "The Predicted Grade indicator presents the average predicted final grade for the user across all the courses included in the applied filters. Data for this metric is produced from the Student Success System.",
 	"settings:invalidSystemAccessValueToast": "설정을 저장할 수 없습니다. 시스템 접근 임계값은 1에서 30 사이여야 합니다.",
 	"settings:serverSideErrorToast": "문제가 발생했습니다. 설정을 저장할 수 없습니다.",
+
+	"settings:avgGradeSummaryDescription": "The Average Grade Summary card presents the current average grade for the student across courses that are filtered on.",
+	"settings:gradesOverTimeDescription": "The Grades Over Time card shows how the learner's grades have changed over time.",
+	"settings:accessOverTimeDescription": "The Course Access Over Time card shows how the learner's course access frequency has changed over time.",
+	"settings:contentViewsOverTimeDescription": "The Content Views Over Time card shows how view counts for content have changed over time.",
 
 	"userDrill:noUser": "이 사용자를 로드할 수 없습니다. 참여 대시보드로 이동하여 사용자 목록을 표시합니다.",
 	"userDrill:noData": "필터링된 범위에 데이터가 없습니다. 선택 영역을 구체화합니다.",
 	"userDrill:manyCoursesAlert": "이 대시보드는 10개 미만의 강의에서 가장 유용합니다. 더 나은 경험을 위해 선택한 강의를 세분화하십시오.",
 	"userDrill:summaryView": "요약 보기",
+	"userDrill:course": "Course",
 	"activeCoursesTable:title": "활성 강의",
 	"activeCoursesTable:loadingPlaceholder": "로드 중...",
 	"activeCoursesTable:course": "강의 이름",
@@ -218,6 +246,8 @@ export default {
 
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "현재 과제 기한이 경과되었습니다.",
 	"averageGradeSummaryCard:averageGradeText" : "보기에 있는 강의의 평균 평점.",
+	"averageGradeSummaryCard:averageGradeTextLine1" : "grade averaged from",
+	"averageGradeSummaryCard:averageGradeTextLine2" : "the courses in view.",
 	"averageGradeSummaryCard:averageGrade" : "평균 평점",
 	"averageGradeSummaryCard:noGradeInfoAvailable" : "사용 가능한 평점 정보가 없습니다.",
 	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "학습자가 시스템에 마지막으로 액세스한 이후 일수입니다.",
@@ -236,4 +266,14 @@ export default {
 	"chart:loading": "로드 중...",
 	"chart:resetZoom": "확대/축소 재설정",
 	"chart:resetZoomTitle": "확대/축소 수준 1:1 재설정",
+
+	"alert:updatedFilter" : "{chartName} filter updated.",
+	"alert:axeDescriptionRange" : "Viewing learners with {chartName} in these categories ",
+	"alert:axeDescription" : "Viewing learners with ",
+	"alert:axeNotFiltering" : "Stopped Filtering by {chartName}.",
+	// this "to" that, and this "to" that <- translate the word "to" in this context
+	"alert:this-To-That" : "~",
+	"alert:greaterThanThis" : "greater than {num}",
+	"alert:axeDescriptionCourses" : "Viewing learner data in these courses ",
+	"alert:axeDescriptionCoursesOff" : "Viewing learner data in all courses."
 };

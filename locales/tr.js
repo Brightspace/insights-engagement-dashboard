@@ -34,6 +34,7 @@ export default {
 
 	"orgUnitFilter:nameAllSelected": "Org Birimi: Tümü",
 	"orgUnitFilter:nameSomeSelected": "Org Birimi: Seçimler Uygulandı",
+	"orgUnitFilter:name": "Org Unit",
 
 	"semesterFilter:name": "Dönem",
 	"semesterFilter:semesterName": "{orgUnitName} (Kimlik: {orgUnitId})",
@@ -94,6 +95,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "{numberOfUsers} kullanıcı kaydı, ortalama not düzeyinden yüksek not alıyor ve içerikte ortalama sürenin üzerinde zaman geçiriyor.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} kullanıcı kaydı, ortalama not düzeyinden düşük not alıyor ve içerikte ortalama sürenin altında zaman geçiriyor.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} kullanıcı kaydı, ortalama not düzeyinden düşük not alıyor ve içerikte ortalama sürenin üzerinde zaman geçiriyor.",
+	"timeInContentVsGradeCard:highTimeHighGrade": "high time in content and high grade",
+	"timeInContentVsGradeCard:highTimeLowGrade": "high time in content and low grade",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "low time in content and high grade",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "low time in content and low grade",
 
 	"currentFinalGradeCard:currentGrade": "Mevcut Not",
 	"currentFinalGradeCard:numberOfStudents": "Kullanıcı Sayısı",
@@ -115,6 +120,7 @@ export default {
 	"courseLastAccessCard:oneToThreeDaysAgo": "1-3 gün önce",
 	"courseLastAccessCard:lessThanOneDayAgo": "< 1 gün önce",
 	"courseLastAccessCard:accessibilityLessThanOne": "1 günden daha kısa süre önce",
+	"courseLastAccessCard:accessibilityMoreThanFourteenDaysAgo": "More than 14 days ago",
 	"courseLastAccessCard:tooltipNeverAccessed": "{numberOfUsers} kullanıcı, derse hiç erişmedi",
 	"courseLastAccessCard:tooltipMoreThanFourteenDays": "{numberOfUsers} kullanıcı, derse en son 14 günden daha uzun süre önce erişti",
 	"courseLastAccessCard:toolTipSevenToFourteenDays": "{numberOfUsers} kullanıcı, derse en son 7-14 gün önce erişti",
@@ -129,6 +135,17 @@ export default {
 	"courseLastAccessCard:toolTipThreeToFiveDaysSingleUser": "1 kullanıcı, derse en son 3-5 gün önce erişti",
 	"courseLastAccessCard:toolTipOneToThreeDaysSingleUser": "1 kullanıcı, derse en son 1-3 gün önce erişti",
 	"courseLastAccessCard:toolTipLessThanOneDaySingleUser": "1 kullanıcı, derse en son 1 günden daha kısa süre önce erişti",
+
+	"contentViewHistogram:title": "Content View",
+	"contentViewHistogram:textLabel": "This chart displays the total number of content views for all users in the selected courses",
+	"contentViewHistogram:contentViews": "Number of Content Topic Views",
+	"contentViewHistogram:userCount": "Kullanıcı Sayısı",
+	"contentViewHistogram:usersInRange": "{numUsers} users have accessed the content {start} to {end} times",
+	"contentViewHistogram:userInRange": "1 user has accessed the content {start} to {end} times",
+	"contentViewHistogram:usersZeroTimes": "{numUsers} users have accessed the content 0 times",
+	"contentViewHistogram:userZeroTimes": "1 user has accessed the content 0 times",
+	"contentViewHistogram:usersGreaterTimes": "{numUsers} users have accessed the content greater than {start} times",
+	"contentViewHistogram:userGreaterTimes": "1 user has accessed the content greater than {start} times",
 
 	"discussionActivityCard:cardTitle": "Tartışma Etkinliği",
 	"discussionActivityCard:threads": "Mesaj dizileri",
@@ -159,6 +176,7 @@ export default {
 	"settings:description": "Katılım Panosunun Özet ve Sonuç Ayrıntısı bölümünde hangi metriklerin gösterileceğini belirleyin.",
 	"settings:tabTitleSummaryMetrics": "Özet Metrikleri",
 	"settings:tabTitleResultsTableMetrics": "Sonuç Tablosu Metrikleri",
+	"settings:tabTitleUserLevelMetrics": "User Level Metrics",
 	"settings:saveAndClose": "Kaydet ve Kapat",
 	"settings:save": "Kaydet",
 	"settings:cancel": "İptal",
@@ -169,25 +187,35 @@ export default {
 	"settings:overdueAssignmentsDesc": "Süresi Dolmuş Ödevler kartı, filtrelenmiş derslerde bir veya daha fazla ödevinin süresi dolmuş olman kullanıcı sayısını gösterir.",
 	"settings:systemAccessDesc": "Sistem Erişimi kartı, kullanıcının son erişimini (hangi şekilde olursa olsun) gösterir.",
 	"settings:discActivityDesc": "Tartışma Etkinliği kartı, filtrelenmiş her bir dersteki pasif ve aktif sosyal katılımı gösterir. Bu metrik, kullanıcılar konu oluşturduğunda, mevcut bir gönderiye yanıt verdiğinde veya bir gönderiyi okuduğunda bildirimde bulunur.",
+	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
 
 	"settings:systemAccessEdit": "Son {num} gün içinde sisteme erişmeyen kullanıcıları göster.",
 	"settings:systemAccessEditLabel": "Sistem erişim eşiğini düzenle",
 
 	"settings:avgGrade": "Ortalama Not",
+	"settings:avgGradeSummary": "Average Grade Summary",
 	"settings:avgTimeInContent": "İçerikte Geçirilen Ortalama Süre",
 	"settings:avgDiscussionActivity": "Tartışmaya Katılım Ortalaması",
 	"settings:lastAccessedSystem": "Sistem Son Erişimi",
+	"settings:predictedGrade": "Tahmin Edilen Not",
 	"settings:avgGradeDescription": "Ortalama Not göstergesi, uygulanmış filtrelere dahil edilen tüm kurslar genelinde kullanıcının mevcut ortalama notunu gösterir.",
 	"settings:avgTimeInContentDescription": "İçerikte Geçirilen Ortalama Süre göstergesi, uygulanmış filtrelere dahil edilen tüm kurslar genelinde kullanıcı için, içerikte geçirilen ortalama süreyi ders başına toplam sürenin ortalaması olarak gösterir. Bu metrik dakika cinsinden ölçüm yapar.",
 	"settings:avgDiscussionActivityDescription": "Tartışmaya Katılım Ortalaması göstergesi, uygulanmış filtrelere dahil edilen tüm kurslar genelinde kullanıcının hangi sıklıkta konu oluşturduğu, gönderi okuduğu veya gönderilere yanıt gönderdiğiyle ilgili kullanıcı istatistiklerini gösterir. Bu metrikte, ders başına toplam sayıların ortalaması alınır.",
 	"settings:lastAccessedSystemDescription": "Sistem Son Erişimi göstergesi, kullanıcının sisteme herhangi bir şekilde eriştiği en son zamanın zaman damgasını Brightspace yerel saat dilimine göre gösterir.",
+	"settings:predictedGradeDescription": "The Predicted Grade indicator presents the average predicted final grade for the user across all the courses included in the applied filters. Data for this metric is produced from the Student Success System.",
 	"settings:invalidSystemAccessValueToast": "Ayarlarınız kaydedilemedi. Sistem Erişimi eşikleri 1 ile 30 arasında olmalıdır.",
 	"settings:serverSideErrorToast": "Bir sorun oluştu. Ayarlarınız kaydedilemedi.",
+
+	"settings:avgGradeSummaryDescription": "The Average Grade Summary card presents the current average grade for the student across courses that are filtered on.",
+	"settings:gradesOverTimeDescription": "The Grades Over Time card shows how the learner's grades have changed over time.",
+	"settings:accessOverTimeDescription": "The Course Access Over Time card shows how the learner's course access frequency has changed over time.",
+	"settings:contentViewsOverTimeDescription": "The Content Views Over Time card shows how view counts for content have changed over time.",
 
 	"userDrill:noUser": "Bu kullanıcı yüklenemedi. Kullanıcı listesini görüntülemek için Katılım Panosuna gidin.",
 	"userDrill:noData": "Filtrelenmiş aralıklarda veri yok. Seçiminizi daraltın.",
 	"userDrill:manyCoursesAlert": "Bu kontrol paneli, 10'dan az kurs içerdiğinde kullanışlıdır. Daha iyi bir deneyim için lütfen seçtiğiniz kursları düzenleyin.",
 	"userDrill:summaryView": "Özet Görünümü",
+	"userDrill:course": "Course",
 	"activeCoursesTable:title": "Etkin Dersler",
 	"activeCoursesTable:loadingPlaceholder": "Yükleniyor",
 	"activeCoursesTable:course": "Ders Adı",
@@ -218,6 +246,8 @@ export default {
 
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "ödevler şu anda gecikmiş durumda.",
 	"averageGradeSummaryCard:averageGradeText" : "not, görünümdeki derslerden ortalama olarak alınır.",
+	"averageGradeSummaryCard:averageGradeTextLine1" : "grade averaged from",
+	"averageGradeSummaryCard:averageGradeTextLine2" : "the courses in view.",
 	"averageGradeSummaryCard:averageGrade" : "Ortalama Not",
 	"averageGradeSummaryCard:noGradeInfoAvailable" : "Not bilgisi bulunmuyor.",
 	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "Katılımcının sisteme en son eriştiği günden itibaren geçen gün sayısı:",
@@ -236,4 +266,14 @@ export default {
 	"chart:loading": "Yükleniyor...",
 	"chart:resetZoom": "Yakınlaştırmayı sıfırla",
 	"chart:resetZoomTitle": "Yakınlaştırma düzeyini 1:1'e sıfırla",
+
+	"alert:updatedFilter" : "{chartName} filter updated.",
+	"alert:axeDescriptionRange" : "Viewing learners with {chartName} in these categories ",
+	"alert:axeDescription" : "Viewing learners with ",
+	"alert:axeNotFiltering" : "Stopped Filtering by {chartName}.",
+	// this "to" that, and this "to" that <- translate the word "to" in this context
+	"alert:this-To-That" : "Kime",
+	"alert:greaterThanThis" : "greater than {num}",
+	"alert:axeDescriptionCourses" : "Viewing learner data in these courses ",
+	"alert:axeDescriptionCoursesOff" : "Viewing learner data in all courses."
 };
