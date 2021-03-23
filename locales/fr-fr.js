@@ -34,6 +34,7 @@ export default {
 
 	"orgUnitFilter:nameAllSelected": "Unité organisationnelle : toutes",
 	"orgUnitFilter:nameSomeSelected": "Unité organisationnelle : sélections appliquées",
+	"orgUnitFilter:name": "Org Unit",
 
 	"semesterFilter:name": "Semestre",
 	"semesterFilter:semesterName": "{orgUnitName} (Identifiant : {orgUnitId})",
@@ -94,6 +95,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "{numberOfUsers} utilisateurs inscrits obtiennent une note supérieure à la moyenne et passent plus de temps que la moyenne sur le contenu.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} utilisateurs inscrits obtiennent une note inférieure à la moyenne et passent moins de temps que la moyenne sur le contenu.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} utilisateurs inscrits obtiennent une note inférieure à la moyenne et passent plus de temps que la moyenne sur le contenu.",
+	"timeInContentVsGradeCard:highTimeHighGrade": "high time in content and high grade",
+	"timeInContentVsGradeCard:highTimeLowGrade": "high time in content and low grade",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "low time in content and high grade",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "low time in content and low grade",
 
 	"currentFinalGradeCard:currentGrade": "Note actuelle",
 	"currentFinalGradeCard:numberOfStudents": "Nombre d’utilisateurs",
@@ -115,6 +120,7 @@ export default {
 	"courseLastAccessCard:oneToThreeDaysAgo": "Il y a 1 à 3 jours",
 	"courseLastAccessCard:lessThanOneDayAgo": "Il y a moins de 1 jour",
 	"courseLastAccessCard:accessibilityLessThanOne": "Il y a moins de1 jour",
+	"courseLastAccessCard:accessibilityMoreThanFourteenDaysAgo": "More than 14 days ago",
 	"courseLastAccessCard:tooltipNeverAccessed": "{numberOfUsers} utilisateurs n’ont jamais accédé au cours.",
 	"courseLastAccessCard:tooltipMoreThanFourteenDays": "{numberOfUsers} utilisateurs ont accédé au cours pour la dernière fois il y a plus de 14 jours.",
 	"courseLastAccessCard:toolTipSevenToFourteenDays": "{numberOfUsers} utilisateurs ont accédé au cours pour la dernière fois il y a 7 à 14 jours.",
@@ -129,6 +135,17 @@ export default {
 	"courseLastAccessCard:toolTipThreeToFiveDaysSingleUser": "1 utilisateur a accédé au cours pour la dernière fois il y a 3 à 5 jours.",
 	"courseLastAccessCard:toolTipOneToThreeDaysSingleUser": "1 utilisateur a accédé au cours pour la dernière fois il y a 1 à 3 jours.",
 	"courseLastAccessCard:toolTipLessThanOneDaySingleUser": "1 utilisateur a accédé au cours pour la dernière fois il y a moins de 1 jour.",
+
+	"contentViewHistogram:title": "Content View",
+	"contentViewHistogram:textLabel": "This chart displays the total number of content views for all users in the selected courses",
+	"contentViewHistogram:contentViews": "Number of Content Topic Views",
+	"contentViewHistogram:userCount": "Nombre d’utilisateurs",
+	"contentViewHistogram:usersInRange": "{numUsers} users have accessed the content {start} to {end} times",
+	"contentViewHistogram:userInRange": "1 user has accessed the content {start} to {end} times",
+	"contentViewHistogram:usersZeroTimes": "{numUsers} users have accessed the content 0 times",
+	"contentViewHistogram:userZeroTimes": "1 user has accessed the content 0 times",
+	"contentViewHistogram:usersGreaterTimes": "{numUsers} users have accessed the content greater than {start} times",
+	"contentViewHistogram:userGreaterTimes": "1 user has accessed the content greater than {start} times",
 
 	"discussionActivityCard:cardTitle": "Activité de discussions",
 	"discussionActivityCard:threads": "Fils de discussion",
@@ -159,6 +176,7 @@ export default {
 	"settings:description": "Définissez les mesures qui s’affichent dans la section Résumé et détail des résultats du tableau de bord de l’engagement.",
 	"settings:tabTitleSummaryMetrics": "Mesures récapitulatives",
 	"settings:tabTitleResultsTableMetrics": "Métriques du tableau des résultats",
+	"settings:tabTitleUserLevelMetrics": "User Level Metrics",
 	"settings:saveAndClose": "Enregistrer et fermer",
 	"settings:save": "Enregistrer",
 	"settings:cancel": "Annuler",
@@ -169,25 +187,35 @@ export default {
 	"settings:overdueAssignmentsDesc": "La carte Devoirs en retard indique le nombre d’utilisateurs qui ont un ou plusieurs devoirs en retard dans les cours filtrés.",
 	"settings:systemAccessDesc": "La carte Accès au système affiche le dernier accès de l’utilisateur.",
 	"settings:discActivityDesc": "La carte Activité de discussion montre l’engagement social passif et actif dans chaque cours filtré. Cette mesure indique si l’utilisateur crée un fil de discussion, répond à un message ou lit un message.",
+	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
 
 	"settings:systemAccessEdit": "Afficher les utilisateurs qui n’ont pas accédé au système au cours des {num} derniers jours.",
 	"settings:systemAccessEditLabel": "Modifier le seuil d’accès au système",
 
 	"settings:avgGrade": "Note moyenne",
+	"settings:avgGradeSummary": "Average Grade Summary",
 	"settings:avgTimeInContent": "Temps moyen passé sur le contenu",
 	"settings:avgDiscussionActivity": "Participation moyenne aux discussions",
 	"settings:lastAccessedSystem": "Dernier accès au système",
+	"settings:predictedGrade": "Note prévue",
 	"settings:avgGradeDescription": "L’indicateur Note moyenne présente la note moyenne actuelle de l’utilisateur pour tous les cours inclus dans les filtres appliqués.",
 	"settings:avgTimeInContentDescription": "L’indicateur Temps moyen passé sur le contenu indique le temps moyen passé sur le contenu par l’utilisateur, sous forme de moyenne du temps total par cours, pour tous les cours inclus dans les filtres appliqués. Cette mesure est indiquée en minutes.",
 	"settings:avgDiscussionActivityDescription": "L’indicateur Participation moyenne aux discussions offre des statistiques sur la fréquence à laquelle l’utilisateur crée un fil de discussion, lit un message ou répond à un message pour tous les cours inclus dans les filtres appliqués. Cette mesure correspond à la moyenne du total par cours.",
 	"settings:lastAccessedSystemDescription": "L’indicateur Dernier accès au système affiche l’horodatage, selon l’heure locale de Brightspace, de la dernière fois que l’utilisateur a accédé au système.",
+	"settings:predictedGradeDescription": "The Predicted Grade indicator presents the average predicted final grade for the user across all the courses included in the applied filters. Data for this metric is produced from the Student Success System.",
 	"settings:invalidSystemAccessValueToast": "Vos paramètres n’ont pas pu être sauvegardés. Les seuils d’accès au système doivent être compris entre 1 et 30.",
 	"settings:serverSideErrorToast": "Un problème est survenu. Vos paramètres n’ont pas pu être sauvegardés.",
+
+	"settings:avgGradeSummaryDescription": "The Average Grade Summary card presents the current average grade for the student across courses that are filtered on.",
+	"settings:gradesOverTimeDescription": "The Grades Over Time card shows how the learner's grades have changed over time.",
+	"settings:accessOverTimeDescription": "The Course Access Over Time card shows how the learner's course access frequency has changed over time.",
+	"settings:contentViewsOverTimeDescription": "The Content Views Over Time card shows how view counts for content have changed over time.",
 
 	"userDrill:noUser": "Impossible de télécharger cet utilisateur. Accédez au tableau de bord de l’engagement pour afficher la liste des utilisateurs.",
 	"userDrill:noData": "Aucune donnée dans les plages filtrées. Affinez votre sélection.",
 	"userDrill:manyCoursesAlert": "Ce tableau de bord est plus utile lorsque le nombre de cours est inférieur à 10. Affinez les cours que vous avez sélectionnés pour une meilleure expérience.",
 	"userDrill:summaryView": "Vue résumée",
+	"userDrill:course": "Course",
 	"activeCoursesTable:title": "Cours disponibles",
 	"activeCoursesTable:loadingPlaceholder": "Chargement en cours",
 	"activeCoursesTable:course": "Nom du cours",
@@ -218,6 +246,8 @@ export default {
 
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "devoirs sont actuellement en retard.",
 	"averageGradeSummaryCard:averageGradeText" : "note moyenne des cours affichés.",
+	"averageGradeSummaryCard:averageGradeTextLine1" : "grade averaged from",
+	"averageGradeSummaryCard:averageGradeTextLine2" : "the courses in view.",
 	"averageGradeSummaryCard:averageGrade" : "Note moyenne",
 	"averageGradeSummaryCard:noGradeInfoAvailable" : "Aucune information sur les notes disponible.",
 	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "jours depuis le dernier accès de l’apprenant au système.",
@@ -236,4 +266,14 @@ export default {
 	"chart:loading": "Chargement en cours...",
 	"chart:resetZoom": "Réinitialiser le zoom",
 	"chart:resetZoomTitle": "Réinitialiser le zoom niveau 1:1",
+
+	"alert:updatedFilter" : "{chartName} filter updated.",
+	"alert:axeDescriptionRange" : "Viewing learners with {chartName} in these categories ",
+	"alert:axeDescription" : "Viewing learners with ",
+	"alert:axeNotFiltering" : "Stopped Filtering by {chartName}.",
+	// this "to" that, and this "to" that <- translate the word "to" in this context
+	"alert:this-To-That" : "à",
+	"alert:greaterThanThis" : "greater than {num}",
+	"alert:axeDescriptionCourses" : "Viewing learner data in these courses ",
+	"alert:axeDescriptionCoursesOff" : "Viewing learner data in all courses."
 };
