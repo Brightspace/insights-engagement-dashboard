@@ -34,6 +34,7 @@ export default {
 
 	"orgUnitFilter:nameAllSelected": "الوحدة التنظيمية: الكل",
 	"orgUnitFilter:nameSomeSelected": "الوحدة التنظيمية: تم تطبيق التحديدات",
+	"orgUnitFilter:name": "الوحدة التنظيمية",
 
 	"semesterFilter:name": "الفصل الدراسي",
 	"semesterFilter:semesterName": "{orgUnitName} (المعرّف: {orgUnitId})",
@@ -94,6 +95,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "يحصل {numberOfUsers} من المستخدمين الذين قاموا بالتسجيل على علامة أعلى من المتوسط ويمضون أكثر من متوسط الوقت المستغرق في عرض المحتوى.",
 	"timeInContentVsGradeCard:leftBottom": "يحصل {numberOfUsers} من المستخدمين الذين قاموا بالتسجيل على علامة أدنى من المتوسط ويمضون أقل من متوسط الوقت المستغرق في عرض المحتوى.",
 	"timeInContentVsGradeCard:rightBottom": "يحصل {numberOfUsers} من المستخدمين الذين قاموا بالتسجيل على علامة أدنى من المتوسط ويمضون أكثر من متوسط الوقت المستغرق في عرض المحتوى.",
+	"timeInContentVsGradeCard:highTimeHighGrade": "وقت طويل مستغرق في عرض المحتوى وعلامة عالية",
+	"timeInContentVsGradeCard:highTimeLowGrade": "وقت طويل مستغرق في عرض المحتوى وعلامة متدنية",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "وقت قصير مستغرق في عرض المحتوى وعلامة عالية",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "وقت قصير مستغرق في عرض المحتوى وعلامة متدنية",
 
 	"currentFinalGradeCard:currentGrade": "العلامة الحالية",
 	"currentFinalGradeCard:numberOfStudents": "عدد المستخدمين",
@@ -115,6 +120,7 @@ export default {
 	"courseLastAccessCard:oneToThreeDaysAgo": "منذ يوم واحد إلى 3 أيام",
 	"courseLastAccessCard:lessThanOneDayAgo": "منذ أقل من يوم واحد",
 	"courseLastAccessCard:accessibilityLessThanOne": "منذ أقل من يوم واحد",
+	"courseLastAccessCard:accessibilityMoreThanFourteenDaysAgo": "منذ أكثر من 14 يومًا",
 	"courseLastAccessCard:tooltipNeverAccessed": "لم يصل {numberOfUsers} من المستخدمين إلى المقرر التعليمي على الإطلاق",
 	"courseLastAccessCard:tooltipMoreThanFourteenDays": "وصل {numberOfUsers} من المستخدمين آخر مرة إلى المقرر التعليمي منذ أكثر من 14 يومًا",
 	"courseLastAccessCard:toolTipSevenToFourteenDays": "وصل {numberOfUsers} من المستخدمين آخر مرة إلى المقرر التعليمي منذ 7 أيام إلى 14 يومًا",
@@ -129,6 +135,17 @@ export default {
 	"courseLastAccessCard:toolTipThreeToFiveDaysSingleUser": "وصل مستخدم واحد آخر مرة إلى المقرر التعليمي منذ 3 إلى 5 أيام",
 	"courseLastAccessCard:toolTipOneToThreeDaysSingleUser": "وصل مستخدم واحد آخر مرة إلى المقرر التعليمي منذ يوم واحد إلى 3 أيام",
 	"courseLastAccessCard:toolTipLessThanOneDaySingleUser": "وصل مستخدم واحد آخر مرة إلى المقرر التعليمي منذ أقل من يوم واحد",
+
+	"contentViewHistogram:title": "عرض المحتوى",
+	"contentViewHistogram:textLabel": "يعرض هذا المخطط إجمالي عدد مشاهدات المحتوى لكل المستخدمين في المقررات التعليمية المحددة",
+	"contentViewHistogram:contentViews": "عدد مشاهدات موضوع المحتوى",
+	"contentViewHistogram:userCount": "عدد المستخدمين",
+	"contentViewHistogram:usersInRange": "قام {numUsers} من المستخدمين بالوصول إلى المحتوى من {start} إلى {end} من المرات",
+	"contentViewHistogram:userInRange": "قام مستخدم واحد بالوصول إلى المحتوى من {start} إلى {end} من المرات",
+	"contentViewHistogram:usersZeroTimes": "قام {numUsers} من المستخدمين بالوصول إلى المحتوى 0 مرة",
+	"contentViewHistogram:userZeroTimes": "قام مستخدم واحد بالوصول إلى المحتوى 0 مرة",
+	"contentViewHistogram:usersGreaterTimes": "قام {numUsers} من المستخدمين بالوصول إلى المحتوى أكثر من {start} من المرات",
+	"contentViewHistogram:userGreaterTimes": "قام مستخدم واحد بالوصول إلى المحتوى أكثر من {start} من المرات",
 
 	"discussionActivityCard:cardTitle": "نشاط المناقشة",
 	"discussionActivityCard:threads": "سلاسل المحادثات",
@@ -159,6 +176,7 @@ export default {
 	"settings:description": "قم بتعيين المقاييس التي يتم عرضها في قسم الملخص وتفاصيل النتائج في لوحة معلومات التفاعل.",
 	"settings:tabTitleSummaryMetrics": "مقاييس التلخيص",
 	"settings:tabTitleResultsTableMetrics": "مقاييس جدول النتائج",
+	"settings:tabTitleUserLevelMetrics": "مقاييس مستوى المستخدم",
 	"settings:saveAndClose": "حفظ وإغلاق",
 	"settings:save": "حفظ",
 	"settings:cancel": "إلغاء",
@@ -169,25 +187,35 @@ export default {
 	"settings:overdueAssignmentsDesc": "تعرض بطاقة الفروض التي تم تجاوز تاريخ استحقاقها عدد المستخدمين الذين لديهم فرض واحد أو أكثر تم تجاوز تاريخ استحقاقها في المقررات التعليمية التي تتم تصفيتها.",
 	"settings:systemAccessDesc": "تعرض بطاقة الوصول إلى النظام آخر وصول قام به المستخدم بأي شكل من الأشكال.",
 	"settings:discActivityDesc": "تعرض بطاقة نشاط المناقشة المشاركة الاجتماعية النشطة وغير النشطة في كل مقرر تعليمي تتم تصفيته. يوفر هذا المقياس تقارير عندما يقوم المستخدم بإنشاء مؤشر الترابط أو الرد على منشور متوفر أو قراءة منشور.",
+	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
 
 	"settings:systemAccessEdit": "يمكن عرض المستخدمين الذين لم يقوموا بالوصول إلى النظام في آخر {num} من الأيام.",
 	"settings:systemAccessEditLabel": "تحرير حد الوصول إلى النظام",
 
 	"settings:avgGrade": "متوسط العلامة",
+	"settings:avgGradeSummary": "ملخص متوسط العلامة",
 	"settings:avgTimeInContent": "متوسط الوقت المستغرق في عرض المحتوى",
 	"settings:avgDiscussionActivity": "متوسط المشاركة في المناقشة",
 	"settings:lastAccessedSystem": "الوصول الأخير إلى النظام",
+	"settings:predictedGrade": "العلامة المتوقعة",
 	"settings:avgGradeDescription": "يمثل مؤشر متوسط العلامة متوسط العلامة الحالي للمستخدم في كل المقررات التعليمية المضمنة في عوامل التصفية المطبقة.",
 	"settings:avgTimeInContentDescription": "يعرض مؤشر متوسط الوقت المستغرق في عرض المحتوى متوسط الوقت الذي يقضيه المستخدم في عرض المحتوى، كمتوسط لإجمالي الوقت في كل مقرر تعليمي، للمستخدم في كل المقررات التعليمية المضمنة في عوامل التصفية المطبقة. يتم احتساب هذا المقياس بالدقائق.",
 	"settings:avgDiscussionActivityDescription": "يمثل مؤشر متوسط المشاركة في المناقشة إحصاءات المستخدم حول عدد المرات التي يقوم فيها المستخدم بإنشاء مؤشر ترابط أو قراءة منشور أو الرد عليه في كل المقررات التعليمية المضمنة في عوامل التصفية المطبقة. يحتسب هذا المقياس إجمالي العدد لكل مقرر تعليمي.",
 	"settings:lastAccessedSystemDescription": "يعرض مؤشر الوصول الأخير إلى النظام الطابع الزمني للمرة الأخيرة التي قام فيها المستخدم بالوصول إلى النظام بأي شكل من الأشكال وذلك بتوقيت Brightspace المحلي.",
+	"settings:predictedGradeDescription": "يمثل مؤشر العلامة المتوقعة متوسط العلامة المتوقعة النهائية للمستخدم في كل المقررات التعليمية المضمنة في عوامل التصفية المطبقة. يتم إنتاج بيانات هذا المقياس من نظام نجاح الطالب.",
 	"settings:invalidSystemAccessValueToast": "تعذر حفظ إعداداتك. يجب أن تتراوح حدود الوصول إلى النظام بين 1 و30.",
 	"settings:serverSideErrorToast": "حدث خطأ ما. تعذر حفظ إعداداتك.",
+
+	"settings:avgGradeSummaryDescription": "تمثل بطاقة ملخص متوسط العلامة متوسط العلامة الحالي للطالب في المقررات التعليمية التي تمت تصفيتها.",
+	"settings:gradesOverTimeDescription": "تعرض بطاقة العلامات على مرّ الوقت تغيّر علامات المتعلّم مع مرور الوقت.",
+	"settings:accessOverTimeDescription": "تعرض بطاقة الوصول إلى المقرر التعليمي على مرّ الوقت تغيّر مرات وصول المتعلّم إلى المقرر التعليمي مع مرور الوقت.",
+	"settings:contentViewsOverTimeDescription": "تعرض بطاقة عرض المحتوى على مرّ الوقت تغيّر عدد مرات عرض المحتوى مع مرور الوقت.",
 
 	"userDrill:noUser": "لا يمكن تحميل هذا المستخدم. انتقل إلى لوحة معلومات التفاعل لعرض قائمة المستخدمين.",
 	"userDrill:noData": "لا تتوفر بيانات في النطاقات التي تمت تصفيتها. يجب تحسين التحديد.",
 	"userDrill:manyCoursesAlert": "تكون لوحة المعلومات هذه مفيدة جدًا مع أقل من 10 مقررات تعليمية. يُرجى تحسين المقررات التعليمية المحددة للحصول على تجربة أفضل.",
 	"userDrill:summaryView": "عرض الملخص",
+	"userDrill:course": "المقرر التعليمي",
 	"activeCoursesTable:title": "المقررات التعليمية النشطة",
 	"activeCoursesTable:loadingPlaceholder": "يتم الآن التحميل",
 	"activeCoursesTable:course": "اسم المقرر التعليمي",
@@ -218,6 +246,8 @@ export default {
 
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "الفروض التي تم تجاوز تاريخ استحقاقها حاليًا.",
 	"averageGradeSummaryCard:averageGradeText" : "العلامة التي احتسب متوسط لها من المقررات التعليمية التي يتم عرضها.",
+	"averageGradeSummaryCard:averageGradeTextLine1" : "العلامة التي احتسب متوسط لها من",
+	"averageGradeSummaryCard:averageGradeTextLine2" : "المقررات التعليمية التي يتم عرضها.",
 	"averageGradeSummaryCard:averageGrade" : "متوسط العلامة",
 	"averageGradeSummaryCard:noGradeInfoAvailable" : "لا تتوفر معلومات حول العلامات.",
 	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "من الأيام منذ آخر وصول للمتعلّم إلى النظام.",
@@ -236,4 +266,14 @@ export default {
 	"chart:loading": "يتم الآن التحميل...",
 	"chart:resetZoom": "إعادة تعيين التكبير/التصغير",
 	"chart:resetZoomTitle": "إعادة تعيين مستوى التكبير/التصغير 1:1",
+
+	"alert:updatedFilter" : "تم تحديث عامل تصفية {chartName}.",
+	"alert:axeDescriptionRange" : "عرض المتعلّمين باستخدام {chartName} في هذه الفئات",
+	"alert:axeDescription" : "عرض المتعلّمين باستخدام",
+	"alert:axeNotFiltering" : "تم إيقاف التصفية حسب {chartName}.",
+	// this "to" that, and this "to" that <- translate the word "to" in this context
+	"alert:this-To-That" : "إلى",
+	"alert:greaterThanThis" : "greater than {num}",
+	"alert:axeDescriptionCourses" : "عرض بيانات المتعلّمين في هذه المقررات التعليمية",
+	"alert:axeDescriptionCoursesOff" : "يتم الآن عرض بيانات المتعلّمين في كل المقررات التعليمية."
 };

@@ -34,6 +34,7 @@ export default {
 
 	"orgUnitFilter:nameAllSelected": "Organisationseinheit: Alle",
 	"orgUnitFilter:nameSomeSelected": "Organisationseinheit: Auswahl",
+	"orgUnitFilter:name": "Organisationseinheit",
 
 	"semesterFilter:name": "Semester",
 	"semesterFilter:semesterName": "{orgUnitName} (ID: {orgUnitId})",
@@ -94,6 +95,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "{numberOfUsers} Benutzeranmeldungen bekommen eine Benotung über dem Durchschnitt und verbringen mehr als die durchschnittliche Zeit mit den Inhalten.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} Benutzeranmeldungen bekommen eine Benotung unter dem Durchschnitt und verbringen weniger als die durchschnittliche Zeit mit den Inhalten.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} Benutzeranmeldungen bekommen eine Benotung unter dem Durchschnitt und verbringen mehr als die durchschnittliche Zeit mit den Inhalten.",
+	"timeInContentVsGradeCard:highTimeHighGrade": "viel Zeit mit dem Inhalt und gute Note",
+	"timeInContentVsGradeCard:highTimeLowGrade": "viel Zeit mit dem Inhalt und schlechte Note",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "wenig Zeit mit dem Inhalt und gute Note",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "wenig Zeit mit dem Inhalt und schlechte Note",
 
 	"currentFinalGradeCard:currentGrade": "Aktuelle Note",
 	"currentFinalGradeCard:numberOfStudents": "Anzahl der Benutzer",
@@ -115,6 +120,7 @@ export default {
 	"courseLastAccessCard:oneToThreeDaysAgo": "Vor 1–3 Tagen",
 	"courseLastAccessCard:lessThanOneDayAgo": "< 1 Tag",
 	"courseLastAccessCard:accessibilityLessThanOne": "Vor weniger als 1 Tag",
+	"courseLastAccessCard:accessibilityMoreThanFourteenDaysAgo": "Vor mehr als 14 Tag",
 	"courseLastAccessCard:tooltipNeverAccessed": "{numberOfUsers} Benutzer haben niemals auf diesen Kurs zugegriffen.",
 	"courseLastAccessCard:tooltipMoreThanFourteenDays": "{numberOfUsers} Benutzer haben vor mehr als 14 Tagen zuletzt auf diesen Kurs zugegriffen.",
 	"courseLastAccessCard:toolTipSevenToFourteenDays": "{numberOfUsers} Benutzer haben im Zeitraum von 7 bis 14 Tagen zuletzt auf diesen Kurs zugegriffen.",
@@ -129,6 +135,17 @@ export default {
 	"courseLastAccessCard:toolTipThreeToFiveDaysSingleUser": "1 Benutzer hat im Zeitraum von 3 bis 5 Tagen zuletzt auf diesen Kurs zugegriffen.",
 	"courseLastAccessCard:toolTipOneToThreeDaysSingleUser": "1 Benutzer hat im Zeitraum von 1 bis 3 Tagen zuletzt auf diesen Kurs zugegriffen.",
 	"courseLastAccessCard:toolTipLessThanOneDaySingleUser": "1 Benutzer hat vor weniger als 1 Tag zuletzt auf diesen Kurs zugegriffen.",
+
+	"contentViewHistogram:title": "Inhaltsansicht",
+	"contentViewHistogram:textLabel": "Dieses Diagramm zeigt die Inhaltsansichten für alle Benutzer in den ausgewählten Kursen an",
+	"contentViewHistogram:contentViews": "Anzahl der Inhaltsthemenansichten",
+	"contentViewHistogram:userCount": "Anzahl der Benutzer",
+	"contentViewHistogram:usersInRange": "{numUsers} Benutzer haben {start}- bis {end}-mal auf den Inhalt zugegriffen",
+	"contentViewHistogram:userInRange": "1 Benutzer hat {start}- bis {end}-mal auf den Inhalt zugegriffen",
+	"contentViewHistogram:usersZeroTimes": "{numUsers} Benutzer haben nie auf den Inhalt zugegriffen",
+	"contentViewHistogram:userZeroTimes": "1 Benutzer hat nie auf den Inhalt zugegriffen",
+	"contentViewHistogram:usersGreaterTimes": "{numUsers} Benutzer haben mehr als {start}-mal auf den Inhalt zugegriffen",
+	"contentViewHistogram:userGreaterTimes": "1 Benutzer hat mehr als {start}-mal auf den Inhalt zugegriffen",
 
 	"discussionActivityCard:cardTitle": "Diskussionsaktivität",
 	"discussionActivityCard:threads": "Unterhaltungen",
@@ -159,6 +176,7 @@ export default {
 	"settings:description": "Legen Sie fest, welche Kennzahlen im Abschnitt „Zusammenfassung und Ergebnisdetails“ des Aktivitäts-Dashboard angezeigt werden.",
 	"settings:tabTitleSummaryMetrics": "Zusammenfassung Kennzahlen",
 	"settings:tabTitleResultsTableMetrics": "Ergebnisse Tabellenkennzahlen",
+	"settings:tabTitleUserLevelMetrics": "Kennzahlen für die Benutzerebene",
 	"settings:saveAndClose": "Speichern und schließen",
 	"settings:save": "Speichern",
 	"settings:cancel": "Abbrechen",
@@ -169,25 +187,35 @@ export default {
 	"settings:overdueAssignmentsDesc": "Die Karte „Überfällige Übungen“ zeigt die Anzahl der Benutzer an, die in den gefilterten Kursen eine oder mehrere überfällige Übungen haben.",
 	"settings:systemAccessDesc": "Die Karte „Systemzugriff“ zeigt den letzten Zugriff an, den der Benutzer auf irgendeine Weise hatte.",
 	"settings:discActivityDesc": "Die Karte „Diskussionsaktivität“ zeigt passive und aktive soziale Interaktion in jedem Kurs an, nach dem gefiltert wird. Diese Kennzahl gibt an, wann ein Benutzer einen Thread erstellt, auf einen vorhandenen Beitrag antwortet oder einen Beitrag liest.",
+	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
 
 	"settings:systemAccessEdit": "Benutzer anzeigen, die in den letzten {num} Tagen nicht auf das System zugegriffen haben.",
 	"settings:systemAccessEditLabel": "Bearbeiten Sie den Grenzwert für den Systemzugriff",
 
 	"settings:avgGrade": "Durchschnittsnote",
+	"settings:avgGradeSummary": "Durchschnittsnotenübersicht",
 	"settings:avgTimeInContent": "Zeit mit den Inhalten",
 	"settings:avgDiscussionActivity": "Durchschnittliche Diskussionsteilnahme",
 	"settings:lastAccessedSystem": "Letzter Zugriff auf das System",
+	"settings:predictedGrade": "Erwartete Note",
 	"settings:avgGradeDescription": "Der Indikator „Durchschnittsnote“ zeigt die aktuelle Durchschnittsnote für den Benutzer in allen Kursen an, die in den angewendeten Filtern enthalten sind.",
 	"settings:avgTimeInContentDescription": "Der Indikator „Zeit mit den Inhalten“ zeigt die durchschnittliche Zeit, die der Benutzer in allen Kursen, die in den angewendeten Filtern enthalten sind, im Inhalt verbracht hat, als Durchschnitt der Gesamtzeit pro Kurs an. Diese Kennzahl wird in Minuten angegeben.",
 	"settings:avgDiscussionActivityDescription": "Der Indikator „Durchschnittliche Diskussionsteilnahme“ zeigt Benutzerstatistiken darüber an, wie oft der Benutzer einen Thread erstellt, einen Beitrag liest oder auf einen Beitrag antwortet, und zwar über alle Kurse, die in den angewendeten Filtern enthalten sind. Diese Kennzahl ist der Durchschnitt der Gesamtzahl pro Kurs.",
 	"settings:lastAccessedSystemDescription": "Der Indikator „Letzter Systemzugriff“ zeigt den Zeitstempel in der Brightspace Ortszeit des letzten Zugriffs des Benutzers auf das System an.",
+	"settings:predictedGradeDescription": "Der Indikator „Erwartete Note“ zeigt die durchschnittliche erwartete Gesamtnote für den Benutzer in allen Kursen, die in den angewendeten Filtern enthalten sind. Die Daten für diese Kennzahl stammen aus dem Teilnehmererfolgssystem.",
 	"settings:invalidSystemAccessValueToast": "Ihre Einstellungen konnten nicht gespeichert werden. Die Grenzwerte für den Systemzugriff müssen zwischen 1 und 30 liegen.",
 	"settings:serverSideErrorToast": "Etwas ist schiefgelaufen. Ihre Einstellungen konnten nicht gespeichert werden.",
+
+	"settings:avgGradeSummaryDescription": "Die Karte „Durchschnittsnotenübersicht“ zeigt die aktuelle Durchschnittsnote des Studierenden für alle gefilterten Kurse.",
+	"settings:gradesOverTimeDescription": "Die Karte „Noten im Laufe der Zeit“ zeigt, wie sich die Noten des Teilnehmers im Laufe der Zeit geändert haben.",
+	"settings:accessOverTimeDescription": "Die Karte „Kurszugriff im Laufe der Zeit“ zeigt, wie sich die Häufigkeit des Kurszugriffs des Teilnehmers im Laufe der Zeit geändert hat.",
+	"settings:contentViewsOverTimeDescription": "Die Karte „Inhaltsansichten im Laufe der Zeit“ zeigt, wie sich die Anzahl der Ansichten für Inhalte im Laufe der Zeit geändert hat.",
 
 	"userDrill:noUser": "Dieser Benutzer konnte nicht geladen werden. Rufen Sie zum Aktivitäts-Dashboard, um die Liste der Benutzer anzuzeigen.",
 	"userDrill:noData": "Keine Daten in gefilterten Bereichen. Grenzen Sie Ihre Auswahl ein.",
 	"userDrill:manyCoursesAlert": "Dieses Dashboard eignet sich für weniger als 10 Kurse. Grenzen Sie Ihre ausgewählten Kurse für eine bessere Erfahrung ein.",
 	"userDrill:summaryView": "Zusammenfassende Ansicht",
+	"userDrill:course": "Kurs",
 	"activeCoursesTable:title": "Aktive Kurse",
 	"activeCoursesTable:loadingPlaceholder": "Wird geladen",
 	"activeCoursesTable:course": "Kursname",
@@ -218,6 +246,8 @@ export default {
 
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "Übungen sind derzeit überfällig.",
 	"averageGradeSummaryCard:averageGradeText" : "Durchschnittsnote der angezeigten Kurse.",
+	"averageGradeSummaryCard:averageGradeTextLine1" : "Durchschnittsnote",
+	"averageGradeSummaryCard:averageGradeTextLine2" : "der angezeigten Kurse.",
 	"averageGradeSummaryCard:averageGrade" : "Durchschnittsnote",
 	"averageGradeSummaryCard:noGradeInfoAvailable" : "Keine Informationen zur Bewertung verfügbar.",
 	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "Tage, seit dem letzten Systemzugriff des Lerners",
@@ -236,4 +266,14 @@ export default {
 	"chart:loading": "Laden...",
 	"chart:resetZoom": "Zoom zurücksetzen",
 	"chart:resetZoomTitle": "Zoomstufe 1:1 zurücksetzen",
+
+	"alert:updatedFilter" : "Der {chartName} Filter wurde aktualisiert.",
+	"alert:axeDescriptionRange" : "Anzeigen von Teilnehmern mit {chartName} in diesen Kategorien",
+	"alert:axeDescription" : "Anzeigen von Teilnehmern mit",
+	"alert:axeNotFiltering" : "Die Filterung von {chartName} wurde gestoppt.",
+	// this "to" that, and this "to" that <- translate the word "to" in this context
+	"alert:this-To-That" : "bis",
+	"alert:greaterThanThis" : "greater than {num}",
+	"alert:axeDescriptionCourses" : "Anzeigen von Teilnehmerdaten in diesen Kursen",
+	"alert:axeDescriptionCoursesOff" : "Anzeigen von Teilnehmerdaten in allen Kursen."
 };

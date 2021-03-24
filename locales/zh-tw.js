@@ -34,6 +34,7 @@ export default {
 
 	"orgUnitFilter:nameAllSelected": "組織單位：全部",
 	"orgUnitFilter:nameSomeSelected": "組織單位：已套用選取項目",
+	"orgUnitFilter:name": "組織單位",
 
 	"semesterFilter:name": "學期",
 	"semesterFilter:semesterName": "{orgUnitName} (Id: {orgUnitId})",
@@ -94,6 +95,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "{numberOfUsers} 位使用者註冊獲得高於平均值的成績，且花費高於平均值的時間在內容上。",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} 位使用者註冊獲得低於平均值的成績，且花費低於平均值的時間在內容上。",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} 位使用者註冊獲得低於平均值的成績，但花費高於平均值的時間在內容上。",
+	"timeInContentVsGradeCard:highTimeHighGrade": "內容與高分的高時",
+	"timeInContentVsGradeCard:highTimeLowGrade": "內容與低分的高時",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "內容與高分的低時",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "內容與低分的低時",
 
 	"currentFinalGradeCard:currentGrade": "目前成績",
 	"currentFinalGradeCard:numberOfStudents": "使用者數目",
@@ -115,6 +120,7 @@ export default {
 	"courseLastAccessCard:oneToThreeDaysAgo": "1-3 天前",
 	"courseLastAccessCard:lessThanOneDayAgo": "< 1 天前",
 	"courseLastAccessCard:accessibilityLessThanOne": "不到 1 天前",
+	"courseLastAccessCard:accessibilityMoreThanFourteenDaysAgo": "超過 14 天前",
 	"courseLastAccessCard:tooltipNeverAccessed": "{numberOfUsers} 位使用者從未存取過課程",
 	"courseLastAccessCard:tooltipMoreThanFourteenDays": "{numberOfUsers} 位使用者上次在超過 14 天前存取課程",
 	"courseLastAccessCard:toolTipSevenToFourteenDays": "{numberOfUsers} 位使用者上次在 7-14 天前存取課程",
@@ -129,6 +135,17 @@ export default {
 	"courseLastAccessCard:toolTipThreeToFiveDaysSingleUser": "1 位使用者上次在 3-5 天前存取課程",
 	"courseLastAccessCard:toolTipOneToThreeDaysSingleUser": "1 位使用者上次在 1-3 天前存取課程",
 	"courseLastAccessCard:toolTipLessThanOneDaySingleUser": "1 位使用者上次在不到 1 天前存取課程",
+
+	"contentViewHistogram:title": "內容檢視",
+	"contentViewHistogram:textLabel": "此圖表顯示選取課程中所有使用者的內容檢視總數",
+	"contentViewHistogram:contentViews": "內容主題檢視的數目",
+	"contentViewHistogram:userCount": "使用者數目",
+	"contentViewHistogram:usersInRange": "{numUsers} 位使用者已存取內容 {start} 至 {end} 次",
+	"contentViewHistogram:userInRange": "1 位使用者已存取內容 {start} 至 {end} 次",
+	"contentViewHistogram:usersZeroTimes": "{numUsers} 位使用者已存取內容 0 次",
+	"contentViewHistogram:userZeroTimes": "1 位使用者已存取內容 0 次",
+	"contentViewHistogram:usersGreaterTimes": "{numUsers} 位使用者已存取內容超過 {start} 次",
+	"contentViewHistogram:userGreaterTimes": "1 位使用者已存取內容超過 {start} 次",
 
 	"discussionActivityCard:cardTitle": "討論活動",
 	"discussionActivityCard:threads": "討論串",
@@ -159,6 +176,7 @@ export default {
 	"settings:description": "設定「參與情形」儀表板的「摘要」與「結果詳細資料」區段中顯示哪些量測。",
 	"settings:tabTitleSummaryMetrics": "摘要量測",
 	"settings:tabTitleResultsTableMetrics": "結果表格量測",
+	"settings:tabTitleUserLevelMetrics": "使用者層級量測",
 	"settings:saveAndClose": "儲存並關閉",
 	"settings:save": "儲存",
 	"settings:cancel": "取消",
@@ -169,25 +187,35 @@ export default {
 	"settings:overdueAssignmentsDesc": "「逾期的作業」卡顯示篩選出之課程中有一或多項逾期作業的使用者人數。",
 	"settings:systemAccessDesc": "「系統存取」卡顯示使用者最後一次以任何形式進行之存取。",
 	"settings:discActivityDesc": "「討論活動」卡顯示篩選出之課程中各個課程的被動與主動社群參與情形。此量測會在使用者建立討論串、針對現有貼文進行回覆，或閱讀貼文時予以報告。",
+	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
 
 	"settings:systemAccessEdit": "顯示在過去 {num} 天內未存取系統的使用者。",
 	"settings:systemAccessEditLabel": "編輯系統存取閾值",
 
 	"settings:avgGrade": "平均成績",
+	"settings:avgGradeSummary": "平均成績摘要",
 	"settings:avgTimeInContent": "平均花費在內容的時間",
 	"settings:avgDiscussionActivity": "平均討論參與",
 	"settings:lastAccessedSystem": "系統最後存取",
+	"settings:predictedGrade": "預期成績",
 	"settings:avgGradeDescription": "「平均成績」指示器呈現的是使用者目前在所套用之篩選條件中的所有課程內的平均成績。",
 	"settings:avgTimeInContentDescription": "「平均花費在內容的時間」指示器呈現的是使用者在所套用之篩選條件中的所有課程內使用於內容的平均時間，其結果計為各課程平均花費的總時間。此量測以分鐘為單位進行報告。",
 	"settings:avgDiscussionActivityDescription": "「平均討論參與」指示器的使用者統計資料呈現的是使用者在所套用之篩選條件中的所有課程內建立討論串、閱讀貼文或回覆貼文的頻繁程度。此量測計算各個課程總計數的平均。",
 	"settings:lastAccessedSystemDescription": "「系統最後存取」指示器顯示使用者最後一次以任何形式存取系統時的時間戳記 (以 Brightspace 本機時間顯示)。",
+	"settings:predictedGradeDescription": "「預期成績」指示器呈現的是使用者在所套用之篩選條件中，所有課程內的平均預期最終成績。此量測的資料是從 Student Success System 產生。",
 	"settings:invalidSystemAccessValueToast": "無法儲存您的設定。「系統存取」閾值必須介於 1 和 30 之間。",
 	"settings:serverSideErrorToast": "發生錯誤。無法儲存您的設定。",
+
+	"settings:avgGradeSummaryDescription": "「平均成績摘要」卡呈現學生在篩選的課程中目前的平均成績。",
+	"settings:gradesOverTimeDescription": "「成績時程紀錄」卡顯示學習者的成績隨時間變化的情形。",
+	"settings:accessOverTimeDescription": "「課程存取時程紀錄」卡顯示學習者的課程存取頻率隨時間變化的情形。",
+	"settings:contentViewsOverTimeDescription": "「內容檢視時程紀錄」卡顯示內容的檢視計數隨時間變化的情形。",
 
 	"userDrill:noUser": "無法載入此使用者。請前往「參與情形」儀表板以檢視使用者清單。",
 	"userDrill:noData": "篩選範圍內沒有資料。請重新調整您的選擇。",
 	"userDrill:manyCoursesAlert": "此儀表板在少於 10 堂課程的情況下最實用。請調整所選的課程，以獲得更好的體驗。",
 	"userDrill:summaryView": "摘要檢視",
+	"userDrill:course": "課程",
 	"activeCoursesTable:title": "啟用中的課程",
 	"activeCoursesTable:loadingPlaceholder": "正在載入",
 	"activeCoursesTable:course": "課程名稱",
@@ -218,6 +246,8 @@ export default {
 
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "項作業目前已逾期。",
 	"averageGradeSummaryCard:averageGradeText" : "檢視中之課程的平均成績。",
+	"averageGradeSummaryCard:averageGradeTextLine1" : "平均成績，來自：",
+	"averageGradeSummaryCard:averageGradeTextLine2" : "檢視中的課程。",
 	"averageGradeSummaryCard:averageGrade" : "平均成績",
 	"averageGradeSummaryCard:noGradeInfoAvailable" : "沒有成績資訊可用。",
 	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "自學習者上次存取系統以來的天數。",
@@ -236,4 +266,14 @@ export default {
 	"chart:loading": "正在載入...",
 	"chart:resetZoom": "重設縮放",
 	"chart:resetZoomTitle": "重設縮放比例 1:1",
+
+	"alert:updatedFilter" : "{chartName} 篩選已更新。",
+	"alert:axeDescriptionRange" : "在這些類別中以 {chartName} 檢視學習者",
+	"alert:axeDescription" : "以此項目檢視學習者：",
+	"alert:axeNotFiltering" : "已依 {chartName} 停止篩選。",
+	// this "to" that, and this "to" that <- translate the word "to" in this context
+	"alert:this-To-That" : "至",
+	"alert:greaterThanThis" : "greater than {num}",
+	"alert:axeDescriptionCourses" : "檢視這些課程中的學習者資料",
+	"alert:axeDescriptionCoursesOff" : "檢視所有課程中的學習者資料。"
 };

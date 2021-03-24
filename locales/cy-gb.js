@@ -34,6 +34,7 @@ export default {
 
 	"orgUnitFilter:nameAllSelected": "Uned Sefydliad: Pob un",
 	"orgUnitFilter:nameSomeSelected": "Uned Sefydliad: Dewisiadau wedi’u Gweithredu",
+	"orgUnitFilter:name": "Uned Sefydliad",
 
 	"semesterFilter:name": "Semester",
 	"semesterFilter:semesterName": "{orgUnitName} (Id: {orgUnitId})",
@@ -94,6 +95,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "Mae {numberOfUsers} o ddefnyddwyr a gofrestrwyd yn cael gradd uwch na'r cyfartaledd ac yn treulio mwy o amser na'r cyfartaledd mewn cynnwys.",
 	"timeInContentVsGradeCard:leftBottom": "Mae {numberOfUsers} o ddefnyddwyr a gofrestrwyd yn cael gradd is na'r cyfartaledd ac yn treulio llai o amser na'r cyfartaledd mewn cynnwys.",
 	"timeInContentVsGradeCard:rightBottom": "Mae {numberOfUsers} o ddefnyddwyr a gofrestrwyd yn cael gradd is na'r cyfartaledd ac yn treulio mwy o amser na'r cyfartaledd mewn cynnwys.",
+	"timeInContentVsGradeCard:highTimeHighGrade": "amser uchel mewn cynnwys a gradd uchel",
+	"timeInContentVsGradeCard:highTimeLowGrade": "amser uchel mewn cynnwys a gradd isel",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "amser isel mewn cynnwys a gradd uchel",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "amser isel mewn cynnwys a gradd isel",
 
 	"currentFinalGradeCard:currentGrade": "Gradd Bresennol",
 	"currentFinalGradeCard:numberOfStudents": "Nifer y Defnyddwyr",
@@ -115,6 +120,7 @@ export default {
 	"courseLastAccessCard:oneToThreeDaysAgo": "1-3 diwrnod yn ôl",
 	"courseLastAccessCard:lessThanOneDayAgo": "< 1 diwrnod yn ôl",
 	"courseLastAccessCard:accessibilityLessThanOne": "Llai nag 1 diwrnod yn ôl",
+	"courseLastAccessCard:accessibilityMoreThanFourteenDaysAgo": "Mwy nag 14 diwrnod yn ôl",
 	"courseLastAccessCard:tooltipNeverAccessed": "Nid yw {numberOfUsers} o ddefnyddwyr erioed wedi cyrchu'r cwrs",
 	"courseLastAccessCard:tooltipMoreThanFourteenDays": "Cyrchodd {numberOfUsers} o ddefnyddwyr y cwrs diwethaf fwy na 14 diwrnod yn ôl",
 	"courseLastAccessCard:toolTipSevenToFourteenDays": "Cyrchodd {numberOfUsers} o ddefnyddwyr y cwrs diwethaf 7 i 14 diwrnod yn ôl",
@@ -129,6 +135,17 @@ export default {
 	"courseLastAccessCard:toolTipThreeToFiveDaysSingleUser": "Cyrchodd 1 defnyddiwr y cwrs diwethaf 3 i 5 diwrnod yn ôl",
 	"courseLastAccessCard:toolTipOneToThreeDaysSingleUser": "Cyrchodd 1 defnyddiwr y cwrs diwethaf 1 i 3 diwrnod yn ôl",
 	"courseLastAccessCard:toolTipLessThanOneDaySingleUser": "Cyrchodd 1 defnyddiwr y cwrs diwethaf llai nag 1 diwrnod yn ôl",
+
+	"contentViewHistogram:title": "Gwedd Cynnwys",
+	"contentViewHistogram:textLabel": "Mae'r siart hon yn dangos cyfanswm yr ymweliadau ar gyfer yr holl ddefnyddwyr yn y cyrsiau a ddewiswyd",
+	"contentViewHistogram:contentViews": "Nifer yr Ymweliadau Pwnc Cynnwys",
+	"contentViewHistogram:userCount": "Nifer y Defnyddwyr",
+	"contentViewHistogram:usersInRange": "Mae {numUsers} o ddefnyddwyr wedi cyrchu'r cynnwys rhwng {start} a {end} o weithiau",
+	"contentViewHistogram:userInRange": "Mae 1 defnyddiwr wedi cyrchu'r cynnwys rhwng {start} a {end} o weithiau",
+	"contentViewHistogram:usersZeroTimes": "Mae {numUsers} defnyddiwr wedi cyrchu'r cynnwys 0 gwaith",
+	"contentViewHistogram:userZeroTimes": "Mae 1 defnyddiwr wedi cyrchu'r cynnwys 0 gwaith",
+	"contentViewHistogram:usersGreaterTimes": "Mae {numUsers} o ddefnyddwyr wedi cyrchu'r cynnwys yn fwy na {start} o weithiau",
+	"contentViewHistogram:userGreaterTimes": "Mae 1 defnyddiwr wedi cyrchu'r cynnwys yn fwy na {start} o weithiau",
 
 	"discussionActivityCard:cardTitle": "Gweithgaredd Trafod",
 	"discussionActivityCard:threads": "Trywyddau",
@@ -159,6 +176,7 @@ export default {
 	"settings:description": "Gosodwch y metrigau sy'n cael eu harddangos yn adran Crynodeb a Manylion Canlyniad y Dangosfwrdd Ymgysylltu.",
 	"settings:tabTitleSummaryMetrics": "Metrigau Crynodeb",
 	"settings:tabTitleResultsTableMetrics": "Metrigau'r Tabl Canlyniadau",
+	"settings:tabTitleUserLevelMetrics": "Metrigau Lefel Defnyddiwr",
 	"settings:saveAndClose": "Cadw a Chau",
 	"settings:save": "Cadw",
 	"settings:cancel": "Canslo",
@@ -169,25 +187,35 @@ export default {
 	"settings:overdueAssignmentsDesc": "Mae'r cerdyn Aseiniadau Hwyr yn dangos nifer y defnyddwyr sydd ag un neu fwy o aseiniadau yn hwyr yn y cyrsiau sydd wedi’u hidlo.",
 	"settings:systemAccessDesc": "Mae'r cerdyn Mynediad System yn dangos y mynediad diwethaf a gafodd y defnyddiwr mewn unrhyw ffordd.",
 	"settings:discActivityDesc": "Mae'r cerdyn Gweithgarwch Trafod yn dangos ymgysylltiad cymdeithasol goddefol a gweithredol ym mhob cwrs sydd wedi’i hidlo. Mae'r metrig hwn yn adrodd pan fydd defnyddiwr yn creu trywydd, yn ymateb i bostiad sy'n bodoli eisoes, neu'n darllen post.",
+	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
 
 	"settings:systemAccessEdit": "Dangoswch ddefnyddwyr nad ydynt wedi cyrchu'r system yn ystod y {num} o ddiwrnodau diwethaf.",
 	"settings:systemAccessEditLabel": "Golygu trothwy mynediad  y system",
 
 	"settings:avgGrade": "Gradd ar Gyfartaledd",
+	"settings:avgGradeSummary": "Crynodeb Gradd Gyfartalog",
 	"settings:avgTimeInContent": "Amser Cyfartalog mewn Cynnwys",
 	"settings:avgDiscussionActivity": "Cyfranogiad Trafodaeth Cyfartalog",
 	"settings:lastAccessedSystem": "Mynediad Diwethaf y System",
+	"settings:predictedGrade": "Gradd Ragfynegol",
 	"settings:avgGradeDescription": "Mae'r dangosydd Gradd Cyfartalog yn cyflwyno'r radd gyfartalog bresennol ar gyfer y defnyddiwr ar draws yr holl gyrsiau sydd wedi'u cynnwys yn yr hidlwyr sydd wedi’u cymhwyso.",
 	"settings:avgTimeInContentDescription": "Mae'r dangosydd Amser Cyfartalog mewn Cynnwys yn dangos yr amser cyfartalog a dreulir mewn cynnwys, fel cyfartaledd o amser y cwrs, ar gyfer y defnyddiwr ar draws yr holl gyrsiau a gynhwysir yn yr hidlwyr sydd wedi’u cymhwyso. Adroddir am y metrig hwn mewn munudau.",
 	"settings:avgDiscussionActivityDescription": "Mae'r dangosydd Cyfranogiad Trafodaeth Cyfartalog yn cyflwyno ystadegau defnyddwyr ar ba mor aml y mae'r defnyddiwr yn creu trywyddau, yn darllen post neu'n ymateb i bostiad ar draws yr holl gyrsiau sydd wedi'u cynnwys yn yr hidlwyr sydd wedi’u cymhwyso. Mae'r metrig hwn yn cyfartaleddu cyfanswm y cyfrif fesul cwrs.",
 	"settings:lastAccessedSystemDescription": "Mae dangosydd Mynediad Diwethaf y System yn dangos y stamp amser, yn amser lleol Brightspace, y tro diwethaf i'r defnyddiwr gyrchu'r system mewn unrhyw ffordd.",
+	"settings:predictedGradeDescription": "Mae'r dangosydd Gradd Gyfartalog yn cyflwyno'r radd derfynol ar gyfer y defnyddiwr ar draws yr holl gyrsiau sydd wedi'u cynnwys yn yr hidlwyr sydd wedi’u cymhwyso. Cynhyrchir data ar gyfer y metrig hwn o'r System Llwyddiant Myfyrwyr.",
 	"settings:invalidSystemAccessValueToast": "Ni ellid cadw eich gosodiadau. Rhaid i drothwyon Mynediad y System fod rhwng 1 a 30.",
 	"settings:serverSideErrorToast": "Aeth rhywbeth o’i le. Ni ellid cadw eich gosodiadau.",
+
+	"settings:avgGradeSummaryDescription": "Mae'r cerdyn Crynodeb Gradd Gyfartalog yn cyflwyno'r radd gyfartalog bresennol ar gyfer y myfyriwr ar draws cyrsiau sy'n cael eu hidlo.",
+	"settings:gradesOverTimeDescription": "Mae'r cerdyn Graddau Dros Amser yn dangos sut mae graddau'r dysgwr wedi newid dros amser.",
+	"settings:accessOverTimeDescription": "Mae'r cerdyn Mynediad Cwrs Dros Amser yn dangos sut mae amlder mynediad cwrs y dysgwr wedi newid dros amser.",
+	"settings:contentViewsOverTimeDescription": "Mae'r cerdyn Ymweliadau Cynnwys Dros Amser yn dangos sut mae cyfrif ymweliadau ar gyfer cynnwys wedi newid dros amser.",
 
 	"userDrill:noUser": "Doedd dim modd llwytho'r defnyddiwr hwn. Ewch i'r Dangosfwrdd Ymgysylltu i weld y rhestr o ddefnyddwyr.",
 	"userDrill:noData": "Dim data yn yr ystodau sydd wedi’u hidlo. Mireinio'ch dewis.",
 	"userDrill:manyCoursesAlert": "Mae’r dangosfwrdd hwn yn fwyaf defnyddiol gyda llai na 10 cwrs. Mireiniwch y cyrsiau a ddewiswyd am brofiad gwell.",
 	"userDrill:summaryView": "Gwedd Crynodeb",
+	"userDrill:course": "Cwrs",
 	"activeCoursesTable:title": "Cyrsiau Actif",
 	"activeCoursesTable:loadingPlaceholder": "Wrthi’n llwytho",
 	"activeCoursesTable:course": "Enw’r Cwrs",
@@ -218,6 +246,8 @@ export default {
 
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "mae aseiniadau’n hwyr ar hyn o bryd.",
 	"averageGradeSummaryCard:averageGradeText" : "gradd ar gyfartaledd o’r cyrsiau mewn gwedd.",
+	"averageGradeSummaryCard:averageGradeTextLine1" : "gradd ar gyfartaledd o'r",
+	"averageGradeSummaryCard:averageGradeTextLine2" : "cyrsiau mewn golwg.",
 	"averageGradeSummaryCard:averageGrade" : "Gradd ar Gyfartaledd",
 	"averageGradeSummaryCard:noGradeInfoAvailable" : "Nid oes unrhyw wybodaeth gradd ar gael.",
 	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "diwrnodau ers i’r dysgwr gyrchu'r system ddiwethaf.",
@@ -236,4 +266,14 @@ export default {
 	"chart:loading": "Wrthi'n llwytho...",
 	"chart:resetZoom": "Ailosod y nodwedd chwyddo",
 	"chart:resetZoomTitle": "Ailosod lefel y nodwedd chwyddo 1:1",
+
+	"alert:updatedFilter" : "Mae’r hidlydd {chartName} wedi’i ddiweddaru.",
+	"alert:axeDescriptionRange" : "Wrthi’n gweld dysgwyr gyda {chartName} yn y categorïau hyn",
+	"alert:axeDescription" : "Wrthi’n gweld dysgwyr gyda",
+	"alert:axeNotFiltering" : "Wedi Stopio Hidlo yn ôl {chartName}.",
+	// this "to" that, and this "to" that <- translate the word "to" in this context
+	"alert:this-To-That" : "i",
+	"alert:greaterThanThis" : "greater than {num}",
+	"alert:axeDescriptionCourses" : "Wrthi’n gweld data dysgwyr yn y cyrsiau hyn",
+	"alert:axeDescriptionCoursesOff" : "Wrthi’n gweld data dysgwyr ym mhob cwrs."
 };
