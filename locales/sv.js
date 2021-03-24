@@ -34,6 +34,7 @@ export default {
 
 	"orgUnitFilter:nameAllSelected": "Organisationsenhet: alla",
 	"orgUnitFilter:nameSomeSelected": "Organisationsenhet: använt urval",
+	"orgUnitFilter:name": "Organisationsenhet",
 
 	"semesterFilter:name": "Termin",
 	"semesterFilter:semesterName": "{orgUnitName} (ID: {orgUnitId})",
@@ -94,6 +95,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "{numberOfUsers} användarregistreringar har lägre betyg än genomsnittet och tillbringar mer tid än genomsnittet i innehåll.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} användarregistreringar har lägre betyg än genomsnittet och tillbringar kortare tid än genomsnittet i innehåll.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} användarregistreringar har lägre betyg än genomsnittet och tillbringar mer tid än genomsnittet i innehåll.",
+	"timeInContentVsGradeCard:highTimeHighGrade": "mycket tid med innehållet och högt betyg",
+	"timeInContentVsGradeCard:highTimeLowGrade": "mycket tid med innehållet och lågt betyg",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "lite tid med innehållet och högt betyg",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "lite tid med innehållet och lågt betyg",
 
 	"currentFinalGradeCard:currentGrade": "Aktuellt betyg",
 	"currentFinalGradeCard:numberOfStudents": "Antal användare",
@@ -115,6 +120,7 @@ export default {
 	"courseLastAccessCard:oneToThreeDaysAgo": "1–3 dagar sedan",
 	"courseLastAccessCard:lessThanOneDayAgo": "< 1 dag sedan",
 	"courseLastAccessCard:accessibilityLessThanOne": "Mindre än 1 dag sedan",
+	"courseLastAccessCard:accessibilityMoreThanFourteenDaysAgo": "Mer än 14 dagar sedan",
 	"courseLastAccessCard:tooltipNeverAccessed": "{numberOfUsers} användare har aldrig använt kursen",
 	"courseLastAccessCard:tooltipMoreThanFourteenDays": "{numberOfUsers} användare använde kursen för mer än 14 dagar sedan",
 	"courseLastAccessCard:toolTipSevenToFourteenDays": "{numberOfUsers} användare använde kursen för 7 till 14 dagar sedan",
@@ -129,6 +135,17 @@ export default {
 	"courseLastAccessCard:toolTipThreeToFiveDaysSingleUser": "1 användare använde kursen för 3 till 5 dagar sedan",
 	"courseLastAccessCard:toolTipOneToThreeDaysSingleUser": "1 användare använde kursen för 1 till 3 dagar sedan",
 	"courseLastAccessCard:toolTipLessThanOneDaySingleUser": "1 användare använde kursen för mindre än 1 dag sedan",
+
+	"contentViewHistogram:title": "Innehållsvisning",
+	"contentViewHistogram:textLabel": "I det här diagrammet visas totalt antal visningar av innehållsämnen för alla användare i de valda kurserna",
+	"contentViewHistogram:contentViews": "Antal visningar av innehållsämnen",
+	"contentViewHistogram:userCount": "Antal användare",
+	"contentViewHistogram:usersInRange": "{numUsers} användare har använt innehållet mellan {start} och {end} gånger",
+	"contentViewHistogram:userInRange": "1 användare har använt innehållet mellan {start} och {end} gånger",
+	"contentViewHistogram:usersZeroTimes": "{numUsers} användare har använt innehållet 0 gånger",
+	"contentViewHistogram:userZeroTimes": "1 användare har använt innehållet 0 gånger",
+	"contentViewHistogram:usersGreaterTimes": "{numUsers} användare har använt innehållet fler än {start} gånger",
+	"contentViewHistogram:userGreaterTimes": "1 användare har använt innehållet fler än {start} gånger",
 
 	"discussionActivityCard:cardTitle": "Diskussionsaktivitet",
 	"discussionActivityCard:threads": "Trådar",
@@ -159,6 +176,7 @@ export default {
 	"settings:description": "Ange vilka mätvärden som ska visas i avsnittet Sammanfattning och resultatinformation på kontrollpanel för registrering.",
 	"settings:tabTitleSummaryMetrics": "Sammanfattade mätvärden",
 	"settings:tabTitleResultsTableMetrics": "Mätvärden för resultattabell",
+	"settings:tabTitleUserLevelMetrics": "Beräkningar på användarnivå",
 	"settings:saveAndClose": "Spara och stäng",
 	"settings:save": "Spara",
 	"settings:cancel": "Avbryt",
@@ -169,25 +187,35 @@ export default {
 	"settings:overdueAssignmentsDesc": "Kortet Försenade uppgifter visar antalet användare som har en eller flera försenade uppgifter i kurserna som filtreras.",
 	"settings:systemAccessDesc": "Kortet Systemåtkomst visar den senaste gången som användaren använde systemet på något sätt.",
 	"settings:discActivityDesc": "Kortet Diskussionsaktivitet visar passivt och aktivt socialt engagemang i kurserna som filtreras. Mätvärdet rapporteras när en användare skapar en tråd, svarar på ett inlägg eller läser ett inlägg.",
+	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
 
 	"settings:systemAccessEdit": "Visa användare som inte har använt systemet under de senaste {num} dagarna.",
 	"settings:systemAccessEditLabel": "Redigera tröskelvärde för systemåtkomst",
 
 	"settings:avgGrade": "Genomsnittligt betyg",
+	"settings:avgGradeSummary": "Sammanfattning av genomsnittligt betyg",
 	"settings:avgTimeInContent": "Genomsnittlig tid i innehåll",
 	"settings:avgDiscussionActivity": "Genomsnittligt diskussionsdeltagande",
 	"settings:lastAccessedSystem": "Senaste åtkomst till system",
+	"settings:predictedGrade": "Prognostiserat betyg",
 	"settings:avgGradeDescription": "Indikatorn för genomsnittsbetyg visar det aktuella medelbetyget för användaren för alla kurser som ingår i de aktiva filtren.",
 	"settings:avgTimeInContentDescription": "Indikatorn för genomsnittlig tid i innehåll visar den genomsnittliga tiden i innehållet, som ett genomsnitt av den totala tiden per kurs, för användaren i alla kurser som ingår i de aktiva filtren. Värdet rapporteras i minuter.",
 	"settings:avgDiscussionActivityDescription": "Indikatorn för genomsnittligt deltagande i diskussioner visar användarstatistik för hur ofta användaren skapar en tråd, läser ett inlägg eller svarar på ett inlägg i alla kurser som ingår i de aktiva filtren. Värdet är ett medelvärde av det totala antalet per kurs.",
 	"settings:lastAccessedSystemDescription": "Indikatorn för senaste åtkomst till system visar tidsstämpeln, i lokal Brightspace-tid, för den senaste gången användaren kom åt systemet på något sätt.",
+	"settings:predictedGradeDescription": "Indikatorn för prognostiserat betyg visar förväntat genomsnittligt slutbetyg för användaren för alla kurser som ingår i de aktiva filtren. Uppgifterna för beräkningen hämtas från resultatsystemet för elever.",
 	"settings:invalidSystemAccessValueToast": "Dina inställningar kunde inte sparas. Tröskelvärdena för systemåtkomst måste vara mellan 1 och 30.",
 	"settings:serverSideErrorToast": "Något gick fel. Dina inställningar kunde inte sparas.",
+
+	"settings:avgGradeSummaryDescription": "Kortet Sammanfattning av genomsnittligt betyg innehåller aktuellt genomsnittligt betyg för de kurser som filtrerats fram.",
+	"settings:gradesOverTimeDescription": "Kortet Betyg över tid innehåller information om ändringar i elevens betyg över tiden.",
+	"settings:accessOverTimeDescription": "Kortet Tillgång till kursen över tid innehåller information om hur ofta eleven har använt kursen och om detta har ändrats över tiden.",
+	"settings:contentViewsOverTimeDescription": "Kortet Innehållsvyn över tid innehåller information om hur antalet innehållsvisningar har ändrats över tiden.",
 
 	"userDrill:noUser": "Användaren kunde inte läsas in. Gå till kontrollpanel för registrering för att visa listan över användare.",
 	"userDrill:noData": "Inga data i filtrerade intervall. Förfina ditt val.",
 	"userDrill:manyCoursesAlert": "Den här instrumentpanelen är mest användbar med färre än 10 kurser. Förfina dina valda kurser för en bättre upplevelse.",
 	"userDrill:summaryView": "Sammanfattningsvy",
+	"userDrill:course": "Kurs",
 	"activeCoursesTable:title": "Aktiva kurser",
 	"activeCoursesTable:loadingPlaceholder": "Laddar",
 	"activeCoursesTable:course": "Kursnamn",
@@ -218,6 +246,8 @@ export default {
 
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "uppgifter är för närvarande försenade.",
 	"averageGradeSummaryCard:averageGradeText" : "genomsnittligt betyg för kurserna i vyn.",
+	"averageGradeSummaryCard:averageGradeTextLine1" : "genomsnittligt betyg för",
+	"averageGradeSummaryCard:averageGradeTextLine2" : "kurserna i vyn.",
 	"averageGradeSummaryCard:averageGrade" : "Genomsnittligt betyg",
 	"averageGradeSummaryCard:noGradeInfoAvailable" : "Ingen information om betyg finns tillgänglig.",
 	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "dagar sedan eleven senast fick åtkomst till systemet.",
@@ -236,4 +266,14 @@ export default {
 	"chart:loading": "Läser in ...",
 	"chart:resetZoom": "Återställ zoomnivån",
 	"chart:resetZoomTitle": "Återställ zoomnivån till 1:1",
+
+	"alert:updatedFilter" : "Filtret {chartName} har uppdaterats.",
+	"alert:axeDescriptionRange" : "Visa elever med {chartName} i dessa kategorier",
+	"alert:axeDescription" : "Visa elever med",
+	"alert:axeNotFiltering" : "Avbryt filtrering efter {chartName}.",
+	// this "to" that, and this "to" that <- translate the word "to" in this context
+	"alert:this-To-That" : "till",
+	"alert:greaterThanThis" : "greater than {num}",
+	"alert:axeDescriptionCourses" : "Visa elevuppgifter för dessa kurser",
+	"alert:axeDescriptionCoursesOff" : "Visa elevuppgifter för alla kurser."
 };
