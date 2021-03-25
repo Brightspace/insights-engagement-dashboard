@@ -119,7 +119,7 @@ export default {
 	"courseLastAccessCard:threeToFiveDaysAgo": "Il y a 3 à 5 jours",
 	"courseLastAccessCard:oneToThreeDaysAgo": "Il y a 1 à 3 jours",
 	"courseLastAccessCard:lessThanOneDayAgo": "Il y a moins de 1 jour",
-	"courseLastAccessCard:accessibilityLessThanOne": "Il y a moins de1 jour",
+	"courseLastAccessCard:accessibilityLessThanOne": "Il y a moins de 1 jour",
 	"courseLastAccessCard:accessibilityMoreThanFourteenDaysAgo": "Il y a plus de 14 jours",
 	"courseLastAccessCard:tooltipNeverAccessed": "{numberOfUsers} utilisateurs n’ont jamais accédé au cours.",
 	"courseLastAccessCard:tooltipMoreThanFourteenDays": "{numberOfUsers} utilisateurs ont accédé au cours pour la dernière fois il y a plus de 14 jours.",

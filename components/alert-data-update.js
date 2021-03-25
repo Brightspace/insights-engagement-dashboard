@@ -185,10 +185,10 @@ class AlertDataUpdate extends SkeletonMixin(Localizer(MobxLitElement)) {
 		setTimeout(() => {
 			const eventEls = this.shadowRoot.querySelectorAll('.d2l-insights-event');
 			if (eventEls.length > 0) {
-				const elm = eventEls[eventEls.length - 1];
-				const height = `-${elm.offsetHeight}px`;
-				elm.style['marginBottom'] = height;
-				elm.classList.add('d2l-insights-event-standard');
+				const lastEvent = eventEls[eventEls.length - 1];
+				const height = `-${lastEvent.offsetHeight}px`;
+				lastEvent.style['marginBottom'] = height;
+				lastEvent.classList.add('d2l-insights-event-standard');
 			}
 		}, 0);
 	}
