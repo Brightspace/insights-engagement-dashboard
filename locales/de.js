@@ -167,7 +167,7 @@ export default {
 	"defaultViewPopup:title": "Standardansicht des Aktivitäten-Dashboards",
 	"defaultViewPopup:resultsFromNRecentCourses": "Dieses Dashboard ist dafür gedacht, sich Teile der Aktivitäten Ihres Unternehmens anzeigen zu lassen. Die gezeigten Ergebnisse stammen aus {numDefaultCourses} Kursen, auf die kürzlich zugegriffen worden ist, um Ihnen einen Einstieg zu bieten.",
 	"defaultViewPopup:promptUseFilters": "Nutzen Sie die Filter des Dashboards, um zu ändern, welche Ergebnisse angezeigt werden.",
-	"defaultViewPopup:emptyResultsFromNRecentSemesters": "Dieses Dashboard ist dafür gedacht, sich Teile der Aktivitäten Ihres Unternehmens anzeigen zu lassen. Sie haben keine Berechtigung, Daten in den zuletzt erstellten {numDefaultSemestern} Semestern zu überprüfen.",
+	"defaultViewPopup:emptyResultsFromNRecentSemesters": "Dieses Dashboard ist dafür gedacht, sich Teile der Aktivitäten Ihres Unternehmens anzeigen zu lassen. Sie haben keine Berechtigung, Daten in den zuletzt erstellten {numDefaultSemesters} Semestern zu überprüfen.",
 	"defaultViewPopup:expandDefaultCourseList": "Erweitern Sie die Liste, um anzeigen zu lassen, welche Kurse in der Standardansicht enthalten sind.",
 	"defaultViewPopup:collapseDefaultCourseList": "Liste der Kurse reduzieren, die in der Standardansicht enthalten ist",
 	"defaultViewPopup:buttonOk": "OK",

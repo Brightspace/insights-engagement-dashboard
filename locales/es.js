@@ -115,7 +115,7 @@ export default {
 	"courseLastAccessCard:never": "Nunca",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "Hace más de 14 días",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "Hace 7 a 14 días",
-	"courseLastAccessCard:fiveToSevenDaysAgo": "En un rango de 5 a 7 días",
+	"courseLastAccessCard:fiveToSevenDaysAgo": "Hace 5 a 7 días",
 	"courseLastAccessCard:threeToFiveDaysAgo": "Hace 3 a 5 días",
 	"courseLastAccessCard:oneToThreeDaysAgo": "Hace 1 a 3 días",
 	"courseLastAccessCard:lessThanOneDayAgo": "Menos de 1 día",
