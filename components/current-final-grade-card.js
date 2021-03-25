@@ -213,7 +213,7 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		const pairs = this.mergeCategories(categories);
 
-		const descriptions = pairs.map(pair => pair.join(this.localize('alert:this-To-That'))).join(', ');
+		const descriptions = pairs.map(pair => pair.join(` ${this.localize('alert:this-To-That')} `)).join(', ');
 		return `${this.localize('alert:axeDescriptionRange', chartName)} ${descriptions}`;
 	}
 

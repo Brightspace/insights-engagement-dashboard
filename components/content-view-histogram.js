@@ -280,7 +280,7 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 				} else if (pair[1] === 0) {
 					return 0;
 				}
-				return pair.join(this.localize('alert:this-To-That'));
+				return pair.join(` ${this.localize('alert:this-To-That')} `);
 			}
 		).join(', ');
 

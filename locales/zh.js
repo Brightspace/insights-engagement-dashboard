@@ -34,6 +34,7 @@ export default {
 
 	"orgUnitFilter:nameAllSelected": "组织单位：全部",
 	"orgUnitFilter:nameSomeSelected": "组织单位：应用的选择",
+	"orgUnitFilter:name": "组织单位",
 
 	"semesterFilter:name": "学期",
 	"semesterFilter:semesterName": "{orgUnitName} (Id: {orgUnitId})",
@@ -94,6 +95,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "{numberOfUsers} 个用户注册成绩超过平均成绩，且在内容上花费的时间超过平均时间。",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} 个用户注册成绩低于平均成绩，且在内容上花费的时间低于平均时间。",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} 个用户注册成绩低于平均成绩，且在内容上花费的时间超过平均时间。",
+	"timeInContentVsGradeCard:highTimeHighGrade": "内容所用时间长，成绩高",
+	"timeInContentVsGradeCard:highTimeLowGrade": "内容所用时间长，成绩低",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "内容所用时间短，成绩高",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "内容所用时间短，成绩低",
 
 	"currentFinalGradeCard:currentGrade": "当前成绩",
 	"currentFinalGradeCard:numberOfStudents": "用户数目",
@@ -115,6 +120,7 @@ export default {
 	"courseLastAccessCard:oneToThreeDaysAgo": "1-3 天前",
 	"courseLastAccessCard:lessThanOneDayAgo": "< 1 天前",
 	"courseLastAccessCard:accessibilityLessThanOne": "不到 1 天前",
+	"courseLastAccessCard:accessibilityMoreThanFourteenDaysAgo": "超过 14 天前",
 	"courseLastAccessCard:tooltipNeverAccessed": "{numberOfUsers} 位用户从未访问过课程",
 	"courseLastAccessCard:tooltipMoreThanFourteenDays": "{numberOfUsers} 位用户上次访问课程是超过 14 天前",
 	"courseLastAccessCard:toolTipSevenToFourteenDays": "{numberOfUsers} 位用户上次访问课程是 7 到 14 天前",
@@ -129,6 +135,17 @@ export default {
 	"courseLastAccessCard:toolTipThreeToFiveDaysSingleUser": "1 位用户上次访问课程是 3 到 5 天前",
 	"courseLastAccessCard:toolTipOneToThreeDaysSingleUser": "1 位用户上次访问课程是 1 到 3 天前",
 	"courseLastAccessCard:toolTipLessThanOneDaySingleUser": "1 位用户上次访问课程是小于 1 天前",
+
+	"contentViewHistogram:title": "内容查看",
+	"contentViewHistogram:textLabel": "此图表显示选定课程中所有用户内容查看的总数",
+	"contentViewHistogram:contentViews": "内容主题查看次数",
+	"contentViewHistogram:userCount": "用户数目",
+	"contentViewHistogram:usersInRange": "{numUsers} 个用户已访问内容 {start} 至 {end} 次",
+	"contentViewHistogram:userInRange": "1 个用户已访问内容 {start} 至 {end} 次",
+	"contentViewHistogram:usersZeroTimes": "{numUsers} 个用户已访问内容 0 次",
+	"contentViewHistogram:userZeroTimes": "1 个用户已访问内容 0 次",
+	"contentViewHistogram:usersGreaterTimes": "{numUsers} 个用户已访问内容超过 {start} 次",
+	"contentViewHistogram:userGreaterTimes": "1 个用户已访问内容超过 {start} 次",
 
 	"discussionActivityCard:cardTitle": "讨论活动",
 	"discussionActivityCard:threads": "线索",
@@ -159,6 +176,7 @@ export default {
 	"settings:description": "设置在“参与”仪表板的“摘要和结果详细信息”部分中显示的指标。",
 	"settings:tabTitleSummaryMetrics": "摘要指标",
 	"settings:tabTitleResultsTableMetrics": "结果表格指标",
+	"settings:tabTitleUserLevelMetrics": "用户级别指标",
 	"settings:saveAndClose": "保存并关闭",
 	"settings:save": "保存",
 	"settings:cancel": "取消",
@@ -169,25 +187,35 @@ export default {
 	"settings:overdueAssignmentsDesc": "“过期作业”卡片显示所筛选出的课程中有一项或多项过期作业的用户数目。",
 	"settings:systemAccessDesc": "“系统访问”卡片显示用户上次通过任何方式访问系统的时间。",
 	"settings:discActivityDesc": "“讨论活动”卡片显示在所筛选出的每门课程中的被动和主动社交参与活动。此指标报告用户创建讨论话题、回复现有帖子或阅读帖子的情况。",
+	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
 
 	"settings:systemAccessEdit": "显示在过去 {num} 天内未访问过系统的用户。",
 	"settings:systemAccessEditLabel": "编辑系统访问阈值",
 
 	"settings:avgGrade": "平均成绩",
+	"settings:avgGradeSummary": "平均成绩摘要",
 	"settings:avgTimeInContent": "内容所用平均时间",
 	"settings:avgDiscussionActivity": "平均讨论参与度",
 	"settings:lastAccessedSystem": "上次系统访问时间",
+	"settings:predictedGrade": "预测成绩",
 	"settings:avgGradeDescription": "“平均成绩”指标显示用户在应用筛选器后显示的所有课程中的当前平均成绩。",
 	"settings:avgTimeInContentDescription": "“内容所用平均时间”指标显示用户在应用筛选器后显示的所有课程中，用于内容的平均时间，也就是每门课程所用总时间的平均值。此指标以分钟为单位报告。",
 	"settings:avgDiscussionActivityDescription": "“平均讨论参与度”指标显示一些用户统计信息，包括用户在应用筛选器后显示的所有课程中创建讨论话题、阅读帖子或回复帖子的频率。该指标会计算每门课程总计数的平均值。",
 	"settings:lastAccessedSystemDescription": "“上次系统访问时间”指标按照 Brightspace 当地时间，显示用户上次通过任何方式访问系统时的时间戳。",
+	"settings:predictedGradeDescription": "“预测成绩”指标显示用户在应用筛选器后显示的所有课程中的平均预测最终成绩。此指标的数据源自学生成功系统。",
 	"settings:invalidSystemAccessValueToast": "无法保存您的设置。系统访问阈值必须在 1 到 30 之间。",
 	"settings:serverSideErrorToast": "出现错误。无法保存您的设置。",
+
+	"settings:avgGradeSummaryDescription": "“平均成绩摘要”卡片显示经筛选的各个课程中学员的当前平均成绩。",
+	"settings:gradesOverTimeDescription": "“不同时间的成绩”卡片显示学员的成绩是如何随时间变化的。",
+	"settings:accessOverTimeDescription": "“不同时间的课程访问”卡片显示学员课程访问频率是如何随时间更改的。",
+	"settings:contentViewsOverTimeDescription": "“不同时间的内容查看”卡片显示内容的查看次数是如何随时间变化的。",
 
 	"userDrill:noUser": "无法加载此用户。请转到参与仪表板查看用户列表。",
 	"userDrill:noData": "在筛选范围内没有数据。请细化您的选择。",
 	"userDrill:manyCoursesAlert": "该仪表板最有用，其中包含不超过 10 个课程。请细化您选择的课程，以获得更好的体验。",
 	"userDrill:summaryView": "摘要视图",
+	"userDrill:course": "课程",
 	"activeCoursesTable:title": "处于活动状态的课程",
 	"activeCoursesTable:loadingPlaceholder": "正在加载",
 	"activeCoursesTable:course": "课程名称",
@@ -218,6 +246,8 @@ export default {
 
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "项作业目前已经过期。",
 	"averageGradeSummaryCard:averageGradeText" : "查看中的课程的平均成绩。",
+	"averageGradeSummaryCard:averageGradeTextLine1" : "查看中的",
+	"averageGradeSummaryCard:averageGradeTextLine2" : "课程的平均成绩。",
 	"averageGradeSummaryCard:averageGrade" : "平均成绩",
 	"averageGradeSummaryCard:noGradeInfoAvailable" : "没有可用的成绩信息。",
 	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "自学员最后一次访问系统之日起的天数。",
@@ -236,4 +266,14 @@ export default {
 	"chart:loading": "正在加载...",
 	"chart:resetZoom": "重置缩放",
 	"chart:resetZoomTitle": "按 1:1 重置缩放级别",
+
+	"alert:updatedFilter" : "{chartName} 筛选条件已更新。",
+	"alert:axeDescriptionRange" : "查看这些类别中具有 {chartName} 的学员",
+	"alert:axeDescription" : "查看具有  的学员",
+	"alert:axeNotFiltering" : "已停止按 {chartName} 筛选。",
+	// this "to" that, and this "to" that <- translate the word "to" in this context
+	"alert:this-To-That" : "至",
+	"alert:greaterThanThis" : "greater than {num}",
+	"alert:axeDescriptionCourses" : "查看这些课程中的学员数据",
+	"alert:axeDescriptionCoursesOff" : "查看所有课程中的学员数据。"
 };
