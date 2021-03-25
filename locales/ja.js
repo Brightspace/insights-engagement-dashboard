@@ -34,6 +34,7 @@ export default {
 
 	"orgUnitFilter:nameAllSelected": "組織単位: すべて",
 	"orgUnitFilter:nameSomeSelected": "組織単位: 適用された選択",
+	"orgUnitFilter:name": "組織単位",
 
 	"semesterFilter:name": "学期",
 	"semesterFilter:semesterName": "{orgUnitName} (Id: {orgUnitId})",
@@ -94,6 +95,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "成績が平均を上回っており、コンテンツの利用時間が平均以上のユーザー登録は {numberOfUsers} 人です。",
 	"timeInContentVsGradeCard:leftBottom": "成績が平均以下で、コンテンツの利用時間が平均以下のユーザー登録は {numberOfUsers} 人です。",
 	"timeInContentVsGradeCard:rightBottom": "成績が平均以下で、コンテンツの利用時間が平均以上のユーザー登録は {numberOfUsers} 人です。",
+	"timeInContentVsGradeCard:highTimeHighGrade": "コンテンツにおけるハイタイムと高い成績",
+	"timeInContentVsGradeCard:highTimeLowGrade": "コンテンツにおけるハイタイムと低い成績",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "コンテンツにおけるロータイムと高い成績",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "コンテンツにおけるロータイムと低い成績",
 
 	"currentFinalGradeCard:currentGrade": "現在の成績",
 	"currentFinalGradeCard:numberOfStudents": "ユーザー数",
@@ -115,6 +120,7 @@ export default {
 	"courseLastAccessCard:oneToThreeDaysAgo": "1～3 日前",
 	"courseLastAccessCard:lessThanOneDayAgo": "1 日以内",
 	"courseLastAccessCard:accessibilityLessThanOne": "1 日以内",
+	"courseLastAccessCard:accessibilityMoreThanFourteenDaysAgo": "14 日より前",
 	"courseLastAccessCard:tooltipNeverAccessed": "コースへ一度もアクセスしていないユーザーは {numberOfUsers} 人です",
 	"courseLastAccessCard:tooltipMoreThanFourteenDays": "コースへの最終アクセスが 14 日以上前のユーザーは {numberOfUsers} 人です",
 	"courseLastAccessCard:toolTipSevenToFourteenDays": "コースへの最終アクセスが 7～14 日前のユーザーは {numberOfUsers} 人です",
@@ -129,6 +135,17 @@ export default {
 	"courseLastAccessCard:toolTipThreeToFiveDaysSingleUser": "コースへの最終アクセスが 3～5 日前のユーザーは 1 人です",
 	"courseLastAccessCard:toolTipOneToThreeDaysSingleUser": "コースへの最終アクセスが 1～3 日前のユーザーは 1 人です",
 	"courseLastAccessCard:toolTipLessThanOneDaySingleUser": "コースへの最終アクセスから 1 日以内のユーザーは 1 人です",
+
+	"contentViewHistogram:title": "コンテンツビュー",
+	"contentViewHistogram:textLabel": "このチャートには、選択したコースのすべてのユーザーのコンテンツビューの合計数が表示されます",
+	"contentViewHistogram:contentViews": "コンテンツのトピックのビューの数",
+	"contentViewHistogram:userCount": "ユーザー数",
+	"contentViewHistogram:usersInRange": "{numUsers} 人のユーザーが {start} ～ {end} 回そのコンテンツにアクセスしました",
+	"contentViewHistogram:userInRange": "1 人のユーザーが {start} ～ {end} 回そのコンテンツにアクセスしました",
+	"contentViewHistogram:usersZeroTimes": "{numUsers} 人のユーザーが 0 回そのコンテンツにアクセスしました",
+	"contentViewHistogram:userZeroTimes": "1 人のユーザーが 0 回そのコンテンツにアクセスしました",
+	"contentViewHistogram:usersGreaterTimes": "{numUsers} 人のユーザーが {start} 回以上そのコンテンツにアクセスしました",
+	"contentViewHistogram:userGreaterTimes": "1 人のユーザーが {start} 回以上そのコンテンツにアクセスしました",
 
 	"discussionActivityCard:cardTitle": "ディスカッションアクティビティ",
 	"discussionActivityCard:threads": "スレッド",
@@ -159,6 +176,7 @@ export default {
 	"settings:description": "受講ダッシュボードの［サマリーと結果の詳細］セクションに表示するメトリックを設定します。",
 	"settings:tabTitleSummaryMetrics": "サマリーのメトリック",
 	"settings:tabTitleResultsTableMetrics": "結果の表のメトリック",
+	"settings:tabTitleUserLevelMetrics": "ユーザーレベルの測定基準",
 	"settings:saveAndClose": "保存して閉じる",
 	"settings:save": "保存",
 	"settings:cancel": "キャンセル",
@@ -169,25 +187,35 @@ export default {
 	"settings:overdueAssignmentsDesc": "［期限切れの課題］カードには、フィルタリングされたコースで 1 つ以上の期限切れの課題があるユーザーの数が表示されます。",
 	"settings:systemAccessDesc": "［システムアクセス］カードには、ユーザーの最終アクセスが表示されます。",
 	"settings:discActivityDesc": "［ディスカッションアクティビティ］カードには、フィルタリングされた各コースの受動的および能動的なソーシャルエンゲージメントが表示されます。このメトリックは、ユーザーがスレッドを作成したとき、既存の投稿に返信したとき、または投稿を読んだときをレポートします。",
+	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
 
 	"settings:systemAccessEdit": "過去 {num} 日間にシステムにアクセスしていないユーザーを表示します。",
 	"settings:systemAccessEditLabel": "システムアクセスのしきい値の編集",
 
 	"settings:avgGrade": "平均成績",
+	"settings:avgGradeSummary": "平均成績サマリー",
 	"settings:avgTimeInContent": "コンテンツでの平均時間",
 	"settings:avgDiscussionActivity": "平均ディスカッション参加",
 	"settings:lastAccessedSystem": "システムへの最終アクセス",
+	"settings:predictedGrade": "成績予測",
 	"settings:avgGradeDescription": "［平均成績］インジケータには、適用されたフィルタに含まれるすべてのコースでのユーザーの現在の平均成績が表示されます。",
 	"settings:avgTimeInContentDescription": "［コンテンツでの平均時間］インジケータには、適用されたフィルタに含まれるすべてのコースでユーザーがコンテンツに費やした平均時間が、コースごとの合計時間の平均として表示されます。このメトリックは分単位でレポートされます。",
 	"settings:avgDiscussionActivityDescription": "［平均ディスカッション参加］インジケータには、ユーザーがスレッドを作成したり、投稿を読んだり、適用されたフィルタに含まれるすべてのコースで投稿に返信したりする頻度に関するユーザーの統計が表示されます。このメトリックは、コースごとの合計数の平均値です。",
 	"settings:lastAccessedSystemDescription": "［システムへの最終アクセス］インジケータには、ユーザーが最後にシステムにアクセスしたときのタイムスタンプが Brightspace のローカル時間で表示されます。",
+	"settings:predictedGradeDescription": "［成績予測］インジケータには、適用されたフィルタに含まれるすべてのコースでのユーザーの予測される平均最終成績が表示されます。この測定基準のためのデータは、Student Success System から生成されます。",
 	"settings:invalidSystemAccessValueToast": "設定を保存できませんでした。システムアクセスのしきい値は 1～30 の範囲である必要があります。",
 	"settings:serverSideErrorToast": "問題が発生しました。設定を保存できませんでした。",
+
+	"settings:avgGradeSummaryDescription": "［平均成績サマリー］カードは、フィルタリングされたコース全体についての学生の現在の平均成績を示しています。",
+	"settings:gradesOverTimeDescription": "［一定期間にわたる成績］カードは、受講者の成績が時間とともにどのように変化したかを示しています。",
+	"settings:accessOverTimeDescription": "［一定期間にわたるコースへのアクセス］カードは、受講者のコースアクセス頻度が時間とともにどのように変化したかを示しています。",
+	"settings:contentViewsOverTimeDescription": "［一定期間にわたるコンテンツビュー］カードは、コンテンツの表示回数が時間とともにどのように変化したかを示しています。",
 
 	"userDrill:noUser": "このユーザーを読み込むことができませんでした。受講ダッシュボードに移動して、ユーザーのリストを表示します。",
 	"userDrill:noData": "フィルタリングの範囲にデータはありません。選択を絞り込んでください。",
 	"userDrill:manyCoursesAlert": "このダッシュボードは、10 コース未満の場合に最も便利です。使いやすくするには、選択済みのコースを絞り込んでください。",
 	"userDrill:summaryView": "サマリー表示",
+	"userDrill:course": "コース",
 	"activeCoursesTable:title": "アクティブなコース",
 	"activeCoursesTable:loadingPlaceholder": "読み込み中",
 	"activeCoursesTable:course": "コース名",
@@ -218,6 +246,8 @@ export default {
 
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "課題は現在期限切れです。",
 	"averageGradeSummaryCard:averageGradeText" : "ビュー内のコースの平均成績。",
+	"averageGradeSummaryCard:averageGradeTextLine1" : "ビュー内のコースの",
+	"averageGradeSummaryCard:averageGradeTextLine2" : "平均成績。",
 	"averageGradeSummaryCard:averageGrade" : "平均成績",
 	"averageGradeSummaryCard:noGradeInfoAvailable" : "成績情報がありません。",
 	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "受講者が最後にシステムにアクセスしてからの日数。",
@@ -236,4 +266,14 @@ export default {
 	"chart:loading": "読み込み中...",
 	"chart:resetZoom": "ズームのリセット",
 	"chart:resetZoomTitle": "ズームレベルを 1:1 にリセット",
+
+	"alert:updatedFilter" : "{chartName} フィルタを更新。",
+	"alert:axeDescriptionRange" : "これらのカテゴリで {chartName} の受講者を表示",
+	"alert:axeDescription" : "次の条件の受講者を表示",
+	"alert:axeNotFiltering" : "{chartName} のフィルタリングを停止。",
+	// this "to" that, and this "to" that <- translate the word "to" in this context
+	"alert:this-To-That" : "～",
+	"alert:greaterThanThis" : "greater than {num}",
+	"alert:axeDescriptionCourses" : "これらのコースの受講者データを表示",
+	"alert:axeDescriptionCoursesOff" : "すべてのコースの受講者データを表示。"
 };

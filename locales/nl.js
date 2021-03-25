@@ -34,6 +34,7 @@ export default {
 
 	"orgUnitFilter:nameAllSelected": "Organisatie-eenheid: Alle",
 	"orgUnitFilter:nameSomeSelected": "Organisatie-eenheid: Toegepaste selecties",
+	"orgUnitFilter:name": "Organisatie-eenheid",
 
 	"semesterFilter:name": "Semester",
 	"semesterFilter:semesterName": "{orgUnitName} (Id: {orgUnitId})",
@@ -94,6 +95,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "{numberOfUsers} gebruikersinschrijvingen behalen een hogere score dan gemiddeld en besteden gemiddeld meer tijd aan de inhoud.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} gebruikersinschrijvingen behalen een lagere score dan gemiddeld en besteden gemiddeld minder tijd aan de inhoud.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} gebruikersinschrijvingen behalen een lagere score dan gemiddeld en besteden gemiddeld meer tijd aan de inhoud.",
+	"timeInContentVsGradeCard:highTimeHighGrade": "veel tijd in inhoud en hoge score",
+	"timeInContentVsGradeCard:highTimeLowGrade": "veel tijd in inhoud en een lage score",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "weinig tijd in inhoud en hoge score",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "weinig tijd in inhoud en lage score",
 
 	"currentFinalGradeCard:currentGrade": "Huidige score",
 	"currentFinalGradeCard:numberOfStudents": "Aantal gebruikers",
@@ -115,6 +120,7 @@ export default {
 	"courseLastAccessCard:oneToThreeDaysAgo": "1 tot 3 dagen geleden",
 	"courseLastAccessCard:lessThanOneDayAgo": "< 1 dag geleden",
 	"courseLastAccessCard:accessibilityLessThanOne": "Minder dan 1 dag geleden",
+	"courseLastAccessCard:accessibilityMoreThanFourteenDaysAgo": "Meer dan 14 dagen geleden",
 	"courseLastAccessCard:tooltipNeverAccessed": "{numberOfUsers} gebruikers hebben de cursus nooit geopend",
 	"courseLastAccessCard:tooltipMoreThanFourteenDays": "{numberOfUsers} gebruikers hebben de cursus voor het laatst meer dan 14 dagen geleden geopend",
 	"courseLastAccessCard:toolTipSevenToFourteenDays": "{numberOfUsers} gebruikers hebben de cursus voor het laatst 7 tot 14 dagen geleden geopend",
@@ -129,6 +135,17 @@ export default {
 	"courseLastAccessCard:toolTipThreeToFiveDaysSingleUser": "1 gebruiker heeft de cursus voor het laatst 3 tot 5 dagen geleden geopend",
 	"courseLastAccessCard:toolTipOneToThreeDaysSingleUser": "1 gebruiker heeft de cursus voor het laatst 1 tot 3 dagen geleden geopend",
 	"courseLastAccessCard:toolTipLessThanOneDaySingleUser": "1 gebruiker heeft de cursus voor het laatst minder dan 1 dag geleden geopend",
+
+	"contentViewHistogram:title": "Inhoudsweergave",
+	"contentViewHistogram:textLabel": "In dit diagram wordt het totale aantal weergaven van de inhoud voor alle gebruikers in de geselecteerde cursussen weergegeven",
+	"contentViewHistogram:contentViews": "Aantal weergaven van inhoud",
+	"contentViewHistogram:userCount": "Aantal gebruikers",
+	"contentViewHistogram:usersInRange": "{numUsers} gebruikers hebben de inhoud {start} tot {end} keer bekeken",
+	"contentViewHistogram:userInRange": "1 gebruiker heeft de inhoud {start} tot {end} keer bekeken",
+	"contentViewHistogram:usersZeroTimes": "{numUsers} gebruikers hebben de inhoud 0 keer bekeken",
+	"contentViewHistogram:userZeroTimes": "1 gebruiker heeft de inhoud 0 keer bekeken",
+	"contentViewHistogram:usersGreaterTimes": "{numUsers} gebruikers hebben de inhoud meer dan {start} keer bekeken",
+	"contentViewHistogram:userGreaterTimes": "1 gebruiker heeft de inhoud meer dan {start} keer bekeken",
 
 	"discussionActivityCard:cardTitle": "Discussieactiviteit",
 	"discussionActivityCard:threads": "Threads",
@@ -159,6 +176,7 @@ export default {
 	"settings:description": "Stel in welke cijfers worden weergegeven in de sectie Samenvatting en Resultaten van het dashboard Betrokkenheid.",
 	"settings:tabTitleSummaryMetrics": "Cijfersamenvatting",
 	"settings:tabTitleResultsTableMetrics": "Cijfers van resultatentabel",
+	"settings:tabTitleUserLevelMetrics": "Metrische gegevens op gebruikersniveau",
 	"settings:saveAndClose": "Opslaan en sluiten",
 	"settings:save": "Opslaan",
 	"settings:cancel": "Annuleren",
@@ -169,25 +187,35 @@ export default {
 	"settings:overdueAssignmentsDesc": "Op de kaart Achterstallige opdrachten wordt het aantal gebruikers weergegeven dat een of meer achterstallige opdrachten heeft in de cursussen waarop wordt gefilterd.",
 	"settings:systemAccessDesc": "Op de kaart Systeemaanmelding wordt het laatste bezoek van de gebruiker weergegeven.",
 	"settings:discActivityDesc": "De kaart Discussieactiviteit toont passieve en actieve sociale betrokkenheid in elke cursus die is opgenomen in de toegepaste filters. Dit cijfer geeft aan wanneer een gebruiker een thread maakt, een bestaand bericht beantwoordt of een bericht leest.",
+	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
 
 	"settings:systemAccessEdit": "Toont gebruikers die de afgelopen {num} dagen geen toegang tot het systeem hebben gehad.",
 	"settings:systemAccessEditLabel": "Bewerk de drempel van de Systeemaanmelding",
 
 	"settings:avgGrade": "Gemiddelde score",
+	"settings:avgGradeSummary": "Overzicht gemiddelde score",
 	"settings:avgTimeInContent": "Gemiddelde tijd besteed aan de inhoud",
 	"settings:avgDiscussionActivity": "Gemiddelde discussiedeelname",
 	"settings:lastAccessedSystem": "Laatste bezoek aan systeem",
+	"settings:predictedGrade": "Verwachte score",
 	"settings:avgGradeDescription": "De indicator Gemiddelde score geeft de huidige gemiddelde score weer voor de gebruiker van alle cursussen die zijn opgenomen in de toegepaste filters.",
 	"settings:avgTimeInContentDescription": "De indicator Gemiddelde tijd besteed aan de inhoud toont de gemiddelde tijd die per cursus aan inhoud wordt besteed, als gemiddelde van de totale tijd per cursus, voor de gebruiker in alle cursussen die zijn opgenomen in de toegepaste filters. Dit cijfer wordt weergegeven in minuten.",
 	"settings:avgDiscussionActivityDescription": "De indicator Gemiddelde discussiedeelname bevat gebruikersstatistieken die aangeven hoe vaak de gebruiker een thread aanmaakt, een bericht leest of een bericht beantwoordt in alle cursussen die zijn opgenomen in de toegepaste filters. Dit cijfer vertegenwoordigt het gemiddelde van de totale telling per cursus.",
 	"settings:lastAccessedSystemDescription": "De indicator Laatste bezoek aan systeem geeft de tijdstempel weer, in de lokale tijd van Brightspace, van de laatste keer dat de gebruiker het systeem op welke manier dan ook heeft benaderd.",
+	"settings:predictedGradeDescription": "De indicator Verwachte score geeft de gemiddelde verwachte eindscore weer voor de gebruiker van alle cursussen die zijn opgenomen in de toegepaste filters. De metrische gegevens zijn afkomstig van het Student Success System.",
 	"settings:invalidSystemAccessValueToast": "Uw instellingen kunnen niet worden opgeslagen. Drempelwaarde voor Systeemaanmelding moet tussen 1 en 30 liggen.",
 	"settings:serverSideErrorToast": "Er is iets misgegaan. Uw instellingen kunnen niet worden opgeslagen.",
+
+	"settings:avgGradeSummaryDescription": "Op de kaart Overzicht gemiddelde score wordt de huidige gemiddelde score voor de student weergegeven voor alle cursussen waarop wordt gefilterd.",
+	"settings:gradesOverTimeDescription": "De kaart Scores in de loop der tijd laat zien hoe de scores van de cursist in de loop der tijd zijn veranderd.",
+	"settings:accessOverTimeDescription": "De kaart Cursustoegang in de loop der tijd laat zien hoe de frequentie waarmee de cursist de cursus bezoekt in de loop der tijd is veranderd.",
+	"settings:contentViewsOverTimeDescription": "De kaart Inhoudsweergaven in de loop der tijd laat zien hoe het aantal weergaven van de inhoud in de loop der tijd is gewijzigd.",
 
 	"userDrill:noUser": "Deze gebruiker kon niet worden geladen. Ga naar het dashboard Betrokkenheid om de lijst met gebruikers weer te geven.",
 	"userDrill:noData": "Geen gegevens in gefilterde bereiken. Verfijn uw selectie.",
 	"userDrill:manyCoursesAlert": "Dit dashboard is het nuttigste bij minder dan 10 cursussen. Verfijn de geselecteerde cursussen voor een betere ervaring.",
 	"userDrill:summaryView": "Overzichtsweergave",
+	"userDrill:course": "Cursus",
 	"activeCoursesTable:title": "Actieve cursus",
 	"activeCoursesTable:loadingPlaceholder": "Bezig met laden",
 	"activeCoursesTable:course": "Cursusnaam",
@@ -218,6 +246,8 @@ export default {
 
 	"userOverdueAssignmentsCard:assignmentsCurrentlyOverdue": "opdrachten zijn momenteel achterstallig.",
 	"averageGradeSummaryCard:averageGradeText" : "gemiddelde beoordeling van de weergegeven cursussen.",
+	"averageGradeSummaryCard:averageGradeTextLine1" : "gemiddelde score van",
+	"averageGradeSummaryCard:averageGradeTextLine2" : "de weergegeven cursussen.",
 	"averageGradeSummaryCard:averageGrade" : "Gemiddelde score",
 	"averageGradeSummaryCard:noGradeInfoAvailable" : "Geen informatie over beoordeling beschikbaar.",
 	"userSysAccessCard:daysSinceLearnerHasLastAccessedSystem": "dagen sinds de cursist voor het laatst het systeem heeft geopend.",
@@ -236,4 +266,14 @@ export default {
 	"chart:loading": "Laden...",
 	"chart:resetZoom": "Zoom opnieuw instellen",
 	"chart:resetZoomTitle": "Zoomniveau opnieuw instellen op 1:1",
+
+	"alert:updatedFilter" : "{chartName}-filter bijgewerkt.",
+	"alert:axeDescriptionRange" : "Cursisten met {chartName} in deze categorieën weergeven",
+	"alert:axeDescription" : "Cursisten weergeven met",
+	"alert:axeNotFiltering" : "Filteren op {chartName} gestopt.",
+	// this "to" that, and this "to" that <- translate the word "to" in this context
+	"alert:this-To-That" : "tot",
+	"alert:greaterThanThis" : "greater than {num}",
+	"alert:axeDescriptionCourses" : "Gegevens van de cursist in deze cursussen weergeven",
+	"alert:axeDescriptionCoursesOff" : "De gegevens van de cursist in alle cursussen weergeven."
 };

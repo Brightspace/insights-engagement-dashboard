@@ -118,16 +118,17 @@ class AlertDataUpdate extends SkeletonMixin(Localizer(MobxLitElement)) {
 				}
 
 				.d2l-insights-event {
-					animation: move-in-fade-out 4s 0s 1 both;
 					box-shadow: 0 5px 10px rgba(0.23, 0.23, 0.23, 0.2);
 					display: block;
-					height: 67px;
-					margin-bottom: -67px;
 					transition: margin-bottom 0.2s, opacity 0.2s;
 				}
 
 				.d2l-insights-event.d2l-insights-event-close {
 					animation: fade-out 0.2s 0s 1 both;
+				}
+
+				.d2l-insights-event.d2l-insights-event-standard {
+					animation: move-in-fade-out 4s 0s 1 forwards;
 				}
 
 				.d2l-insights-hidden {
@@ -137,7 +138,7 @@ class AlertDataUpdate extends SkeletonMixin(Localizer(MobxLitElement)) {
 				}
 
 				@keyframes move-in-fade-out {
-					0% { margin-bottom: -60px; opacity: 0; }
+					0% { opacity: 0; }
 					10% { margin-bottom: 1rem; opacity: 1; }
 					90% { margin-bottom: 1rem; opacity: 1; }
 					100% { margin-bottom: 1rem; opacity: 0; }
@@ -173,6 +174,23 @@ class AlertDataUpdate extends SkeletonMixin(Localizer(MobxLitElement)) {
 				${repeat(this.dataEvents.events, (event) => event.id, (event) => this._renderEvent(event))}
 			</div>
 		`;
+	}
+
+	updated() {
+		/*
+		* Properly animate the moving up motion.
+		* Timeout because we need to wait a small amount
+		* of time for the text to render
+		*/
+		setTimeout(() => {
+			const eventEls = this.shadowRoot.querySelectorAll('.d2l-insights-event');
+			if (eventEls.length > 0) {
+				const lastEvent = eventEls[eventEls.length - 1];
+				const height = `-${lastEvent.offsetHeight}px`;
+				lastEvent.style['marginBottom'] = height;
+				lastEvent.classList.add('d2l-insights-event-standard');
+			}
+		}, 0);
 	}
 }
 
