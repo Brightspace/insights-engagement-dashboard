@@ -258,7 +258,7 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const pairs = this.mergeCategories(categories);
 
 		const message = this.localize('alert:axeDescriptionRange', chartName);
-		const descriptions = pairs.map(pair => pair.join(this.localize('alert:this-To-That'))).join(', ');
+		const descriptions = pairs.map(pair => pair.join(` ${this.localize('alert:this-To-That')} `)).join(', ');
 		return `${message} ${descriptions}`;
 	}
 
