@@ -10,7 +10,6 @@ import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton
 class FilterEvent {
 
 	constructor(message, description) {
-		console.log(description);
 		this._message = message;
 		this._description = description;
 		this._isRendered = false;
