@@ -166,11 +166,6 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 				min-width: 30px;
 			}
 
-			d2l-scroll-wrapper {
-				--d2l-scroll-wrapper-border-color: var(--d2l-color-galena);
-				--d2l-scroll-wrapper-background-color: var(--d2l-color-sylvite);
-			}
-
 			td.d2l-insights-discussion-info {
 				vertical-align: top;
 			}
