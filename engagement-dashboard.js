@@ -1,5 +1,5 @@
 import '@brightspace-ui/core/components/dialog/dialog-confirm';
-import 'd2l-button-group/d2l-action-button-group';
+import '@brightspace-ui/core/components/overflow-group/overflow-group';
 
 import './components/alert-data-update.js';
 import './components/histogram-card.js';
@@ -179,19 +179,19 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 					justify-content: space-between;
 				}
 
-				.d2l-main-action-button-group {
+				.d2l-main-overflow-group {
 					flex-grow: 1;
 					margin: 0.7em;
 					max-width: 300px;
 				}
 
 				@media only screen and (max-width: 780px) {
-					.d2l-main-action-button-group {
+					.d2l-main-overflow-group {
 						max-width: 10%;
 					}
 				}
 
-				.d2l-table-action-button-group {
+				.d2l-table-overflow-group {
 					margin-bottom: 1rem;
 				}
 
@@ -378,10 +378,11 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 			<div class="d2l-heading-button-group">
 				<h1 class="d2l-heading-1">${this.localize('dashboard:title')}</h1>
-				<d2l-action-button-group
-					class="d2l-main-action-button-group"
+				<d2l-overflow-group
+					class="d2l-main-overflow-group"
 					min-to-show="0"
-					opener-type="more"
+					opener-type="icon"
+					opener-style="subtle"
 				>
 					<d2l-button-subtle
 						icon="d2l-tier1:export"
@@ -398,7 +399,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 						text=${this.localize('settings:title')}
 						@click="${this._openSettingsPage}">
 					</d2l-button-subtle>
-				</d2l-action-button-group>
+				</d2l-overflow-group>
 			</div>
 
 			<div class="view-filters-container">
@@ -491,14 +492,20 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		if (this._isNoUserResults) return '';
 		return html`
 			<h2 class="d2l-heading-3">${this.localize('dashboard:resultsHeading')}</h2>
-			<d2l-action-button-group class="d2l-table-action-button-group" min-to-show="0" max-to-show="2" opener-type="more">
+			<d2l-overflow-group
+				class="d2l-table-overflow-group"
+				min-to-show="0"
+				max-to-show="2"
+				opener-type="icon"
+				opener-style="subtle"
+			>
 				<d2l-button-subtle
 					aria-label="${this.localize('dashboard:emailButtonAriaLabel')}"
 					icon="d2l-tier1:email"
 					text="${this.localize('dashboard:emailButton')}"
 					@click="${this._handleEmailButtonPress}">
 				</d2l-button-subtle>
-			</d2l-action-button-group>
+			</d2l-overflow-group>
 
 			<d2l-insights-users-table
 				.data="${this._data}"
