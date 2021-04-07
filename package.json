@@ -49,7 +49,7 @@
     "@brightspace-ui-labs/facet-filter-sort": "^4",
     "@brightspace-ui-labs/multi-select": "github:BrightspaceUILabs/multi-select#semver:^4",
     "@brightspace-ui-labs/pagination": "^1",
-    "@brightspace-ui/core": "^1.102.8",
+    "@brightspace-ui/core": "^1.126.3",
     "@brightspace-ui/intl": "^3.2.0",
     "@webcomponents/webcomponentsjs": "^2",
     "array-flat-polyfill": "^1.0.1",
