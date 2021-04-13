@@ -22,6 +22,7 @@ import './components/course-last-access-card.js';
 import './components/results-card.js';
 import './components/overdue-assignments-card.js';
 import './components/content-view-histogram.js';
+import './components/user-selector.js';
 
 import { css, html } from 'lit-element/lit-element.js';
 import { DefaultViewState, ViewState } from './model/view-state';
@@ -221,7 +222,9 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 	firstUpdated() {
 		// moved loadData call here because its inderect call in render function via _data getter causes nested render call with exception
-		this._serverData.loadData({ defaultView: isDefault() });
+		if (this.currentView !== 'userSelection') {
+			this._serverData.loadData({ defaultView: isDefault() });
+		}
 	}
 
 	get currentView() {
@@ -236,6 +239,9 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				break;
 			case 'user':
 				innerView = this._renderUserDrillView();
+				break;
+			case 'userSelection':
+				innerView = this._renderUserSelectionView();
 				break;
 			case 'settings':
 				innerView = this._renderSettingsView();
@@ -306,6 +312,16 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 					${this._renderAlerts()}
 				</div>
 			</d2l-insights-user-drill-view>
+		`;
+	}
+
+	_renderUserSelectionView() {
+		return html`
+			<d2l-insights-user-selector
+				?demo="${this.isDemo}"
+				.viewState="${this._viewState}"
+			>
+			</d2l-insights-user-selector>
 		`;
 	}
 

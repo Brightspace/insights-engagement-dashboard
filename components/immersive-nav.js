@@ -59,6 +59,7 @@ class InsightsImmersiveNav extends Localizer(MobxLitElement) {
 		switch (this.view) {
 			case 'home': return this.localize('dashboard:title');
 			case 'user': return this.localize('dashboard:userView:title');
+			case 'userSelection': return this.localize('dashboard:learner:title');
 			case 'settings': return this.localize('settings:title');
 		}
 		return this.localize('dashboard:title');
@@ -107,7 +108,7 @@ class InsightsImmersiveNav extends Localizer(MobxLitElement) {
 	}
 
 	_backLinkClickHandler(e) {
-		if (this.view === 'home') {
+		if (this.view === 'home' || this.view === 'userSelection') {
 			return true;
 		}
 
