@@ -19,6 +19,12 @@ export class ViewState {
 		if (this._urlState) this._urlState.save();
 	}
 
+	setUserSelectionView() {
+		this.currentView = 'userSelection';
+		this.userViewUserId = 0;
+		if (this._urlState) this._urlState.save();
+	}
+
 	setHomeView() {
 		this.currentView = 'home';
 		this.userViewUserId = 0;
@@ -56,6 +62,8 @@ export class ViewState {
 			case 'home': this.setHomeView();
 				break;
 			case 'user': this.setUserView(Number(userId));
+				break;
+			case 'userSelection': this.setUserSelectionView();
 				break;
 			case 'settings': this.setSettingsView();
 				break;
