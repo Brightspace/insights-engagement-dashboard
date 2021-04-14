@@ -2,7 +2,6 @@
 
 export default {
 	"dashboard:title": "Engagement Dashboard",
-	"dashboard:learner:title": "Learner Engagement Dashboard",
 	"dashboard:userView:title": "Learner Engagement Dashboard",
 	"dashboard:backToInsightsPortal": "Back to Insights Portal",
 	"dashboard:backToEngagementDashboard": "Back to Engagement Dashboard",
