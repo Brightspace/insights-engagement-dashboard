@@ -1,6 +1,7 @@
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/button/button.js';
 import '@brightspace-ui/core/components/alert/alert.js';
+import '@brightspace-ui/core/components/overflow-group/overflow-group';
 import 'd2l-users/components/d2l-profile-image';
 import './summary-cards-container';
 import './user-drill-courses-table.js';
@@ -161,7 +162,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 				margin-top: 12px;
 			}
 
-			.d2l-insights-user-drill-view-action-button-group {
+			.d2l-insights-user-drill-view-action-overflow-group {
 				flex-grow: 1;
 				margin: 0.7em;
 				max-width: 300px;
@@ -431,11 +432,12 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 					</div>
 				</div>
 
-				<d2l-action-button-group
-						class="d2l-insights-user-drill-view-action-button-group"
+				<d2l-overflow-group
+						class="d2l-insights-user-drill-view-action-overflow-group"
 						min-to-show="0"
 						max-to-show="1"
-						opener-type="more"
+						opener-style="subtle"
+						opener-type="icon"
 					>
 					<d2l-button-subtle
 						icon="d2l-tier1:export"
@@ -447,7 +449,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 						text=${this.localize('settings:title')}
 						@click="${this._openSettingsPage}">
 					</d2l-button-subtle>
-				</d2l-action-button-group>
+				</d2l-overflow-group>
 
 			</div>
 
