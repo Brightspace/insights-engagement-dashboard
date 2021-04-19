@@ -224,30 +224,6 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		}
 	}
 
-	mergeCategories(categories) {
-		return categories.sort().reduce((acc, cur) => {
-			if (acc[acc.length - 1] !== undefined &&
-				acc[acc.length - 1][1] === cur)
-			{
-				acc[acc.length - 1][1] = cur + 10;
-			} else {
-				acc.push([cur, cur + 10]);
-			}
-			return acc;
-		}, []);
-	}
-
-	getAxeDescription() {
-		// bin the ranges of numbers together
-		const chartName = { chartName: this.localize('currentFinalGradeCard:currentGrade') };
-		const pairs = this.filter.mergeCategories();
-
-		if (pairs.length === 0) return this.localize('alert:axeNotFiltering', chartName);
-
-		const descriptions = pairs.map(pair => pair.join(` ${this.localize('alert:this-To-That')} `)).join(', ');
-		return `${this.localize('alert:axeDescriptionRange', chartName)} ${descriptions}`;
-	}
-
 	get chartOptions() {
 		const that = this;
 

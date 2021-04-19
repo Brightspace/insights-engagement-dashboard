@@ -88,5 +88,18 @@ describe('d2l-insights-applied-filters', () => {
 			expect(clearedFilters.length).to.equal(1);
 			expect(clearedFilters[0].title).to.have.string('filter 1');
 		});
+
+		it('should use the descriptive title if available', async() => {
+			data.filters = [
+				{ id: 'filter-key-1', title: 'simpleFilter:searchLabel', descriptiveTitle: (title) => (`${title} descriptive`), isApplied: true },
+				{ id: 'filter-key-2', title: 'filter 2', isApplied: true }
+			];
+			const el = await fixture(html`<d2l-insights-applied-filters .data="${data}"></d2l-insights-applied-filters>`);
+			const appliedFilters = el.shadowRoot.querySelector('.d2l-insights-tag-container');
+			expect(appliedFilters).to.exist;
+
+			const filters = appliedFilters.querySelectorAll('.d2l-insights-tag-item');
+			expect(filters[0].innerHTML).to.have.string('Search descriptive');
+		});
 	});
 });
