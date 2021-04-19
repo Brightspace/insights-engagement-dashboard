@@ -93,11 +93,11 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const tags = this.shadowRoot.querySelectorAll('.d2l-insights-tag-item');
 		const totalTags = tags.length - 1;
 
-		if (e.keyCode === 32 || e.keyCode === 13) {
+		if (e.keyCode === 32 /* space */ || e.keyCode === 13 /* enter */) {
 			e.preventDefault();
 			this.eventFollowedKeyEvent = true;
 			tags[this.currentFocus].querySelector('d2l-icon').click();
-		} else if (e.keyCode === 37) {
+		} else if (e.keyCode === 37 /* left arrow */) {
 			e.preventDefault();
 			tags[this.currentFocus].blur();
 			this.currentFocus -= 1;
@@ -105,7 +105,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 				this.currentFocus = totalTags;
 			}
 			tags[this.currentFocus].focus();
-		} else if (e.keyCode === 39) {
+		} else if (e.keyCode === 39 /* right arrow */) {
 			e.preventDefault();
 			tags[this.currentFocus].blur();
 			this.currentFocus += 1;
@@ -117,7 +117,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_handleFocus(e) {
-		// reset the current focus to the clicked or tabbed into element
+		// reset the saved focus to the clicked or tabbed into element
 		const tags = this.shadowRoot.querySelectorAll('.d2l-insights-tag-item');
 		const indexOfTag = [...tags].indexOf(e.target);
 		this.currentFocus = indexOfTag;
@@ -141,7 +141,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 		});
 
 		if (filters.filter(f => f.isApplied).length < 1) {
-			return  html``;
+			return nothing;
 		}
 
 		filters.push({
@@ -151,9 +151,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 			description: this.localize('appliedFilters:clearAll')
 		});
 
-		// clear all button appears if 4 or more filters are applied
-		// the eslint indent rules don't make sense for nested template literals
-		/* eslint-disable indent*/
+		// used to figure out which active filter is first so we can set them as the tab entry point
 		const isFirst = {
 			_isFirst: true,
 			get() {
@@ -163,6 +161,9 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 			}
 		};
 
+		// clear all button appears if 4 or more filters are applied
+		// the eslint indent rules don't make sense for nested template literals
+		/* eslint-disable indent*/
 		return html`
 			${!this.skeleton ?
 				html`
@@ -175,7 +176,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 						</div>
 					` : nothing))}
 				</div>`
-				: html``
+				: nothing
 			}`;
 		/* eslint-enable indent*/
 	}
@@ -204,6 +205,9 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 		filter.isApplied = false;
 
 		if (this.eventFollowedKeyEvent) {
+			// if we removed a filter using the keyboard we need to
+			// wait for this component to rerender and then
+			// focus on the new tag in this position.
 			this.eventFollowedKeyEvent = false;
 			setTimeout(() => {
 				const tags = this.shadowRoot.querySelectorAll('.d2l-insights-tag-item');
