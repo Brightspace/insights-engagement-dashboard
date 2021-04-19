@@ -233,22 +233,25 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 		const chartName = { chartName : this.localize('timeInContentVsGradeCard:timeInContentVsGrade') };
 		if (!this.filter.isApplied) return this.localize('alert:axeNotFiltering', chartName);
 
-		let description = this.localize('alert:axeDescription');
+		const curriedLocalizer = (term) => (options) => this.localize(term, options);
+		const localizerOptions = curriedLocalizer('alert:axeDescription');
+		const options = { category: '' };
+
 		switch (quadrant) {
 			case 'rightTop':
-				description += this.localize('timeInContentVsGradeCard:highTimeHighGrade');
+				options.category = this.localize('timeInContentVsGradeCard:highTimeHighGrade');
 				break;
 			case 'rightBottom':
-				description += this.localize('timeInContentVsGradeCard:highTimeLowGrade');
+				options.category = this.localize('timeInContentVsGradeCard:highTimeLowGrade');
 				break;
 			case 'leftTop':
-				description += this.localize('timeInContentVsGradeCard:lowTimeHighGrade');
+				options.category = this.localize('timeInContentVsGradeCard:lowTimeHighGrade');
 				break;
 			case 'leftBottom':
-				description += this.localize('timeInContentVsGradeCard:lowTimeLowGrade');
+				options.category = this.localize('timeInContentVsGradeCard:lowTimeLowGrade');
 				break;
 		}
-		return description;
+		return localizerOptions(options);
 	}
 
 	get chartOptions() {

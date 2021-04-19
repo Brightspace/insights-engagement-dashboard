@@ -160,6 +160,9 @@ export default {
 
 	"appliedFilters:clearAll": "Clear all",
 	"appliedFilters:labelText": "Showing only:",
+	"appliedFilters:labelTextAxe": "Showing only users with these filters:",
+	"appliedFilters:axeDescriptionCategories": "Filtering users with {chartName} in these categories ",
+	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "Loading is in progress",
 	"ariaLoadingProgress:loadingFinish": "Loading is finished",
@@ -269,7 +272,7 @@ export default {
 
 	"alert:updatedFilter" : "{chartName} filter updated.",
 	"alert:axeDescriptionRange" : "Viewing learners with {chartName} in these categories ",
-	"alert:axeDescription" : "Viewing learners with ",
+	"alert:axeDescription" : "Viewing learners with {category}",
 	"alert:axeNotFiltering" : "Stopped Filtering by {chartName}.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "to",
