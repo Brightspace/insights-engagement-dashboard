@@ -160,7 +160,6 @@ export default {
 
 	"appliedFilters:clearAll": "Clear all",
 	"appliedFilters:labelText": "Showing only:",
-	"appliedFilters:labelTextAxe": "Showing only users with these filters:",
 	"appliedFilters:axeDescriptionCategories": "Filtering users with {chartName} in these categories ",
 	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
 
