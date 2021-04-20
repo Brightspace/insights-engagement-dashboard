@@ -1,8 +1,4 @@
 import './summary-card.js';
-import '@brightspace-ui-labs/facet-filter-sort/components/applied-filters/applied-filters';
-import '@brightspace-ui-labs/facet-filter-sort/components/filter-dropdown/filter-dropdown.js';
-import '@brightspace-ui-labs/facet-filter-sort/components/filter-dropdown/filter-dropdown-category.js';
-import '@brightspace-ui-labs/facet-filter-sort/components/filter-dropdown/filter-dropdown-option.js';
 
 import { css, html } from 'lit-element';
 import { bodySmallStyles } from '@brightspace-ui/core/components/typography/styles';
@@ -123,6 +119,19 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this.currentFocus = indexOfTag;
 	}
 
+	updated() {
+		if (this.eventFollowedKeyEvent) {
+			// if we removed a filter using the keyboard we need to
+			// wait for this component to rerender and then
+			// focus on the new tag in this position.
+			this.eventFollowedKeyEvent = false;
+
+			const tags = this.shadowRoot.querySelectorAll('.d2l-insights-tag-item');
+			if (tags.length === 0) return;
+			tags[this.currentFocus].focus();
+		}
+	}
+
 	render() {
 
 		const localizer = (term, options) => this.localize(term, options);
@@ -204,18 +213,6 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 		);
 		filter.isApplied = false;
 
-		if (this.eventFollowedKeyEvent) {
-			// if we removed a filter using the keyboard we need to
-			// wait for this component to rerender and then
-			// focus on the new tag in this position.
-			this.eventFollowedKeyEvent = false;
-			setTimeout(() => {
-				const tags = this.shadowRoot.querySelectorAll('.d2l-insights-tag-item');
-
-				if (tags.length === 0) return;
-				tags[this.currentFocus].focus();
-			}, 10);
-		}
 	}
 }
 customElements.define('d2l-insights-applied-filters', AppliedFilters);
