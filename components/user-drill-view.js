@@ -390,6 +390,7 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	render() {
+		console.log(`render: ${JSON.stringify(this.user)} isLoading:${this.data.isLoading}`);
 		if (this.newFilteredOrgUnitIds.some(id => !this.lastFilteredOrgUnitIds.includes(id))) {
 			this.lastFilteredOrgUnitIds = this.newFilteredOrgUnitIds;
 			if (this.lastFilteredOrgUnitIds.length !== 0) {

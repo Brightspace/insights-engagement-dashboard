@@ -70,6 +70,8 @@ class InsightsImmersiveNav extends Localizer(MobxLitElement) {
 			case 'home':
 				return this.localize('dashboard:backToInsightsPortal');
 			case 'user':
+				if (this.viewState.isSingleLearner) return 'Select a Different User'; // TODO: localize
+				else return this.localize('dashboard:backToEngagementDashboard')
 			case 'settings':
 				return this.localize('dashboard:backToEngagementDashboard');
 		}
@@ -116,7 +118,11 @@ class InsightsImmersiveNav extends Localizer(MobxLitElement) {
 			removeState((new SelectedCourses()).persistenceKey);
 		}
 
-		this.viewState.setHomeView();
+		if (this.viewState.isSingleLearner) {
+			this.viewState.setUserSelectionView();
+		} else {
+			this.viewState.setHomeView();
+		}
 		// prevent href navigation
 		e.preventDefault();
 		return false;

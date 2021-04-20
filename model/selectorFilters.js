@@ -128,6 +128,38 @@ export class OrgUnitSelectorFilter {
 	}
 }
 
+export class UserSelectorFilter {
+	constructor(data) {
+		this._data = data;
+		this.selected = data.serverData.selectedUserId;
+		// noinspection JSUnusedGlobalSymbols
+		this._urlState = new UrlState(this);
+	}
+
+	// persistence key and value for UrlState
+	get persistenceKey() { return 'lf'; }
+
+	get persistenceValue() {
+		return this.selected || '';
+	}
+
+	set persistenceValue(value) {
+		this.selected = Number(value) || null;
+	}
+
+	shouldInclude(record) {
+		return !this.selected || Number(record[RECORD.USER_ID] === this.selected);
+	}
+
+	shouldReloadFromServer(newSelectedUserId) {
+		return newSelectedUserId !== this._latestServerQuery;
+	}
+
+	get _latestServerQuery() {
+		return this._data.serverData.selectedUserId;
+	}
+}
+
 decorate(RoleSelectorFilter, {
 	selected: observable
 });
@@ -138,4 +170,8 @@ decorate(SemesterSelectorFilter, {
 
 decorate(OrgUnitSelectorFilter, {
 	selected: computed
+});
+
+decorate(UserSelectorFilter, {
+	selected: observable
 });

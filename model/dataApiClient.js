@@ -33,7 +33,7 @@ function concatMetronUrl(endpoint, apiPath) {
  * @param {Boolean} defaultView if true, request that the server select a limited set of data for first view
  * @param {String} metronEndpoint
  */
-export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [], defaultView = false }, metronEndpoint) {
+export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [], selectedUserId = null, defaultView = false }, metronEndpoint) {
 	const url = new URL(concatMetronUrl(metronEndpoint, dataEndpoint));
 	if (roleIds) {
 		url.searchParams.set('selectedRolesCsv', roleIds.join(','));
@@ -43,6 +43,9 @@ export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [
 	}
 	if (orgUnitIds) {
 		url.searchParams.set('selectedOrgUnitIdsCsv', orgUnitIds.join(','));
+	}
+	if (selectedUserId) {
+		url.searchParams.set('selectedUserId', selectedUserId);
 	}
 	url.searchParams.set('defaultView', defaultView ? 'true' : 'false');
 	const uri = url.toString();
