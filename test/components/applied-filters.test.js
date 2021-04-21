@@ -68,7 +68,7 @@ describe('d2l-insights-applied-filters', () => {
 			expect(appliedFilters).to.exist;
 
 			const filters = appliedFilters.querySelectorAll('.d2l-insights-tag-item');
-			filters[1].querySelector('d2l-icon').click();
+			filters[1].click();
 			expect(data.filters.filter(f => f.isApplied)).to.be.empty;
 		});
 

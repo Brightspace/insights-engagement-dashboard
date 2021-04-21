@@ -2,13 +2,13 @@ import './summary-card.js';
 
 import { css, html } from 'lit-element';
 import { bodySmallStyles } from '@brightspace-ui/core/components/typography/styles';
+import { classMap } from 'lit-html/directives/class-map';
 import { filterEventQueue } from './alert-data-update.js';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { nothing } from 'lit-html';
 import { repeat } from 'lit-html/directives/repeat';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
-import { classMap } from 'lit-html/directives/class-map';
 
 const clearAllOptionId = 'clear-all';
 const showMoreOptionId = 'show-more';
@@ -266,7 +266,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const numHidden = this._getActiveFilters(filters).length - showOnly;
 
 		const toggleMore = () => {
-			let classNames = classMap({
+			const classNames = classMap({
 				'd2l-insights-tag-item' : true,
 				'd2l-insights-tag-action' : true,
 				'd2l-insights-blue-text' : this._showAll
@@ -275,7 +275,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 				<div @focus="${this._handleFocus}" @click="${this._handleShowOrHide}" @keypress="${this._handleShowOrHide}" tabindex="-1" class="${classNames}" data-filter-id="${showMoreOptionId}" aria-label="${this.localize('appliedFilters:clearAll')}" role="button">
 					${ !this._showAll ? this.localize('appliedFilters:showMore', { numHidden }) : this.localize('appliedFilters:hideExtra')  }
 				</div>
-			`
+			`;
 		};
 
 		const renderPill = (item) => {
