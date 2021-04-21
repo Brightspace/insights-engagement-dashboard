@@ -34,9 +34,9 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 				.d2l-insights-user-selector-search {
 					display: flex;
 					flex-wrap: nowrap;
+					max-width: 334px;
 					padding-bottom: 26px;
 					padding-top: 4px;
-					max-width: 334px;
 				}
 			`
 		];
