@@ -40,7 +40,7 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				border-width: 1.5px;
 				display: inline-block;
 				height: 285px;
-				margin-right: 12px;
+				margin-inline-end: 12px;
 				margin-top: 10px;
 				padding: 15px 4px;
 				width: 583px;
@@ -48,7 +48,7 @@ class ContentViewsCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 			@media only screen and (max-width: 615px) {
 				:host {
-					margin-right: 0;
+					margin-inline-end: 0;
 				}
 			}
 

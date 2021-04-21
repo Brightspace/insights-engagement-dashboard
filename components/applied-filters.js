@@ -8,6 +8,7 @@ import { MobxLitElement } from '@adobe/lit-mobx';
 import { nothing } from 'lit-html';
 import { repeat } from 'lit-html/directives/repeat';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
+import { classMap } from 'lit-html/directives/class-map';
 
 const clearAllOptionId = 'clear-all';
 const showMoreOptionId = 'show-more';
@@ -33,8 +34,28 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 				display: inline-block;
 				font-size: 0.8rem;
 				font-weight: 700;
-				margin-right: 0.25rem;
+				margin-inline-end: 0.25rem;
 				margin-top: 3px;
+			}
+
+			.d2l-insights-tag-item.d2l-insights-blue-text {
+				background-color: white;
+				border-color: white;
+				color: var(--d2l-color-celestine);
+				font-weight: 700;
+			}
+
+			.d2l-insights-tag-item.d2l-insights-blue-text:focus {
+				background-color: var(--d2l-color-gypsum);
+				border-color: white;
+				box-shadow: 0 0 0 2px white, 0 0 0 4px var(--d2l-color-celestine);
+				color: var(--d2l-color-celestine);
+			}
+
+			.d2l-insights-tag-item.d2l-insights-blue-text:hover {
+				background-color: white;
+				border-color: white;
+				color: var(--d2l-color-celestine-minus-1);
 			}
 
 			.d2l-insights-tag-item {
@@ -48,9 +69,9 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 				justify-content: center;
 				line-height: normal;
 				margin-bottom: 10px;
-				margin-right: 10px;
+				margin-inline-end: 10px;
 				outline: none;
-				padding-left: 12px;
+				padding-inline-start: 12px;
 				user-select: none;
 			}
 
@@ -84,6 +105,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 			d2l-icon:hover {
 				filter: brightness(1);
 			}
+
 		`];
 	}
 
@@ -172,7 +194,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this.currentFocus = indexOfTag;
 	}
 
-	_handleShowOrHide(e) {
+	_handleShowOrHide() {
 		this._showAll = !this._showAll;
 	}
 
@@ -229,7 +251,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 			@keypress="${this._filterChangeHandler}"
 			@focus="${this._handleFocus}"
 			tabindex="-1"
-			class="d2l-insights-tag-item d2l-insights-tag-action"
+			class="d2l-insights-tag-item d2l-insights-tag-action d2l-insights-blue-text"
 			data-filter-id="${clearAllOptionId}"
 			aria-label="${this.localize('appliedFilters:clearAll')}"
 			role="button">
@@ -240,11 +262,18 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const showOnly = this._numToShow(filters);
 		const numHidden = this._getActiveFilters(filters).length - showOnly;
 
-		const toggleMore = html`
-			<div @focus="${this._handleFocus}" @click="${this._handleShowOrHide}" @keypress="${this._handleShowOrHide}" tabindex="-1" class="d2l-insights-tag-item d2l-insights-tag-action" data-filter-id="${showMoreOptionId}" aria-label="${this.localize('appliedFilters:clearAll')}" role="button">
-				${ !this._showAll ? this.localize('appliedFilters:showMore', { numHidden }) : this.localize('appliedFilters:hideExtra')  }
-			</div>
-		`;
+		const toggleMore = () => {
+			let classNames = classMap({
+				'd2l-insights-tag-item' : true,
+				'd2l-insights-tag-action' : true,
+				'd2l-insights-blue-text' : this._showAll
+			});
+			return html`
+				<div @focus="${this._handleFocus}" @click="${this._handleShowOrHide}" @keypress="${this._handleShowOrHide}" tabindex="-1" class="${classNames}" data-filter-id="${showMoreOptionId}" aria-label="${this.localize('appliedFilters:clearAll')}" role="button">
+					${ !this._showAll ? this.localize('appliedFilters:showMore', { numHidden }) : this.localize('appliedFilters:hideExtra')  }
+				</div>
+			`
+		};
 
 		const renderPill = (item) => {
 			if (item.isApplied) {
@@ -270,7 +299,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 				<div class="d2l-insights-tag-container">
 					${ this._getActiveFilters(filters).length > 0 ? title : nothing }
 					${repeat(filters, (item) => `${item.id}:${item.isApplied}`, renderPill)}
-					${ this._getActiveFilters(filters).length > 0 && numHidden > 0 ? toggleMore : nothing }
+					${ this._getActiveFilters(filters).length > 0 && numHidden > 0 ? toggleMore() : nothing }
 					${ this._getActiveFilters(filters).length > 0 ? clearAll : nothing }
 				</div>`
 				: nothing
