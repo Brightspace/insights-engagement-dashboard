@@ -2,7 +2,7 @@ import '@brightspace-ui/core/components/list/list.js';
 import '@brightspace-ui/core/components/list/list-item-button.js';
 import 'd2l-users/components/d2l-profile-image';
 
-import { bodySmallStyles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
+import { bodySmallStyles, bodyStandardStyles, heading1Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html } from 'lit-element';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
@@ -19,6 +19,8 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	static get styles() {
 		return [
+			super.styles,
+			heading1Styles,
 			bodySmallStyles,
 			bodyStandardStyles,
 			css`
@@ -47,7 +49,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	render() {
 		return html`
-			<h2>Learner Engagement Dashboard</h2>
+			<h2 class="d2l-heading-1">Learner Engagement Dashboard</h2>
 			<d2l-list>
 				${this.users.map(u => this.userListItem(u))}
 			</d2l-list>
