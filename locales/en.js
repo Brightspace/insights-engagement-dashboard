@@ -159,6 +159,8 @@ export default {
 	"discussionActivityCard:legendLabel": "Toggle filtering",
 
 	"appliedFilters:clearAll": "Clear all",
+	"appliedFilters:showMore": "Show {numHidden} more",
+	"appliedFilters:hideExtra": "Collapse",
 	"appliedFilters:labelText": "Showing only:",
 	"appliedFilters:axeDescriptionCategories": "Filtering users with {chartName} in these categories ",
 	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",

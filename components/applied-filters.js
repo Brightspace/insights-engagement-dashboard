@@ -10,12 +10,14 @@ import { repeat } from 'lit-html/directives/repeat';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin.js';
 
 const clearAllOptionId = 'clear-all';
+const showMoreOptionId = 'show-more';
 
 class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	static get properties() {
 		return {
-			data: { type: Object, attribute: false }
+			data: { type: Object, attribute: false },
+			_showAll: { type: Boolean, attribute: false }
 		};
 	}
 
@@ -24,6 +26,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 			.d2l-insights-tag-container {
 				display: flex;
 				flex-wrap: wrap;
+				max-width: 1200px;
 			}
 
 			.d2l-insights-applied-filters-title {
@@ -31,6 +34,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 				font-size: 0.8rem;
 				font-weight: 700;
 				margin-right: 0.25rem;
+				margin-top: 3px;
 			}
 
 			.d2l-insights-tag-item {
@@ -40,6 +44,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 				border-radius: 0.25rem;
 				display: flex;
 				font-size: 0.8rem;
+				height: 33px;
 				justify-content: center;
 				line-height: normal;
 				margin-bottom: 10px;
@@ -47,6 +52,12 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 				outline: none;
 				padding-left: 12px;
 				user-select: none;
+			}
+
+			.d2l-insights-tag-item.d2l-insights-tag-action {
+				cursor: pointer;
+				height: 33px;
+				padding: 0 12px;
 			}
 
 			.d2l-insights-tag-item:hover {
@@ -81,8 +92,45 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this.data = {};
 		this.currentFocus = 0;
 		this.eventFollowedKeyEvent = false;
+		this._showAll = false;
 		this.addEventListener('keypress', this._handleKeyEvents);
 		this.addEventListener('keydown', this._handleKeyEvents);
+	}
+
+	_getActiveFilters(filters) {
+		return filters.filter(filter => filter.isApplied);
+	}
+
+	_isDesktop() {
+		return matchMedia('(min-width: 700px)').matches;
+	}
+
+	_numToShow(filters) {
+		if (this._isDesktop()) {
+			this._showAll = true;
+			return filters.length;
+		}
+		/* When we are on mobile we want to show a
+		 * [Collapse] button that will hide away the
+		 * tag overflow. We don't want to waste time drawing
+		 * the tags so we guess how big they will be using the
+		 * amount of text they have.
+		 */
+		const filterSizes = filters.map(filter => {
+			filter.width = this.estimateTagWidth(filter);
+			return filter;
+		});
+		const clearSize = 110; // size in pixels of the clear button (using the inspector)
+		const titleSize = 200; // size in pixels of the title (using the inspector)
+		const containerSize = document.body.clientWidth; // the container is the full width minus the margins which is already available
+
+		let takenSpace = titleSize + clearSize;
+		return filterSizes.filter(filter => (takenSpace + filter.width < containerSize ? takenSpace += filter.width : false)).length;
+	}
+
+	estimateTagWidth(filter) {
+		// length or text (approximated) and padding
+		return (filter.title.length * 18) + 40 + 12;
 	}
 
 	_handleKeyEvents(e) {
@@ -92,7 +140,12 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 		if (e.keyCode === 32 /* space */ || e.keyCode === 13 /* enter */) {
 			e.preventDefault();
 			this.eventFollowedKeyEvent = true;
-			tags[this.currentFocus].querySelector('d2l-icon').click();
+			const close = tags[this.currentFocus].querySelector('d2l-icon');
+			if (close) {
+				close.click();
+			} else {
+				tags[this.currentFocus].click();
+			}
 		} else if (e.keyCode === 37 /* left arrow */) {
 			e.preventDefault();
 			tags[this.currentFocus].blur();
@@ -119,16 +172,27 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this.currentFocus = indexOfTag;
 	}
 
+	_handleShowOrHide(e) {
+		this._showAll = !this._showAll;
+	}
+
 	updated() {
+		const tags = this.shadowRoot.querySelectorAll('.d2l-insights-tag-item');
+		if (tags.length === 0) {
+			// Collapse filters when all tags are removed on mobile;
+			if (!this._isDesktop()) this._showAll = false;
+			this.currentFocus = 0;
+			return;
+		}
+
 		if (this.eventFollowedKeyEvent) {
 			// if we removed a filter using the keyboard we need to
 			// wait for this component to rerender and then
 			// focus on the new tag in this position.
 			this.eventFollowedKeyEvent = false;
-
-			const tags = this.shadowRoot.querySelectorAll('.d2l-insights-tag-item');
-			if (tags.length === 0) return;
-			tags[this.currentFocus].focus();
+			if (this.currentFocus < tags.length) {
+				tags[this.currentFocus].focus();
+			}
 		}
 	}
 
@@ -149,41 +213,65 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 			};
 		});
 
-		if (filters.filter(f => f.isApplied).length < 1) {
-			return nothing;
-		}
-
-		filters.push({
-			id: clearAllOptionId,
-			title: this.localize('appliedFilters:clearAll'),
-			isApplied: true,
-			description: this.localize('appliedFilters:clearAll')
-		});
-
 		// used to figure out which active filter is first so we can set them as the tab entry point
-		const isFirst = {
-			_isFirst: true,
+		const count = {
+			_count: 0,
 			get() {
-				const result = this._isFirst;
-				this._isFirst = false;
+				const result = this._count;
+				this._count += 1;
 				return result;
 			}
 		};
 
-		// clear all button appears if 4 or more filters are applied
+		const clearAll = html`
+		<div
+			@click="${this._filterChangeHandler}"
+			@keypress="${this._filterChangeHandler}"
+			@focus="${this._handleFocus}"
+			tabindex="-1"
+			class="d2l-insights-tag-item d2l-insights-tag-action"
+			data-filter-id="${clearAllOptionId}"
+			aria-label="${this.localize('appliedFilters:clearAll')}"
+			role="button">
+			${ this.localize('appliedFilters:clearAll') }
+		</div>
+		`;
+
+		const showOnly = this._numToShow(filters);
+		const numHidden = this._getActiveFilters(filters).length - showOnly;
+
+		const toggleMore = html`
+			<div @focus="${this._handleFocus}" @click="${this._handleShowOrHide}" @keypress="${this._handleShowOrHide}" tabindex="-1" class="d2l-insights-tag-item d2l-insights-tag-action" data-filter-id="${showMoreOptionId}" aria-label="${this.localize('appliedFilters:clearAll')}" role="button">
+				${ !this._showAll ? this.localize('appliedFilters:showMore', { numHidden }) : this.localize('appliedFilters:hideExtra')  }
+			</div>
+		`;
+
+		const renderPill = (item) => {
+			if (item.isApplied) {
+				const currentCount = item.isApplied ? count.get() : 0;
+				return (currentCount < showOnly || this._showAll) ? html`
+					<div @focus="${this._handleFocus}" tabindex="${currentCount === 0 ? 0 : -1}" class="d2l-insights-tag-item d2l-insights-filter-tag" data-filter-id="${item.id}" aria-label="${item.description}" role="button">
+						${ item.title }
+						<d2l-icon @click="${this._filterChangeHandler}" icon="tier1:close-default"></d2l-icon>
+					</div>
+				` : nothing;
+			}
+			return nothing;
+		};
+
+		const title = html`
+			<span class="d2l-insights-applied-filters-title">${this.localize('appliedFilters:labelText')}</span>
+		`;
+
 		// the eslint indent rules don't make sense for nested template literals
 		/* eslint-disable indent*/
 		return html`
-			${!this.skeleton ?
-				html`
+			${!this.skeleton ? html`
 				<div class="d2l-insights-tag-container">
-					<span class="d2l-insights-applied-filters-title">${this.localize('appliedFilters:labelText')}</span>
-					${repeat(filters, (item) => `${item.id}:${item.isApplied}`, (item) => (item.isApplied ? html`
-						<div @focus="${this._handleFocus}" tabindex="${isFirst.get() ? 0 : -1}" class="d2l-insights-tag-item" data-filter-id="${item.id}" aria-label="${item.description}" role="button">
-							${ item.title }
-							<d2l-icon @click="${this._filterChangeHandler}" icon="tier1:close-default"></d2l-icon>
-						</div>
-					` : nothing))}
+					${ this._getActiveFilters(filters).length > 0 ? title : nothing }
+					${repeat(filters, (item) => `${item.id}:${item.isApplied}`, renderPill)}
+					${ this._getActiveFilters(filters).length > 0 && numHidden > 0 ? toggleMore : nothing }
+					${ this._getActiveFilters(filters).length > 0 ? clearAll : nothing }
 				</div>`
 				: nothing
 			}`;
@@ -191,7 +279,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_getFilterFromEvent(event) {
-		const filterId = event.target.parentElement.getAttribute('data-filter-id');
+		const filterId = event.target.parentElement.getAttribute('data-filter-id') || event.target.getAttribute('data-filter-id');
 
 		if (filterId === clearAllOptionId) {
 			return { id: clearAllOptionId };
