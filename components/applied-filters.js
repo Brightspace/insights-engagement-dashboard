@@ -159,6 +159,9 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const tags = this.shadowRoot.querySelectorAll('.d2l-insights-tag-item');
 		const totalTags = tags.length - 1;
 
+		const isRTL = window.document.body.getAttribute('dir') === 'rtl';
+		const dir = isRTL ? -1 : 1;
+
 		if (e.keyCode === 32 /* space */ || e.keyCode === 13 /* enter */) {
 			e.preventDefault();
 			this.eventFollowedKeyEvent = true;
@@ -171,7 +174,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 		} else if (e.keyCode === 37 /* left arrow */) {
 			e.preventDefault();
 			tags[this.currentFocus].blur();
-			this.currentFocus -= 1;
+			this.currentFocus -= dir;
 			if (this.currentFocus < 0) {
 				this.currentFocus = totalTags;
 			}
@@ -179,7 +182,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 		} else if (e.keyCode === 39 /* right arrow */) {
 			e.preventDefault();
 			tags[this.currentFocus].blur();
-			this.currentFocus += 1;
+			this.currentFocus += dir;
 			if (this.currentFocus > totalTags) {
 				this.currentFocus = 0;
 			}
