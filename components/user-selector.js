@@ -57,7 +57,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	render() {
 		return html`
-			<h2 class="d2l-heading-1">Learner Engagement Dashboard</h2>
+			<h2 class="d2l-heading-1">${this.localize('learnerEngagementDashboard:title')}</h2>
 
 			<div class="d2l-insights-user-selector-search">
 				<d2l-input-search
@@ -86,10 +86,10 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 					medium
 				></d2l-profile-image>
 				<div>
-					<div class="d2l-body-standard">
+					<div class="d2l-body-standard d2l-skeletize">
 						${u.last}, ${u.first}
 					</div>
-					<div class="d2l-body-small">
+					<div class="d2l-body-small d2l-skeletize">
 						${u.login} - ${u.id}
 					</div>
 				</div>
@@ -107,8 +107,38 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this.isDemo ? Promise.resolve('token') : D2L.LP.Web.Authentication.OAuth2.GetToken('users:profile:read');
 	}
 
-	_onSearch() {
-		// TODO
+	_onSearch(e) {
+		this._search(e.detail.value, true);
+	}
+
+	_search(searchText, ascending) {
+		const cleared = searchText === '';
+
+		console.log(`searchText: ${searchText}; ascending: ${ascending}; cleared: ${cleared}`);
+
+		this.skeleton = true;
+
+		this.users = this._usersForSkeleton();
+
+		setTimeout(() => {
+			this.users = [
+				{ id: 11053, first: 'Beverly', last: 'Aadland', login: 'baadland' },
+				{ id: 11054, first: 'Maybe', last: 'Another', login: 'manother' }
+			];
+
+			this.skeleton = false;
+		}, 2000);
+
+	}
+
+	_usersForSkeleton() {
+		return Array.from(Array(10).keys())
+			.map(i => ({
+				id: i,
+				first: 'first',
+				last: 'last',
+				login: 'login'
+			}));
 	}
 }
 customElements.define('d2l-insights-user-selector', UserSelector);
