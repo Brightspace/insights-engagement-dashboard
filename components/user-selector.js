@@ -30,6 +30,14 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 				:host([hidden]) {
 					display: none;
 				}
+
+				.d2l-insights-user-selector-search {
+					display: flex;
+					flex-wrap: nowrap;
+					padding-bottom: 26px;
+					padding-top: 4px;
+					width: 334px;
+				}
 			`
 		];
 	}
@@ -50,6 +58,15 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 	render() {
 		return html`
 			<h2 class="d2l-heading-1">Learner Engagement Dashboard</h2>
+
+			<div class="d2l-insights-user-selector-search">
+				<d2l-input-search
+					label="${this.localize('treeSelector:searchLabel')}"
+					placeholder="${this.localize('treeSelector:searchPlaceholder')}"
+					@d2l-input-search-searched="${this._onSearch}"
+				></d2l-input-search>
+			</div>
+
 			<d2l-list>
 				${this.users.map(u => this.userListItem(u))}
 			</d2l-list>
@@ -88,6 +105,10 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_tokenPromise() {
 		return this.isDemo ? Promise.resolve('token') : D2L.LP.Web.Authentication.OAuth2.GetToken('users:profile:read');
+	}
+
+	_onSearch() {
+		// TODO
 	}
 }
 customElements.define('d2l-insights-user-selector', UserSelector);
