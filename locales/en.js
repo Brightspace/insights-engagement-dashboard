@@ -275,5 +275,7 @@ export default {
 	"alert:this-To-That" : "to",
 	"alert:greaterThanThis" : "greater than {num}",
 	"alert:axeDescriptionCourses" : "Viewing learner data in these courses ",
-	"alert:axeDescriptionCoursesOff" : "Viewing learner data in all courses."
+	"alert:axeDescriptionCoursesOff" : "Viewing learner data in all courses.",
+
+	"learnerEngagementDashboard:title": "Learner Engagement Dashboard"
 };
