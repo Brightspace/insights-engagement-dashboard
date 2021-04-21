@@ -36,7 +36,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 					flex-wrap: nowrap;
 					padding-bottom: 26px;
 					padding-top: 4px;
-					width: 334px;
+					max-width: 334px;
 				}
 			`
 		];
