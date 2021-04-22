@@ -52,19 +52,19 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 				.d2l-insights-user-selector-list {
 					border-left: 1px solid var(--d2l-color-mica);
-					border-right: 1px solid var(--d2l-color-mica);
 					border-radius: 8px;
+					border-right: 1px solid var(--d2l-color-mica);
 				}
 
 				.d2l-insights-user-selector-header {
-					border-top: 1px solid var(--d2l-color-mica);
 					background-color: var(--d2l-color-regolith);
+					border-radius: 8px;
+					border-top: 1px solid var(--d2l-color-mica);
 					color: var(--d2l-color-ferrite);
 					cursor: pointer;
 					height: 27px; /* min-height to be 48px including border */
 					line-height: 1.4rem;
 					padding: 10px 20px;
-					border-radius: 8px;
 				}
 
 				.d2l-insights-user-selector-header:focus {
