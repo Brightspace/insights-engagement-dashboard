@@ -49,13 +49,13 @@ describe('d2l-insights-applied-filters', () => {
 				{ id: 'filter-key-2', title: 'dashboard:title', isApplied: true }
 			];
 			const el = await fixture(html`<d2l-insights-applied-filters .data="${data}"></d2l-insights-applied-filters>`);
-			const appliedFilters = el.shadowRoot.querySelector('d2l-labs-applied-filters');
+			const appliedFilters = el.shadowRoot.querySelector('.d2l-insights-tag-container');
 			expect(appliedFilters).to.exist;
 
-			const filters = appliedFilters.shadowRoot.querySelectorAll('d2l-labs-multi-select-list-item');
+			const filters = appliedFilters.querySelectorAll('.d2l-insights-tag-item');
 			expect(filters.length).to.equal(2);
-			expect(filters[0].text).to.equal('Engagement Dashboard');
-			expect(filters[1].text).to.equal('Clear all');
+			expect(filters[0].innerHTML).to.have.string('Engagement Dashboard');
+			expect(filters[1].innerHTML).to.have.string('Clear all');
 		});
 
 		it('should clear all card filters if click on Clear All button', async() => {
@@ -64,11 +64,11 @@ describe('d2l-insights-applied-filters', () => {
 				{ id: 'filter-key-2', title: 'filter 2', isApplied: false }
 			];
 			const el = await fixture(html`<d2l-insights-applied-filters .data="${data}"></d2l-insights-applied-filters>`);
-			const appliedFilters = el.shadowRoot.querySelector('d2l-labs-applied-filters');
+			const appliedFilters = el.shadowRoot.querySelector('.d2l-insights-tag-container');
 			expect(appliedFilters).to.exist;
 
-			const filters = appliedFilters.shadowRoot.querySelectorAll('d2l-labs-multi-select-list-item');
-			filters[1].shadowRoot.querySelector('.d2l-labs-multi-select-delete-icon').click();
+			const filters = appliedFilters.querySelectorAll('.d2l-insights-tag-item');
+			filters[1].click();
 			expect(data.filters.filter(f => f.isApplied)).to.be.empty;
 		});
 
@@ -78,15 +78,28 @@ describe('d2l-insights-applied-filters', () => {
 				{ id: 'filter-key-2', title: 'filter 2', isApplied: true }
 			];
 			const el = await fixture(html`<d2l-insights-applied-filters .data="${data}"></d2l-insights-applied-filters>`);
-			const appliedFilters = el.shadowRoot.querySelector('d2l-labs-applied-filters');
+			const appliedFilters = el.shadowRoot.querySelector('.d2l-insights-tag-container');
 			expect(appliedFilters).to.exist;
 
-			const filters = appliedFilters.shadowRoot.querySelectorAll('d2l-labs-multi-select-list-item');
-			filters[0].shadowRoot.querySelector('.d2l-labs-multi-select-delete-icon').click();
+			const filters = appliedFilters.querySelectorAll('.d2l-insights-tag-item');
+			filters[0].querySelector('d2l-icon').click();
 			const clearedFilters = data.filters.filter(f => !f.isApplied);
 
 			expect(clearedFilters.length).to.equal(1);
-			expect(clearedFilters[0].title).to.equal('filter 1');
+			expect(clearedFilters[0].title).to.have.string('filter 1');
+		});
+
+		it('should use the descriptive title if available', async() => {
+			data.filters = [
+				{ id: 'filter-key-1', title: 'simpleFilter:searchLabel', descriptiveTitle: (title) => (`${title} descriptive`), isApplied: true },
+				{ id: 'filter-key-2', title: 'filter 2', isApplied: true }
+			];
+			const el = await fixture(html`<d2l-insights-applied-filters .data="${data}"></d2l-insights-applied-filters>`);
+			const appliedFilters = el.shadowRoot.querySelector('.d2l-insights-tag-container');
+			expect(appliedFilters).to.exist;
+
+			const filters = appliedFilters.querySelectorAll('.d2l-insights-tag-item');
+			expect(filters[0].innerHTML).to.have.string('Search descriptive');
 		});
 	});
 });
