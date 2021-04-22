@@ -161,10 +161,8 @@ export class Data {
 	set selectedUserId(newSelectedUserId) {
 		newSelectedUserId = Number(newSelectedUserId);
 		if (this._selectorFilters.user.shouldReloadFromServer(newSelectedUserId)) {
-			console.log(`yes ${newSelectedUserId}`);
 			this.loadData({ newSelectedUserId });
 		} else {
-			console.log('no');
 			this._selectorFilters.user.selected = newSelectedUserId;
 		}
 	}

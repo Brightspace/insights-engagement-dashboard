@@ -12,23 +12,36 @@ describe('ViewState', () => {
 		after(() => disableUrlStateForTesting());
 
 		it('should load home view from the url', async() => {
-			setStateForTesting(KEY, 'home,0');
+			setStateForTesting(KEY, 'home,0,');
 
 			const sut = new ViewState();
 
 			expect(sut.currentView).equals('home');
 			expect(sut.userViewUserId).equals(0);
+			expect(!!sut.isSingleLearner).to.be.false;
 			expect(sut.persistenceValue).equals('home,0,');
 		});
 
 		it('should load user view from the url', async() => {
-			setStateForTesting(KEY, 'user,321');
+			setStateForTesting(KEY, 'user,321,');
 
 			const sut = new ViewState();
 
 			expect(sut.currentView).equals('user');
 			expect(sut.userViewUserId).equals(321);
+			expect(!!sut.isSingleLearner).to.be.false;
 			expect(sut.persistenceValue).equals('user,321,');
+		});
+
+		it('should load user view from the url with single learner', async() => {
+			setStateForTesting(KEY, 'user,321,true');
+
+			const sut = new ViewState();
+
+			expect(sut.currentView).equals('user');
+			expect(sut.userViewUserId).equals(321);
+			expect(!!sut.isSingleLearner).to.be.true;
+			expect(sut.persistenceValue).equals('user,321,true');
 		});
 
 		it('should load user selection view from the url', async() => {
