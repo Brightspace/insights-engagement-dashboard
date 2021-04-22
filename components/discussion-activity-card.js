@@ -63,7 +63,7 @@ export class DiscussionActivityFilter extends CategoryFilter {
 		const chartName = { chartName : localizer('discussionActivityCard:cardTitle') };
 		if (categories.length === 0) return localizer('alert:axeNotFiltering', chartName);
 
-		return `${localizer(categoryTerm, chartName)} ${terms.join(', ')} `;
+		return `${localizer(categoryTerm, chartName)} ${terms.join(', ')}`;
 	}
 
 	descriptiveTitle(localizer) {

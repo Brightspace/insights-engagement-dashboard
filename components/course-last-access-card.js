@@ -84,19 +84,27 @@ export class CourseLastAccessFilter extends CategoryFilter {
 
 	descriptiveTitle(localizer) {
 		const pairs = this.mergeCategories(localizer);
-		if (pairs.length === 1)
-			return `${localizer(this.title)}: ${pairs.map(pair => pair.join('-')).join(' ')}`;
+		if (pairs.length === 1) {
+			return `${localizer(this.title)}: ${pairs.map(pair => {
+				if (pair.length === 1) return pair;
+				return `${pair.join('-')} ${localizer('courseLastAccessCard:daysAgo')}`;
+			}).join(' ')}
+			`;
+		}
 		return `${localizer(this.title)}`;
 	}
 
 	axeDescription(localizer, categoryTerm) {
-		const chartName = { chartName: localizer(this.title) };
-		const pairs = this.mergeCategories();
+		const chartName = { chartName : localizer('courseLastAccessCard:courseAccess') };
 
-		if (pairs.length === 0) return localizer('alert:axeNotFiltering', chartName);
+		const categories = ([...this.selectedCategories]);
+		if (categories.length === 0) return localizer('alert:axeNotFiltering', chartName);
 
+		const pairs = this.mergeCategories(localizer);
+
+		const message = localizer(categoryTerm, chartName);
 		const descriptions = pairs.map(pair => pair.join(` ${localizer('alert:this-To-That')} `)).join(', ');
-		return `${localizer(categoryTerm, chartName)} ${descriptions}`;
+		return `${message} ${descriptions}`;
 	}
 
 	//for Urlstate
@@ -266,20 +274,6 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		</div>`;
 	}
 
-	getAxeDescription() {
-
-		const chartName = { chartName : this.localize('courseLastAccessCard:courseAccess') };
-
-		const categories = ([...this.filter.selectedCategories]);
-		if (categories.length === 0) return this.localize('alert:axeNotFiltering', chartName);
-
-		const pairs = this.filter.mergeCategories();
-
-		const message = this.localize('alert:axeDescriptionRange', chartName);
-		const descriptions = pairs.map(pair => pair.join(` ${this.localize('alert:this-To-That')} `)).join(', ');
-		return `${message} ${descriptions}`;
-	}
-
 	get chartOptions() {
 		const that = this;
 		return {
@@ -371,9 +365,10 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 						events: {
 							click: function() {
 								that.filter.toggleCategory(this.index);
+								const localizer = (term, options) => that.localize(term, options);
 								filterEventQueue.add(
 									that.localize('alert:updatedFilter', { chartName: that.localize('courseLastAccessCard:courseAccess') }),
-									that.getAxeDescription()
+									that.filter.axeDescription(localizer, 'alert:axeDescriptionRange')
 								);
 							}
 						}

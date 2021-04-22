@@ -113,6 +113,7 @@ export default {
 	"courseLastAccessCard:textLabel": "This chart displays the current final grade for each user per course",
 	"courseLastAccessCard:lastDateSinceAccess": "Last Time a User Accessed a Course",
 	"courseLastAccessCard:never": "Never",
+	"courseLastAccessCard:daysAgo": "days ago",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14 days ago",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7-14 days ago",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5-7 days ago",
@@ -146,6 +147,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 user has accessed the content 0 times",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} users have accessed the content greater than {start} times",
 	"contentViewHistogram:userGreaterTimes": "1 user has accessed the content greater than {start} times",
+	"contentViewHistogram:views": "views",
 
 	"discussionActivityCard:cardTitle": "Discussion Activity",
 	"discussionActivityCard:threads": "Threads",

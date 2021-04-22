@@ -225,7 +225,7 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		const localizer = (term, options) => this.localize(term, options);
 
-		const filters = this.data.filters.map(f => {
+		const filters = this._getActiveFilters(this.data.filters).map(f => {
 			const title = f.descriptiveTitle ?
 				f.descriptiveTitle(localizer) :
 				this.localize(f.title);

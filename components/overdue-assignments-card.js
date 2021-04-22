@@ -23,6 +23,11 @@ export class OverdueAssignmentsFilter {
 		return record[RECORD.OVERDUE] > 0;
 	}
 
+	axeDescription(localizer, term) {
+		const chartName = { chartName: localizer(this.title) };
+		return localizer(term, chartName);
+	}
+
 	// for UrlState
 	get persistenceKey() { return 'oaf'; }
 

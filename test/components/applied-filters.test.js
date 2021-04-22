@@ -91,7 +91,7 @@ describe('d2l-insights-applied-filters', () => {
 
 		it('should use the descriptive title if available', async() => {
 			data.filters = [
-				{ id: 'filter-key-1', title: 'simpleFilter:searchLabel', descriptiveTitle: (title) => (`${title} descriptive`), isApplied: true },
+				{ id: 'filter-key-1', title: 'simpleFilter:searchLabel', descriptiveTitle: (localizer) => (`${localizer('simpleFilter:searchLabel')} descriptive`), isApplied: true },
 				{ id: 'filter-key-2', title: 'filter 2', isApplied: true }
 			];
 			const el = await fixture(html`<d2l-insights-applied-filters .data="${data}"></d2l-insights-applied-filters>`);
