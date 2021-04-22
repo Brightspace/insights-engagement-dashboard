@@ -253,7 +253,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				.viewState="${this._viewState}"
 				org-unit-id="${this.orgUnitId}"
 			></d2l-insights-immersive-nav>
-TESTTESTTEST
+
 			${ innerView }
 		`;
 	}
