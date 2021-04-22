@@ -115,6 +115,19 @@ export class TimeInContentVsGradeFilter {
 		}
 	}
 
+	descriptiveTitle(localizer) {
+		switch (this.quadrant) {
+			case 'rightTop' :
+				return `${localizer(this.title)}:  ${localizer('timeInContentVsGradeCard:highTimeHighGrade')}`;
+			case 'rightBottom' :
+				return `${localizer(this.title)}:  ${localizer('timeInContentVsGradeCard:highTimeLowGrade')}`;
+			case 'leftTop' :
+				return `${localizer(this.title)}:  ${localizer('timeInContentVsGradeCard:lowTimeHighGrade')}`;
+			case 'leftBottom' :
+				return `${localizer(this.title)}:  ${localizer('timeInContentVsGradeCard:lowTimeLowGrade')}`;
+		}
+	}
+
 	//for Urlstate
 	get persistenceKey() { return 'tcgf'; }
 

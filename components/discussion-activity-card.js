@@ -33,6 +33,47 @@ export class DiscussionActivityFilter extends CategoryFilter {
 		this._urlState = new UrlState(this);
 	}
 
+	get _legendLabels() {
+		return [
+			'discussionActivityCard:threads',
+			'discussionActivityCard:replies',
+			'discussionActivityCard:reads'
+		];
+	}
+
+	get _legendLabelObject() {
+		return {
+			7: 'discussionActivityCard:threads',
+			8: 'discussionActivityCard:replies',
+			9: 'discussionActivityCard:reads'
+		};
+	}
+
+	axeDescription(localizer, categoryTerm) {
+		const categories = [...this.selectedCategories];
+		const terms = [];
+		if (categories.includes(7)) {
+			terms.push(localizer('discussionActivityCard:threads'));
+		} if (categories.includes(8)) {
+			terms.push(localizer('discussionActivityCard:replies'));
+		} if (categories.includes(9)) {
+			terms.push(localizer('discussionActivityCard:reads'));
+		}
+
+		const chartName = { chartName : localizer('discussionActivityCard:cardTitle') };
+		if (categories.length === 0) return localizer('alert:axeNotFiltering', chartName);
+
+		return `${localizer(categoryTerm, chartName)} ${terms.join(', ')} `;
+	}
+
+	descriptiveTitle(localizer) {
+		if (this.selectedCategories.size !== 1) {
+			return `${localizer(this.title)}`;
+		}
+		const categories = [...this.selectedCategories];
+		return `${localizer(this.title)}: ${localizer(this._legendLabelObject[categories[0]])}`;
+	}
+
 	//for Urlstate
 	get persistenceValue() {
 		if (this.selectedCategories.size === 0) return '';
@@ -107,14 +148,6 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this.localize('discussionActivityCard:cardTitle');
 	}
 
-	get _legendLabels() {
-		return [
-			this.localize('discussionActivityCard:threads'),
-			this.localize('discussionActivityCard:replies'),
-			this.localize('discussionActivityCard:reads')
-		];
-	}
-
 	// @computed
 	get _discussionActivityStats() {
 		let threadSum, replySum, readSum;
@@ -161,23 +194,6 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		</div>`;
 	}
 
-	getAxeDescription() {
-		const categories = [...this.filter.selectedCategories];
-		const terms = [];
-		if (categories.includes(7)) {
-			terms.push(this.localize('discussionActivityCard:threads'));
-		} if (categories.includes(8)) {
-			terms.push(this.localize('discussionActivityCard:replies'));
-		} if (categories.includes(9)) {
-			terms.push(this.localize('discussionActivityCard:reads'));
-		}
-
-		const chartName = { chartName : this.localize('discussionActivityCard:cardTitle') };
-		if (categories.length === 0) return this.localize('alert:axeNotFiltering', chartName);
-
-		return `${this.localize('alert:axeDescriptionRange', chartName)} ${terms.join(', ')} `;
-	}
-
 	get chartOptions() {
 		const that = this;
 		return {
@@ -206,9 +222,10 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 							legendItemClick: function(e) {
 								const point = this;
 								that.filter.toggleCategory(point.id);
+								const localizer = (term, options) => that.localize(term, options);
 								filterEventQueue.add(
 									that.localize('alert:updatedFilter', { chartName: that.localize('discussionActivityCard:cardTitle') }),
-									that.getAxeDescription()
+									that.filter.axeDescription(localizer, 'alert:axeDescriptionRange')
 								);
 								e.preventDefault();
 							}
@@ -224,9 +241,10 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 							click: function() {
 								const point = this;
 								that.filter.toggleCategory(point.id);
+								const localizer = (term, options) => that.localize(term, options);
 								filterEventQueue.add(
 									that.localize('alert:updatedFilter', { chartName: that.localize('discussionActivityCard:cardTitle') }),
-									that.getAxeDescription()
+									that.filter.axeDescription(localizer, 'alert:axeDescriptionRange')
 								);
 							}
 						}
@@ -263,17 +281,17 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			series: [{
 				colorByPoint: true,
 				data: [{
-					name: that._legendLabels[0],
+					name: that.localize(that.filter._legendLabels[0]),
 					y: that._discussionActivityStats.threadSum,
 					id: RECORD.DISCUSSION_ACTIVITY_THREADS,
 					unselectedColor: 'var(--d2l-color-tungsten)'
 				}, {
-					name: that._legendLabels[1],
+					name: that.localize(that.filter._legendLabels[1]),
 					y: that._discussionActivityStats.replySum,
 					id: RECORD.DISCUSSION_ACTIVITY_REPLIES,
 					unselectedColor: 'var(--d2l-color-gypsum)'
 				}, {
-					name: that._legendLabels[2],
+					name: that.localize(that.filter._legendLabels[2]),
 					y: that._discussionActivityStats.readSum,
 					id: RECORD.DISCUSSION_ACTIVITY_READS,
 					unselectedColor: 'var(--d2l-color-mica)'
@@ -288,7 +306,7 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 				accessibility: {
 					description: that._chartDescriptionTextLabel,
 					pointDescriptionFormatter: function(point) {
-						const ix = that._legendLabels[point.index];
+						const ix = that.localize(that.filter._legendLabels[point.index]);
 						return `${ix}, ${point.y}.`;
 					}
 				}
@@ -300,7 +318,7 @@ class DiscussionActivityCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 			},
 			tooltip: {
 				formatter: function() {
-					const seriesIndex = that._legendLabels.indexOf(this.key);
+					const seriesIndex = that.localize(that.filter._legendLabels.indexOf(this.key));
 					if (seriesIndex === 0) {
 						return that.toolTipTextThreads(this.point.y);
 					} else if (seriesIndex === 1) {

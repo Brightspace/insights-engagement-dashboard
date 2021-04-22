@@ -95,10 +95,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": " {numberOfUsers} user enrollments are getting an above average grade and spending above average time in content.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} user enrollments are getting a below average grade and spending below average time in content.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} user enrollments are getting a below average grade and spending above average time in content.",
-	"timeInContentVsGradeCard:highTimeHighGrade": "high time in content and high grade",
-	"timeInContentVsGradeCard:highTimeLowGrade": "high time in content and low grade",
-	"timeInContentVsGradeCard:lowTimeHighGrade": "low time in content and high grade",
-	"timeInContentVsGradeCard:lowTimeLowGrade": "low time in content and low grade",
+	"timeInContentVsGradeCard:highTimeHighGrade": "High time and high grade.",
+	"timeInContentVsGradeCard:highTimeLowGrade": "High time and low grade.",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "Low time and high grade.",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "Low time and low grade.",
 
 	"currentFinalGradeCard:currentGrade": "Current Grade",
 	"currentFinalGradeCard:numberOfStudents": "Number of Users",
@@ -162,7 +162,7 @@ export default {
 	"appliedFilters:showMore": "+{numHidden} more",
 	"appliedFilters:hideExtra": "Collapse",
 	"appliedFilters:labelText": "Showing only:",
-	"appliedFilters:axeDescriptionCategories": "Filtering users with {chartName} in these categories ",
+	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
 	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "Loading is in progress",

@@ -61,6 +61,44 @@ export class CourseLastAccessFilter extends CategoryFilter {
 		this._urlState = new UrlState(this);
 	}
 
+	mergeCategories(localizer) {
+		const categories = [...this.selectedCategories];
+		return categories.sort().reverse().reduce((acc, cur) => {
+			// if we can find the cur in a pair then we have a chain
+			const desc = DATA_DESCRIPTIONS[cur];
+			if (typeof(desc) === 'string') {
+				acc.push([localizer(desc)]);
+				return acc;
+			}
+			if (acc[acc.length - 1] !== undefined &&
+				typeof(acc[acc.length - 1]) !== 'string' &&
+				acc[acc.length - 1][1] === desc[0])
+			{
+				acc[acc.length - 1][1] = desc[1];
+			} else {
+				acc.push([desc[0], desc[1]]);
+			}
+			return acc;
+		}, []);
+	}
+
+	descriptiveTitle(localizer) {
+		const pairs = this.mergeCategories(localizer);
+		if (pairs.length === 1)
+			return `${localizer(this.title)}: ${pairs.map(pair => pair.join('-')).join(' ')}`;
+		return `${localizer(this.title)}`;
+	}
+
+	axeDescription(localizer, categoryTerm) {
+		const chartName = { chartName: localizer(this.title) };
+		const pairs = this.mergeCategories();
+
+		if (pairs.length === 0) return localizer('alert:axeNotFiltering', chartName);
+
+		const descriptions = pairs.map(pair => pair.join(` ${localizer('alert:this-To-That')} `)).join(', ');
+		return `${localizer(categoryTerm, chartName)} ${descriptions}`;
+	}
+
 	//for Urlstate
 	get persistenceValue() {
 		if (this.selectedCategories.size === 0) return '';
@@ -228,26 +266,6 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		</div>`;
 	}
 
-	mergeCategories(categories) {
-		return categories.sort().reverse().reduce((acc, cur) => {
-			// if we can find the cur in a pair then we have a chain
-			const desc = DATA_DESCRIPTIONS[cur];
-			if (typeof(desc) === 'string') {
-				acc.push([this.localize(desc)]);
-				return acc;
-			}
-			if (acc[acc.length - 1] !== undefined &&
-				typeof(acc[acc.length - 1]) !== 'string' &&
-				acc[acc.length - 1][1] === desc[0])
-			{
-				acc[acc.length - 1][1] = desc[1];
-			} else {
-				acc.push([desc[0], desc[1]]);
-			}
-			return acc;
-		}, []);
-	}
-
 	getAxeDescription() {
 
 		const chartName = { chartName : this.localize('courseLastAccessCard:courseAccess') };
@@ -255,7 +273,7 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		const categories = ([...this.filter.selectedCategories]);
 		if (categories.length === 0) return this.localize('alert:axeNotFiltering', chartName);
 
-		const pairs = this.mergeCategories(categories);
+		const pairs = this.filter.mergeCategories();
 
 		const message = this.localize('alert:axeDescriptionRange', chartName);
 		const descriptions = pairs.map(pair => pair.join(` ${this.localize('alert:this-To-That')} `)).join(', ');
