@@ -78,6 +78,8 @@ export default {
 	"usersTable:noGrades": "No grades",
 
 	"table:selectAll": "Select all",
+	"table:sortedAscending": "Sorted Ascending",
+	"table:sortedDescending": "Sorted Descending",
 
 	"usersTableExport:lastName": "Last Name",
 	"usersTableExport:FirstName": "First Name",
