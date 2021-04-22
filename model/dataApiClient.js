@@ -17,6 +17,7 @@ const relevantChildrenEndpoint = orgUnitId => `/d2l/api/ap/unstable/insights/dat
 const ouSearchEndpoint = '/d2l/api/ap/unstable/insights/data/orgunits';
 const saveSettingsEndpoint = '/d2l/api/ap/unstable/insights/mysettings/engagement';
 const userDrillDataEndpoint = 'unstable/insights/data/userdrill';
+const userListEndpoint = '/d2l/api/ap/unstable/insights/data/engagement/users';
 
 function concatMetronUrl(endpoint, apiPath) {
 	if (apiPath.startsWith('/')) {
@@ -30,6 +31,7 @@ function concatMetronUrl(endpoint, apiPath) {
  * @param {[Number]} roleIds
  * @param {[Number]} semesterIds
  * @param {[Number]} orgUnitIds
+ * @param {Number} selectedUserId if provided, fetch data for just the specified user
  * @param {Boolean} defaultView if true, request that the server select a limited set of data for first view
  * @param {String} metronEndpoint
  */
@@ -227,4 +229,13 @@ export async function saveSettings(settings) {
 		},
 		body: JSON.stringify(settings)
 	}));
+}
+
+export async function getVisibleUsers(search) {
+	const url = new URL(userListEndpoint, window.location.origin);
+	if (search) {
+		url.searchParams.set('search', search);
+	}
+	const response = await fetch(url.toString());
+	return await response.json();
 }

@@ -4,9 +4,19 @@ import 'd2l-users/components/d2l-profile-image';
 
 import { bodySmallStyles, bodyStandardStyles, heading1Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html } from 'lit-element';
+import { getVisibleUsers } from '../model/dataApiClient';
+import { ifDefined } from 'lit-html/directives/if-defined';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
+
+const usersForSkeleton = Array.from(Array(10).keys())
+	.map(i => ({
+		Id: -i,
+		FirstName: 'first',
+		LastName: 'last',
+		Username: 'login'
+	}));
 
 class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
@@ -51,8 +61,11 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		this._tokenPromise = this._tokenPromise.bind(this);
 
-		this.users = [{ id: 11053, first: 'Beverly', last: 'Aadland', login: 'baadland' },
-			{ id: 11054, first: 'Maybe', last: 'Another', login: 'manother' }];
+		this.users = usersForSkeleton;
+	}
+
+	firstUpdated() {
+		this._search();
 	}
 
 	render() {
@@ -76,21 +89,21 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 	userListItem(u) {
 		return html`
 			<d2l-list-item-button
-				key="${u.id}"
+				key="${u.Id}"
 				@d2l-list-item-button-click="${this.onUserSelection}"
 			>
 				<d2l-profile-image
 					slot="illustration"
-					href="${`/d2l/api/hm/users/${u.id}`}"
+					href="${ifDefined(u.Id > 0 ? `/d2l/api/hm/users/${u.Id}` : undefined)}"
 					.token="${this._tokenPromise}"
 					medium
 				></d2l-profile-image>
 				<div>
 					<div class="d2l-body-standard d2l-skeletize">
-						${u.last}, ${u.first}
+						${u.LastName}, ${u.FirstName}
 					</div>
 					<div class="d2l-body-small d2l-skeletize">
-						${u.login} - ${u.id}
+						${u.Username} - ${u.Id}
 					</div>
 				</div>
 			</d2l-list-item-button>
@@ -111,34 +124,27 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this._search(e.detail.value, true);
 	}
 
-	_search(searchText, ascending) {
-		const cleared = searchText === '';
-
-		console.log(`searchText: ${searchText}; ascending: ${ascending}; cleared: ${cleared}`);
-
+	_search(searchText) {
 		this.skeleton = true;
+		this.users = usersForSkeleton;
 
-		this.users = this._usersForSkeleton();
+		if (!this.isDemo) {
+			getVisibleUsers(searchText)
+				.then(users => {
+					this.users = users;
+					this.skeleton = false;
+				});
+		} else {
+			setTimeout(() => {
+				this.users = [
+					{ Id: 11053, FirstName: 'Beverly', LastName: 'Aadland', Username: 'baadland' },
+					{ Id: 11054, FirstName: 'Maybe', LastName: 'Another', Username: 'manother' }
+				];
 
-		setTimeout(() => {
-			this.users = [
-				{ id: 11053, first: 'Beverly', last: 'Aadland', login: 'baadland' },
-				{ id: 11054, first: 'Maybe', last: 'Another', login: 'manother' }
-			];
+				this.skeleton = false;
+			}, 2000);
+		}
 
-			this.skeleton = false;
-		}, 2000);
-
-	}
-
-	_usersForSkeleton() {
-		return Array.from(Array(10).keys())
-			.map(i => ({
-				id: i,
-				first: 'first',
-				last: 'last',
-				login: 'login'
-			}));
 	}
 }
 customElements.define('d2l-insights-user-selector', UserSelector);
