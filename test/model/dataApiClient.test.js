@@ -371,19 +371,22 @@ describe('Lms', () => {
 	});
 
 	describe('getVisibleUsers', () => {
-		const mockLmsUserResponseData = [
-			{
-				Id: '1',
-				FirstName: 'One',
-				LastName: 'Learner',
-				Username: null
-			}, {
-				Id: '1',
-				FirstName: 'Two',
-				LastName: 'Learner',
-				Username: 'tlearner'
-			}
-		];
+		const mockLmsUserResponseData = {
+			Items: [
+				{
+					Id: '1',
+					FirstName: 'One',
+					LastName: 'Learner',
+					Username: null
+				}, {
+					Id: '1',
+					FirstName: 'Two',
+					LastName: 'Learner',
+					Username: 'tlearner'
+				}
+			],
+			PagingInfo: { HasMoreItems: false }
+		};
 
 		beforeEach(() => fetchMock.reset());
 

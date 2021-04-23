@@ -131,7 +131,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 		if (!this.isDemo) {
 			getVisibleUsers(searchText)
 				.then(users => {
-					this.users = users;
+					this.users = users.Items;
 					this.skeleton = false;
 				});
 		} else {
@@ -142,7 +142,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 				];
 
 				this.skeleton = false;
-			}, 2000);
+			}, 10);
 		}
 
 	}
