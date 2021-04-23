@@ -38,12 +38,12 @@ export class CurrentFinalGradesFilter extends CategoryFilter {
 		this._urlState = new UrlState(this);
 	}
 
-	get descriptiveTitle() {
+	descriptiveTitle(localizer) {
 		const pairs = this.mergeCategories();
 		if (pairs.length === 1)
-			return (translatedTile) => `${translatedTile}: ${pairs.map(pair => pair.join('-')).join(' ')}`;
+			return `${localizer(this.title)}: ${pairs.map(pair => pair.join('-')).join(' ')}`;
 
-		return (translatedTitle) => `${translatedTitle}`;
+		return `${localizer(this.title)}`;
 	}
 
 	mergeCategories() {

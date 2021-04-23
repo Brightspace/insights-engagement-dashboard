@@ -53,8 +53,8 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 			}
 
 			.d2l-insights-tag-item.d2l-insights-blue-text:hover {
-				background-color: white;
-				border-color: white;
+				background-color: var(--d2l-color-gypsum);
+				border-color: var(--d2l-color-gypsum);
 				color: var(--d2l-color-celestine-minus-1);
 			}
 
@@ -225,9 +225,9 @@ class AppliedFilters extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		const localizer = (term, options) => this.localize(term, options);
 
-		const filters = this.data.filters.map(f => {
+		const filters = this._getActiveFilters(this.data.filters).map(f => {
 			const title = f.descriptiveTitle ?
-				f.descriptiveTitle(this.localize(f.title)) :
+				f.descriptiveTitle(localizer) :
 				this.localize(f.title);
 
 			return {

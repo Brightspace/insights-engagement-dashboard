@@ -84,6 +84,62 @@ export class ContentViewHistogramFilter extends CategoryFilter {
 		return bins.reverse();
 	}
 
+	mergeCategories() {
+		const categories = [...this.selectedCategories];
+		const result = categories.sort().reverse().reduce((acc, cur) => {
+			// take the category and find the bin
+			// turn the bin range into a pair
+			const curRanges = cur < this.bins.length ? this.bins[cur] : [0, -1];
+			if (acc[acc.length - 1] !== undefined &&
+				acc[acc.length - 1][0] === curRanges[1])
+			{
+				acc[acc.length - 1][0] = curRanges[0];
+			} else {
+				acc.push([curRanges[0], curRanges[1] + 1]);
+			}
+			return acc;
+
+		}, []);
+		return result.map(pair => pair.reverse());
+	}
+
+	descriptiveTitle(localizer) {
+
+		const pairs = this.mergeCategories();
+		if (pairs.length === 1) {
+			if (pairs[0][0] === pairs[0][1]) {
+				return `${localizer(this.title)}: ${pairs[0][0]} ${localizer('contentViewHistogram:views')}`;
+			}
+			return `${localizer(this.title)}: ${pairs[0].join('-')}  ${localizer('contentViewHistogram:views')}`;
+		}
+
+		return `${localizer(this.title)}`;
+	}
+
+	axeDescription(localizer, term) {
+
+		const chartName = { chartName : localizer(this.title) };
+
+		const categories = [...this.selectedCategories];
+		if (categories.length === 0) return localizer('alert:axeNotFiltering', chartName);
+
+		const pairs = this.mergeCategories();
+
+		const message = localizer(term, chartName);
+		const descriptions = pairs.map(
+			pair => {
+				if (pair[1] === Number.POSITIVE_INFINITY) {
+					return localizer('alert:greaterThanThis', { num: pair[0] - 1 });
+				} else if (pair[1] === 0) {
+					return 0;
+				}
+				return pair.join(` ${localizer('alert:this-To-That')} `);
+			}
+		).join(', ');
+
+		return `${message} ${descriptions}`;
+	}
+
 	//for Urlstate
 	get persistenceValue() {
 		if (this.selectedCategories.size === 0) return '';
@@ -245,48 +301,6 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 		);
 	}
 
-	mergeCategories(categories) {
-		const result = categories.sort().reverse().reduce((acc, cur) => {
-			// take the category and find the bin
-			// turn the bin range into a pair
-			const curRanges = cur < this.bins.length ? this.bins[cur] : [0, -1];
-			if (acc[acc.length - 1] !== undefined &&
-				acc[acc.length - 1][0] === curRanges[1])
-			{
-				acc[acc.length - 1][0] = curRanges[0];
-			} else {
-				acc.push([curRanges[0], curRanges[1] + 1]);
-			}
-			return acc;
-
-		}, []);
-		return result.map(pair => pair.reverse());
-	}
-
-	getAxeDescription() {
-
-		const chartName = { chartName : this._cardTitle };
-
-		const categories = ([...this.filter.selectedCategories]);
-		if (categories.length === 0) return this.localize('alert:axeNotFiltering', chartName);
-
-		const pairs = this.mergeCategories(categories);
-
-		const message = this.localize('alert:axeDescriptionRange', chartName);
-		const descriptions = pairs.map(
-			pair => {
-				if (pair[1] === Number.POSITIVE_INFINITY) {
-					return this.localize('alert:greaterThanThis', { num: pair[0] - 1 });
-				} else if (pair[1] === 0) {
-					return 0;
-				}
-				return pair.join(` ${this.localize('alert:this-To-That')} `);
-			}
-		).join(', ');
-
-		return `${message} ${descriptions}`;
-	}
-
 	get chartOptions() {
 
 		const that = this;
@@ -379,9 +393,10 @@ class ContentViewHistogram extends SkeletonMixin(Localizer(MobxLitElement)) {
 						events: {
 							click: function() {
 								that.filter.toggleCategory(this.index);
+								const localizer = (term, options) => that.localize(term, options);
 								filterEventQueue.add(
 									that.localize('alert:updatedFilter', { chartName: that._cardTitle }),
-									that.getAxeDescription()
+									that.filter.axeDescription(localizer, 'alert:axeDescriptionRange')
 								);
 							}
 						}
