@@ -70,7 +70,7 @@ class InsightsImmersiveNav extends Localizer(MobxLitElement) {
 			case 'home':
 				return this.localize('dashboard:backToInsightsPortal');
 			case 'user':
-				if (this.viewState.isSingleLearner) return 'Select a Different User'; // TODO: localize
+				if (this.viewState.isSingleLearner) return this.localize('dashboard:backToUserSelector');
 				else return this.localize('dashboard:backToEngagementDashboard');
 			case 'settings':
 				return this.localize('dashboard:backToEngagementDashboard');

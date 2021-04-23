@@ -70,7 +70,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	render() {
 		return html`
-			<h2 class="d2l-heading-1">${this.localize('learnerEngagementDashboard:title')}</h2>
+			<h2 class="d2l-heading-1">${this.localize('dashboard:userView:title')}</h2>
 
 			<div class="d2l-insights-user-selector-search">
 				<d2l-input-search
