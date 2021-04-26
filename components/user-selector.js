@@ -155,7 +155,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return html`
 			<d2l-insights-list-item-button
 				key="${u.id}"
-				@d2l-list-item-button-click="${this.onUserSelection}"
+				@d2l-list-item-button-click="${this._onUserSelection}"
 			>
 				<d2l-profile-image
 					slot="illustration"
@@ -222,7 +222,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return html`<d2l-icon role="img" aria-label="${ariaLabelText}" icon="tier1:${arrowDirection}" class="d2l-insights-user-selector-header-sort-indicator"></d2l-icon>`;
 	}
 
-	onUserSelection(e) {
+	_onUserSelection(e) {
 		const selectedUserId = Number(e.target.key);
 		this.data.selectedUserId = selectedUserId;
 		this.viewState.setUserView(selectedUserId, /*isSingleLearner*/ true);
