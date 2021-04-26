@@ -19,6 +19,11 @@ const usersForSkeleton = Array.from(Array(10).keys())
 		Username: 'login'
 	}));
 
+const SORT_COLUMN = {
+	FIRST_NAME: 'FIRST NAME',
+	LAST_NAME: 'LAST NAME'
+};
+
 class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
 		return {
@@ -82,6 +87,15 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 					text-decoration: underline;
 				}
 
+				.d2l-insights-user-selector-header > span:focus {
+					outline: solid 0;
+					text-decoration: underline;
+				}
+
+				.d2l-insights-user-selector-header > span:hover {
+					text-decoration: underline;
+				}
+
 				.d2l-insights-user-selector-header-sort-indicator {
 					pointer-events: none;
 				}
@@ -97,13 +111,14 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this.viewState = null;
 
 		this._tokenPromise = this._tokenPromise.bind(this);
+		this._sortColumn = SORT_COLUMN.FIRST_NAME;
 		this._sortedAscending = false;
 
 		this.users = usersForSkeleton;
 	}
 
 	firstUpdated() {
-		this._search(this._searchText, this._sortedAscending);
+		this._search(this._searchText, this._sortColumn, this._sortedAscending);
 	}
 
 	render() {
@@ -118,17 +133,15 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 				></d2l-input-search>
 			</div>
 
-			<div class="d2l-insights-user-selector-list">
-				<div
-					class="d2l-insights-user-selector-header"
-					role="button"
-					tabindex="${this.skeleton ? -1 : 0}"
-					@click="${this._handleHeaderClicked}"
-					@keydown="${this._handleHeaderKey}">
+			<div
+				role="navigation"
+				aria-label="${this.localize('usersTableExport:userListDescription')}"
+				class="d2l-insights-user-selector-list">
 
-					<span>${this.localize('usersTableExport:lastName')},</span>
-					${this.sortedArrowIcon()}
-					<span>${this.localize('usersTableExport:FirstName')}</span>
+				<div
+					tabindex="0"
+					class="d2l-insights-user-selector-header">
+					${this._headerText()}
 				</div>
 
 				<d2l-list>
@@ -162,7 +175,47 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 		`;
 	}
 
-	sortedArrowIcon() {
+	_headerText() {
+		if (this._sortColumn === SORT_COLUMN.LAST_NAME) {
+			return html`
+				<span
+					role="button"
+					data-sort-column="${SORT_COLUMN.LAST_NAME}"
+					tabindex="${this.skeleton ? -1 : 0}"
+					@click="${this._handleHeaderClicked}"
+					@keydown="${this._handleHeaderKey}"
+				>${this.localize('usersTableExport:lastName')},</span>
+				${this._sortedArrowIcon()}
+				<span
+					role="button"
+					data-sort-column="${SORT_COLUMN.FIRST_NAME}"
+					tabindex="${this.skeleton ? -1 : 0}"
+					@click="${this._handleHeaderClicked}"
+					@keydown="${this._handleHeaderKey}"
+				>${this.localize('usersTableExport:FirstName')}</span>
+			`;
+		}
+
+		return html`
+			<span
+				role="button"
+				data-sort-column="${SORT_COLUMN.FIRST_NAME}"
+				tabindex="${this.skeleton ? -1 : 0}"
+				@click="${this._handleHeaderClicked}"
+				@keydown="${this._handleHeaderKey}"
+			>${this.localize('usersTableExport:FirstName')},</span>
+			${this._sortedArrowIcon()}
+			<span
+				role="button"
+				data-sort-column="${SORT_COLUMN.LAST_NAME}"
+				tabindex="${this.skeleton ? -1 : 0}"
+				@click="${this._handleHeaderClicked}"
+				@keydown="${this._handleHeaderKey}"
+			>${this.localize('usersTableExport:lastName')}</span>
+		`;
+	}
+
+	_sortedArrowIcon() {
 		const arrowDirection = this._sortedAscending ? 'arrow-toggle-up' : 'arrow-toggle-down';
 		const ariaLabelText = arrowDirection === 'arrow-toggle-up' ? this.localize('table:sortedAscending') : this.localize('table:sortedDescending');
 
@@ -184,8 +237,15 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this.isDemo ? Promise.resolve('token') : D2L.LP.Web.Authentication.OAuth2.GetToken('users:profile:read');
 	}
 
-	_handleHeaderClicked() {
-		this._sortedAscending = !this._sortedAscending;
+	_handleHeaderClicked(e) {
+		const sortColumn = this._sortColumn;
+
+		this._sortColumn = e.target.getAttribute('data-sort-column') || SORT_COLUMN.FIRST_NAME;
+		if (sortColumn !== this._sortColumn) {
+			this._sortedAscending = false;
+		} else {
+			this._sortedAscending = !this._sortedAscending;
+		}
 
 		this._search(this._searchText, this._sortedAscending);
 	}
@@ -202,7 +262,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_onSearch(e) {
-		this._search(e.detail.value, this._sortedAscending);
+		this._search(e.detail.value, this._sortColumn, this._sortedAscending);
 	}
 
 	_search(searchText) {

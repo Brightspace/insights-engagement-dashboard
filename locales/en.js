@@ -86,6 +86,7 @@ export default {
 	"usersTableExport:FirstName": "First Name",
 	"usersTableExport:UserName": "User Name",
 	"usersTableExport:UserID": "User ID",
+	"usersTableExport:userListDescription": "This table is a list of learners that have more information in the dashboard. The top row lists last name, first name. Search criteria for this list can also include username and Org Defined ID. Select learner from list to look at learner specific information.",
 
 	"summaryCard:label": "{value} {message}",
 
