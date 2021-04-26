@@ -130,7 +130,6 @@ export class OrgUnitSelectorFilter {
 
 export class UserSelectorFilter {
 	constructor(data) {
-		this._data = data;
 		this.selected = data.serverData.selectedUserId;
 		// noinspection JSUnusedGlobalSymbols
 		this._urlState = new UrlState(this);
@@ -148,15 +147,11 @@ export class UserSelectorFilter {
 	}
 
 	shouldInclude(record) {
-		return !this.selected || Number(record[RECORD.USER_ID] === this.selected);
+		return !this.selected || Number(record[RECORD.USER_ID]) === this.selected;
 	}
 
 	shouldReloadFromServer(newSelectedUserId) {
-		return newSelectedUserId !== this._latestServerQuery;
-	}
-
-	get _latestServerQuery() {
-		return this._data.serverData.selectedUserId;
+		return newSelectedUserId !== this.selected;
 	}
 }
 

@@ -5,6 +5,7 @@ export default {
 	"dashboard:userView:title": "Learner Engagement Dashboard",
 	"dashboard:backToInsightsPortal": "Back to Insights Portal",
 	"dashboard:backToEngagementDashboard": "Back to Engagement Dashboard",
+	"dashboard:backToUserSelector": "Select a Different User",
 	"dashboard:backLinkTextShort": "Back",
 	"dashboard:summaryHeading": "Summary View",
 	"dashboard:resultsHeading": "Results",
@@ -277,7 +278,5 @@ export default {
 	"alert:this-To-That" : "to",
 	"alert:greaterThanThis" : "greater than {num}",
 	"alert:axeDescriptionCourses" : "Viewing learner data in these courses ",
-	"alert:axeDescriptionCoursesOff" : "Viewing learner data in all courses.",
-
-	"learnerEngagementDashboard:title": "Learner Engagement Dashboard"
+	"alert:axeDescriptionCoursesOff" : "Viewing learner data in all courses."
 };

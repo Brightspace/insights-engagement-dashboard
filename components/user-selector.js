@@ -4,10 +4,20 @@ import 'd2l-users/components/d2l-profile-image';
 
 import { bodySmallStyles, bodyStandardStyles, heading1Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html, LitElement } from 'lit-element';
+import { getVisibleUsers } from '../model/dataApiClient';
+import { ifDefined } from 'lit-html/directives/if-defined';
 import { ListItemButtonMixin } from '@brightspace-ui/core/components/list/list-item-button-mixin';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
+
+const usersForSkeleton = Array.from(Array(10).keys())
+	.map(i => ({
+		Id: -i,
+		FirstName: 'first',
+		LastName: 'last',
+		Username: 'login'
+	}));
 
 class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 	static get properties() {
@@ -89,7 +99,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this._tokenPromise = this._tokenPromise.bind(this);
 		this._sortedAscending = false;
 
-		this.users = this._usersForSkeleton();
+		this.users = usersForSkeleton;
 	}
 
 	firstUpdated() {
@@ -98,7 +108,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	render() {
 		return html`
-			<h2 class="d2l-heading-1">${this.localize('learnerEngagementDashboard:title')}</h2>
+			<h2 class="d2l-heading-1">${this.localize('dashboard:userView:title')}</h2>
 
 			<div class="d2l-insights-user-selector-search">
 				<d2l-input-search
@@ -136,16 +146,16 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 			>
 				<d2l-profile-image
 					slot="illustration"
-					href="${`/d2l/api/hm/users/${u.id}`}"
+					href="${ifDefined(u.Id > 0 ? `/d2l/api/hm/users/${u.Id}` : undefined)}"
 					.token="${this._tokenPromise}"
 					medium
 				></d2l-profile-image>
 				<div>
 					<div class="d2l-body-standard d2l-skeletize">
-						${u.last}, ${u.first}
+						${u.LastName}, ${u.FirstName}
 					</div>
 					<div class="d2l-body-small d2l-skeletize">
-						${u.login} - ${u.id}
+						${u.Username} - ${u.Id}
 					</div>
 				</div>
 			</d2l-insights-list-item-button>
@@ -195,33 +205,27 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this._search(e.detail.value, this._sortedAscending);
 	}
 
-	_search(searchText, ascending) {
-		const cleared = searchText === '';
-
-		console.log(`searchText: ${searchText}; ascending: ${ascending}; cleared: ${cleared}`);
-
+	_search(searchText) {
 		this.skeleton = true;
-		this.users = this._usersForSkeleton();
+		this.users = usersForSkeleton;
 
-		setTimeout(() => {
-			this.users = [
-				{ id: 11053, first: 'Beverly', last: 'Aadland', login: 'baadland' },
-				{ id: 11054, first: 'Maybe', last: 'Another', login: 'manother' }
-			].sort((a, b) => { return a.last < b.last && ascending || a.last > b.last && !ascending ? 1 : -1; });
+		if (!this.isDemo) {
+			getVisibleUsers(searchText)
+				.then(users => {
+					this.users = users.Items;
+					this.skeleton = false;
+				});
+		} else {
+			setTimeout(() => {
+				this.users = [
+					{ Id: 11053, FirstName: 'Beverly', LastName: 'Aadland', Username: 'baadland' },
+					{ Id: 11054, FirstName: 'Maybe', LastName: 'Another', Username: 'manother' }
+				];
 
-			this.skeleton = false;
-		}, 2000);
+				this.skeleton = false;
+			}, 10);
+		}
 
-	}
-
-	_usersForSkeleton() {
-		return Array.from(Array(10).keys())
-			.map(i => ({
-				id: i,
-				first: 'first',
-				last: 'last',
-				login: 'login'
-			}));
 	}
 }
 

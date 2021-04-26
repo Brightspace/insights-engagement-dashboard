@@ -45,6 +45,14 @@ describe('d2l-insights-immersive-nav', () => {
 			expect(titile).to.equal('Learner Engagement Dashboard');
 		});
 
+		it('should render proper title for user selection view', async() => {
+			const viewState = { currentView: 'userSelection' };
+			const el = await fixture(html`<d2l-insights-immersive-nav .viewState="${viewState}"></d2l-insights-immersive-nav>`);
+
+			const titile = el.shadowRoot.querySelector('.d2l-insights-immersive-nav-title').innerText;
+			expect(titile).to.equal('Learner Engagement Dashboard');
+		});
+
 		it('should render proper href', async() => {
 			const el = await fixture(html`<d2l-insights-immersive-nav org-unit-id="1201"></d2l-insights-immersive-nav>`);
 
@@ -59,6 +67,13 @@ describe('d2l-insights-immersive-nav', () => {
 			const el = await fixture(html`<d2l-insights-immersive-nav .viewState="${viewStateSpy}"></d2l-insights-immersive-nav>`);
 			el.shadowRoot.querySelector('d2l-navigation-link-back').click();
 			expect(viewStateSpy.setHomeView.called).to.be.true;
+		});
+
+		it('should navigate to the user selection view from the user view if a single user is selected', async() => {
+			const viewStateSpy = sinon.spy({ currentView: 'user', isSingleLearner: true, setUserSelectionView() {} });
+			const el = await fixture(html`<d2l-insights-immersive-nav .viewState="${viewStateSpy}"></d2l-insights-immersive-nav>`);
+			el.shadowRoot.querySelector('d2l-navigation-link-back').click();
+			expect(viewStateSpy.setUserSelectionView.called).to.be.true;
 		});
 
 		it('on home view, should NOT navigate to the home view when component`s back button is hit', async() => {
