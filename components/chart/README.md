@@ -1,3 +1,4 @@
+minor change for test pr
 # D2L Chart WebComponent <img src="https://github.com/ashubham/highcharts-webcomponent/raw/master/assets/highcharts-wc-2.png" align="right" alt="highcharts-wc" />
 
 Modified from https://github.com/ashubham/highcharts-webcomponent. Port to
