@@ -111,7 +111,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this.viewState = null;
 
 		this._tokenPromise = this._tokenPromise.bind(this);
-		this._sortColumn = SORT_COLUMN.FIRST_NAME;
+		this._sortColumn = SORT_COLUMN.LAST_NAME;
 		this._sortedAscending = false;
 
 		this.users = usersForSkeleton;
