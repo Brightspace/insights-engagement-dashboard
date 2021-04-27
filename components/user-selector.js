@@ -134,7 +134,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 			</div>
 
 			<div
-				role="navigation"
+				role="grid"
 				aria-label="${this.localize('usersTableExport:userListDescription')}"
 				class="d2l-insights-user-selector-list">
 
