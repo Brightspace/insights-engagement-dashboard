@@ -1,8 +1,9 @@
-import { fetchCachedChildren, fetchData, fetchLastSearch, fetchRelevantChildren, fetchRoles, fetchUserData, orgUnitSearch, saveSettings } from '../../model/dataApiClient';
+import { fetchCachedChildren, fetchData, fetchLastSearch, fetchRelevantChildren, fetchRoles, fetchUserData, getVisibleUsers, orgUnitSearch, saveSettings } from '../../model/dataApiClient';
 import { expect } from '@open-wc/testing';
 import fetchMock from 'fetch-mock/esm/client';
 
 const rolesEndpoint = '/d2l/api/ap/unstable/insights/data/roles';
+const usersEndpoint = 'end:/d2l/api/ap/unstable/insights/data/engagement/users';
 
 describe('Lms', () => {
 	afterEach(() => {
@@ -366,6 +367,48 @@ describe('Lms', () => {
 			// note trailing slash here
 			const actual = await fetchUserData([], 1234, 'https://data.example.com/');
 			expect(actual).to.deep.equal({ the: 'data' });
+		});
+	});
+
+	describe('getVisibleUsers', () => {
+		const mockLmsUserResponseData = {
+			Items: [
+				{
+					Id: '1',
+					FirstName: 'One',
+					LastName: 'Learner',
+					Username: null
+				}, {
+					Id: '1',
+					FirstName: 'Two',
+					LastName: 'Learner',
+					Username: 'tlearner'
+				}
+			],
+			PagingInfo: { HasMoreItems: false }
+		};
+
+		beforeEach(() => fetchMock.reset());
+
+		it('should run the provided search', async() => {
+			fetchMock.get(`${usersEndpoint}?search=search+string`, mockLmsUserResponseData);
+			expect(await getVisibleUsers('search string')).to.deep.equal(mockLmsUserResponseData);
+		});
+
+		it('should not include a search parameter if none is provided', async() => {
+			fetchMock.get(usersEndpoint, mockLmsUserResponseData);
+			expect(await getVisibleUsers()).to.deep.equal(mockLmsUserResponseData);
+		});
+
+		it('should throw on error', async() => {
+			fetchMock.get(usersEndpoint, 500);
+			let error;
+			try {
+				await getVisibleUsers();
+			} catch (err) {
+				error = err.toString();
+			}
+			expect(error).to.exist;
 		});
 	});
 });

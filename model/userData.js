@@ -9,7 +9,10 @@ export class UserData {
 		this.metronEndpoint = metronEndpoint;
 
 		// @observables
-		this.isLoading = true;
+		// An auditor may use the Learner Engagement Dashboard to view a user with no courses, in which case
+		// loadData() is never called. By only showing the spinners once a load is requested, we ensure
+		// the spinners aren't left indefinitely in this case.
+		this.isLoading = false;
 		this.isQueryError = false;
 		this.userData = {
 			userGrades: [],

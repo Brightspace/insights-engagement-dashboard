@@ -1,7 +1,7 @@
 import { action, computed, decorate, observable } from 'mobx';
 import { COURSE_OFFERING, RECORD, USER } from '../consts';
 import { fetchCachedChildren, fetchLastSearch } from './dataApiClient.js';
-import { OrgUnitSelectorFilter, RoleSelectorFilter, SemesterSelectorFilter } from './selectorFilters.js';
+import { OrgUnitSelectorFilter, RoleSelectorFilter, SemesterSelectorFilter, UserSelectorFilter } from './selectorFilters.js';
 import { Tree } from '../components/tree-filter';
 
 /**
@@ -28,6 +28,7 @@ export class Data {
 			selectedOrgUnitIds: [],
 			selectedRolesIds: includeRoles || [],
 			selectedSemestersIds: [],
+			selectedUserId: null,
 			defaultViewOrgUnitIds: null,
 			isStudentSuccessSys: false
 		};
@@ -44,7 +45,8 @@ export class Data {
 		this._selectorFilters = {
 			role: new RoleSelectorFilter(this),
 			semester: new SemesterSelectorFilter(this),
-			orgUnit: new OrgUnitSelectorFilter(this)
+			orgUnit: new OrgUnitSelectorFilter(this),
+			user: new UserSelectorFilter(this)
 		};
 	}
 
@@ -54,12 +56,13 @@ export class Data {
 		return this._serverData;
 	}
 
-	async loadData({ newRoleIds = null, newSemesterIds = null, newOrgUnitIds = null, defaultView = false }) {
+	async loadData({ newRoleIds = null, newSemesterIds = null, newOrgUnitIds = null, newSelectedUserId = null, defaultView = false }) {
 		this.isLoading = true;
 		const filters = {
 			roleIds: newRoleIds || this._selectorFilters.role.selected,
 			semesterIds: newSemesterIds || this._selectorFilters.semester.selected,
 			orgUnitIds: newOrgUnitIds || this._selectorFilters.orgUnit.selected,
+			selectedUserId: newSelectedUserId || this._selectorFilters.user.selected,
 			defaultView
 		};
 		try {
@@ -96,6 +99,7 @@ export class Data {
 		this._serverData = newServerData;
 		this._serverDataProxy++;
 		this._selectorFilters.semester.selected = this.serverData.selectedSemestersIds || [];
+		this._selectorFilters.user.selected = this.serverData.selectedUserId;
 	}
 
 	set selectedRoleIds(newRoleIds) {
@@ -152,6 +156,15 @@ export class Data {
 
 	get selectedOrgUnitIds() {
 		return this._selectorFilters.orgUnit.selected;
+	}
+
+	set selectedUserId(newSelectedUserId) {
+		newSelectedUserId = Number(newSelectedUserId);
+		if (this._selectorFilters.user.shouldReloadFromServer(newSelectedUserId)) {
+			this.loadData({ newSelectedUserId });
+		} else {
+			this._selectorFilters.user.selected = newSelectedUserId;
+		}
 	}
 
 	// returns OU ids (and respective names) that have been preselected to create the client-side default view, if any.
