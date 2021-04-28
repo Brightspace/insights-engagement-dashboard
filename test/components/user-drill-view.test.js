@@ -131,7 +131,7 @@ describe('d2l-insights-user-drill-view', () => {
 		});
 
 		it.skip('should render the users profile', async() => {
-			// test is flaky when on Sauce Labs environment
+			// test is flaky on Sauce Labs environment
 			window.d2lfetch.fetch =	window.d2lfetch.fetch.post('path:/unstable/insights/data/userdrill', {
 				userContent: [],
 				userCourseAccess: [],
