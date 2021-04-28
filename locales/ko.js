@@ -113,6 +113,7 @@ export default {
 	"courseLastAccessCard:textLabel": "이 차트에는 강의당 각 사용자의 현재 최종 평점이 표시됩니다",
 	"courseLastAccessCard:lastDateSinceAccess": "사용자가 강의에 마지막으로 접근한 시간",
 	"courseLastAccessCard:never": "없음",
+	"courseLastAccessCard:daysAgo": "days ago",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14일 전",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7~14일 전",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5~7일 전",
@@ -146,6 +147,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1명의 사용자가 콘텐츠에 0회 접근했습니다.",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers}명의 사용자가 콘텐츠에 {start}회 이상 접근했습니다.",
 	"contentViewHistogram:userGreaterTimes": "1명의 사용자가 콘텐츠에 {start}회 이상 접근했습니다.",
+	"contentViewHistogram:views": "보기",
 
 	"discussionActivityCard:cardTitle": "토론 활동",
 	"discussionActivityCard:threads": "스레드 수",
@@ -159,7 +161,11 @@ export default {
 	"discussionActivityCard:legendLabel": "필터링 설정/해제",
 
 	"appliedFilters:clearAll": "모두 지우기",
+	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:hideExtra": "축소",
 	"appliedFilters:labelText": "다음만 표시:",
+	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
+	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "로드 중입니다.",
 	"ariaLoadingProgress:loadingFinish": "로딩되었습니다.",
@@ -187,7 +193,7 @@ export default {
 	"settings:overdueAssignmentsDesc": "과제 기한 경과 카드는 필터링된 강의에서 기한이 경과한 과제가 하나 이상 있는 사용자 수를 표시합니다.",
 	"settings:systemAccessDesc": "시스템 접근 카드는 사용자의 최종 접근을 표시합니다.",
 	"settings:discActivityDesc": "토론 활동 카드는 필터링된 강의의 비활성 및 활성 소셜 참여를 표시합니다. 사용자가 스레드를 생성하거나, 기존 게시물에 회신하거나, 게시물을 읽을 때 이 지표가 보고합니다.",
-	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
+	"settings:contentViewDesc": "콘텐츠 보기 카드에는 사용자당 각 등록에 대해 본 콘텐츠 항목 수를 표시합니다.",
 
 	"settings:systemAccessEdit": "지난 {num}일 동안 시스템에 접근하지 않은 사용자를 표시합니다.",
 	"settings:systemAccessEditLabel": "시스템 접근 임계값 편집",
@@ -273,7 +279,7 @@ export default {
 	"alert:axeNotFiltering" : "{chartName}에 의한 필터링이 중지되었습니다.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "~",
-	"alert:greaterThanThis" : "greater than {num}",
+	"alert:greaterThanThis" : "{num}보다 큼",
 	"alert:axeDescriptionCourses" : "이 강의에서 학습자 데이터 보기",
 	"alert:axeDescriptionCoursesOff" : "모든 강의에서 학습자 데이터 보기."
 };

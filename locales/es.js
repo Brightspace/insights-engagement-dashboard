@@ -113,6 +113,7 @@ export default {
 	"courseLastAccessCard:textLabel": "Este gráfico muestra la calificación final actual de cada usuario por curso",
 	"courseLastAccessCard:lastDateSinceAccess": "Última vez que un usuario accedió a un curso",
 	"courseLastAccessCard:never": "Nunca",
+	"courseLastAccessCard:daysAgo": "days ago",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "Hace más de 14 días",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "Hace 7 a 14 días",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "Hace 5 a 7 días",
@@ -146,6 +147,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 usuario accedió al contenido 0 veces",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} usuarios accedieron al contenido más de {start} veces",
 	"contentViewHistogram:userGreaterTimes": "1 usuario accedió al contenido más de {start} veces",
+	"contentViewHistogram:views": "vistas",
 
 	"discussionActivityCard:cardTitle": "Actividad de debate",
 	"discussionActivityCard:threads": "Cadenas",
@@ -159,7 +161,11 @@ export default {
 	"discussionActivityCard:legendLabel": "Alternar filtrado",
 
 	"appliedFilters:clearAll": "Borrar todo",
+	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:hideExtra": "Contraer",
 	"appliedFilters:labelText": "Solo se muestra:",
+	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
+	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "La carga está en curso",
 	"ariaLoadingProgress:loadingFinish": "La carga finalizó",
@@ -187,7 +193,7 @@ export default {
 	"settings:overdueAssignmentsDesc": "La tarjeta Asignaciones vencidas muestra la cantidad de usuarios que tienen una o más asignaciones vencidas en los cursos que se filtran.",
 	"settings:systemAccessDesc": "La tarjeta Acceso al sistema muestra el último acceso que realizó el usuario de alguna manera.",
 	"settings:discActivityDesc": "La tarjeta Actividad de debates muestra la participación social pasiva y activa en cada curso que se filtra. Este parámetro informa cuando un usuario crea un hilo de conversación, responde a una publicación existente o lee una publicación.",
-	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
+	"settings:contentViewDesc": "La tarjeta “Vista de contenido” muestra cuántos temas de contenido se han visto para cada inscripción por usuario.",
 
 	"settings:systemAccessEdit": "Mostrar los usuarios que no han accedido al sistema en los últimos {num} días.",
 	"settings:systemAccessEditLabel": "Editar umbral de acceso al sistema",
@@ -273,7 +279,7 @@ export default {
 	"alert:axeNotFiltering" : "Dejar de filtrar por {chartName}.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "hasta",
-	"alert:greaterThanThis" : "greater than {num}",
+	"alert:greaterThanThis" : "mayor que {num}",
 	"alert:axeDescriptionCourses" : "Visualización de los datos de los estudiantes en estos cursos",
 	"alert:axeDescriptionCoursesOff" : "Visualización de los datos de los estudiantes en todos los cursos."
 };

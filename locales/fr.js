@@ -113,6 +113,7 @@ export default {
 	"courseLastAccessCard:textLabel": "Ce graphique affiche la note d’appréciation finale actuelle de chaque utilisateur par cours",
 	"courseLastAccessCard:lastDateSinceAccess": "Dernière fois qu’un utilisateur a accédé à un cours",
 	"courseLastAccessCard:never": "Jamais",
+	"courseLastAccessCard:daysAgo": "days ago",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "Il y a plus de 14 jours",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "Il y a 7 à 14 jours",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "Il y a 5 à 7 jours",
@@ -146,6 +147,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 utilisateur a accédé au contenu 0 fois",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} utilisateurs ont accédé au contenu plus de {start} fois",
 	"contentViewHistogram:userGreaterTimes": "1 utilisateur a accédé au contenu plus de {start} fois",
+	"contentViewHistogram:views": "visionnages",
 
 	"discussionActivityCard:cardTitle": "Activité relative à la discussion",
 	"discussionActivityCard:threads": "Fils de discussion",
@@ -159,7 +161,11 @@ export default {
 	"discussionActivityCard:legendLabel": "Faire basculer le filtrage",
 
 	"appliedFilters:clearAll": "Effacer tout",
+	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:hideExtra": "Réduire",
 	"appliedFilters:labelText": "Est affiché uniquement :",
+	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
+	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "Chargement en cours",
 	"ariaLoadingProgress:loadingFinish": "Le chargement est terminé",
@@ -187,7 +193,7 @@ export default {
 	"settings:overdueAssignmentsDesc": "La carte Travaux en retard indique le nombre d’utilisateurs dont un ou plusieurs travaux sont en retard dans les cours qui sont filtrés.",
 	"settings:systemAccessDesc": "La carte Accès au système indique la dernière fois que l’utilisateur a accédé au système.",
 	"settings:discActivityDesc": "La carte activité relative à la discussion indique l’engagement social passif et actif dans chaque cours qui est filtré. Cette mesure indique lorsqu’un utilisateur crée un fil de discussion, répond à un message existant ou lit un message.",
-	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
+	"settings:contentViewDesc": "La carte Vue du contenu indique le nombre de sujets de contenu visualisés pour chaque inscription par utilisateur.",
 
 	"settings:systemAccessEdit": "Afficher les utilisateurs qui n’ont pas accédé au système au cours des {num} derniers jours.",
 	"settings:systemAccessEditLabel": "Modifier le seuil d’accès au système",
@@ -273,7 +279,7 @@ export default {
 	"alert:axeNotFiltering" : "Filtrage par {chartName} arrêté.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "à",
-	"alert:greaterThanThis" : "greater than {num}",
+	"alert:greaterThanThis" : "supérieur à {num}",
 	"alert:axeDescriptionCourses" : "Affichage des données d'élèves dans ces cours",
 	"alert:axeDescriptionCoursesOff" : "Affichage des données d'élèves dans tous les cours"
 };
