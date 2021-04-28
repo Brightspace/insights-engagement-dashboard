@@ -4,6 +4,11 @@ import { CurrentFinalGradesFilter } from '../../components/current-final-grade-c
 import { records } from '../model/mocks';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
+const localizer = (term) => {
+	if (term === 'alert:axeDescriptionRange') return 'Viewing learners with Current Grade in these categories ';
+	if (term === 'alert:this-To-That') return 'to';
+};
+
 describe('d2l-insights-current-final-grade-card', () => {
 	before(() => disableUrlStateForTesting());
 	after(() => enableUrlState());
@@ -168,12 +173,10 @@ describe('d2l-insights-current-final-grade-card', () => {
 		it('should create an axe description', async() => {
 			setStateForTesting('cgf', '');
 
-			const finalGradeEl = await fixture(html`<d2l-insights-current-final-grade-card .data="${data}" skeleton></d2l-insights-current-final-grade-card>`);
-
 			filter.selectedCategories.clear();
 			filter.toggleCategory(0);
 
-			const description = finalGradeEl.getAxeDescription();
+			const description = filter.axeDescription(localizer, 'alert:axeDescriptionRange');
 
 			expect(description).to.equal('Viewing learners with Current Grade in these categories  0 to 10');
 		});
@@ -181,13 +184,11 @@ describe('d2l-insights-current-final-grade-card', () => {
 		it('should merge categories in axe description', async() => {
 			setStateForTesting('cgf', '');
 
-			const finalGradeEl = await fixture(html`<d2l-insights-current-final-grade-card .data="${data}" skeleton></d2l-insights-current-final-grade-card>`);
-
 			filter.selectedCategories.clear();
 			filter.toggleCategory(20);
 			filter.toggleCategory(30);
 
-			const description = finalGradeEl.getAxeDescription();
+			const description = filter.axeDescription(localizer, 'alert:axeDescriptionRange');
 
 			expect(description).to.equal('Viewing learners with Current Grade in these categories  20 to 40');
 		});
@@ -195,13 +196,11 @@ describe('d2l-insights-current-final-grade-card', () => {
 		it('should seperate skipped categories in axe description', async() => {
 			setStateForTesting('cgf', '');
 
-			const finalGradeEl = await fixture(html`<d2l-insights-current-final-grade-card .data="${data}" skeleton></d2l-insights-current-final-grade-card>`);
-
 			filter.selectedCategories.clear();
 			filter.toggleCategory(20);
 			filter.toggleCategory(40);
 
-			const description = finalGradeEl.getAxeDescription();
+			const description = filter.axeDescription(localizer, 'alert:axeDescriptionRange');
 
 			expect(description).to.equal('Viewing learners with Current Grade in these categories  20 to 30, 40 to 50');
 		});
