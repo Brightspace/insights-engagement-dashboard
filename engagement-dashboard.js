@@ -265,7 +265,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		};
 
 		if (!this._isLoading) {
-			const userData = this._serverData.userDictionary.get(user.userId);
+			const userData = this._serverData.userDictionary.get(Number(user.userId));
 
 			if (userData) {
 				user = {
@@ -318,6 +318,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	_renderUserSelectionView() {
 		return html`
 			<d2l-insights-user-selector
+				.data="${this._serverData}"
 				?demo="${this.isDemo}"
 				.viewState="${this._viewState}"
 			>

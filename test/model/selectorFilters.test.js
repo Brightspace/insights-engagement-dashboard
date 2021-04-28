@@ -1,5 +1,5 @@
 import { disableUrlStateForTesting, enableUrlState, setStateForTesting } from '../../model/urlState';
-import { OrgUnitSelectorFilter, RoleSelectorFilter, SemesterSelectorFilter } from '../../model/selectorFilters';
+import { OrgUnitSelectorFilter, RoleSelectorFilter, SemesterSelectorFilter, UserSelectorFilter } from '../../model/selectorFilters';
 import { expect } from '@open-wc/testing';
 import { observable } from 'mobx';
 
@@ -422,6 +422,91 @@ describe('selectorFilters', () => {
 				const values = params.get(sut.persistenceKey);
 
 				expect(values).equals('1');
+			});
+		});
+	});
+
+	describe('UserSelectorFilter', () => {
+		describe('shouldInclude', () => {
+			it('should return true if the filter is not set', () => {
+				const record = [1, 1, 1]; // doesn't matter what the ids are here
+				const sut = new UserSelectorFilter({
+					serverData: {}
+				});
+				expect(sut.shouldInclude(record)).to.be.true;
+			});
+
+			it('should return true if the userId matches', () => {
+				const record = [1, 11, 1];
+				const sut = new UserSelectorFilter(
+					{
+						serverData:
+							{
+								selectedUserId: 11
+							}
+					});
+
+				expect(sut.shouldInclude(record)).to.be.true;
+			});
+
+			it('should return false if the userId does not match', () => {
+				const record = [1, 12, 1]; // doesn't matter what the ids are here
+				const sut = new UserSelectorFilter(
+					{
+						serverData:
+							{
+								selectedUserId: 11
+							}
+					});
+
+				expect(sut.shouldInclude(record)).to.be.false;
+			});
+		});
+
+		describe('shouldReloadFromServer', () => {
+			it('should return true if the id is different', () => {
+				const sut = new UserSelectorFilter({
+					serverData: {
+						selectedUserId: 11
+					}
+				});
+				expect(sut.shouldReloadFromServer(112)).to.be.true;
+			});
+
+			it('should return false if the id is the same', () => {
+				const sut = new UserSelectorFilter({
+					serverData: {
+						selectedUserId: 123
+					}
+				});
+				expect(sut.shouldReloadFromServer(123)).to.be.false;
+			});
+		});
+
+		describe('urlState', () => {
+
+			const key = new UserSelectorFilter({ serverData: {} }).persistenceKey;
+			before(() => {
+				enableUrlState();
+			});
+			after(() => disableUrlStateForTesting());
+
+			it('should load the filter from the url state then save to it', async() => {
+
+				setStateForTesting(key, '48');
+
+				const sut = new UserSelectorFilter({
+					serverData: {}
+				});
+
+				expect(sut.selected).eqls(48);
+
+				sut.selected = 321;
+
+				const params = new URLSearchParams(window.location.search);
+				const values = params.get(sut.persistenceKey);
+
+				expect(values).equals('321');
 			});
 		});
 	});

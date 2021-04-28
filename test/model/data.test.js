@@ -1,6 +1,6 @@
 import { clearUrlState, disableUrlStateForTesting, enableUrlState } from '../../model/urlState';
 import { mockOuTypes, mockRoleIds, records } from './mocks';
-import { OrgUnitSelectorFilter, RoleSelectorFilter, SemesterSelectorFilter } from '../../model/selectorFilters';
+import { OrgUnitSelectorFilter, RoleSelectorFilter, SemesterSelectorFilter, UserSelectorFilter } from '../../model/selectorFilters';
 import { Data } from '../../model/data.js';
 import { expect } from '@open-wc/testing';
 import sinon from 'sinon/pkg/sinon-esm.js';
@@ -192,6 +192,39 @@ describe('Data', () => {
 			// set isRecordsTruncated to false and selectedRolesIds to null to force no reload
 			sut._selectorFilters.orgUnit = new OrgUnitSelectorFilter(sut);
 			sut.selectedOrgUnitIds = [1001];
+
+			sinon.assert.notCalled(recordProvider);
+		});
+	});
+
+	describe('set selectedUserId', () => {
+		it('should cause a reload from server if filter says it should reload', () => {
+			const recordProvider = sinon.stub().resolves(serverData);
+			sut.recordProvider = recordProvider;
+
+			// set isRecordsTruncated to true to force a reload
+			sut._selectorFilters.user = new UserSelectorFilter({ serverData: {
+				selectedUserId: 27
+			} });
+			sut.selectedUserId = 11;
+
+			sinon.assert.calledWithMatch(recordProvider, sinon.match({
+				roleIds: [],
+				semesterIds: [],
+				orgUnitIds: [],
+				selectedUserId: 11
+			}));
+		});
+
+		it('should not cause a reload from server if filter says it should not reload', () => {
+			const recordProvider = sinon.stub().resolves(serverData);
+			sut.recordProvider = recordProvider;
+
+			// set isRecordsTruncated to false and selectedRolesIds to null to force no reload
+			sut._selectorFilters.user = new UserSelectorFilter({ serverData: {
+				selectedUserId: 27
+			} });
+			sut.selectedUserId = 27;
 
 			sinon.assert.notCalled(recordProvider);
 		});

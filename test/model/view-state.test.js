@@ -12,33 +12,46 @@ describe('ViewState', () => {
 		after(() => disableUrlStateForTesting());
 
 		it('should load home view from the url', async() => {
-			setStateForTesting(KEY, 'home,0');
+			setStateForTesting(KEY, 'home,0,');
 
 			const sut = new ViewState();
 
 			expect(sut.currentView).equals('home');
 			expect(sut.userViewUserId).equals(0);
-			expect(sut.persistenceValue).equals('home,0');
+			expect(!!sut.isSingleLearner).to.be.false;
+			expect(sut.persistenceValue).equals('home,0,');
 		});
 
 		it('should load user view from the url', async() => {
-			setStateForTesting(KEY, 'user,321');
+			setStateForTesting(KEY, 'user,321,');
 
 			const sut = new ViewState();
 
 			expect(sut.currentView).equals('user');
 			expect(sut.userViewUserId).equals(321);
-			expect(sut.persistenceValue).equals('user,321');
+			expect(!!sut.isSingleLearner).to.be.false;
+			expect(sut.persistenceValue).equals('user,321,');
+		});
+
+		it('should load user view from the url with single learner', async() => {
+			setStateForTesting(KEY, 'user,321,true');
+
+			const sut = new ViewState();
+
+			expect(sut.currentView).equals('user');
+			expect(sut.userViewUserId).equals(321);
+			expect(!!sut.isSingleLearner).to.be.true;
+			expect(sut.persistenceValue).equals('user,321,true');
 		});
 
 		it('should load user selection view from the url', async() => {
-			setStateForTesting(KEY, 'userSelection,0');
+			setStateForTesting(KEY, 'userSelection,0,');
 
 			const sut = new ViewState();
 
 			expect(sut.currentView).equals('userSelection');
 			expect(sut.userViewUserId).equals(0);
-			expect(sut.persistenceValue).equals('userSelection,0');
+			expect(sut.persistenceValue).equals('userSelection,0,');
 		});
 
 		it('should load settings view from url', async() => {
@@ -47,7 +60,7 @@ describe('ViewState', () => {
 			const sut = new ViewState();
 
 			expect(sut.currentView).equals('settings');
-			expect(sut.persistenceValue).equals('settings,0');
+			expect(sut.persistenceValue).equals('settings,0,');
 		});
 
 		it('should save home view to the url', async() => {
@@ -59,10 +72,10 @@ describe('ViewState', () => {
 
 			expect(sut.currentView).equals('home');
 			expect(sut.userViewUserId).equals(0);
-			expect(sut.persistenceValue).equals('home,0');
+			expect(sut.persistenceValue).equals('home,0,');
 
 			const searchParams = new URLSearchParams(window.location.search);
-			expect(searchParams.get(KEY)).equals('home,0');
+			expect(searchParams.get(KEY)).equals('home,0,');
 		});
 
 		it('should save user view to the url', async() => {
@@ -74,10 +87,10 @@ describe('ViewState', () => {
 
 			expect(sut.currentView).equals('user');
 			expect(sut.userViewUserId).equals(321);
-			expect(sut.persistenceValue).equals('user,321');
+			expect(sut.persistenceValue).equals('user,321,');
 
 			const searchParams = new URLSearchParams(window.location.search);
-			expect(searchParams.get(KEY)).equals('user,321');
+			expect(searchParams.get(KEY)).equals('user,321,');
 		});
 
 		it('should save user selection view to the url', async() => {
@@ -88,10 +101,10 @@ describe('ViewState', () => {
 			sut.setUserSelectionView();
 
 			expect(sut.currentView).equals('userSelection');
-			expect(sut.persistenceValue).equals('userSelection,0');
+			expect(sut.persistenceValue).equals('userSelection,0,');
 
 			const searchParams = new URLSearchParams(window.location.search);
-			expect(searchParams.get(KEY)).equals('userSelection,0');
+			expect(searchParams.get(KEY)).equals('userSelection,0,');
 		});
 
 		it('should save settings view to the url', async() => {
@@ -102,10 +115,10 @@ describe('ViewState', () => {
 			sut.setSettingsView();
 
 			expect(sut.currentView).equals('settings');
-			expect(sut.persistenceValue).equals('settings,0');
+			expect(sut.persistenceValue).equals('settings,0,');
 
 			const searchParams = new URLSearchParams(window.location.search);
-			expect(searchParams.get(KEY)).equals('settings,0');
+			expect(searchParams.get(KEY)).equals('settings,0,');
 		});
 	});
 });
