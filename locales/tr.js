@@ -113,6 +113,7 @@ export default {
 	"courseLastAccessCard:textLabel": "Bu tablo, her kullanıcı için ders başına geçerli son notu gösterir",
 	"courseLastAccessCard:lastDateSinceAccess": "Bir Kullanıcının Bir Derse En Son Eriştiği Zaman",
 	"courseLastAccessCard:never": "Hiçbir zaman",
+	"courseLastAccessCard:daysAgo": "days ago",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14 gün önce",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7-14 gün önce",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5-7 gün önce",
@@ -146,6 +147,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 kullanıcı içeriğe 0 defa erişti",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} kullanıcı içeriğe {start} defadan daha fazla erişti",
 	"contentViewHistogram:userGreaterTimes": "1 kullanıcı içeriğe {start} defadan daha fazla erişti",
+	"contentViewHistogram:views": "görüntülemeler",
 
 	"discussionActivityCard:cardTitle": "Tartışma Etkinliği",
 	"discussionActivityCard:threads": "Mesaj dizileri",
@@ -159,7 +161,11 @@ export default {
 	"discussionActivityCard:legendLabel": "Filtrelemeyi değiştir",
 
 	"appliedFilters:clearAll": "Tümünü temizle",
+	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:hideExtra": "Daralt",
 	"appliedFilters:labelText": "Yalnızca şunu göster:",
+	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
+	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "Yükleme devam ediyor",
 	"ariaLoadingProgress:loadingFinish": "Yükleme tamamlandı",
@@ -187,7 +193,7 @@ export default {
 	"settings:overdueAssignmentsDesc": "Süresi Dolmuş Ödevler kartı, filtrelenmiş derslerde bir veya daha fazla ödevinin süresi dolmuş olman kullanıcı sayısını gösterir.",
 	"settings:systemAccessDesc": "Sistem Erişimi kartı, kullanıcının son erişimini (hangi şekilde olursa olsun) gösterir.",
 	"settings:discActivityDesc": "Tartışma Etkinliği kartı, filtrelenmiş her bir dersteki pasif ve aktif sosyal katılımı gösterir. Bu metrik, kullanıcılar konu oluşturduğunda, mevcut bir gönderiye yanıt verdiğinde veya bir gönderiyi okuduğunda bildirimde bulunur.",
-	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
+	"settings:contentViewDesc": "İçerik Görüntüleme kartı, kullanıcı başına her kayıt için kaç içerik başlığı görüntülendiğini gösterir.",
 
 	"settings:systemAccessEdit": "Son {num} gün içinde sisteme erişmeyen kullanıcıları göster.",
 	"settings:systemAccessEditLabel": "Sistem erişim eşiğini düzenle",
@@ -273,7 +279,7 @@ export default {
 	"alert:axeNotFiltering" : "{chartName} Öğesine Göre Filtreleme Durduruldu",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "Kime",
-	"alert:greaterThanThis" : "greater than {num}",
+	"alert:greaterThanThis" : "{num} değerinden büyük",
 	"alert:axeDescriptionCourses" : "Bu derslerdeki öğrenci verileri görüntüleniyor",
 	"alert:axeDescriptionCoursesOff" : "Tüm derslerdeki öğrenci verileri görüntüleniyor."
 };

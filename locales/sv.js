@@ -113,6 +113,7 @@ export default {
 	"courseLastAccessCard:textLabel": "I det här diagrammet visas det aktuella slutbetyget för alla användare per kurs",
 	"courseLastAccessCard:lastDateSinceAccess": "Senaste gången användare fick åtkomst till kurser",
 	"courseLastAccessCard:never": "Aldrig",
+	"courseLastAccessCard:daysAgo": "days ago",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14 dagar sedan",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7–14 dagar sedan",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5–7 dagar sedan",
@@ -146,6 +147,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 användare har använt innehållet 0 gånger",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} användare har använt innehållet fler än {start} gånger",
 	"contentViewHistogram:userGreaterTimes": "1 användare har använt innehållet fler än {start} gånger",
+	"contentViewHistogram:views": "views",
 
 	"discussionActivityCard:cardTitle": "Diskussionsaktivitet",
 	"discussionActivityCard:threads": "Trådar",
@@ -159,7 +161,11 @@ export default {
 	"discussionActivityCard:legendLabel": "Aktivera/avaktivera filtrering",
 
 	"appliedFilters:clearAll": "Rensa alla",
+	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:hideExtra": "Komprimera",
 	"appliedFilters:labelText": "Visar endast:",
+	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
+	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "Inläsning pågår",
 	"ariaLoadingProgress:loadingFinish": "Inläsningen har slutförts",
@@ -187,7 +193,7 @@ export default {
 	"settings:overdueAssignmentsDesc": "Kortet Försenade uppgifter visar antalet användare som har en eller flera försenade uppgifter i kurserna som filtreras.",
 	"settings:systemAccessDesc": "Kortet Systemåtkomst visar den senaste gången som användaren använde systemet på något sätt.",
 	"settings:discActivityDesc": "Kortet Diskussionsaktivitet visar passivt och aktivt socialt engagemang i kurserna som filtreras. Mätvärdet rapporteras när en användare skapar en tråd, svarar på ett inlägg eller läser ett inlägg.",
-	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
+	"settings:contentViewDesc": "Kortet Innehållsvisning visar hur många innehållsämnen som har visats för varje registrering per användare.",
 
 	"settings:systemAccessEdit": "Visa användare som inte har använt systemet under de senaste {num} dagarna.",
 	"settings:systemAccessEditLabel": "Redigera tröskelvärde för systemåtkomst",
@@ -273,7 +279,7 @@ export default {
 	"alert:axeNotFiltering" : "Avbryt filtrering efter {chartName}.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "till",
-	"alert:greaterThanThis" : "greater than {num}",
+	"alert:greaterThanThis" : "större än {num}",
 	"alert:axeDescriptionCourses" : "Visa elevuppgifter för dessa kurser",
 	"alert:axeDescriptionCoursesOff" : "Visa elevuppgifter för alla kurser."
 };

@@ -113,6 +113,7 @@ export default {
 	"courseLastAccessCard:textLabel": "此圖表顯示各個課程每位使用者目前的最終成績",
 	"courseLastAccessCard:lastDateSinceAccess": "使用者上次存取課程的時間",
 	"courseLastAccessCard:never": "從未",
+	"courseLastAccessCard:daysAgo": "days ago",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14 天前",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7-14 天前",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5-7 天前",
@@ -146,6 +147,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 位使用者已存取內容 0 次",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} 位使用者已存取內容超過 {start} 次",
 	"contentViewHistogram:userGreaterTimes": "1 位使用者已存取內容超過 {start} 次",
+	"contentViewHistogram:views": "檢視",
 
 	"discussionActivityCard:cardTitle": "討論活動",
 	"discussionActivityCard:threads": "討論串",
@@ -159,7 +161,11 @@ export default {
 	"discussionActivityCard:legendLabel": "切換篩選",
 
 	"appliedFilters:clearAll": "全部清除",
+	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:hideExtra": "收合",
 	"appliedFilters:labelText": "僅顯示：",
+	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
+	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "載入正在進行中",
 	"ariaLoadingProgress:loadingFinish": "載入已完成",
@@ -187,7 +193,7 @@ export default {
 	"settings:overdueAssignmentsDesc": "「逾期的作業」卡顯示篩選出之課程中有一或多項逾期作業的使用者人數。",
 	"settings:systemAccessDesc": "「系統存取」卡顯示使用者最後一次以任何形式進行之存取。",
 	"settings:discActivityDesc": "「討論活動」卡顯示篩選出之課程中各個課程的被動與主動社群參與情形。此量測會在使用者建立討論串、針對現有貼文進行回覆，或閱讀貼文時予以報告。",
-	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
+	"settings:contentViewDesc": "「內容檢視」卡會顯示每次註冊期間每個使用者檢視多少內容主題。",
 
 	"settings:systemAccessEdit": "顯示在過去 {num} 天內未存取系統的使用者。",
 	"settings:systemAccessEditLabel": "編輯系統存取閾值",
@@ -273,7 +279,7 @@ export default {
 	"alert:axeNotFiltering" : "已依 {chartName} 停止篩選。",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "至",
-	"alert:greaterThanThis" : "greater than {num}",
+	"alert:greaterThanThis" : "大於 {num}",
 	"alert:axeDescriptionCourses" : "檢視這些課程中的學習者資料",
 	"alert:axeDescriptionCoursesOff" : "檢視所有課程中的學習者資料。"
 };
