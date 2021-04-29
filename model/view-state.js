@@ -10,9 +10,10 @@ export class ViewState {
 		this._urlState = new UrlState(this);
 	}
 
-	setUserView(userId) {
+	setUserView(userId, isSingleLearner = false) {
 		this.currentView = 'user';
 		this.userViewUserId = userId;
+		this.isSingleLearner = isSingleLearner;
 		// odd, but after second navigation to user view
 		// autorun reaction stops observing properties form ViewState
 		// therefore this line is needed
@@ -48,7 +49,7 @@ export class ViewState {
 	}
 
 	get persistenceValue() {
-		return [this.currentView || 'home', this.userViewUserId || 0].join(',');
+		return [this.currentView || 'home', this.userViewUserId || 0, this.isSingleLearner || ''].join(',');
 	}
 
 	set persistenceValue(value) {
@@ -56,12 +57,12 @@ export class ViewState {
 			return;
 		}
 
-		const [view, userId] = value.split(',');
+		const [view, userId, isSingleLearner] = value.split(',');
 
 		switch (view) {
 			case 'home': this.setHomeView();
 				break;
-			case 'user': this.setUserView(Number(userId));
+			case 'user': this.setUserView(Number(userId), isSingleLearner === 'true');
 				break;
 			case 'userSelection': this.setUserSelectionView();
 				break;

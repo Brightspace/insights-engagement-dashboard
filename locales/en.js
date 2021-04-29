@@ -5,6 +5,7 @@ export default {
 	"dashboard:userView:title": "Learner Engagement Dashboard",
 	"dashboard:backToInsightsPortal": "Back to Insights Portal",
 	"dashboard:backToEngagementDashboard": "Back to Engagement Dashboard",
+	"dashboard:backToUserSelector": "Select a Different User",
 	"dashboard:backLinkTextShort": "Back",
 	"dashboard:summaryHeading": "Summary View",
 	"dashboard:resultsHeading": "Results",
