@@ -115,6 +115,19 @@ export class TimeInContentVsGradeFilter {
 		}
 	}
 
+	descriptiveTitle(localizer) {
+		switch (this.quadrant) {
+			case 'rightTop' :
+				return `${localizer(this.title)}:  ${localizer('timeInContentVsGradeCard:highTimeHighGrade')}`;
+			case 'rightBottom' :
+				return `${localizer(this.title)}:  ${localizer('timeInContentVsGradeCard:highTimeLowGrade')}`;
+			case 'leftTop' :
+				return `${localizer(this.title)}:  ${localizer('timeInContentVsGradeCard:lowTimeHighGrade')}`;
+			case 'leftBottom' :
+				return `${localizer(this.title)}:  ${localizer('timeInContentVsGradeCard:lowTimeLowGrade')}`;
+		}
+	}
+
 	//for Urlstate
 	get persistenceKey() { return 'tcgf'; }
 
@@ -158,7 +171,7 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 				border-width: 1.5px;
 				display: inline-block;
 				height: 285px;
-				margin-right: 12px;
+				margin-inline-end: 12px;
 				margin-top: 10px;
 				padding: 15px 4px;
 				width: 583px;
@@ -166,7 +179,7 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 
 			@media only screen and (max-width: 615px) {
 				:host {
-					margin-right: 0;
+					margin-inline-end: 0;
 				}
 			}
 
@@ -233,22 +246,23 @@ class TimeInContentVsGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) 
 		const chartName = { chartName : this.localize('timeInContentVsGradeCard:timeInContentVsGrade') };
 		if (!this.filter.isApplied) return this.localize('alert:axeNotFiltering', chartName);
 
-		let description = this.localize('alert:axeDescription');
+		const options = { category: '' };
+
 		switch (quadrant) {
 			case 'rightTop':
-				description += this.localize('timeInContentVsGradeCard:highTimeHighGrade');
+				options.category = this.localize('timeInContentVsGradeCard:highTimeHighGrade');
 				break;
 			case 'rightBottom':
-				description += this.localize('timeInContentVsGradeCard:highTimeLowGrade');
+				options.category = this.localize('timeInContentVsGradeCard:highTimeLowGrade');
 				break;
 			case 'leftTop':
-				description += this.localize('timeInContentVsGradeCard:lowTimeHighGrade');
+				options.category = this.localize('timeInContentVsGradeCard:lowTimeHighGrade');
 				break;
 			case 'leftBottom':
-				description += this.localize('timeInContentVsGradeCard:lowTimeLowGrade');
+				options.category = this.localize('timeInContentVsGradeCard:lowTimeLowGrade');
 				break;
 		}
-		return description;
+		return this.localize('alert:axeDescription', options);
 	}
 
 	get chartOptions() {

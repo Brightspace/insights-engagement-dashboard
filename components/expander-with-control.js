@@ -42,6 +42,7 @@ class ExpanderWithControl extends RtlMixin(Localizer(LitElement)) {
 
 			.d2l-insights-expand-collapse-control-text {
 				color: var(--d2l-color-celestine);
+				cursor: pointer;
 				display: inline-flex;
 				margin: 0;
 			}
@@ -64,7 +65,7 @@ class ExpanderWithControl extends RtlMixin(Localizer(LitElement)) {
 		// Note: when Enter/Spacebar is pressed on a focused button, it fires a KeyboardEvent, as well as a MouseEvent
 		return html`
 			<div
-				role="button"
+				role="presentation"
 				class="d2l-insights-expand-collapse-control"
 				@click="${this._toggleExpanded}">
 

@@ -8,7 +8,7 @@ describe('engagement-dashboard-skeleton', () => {
 
 	let page, browser;
 
-	before(async() => {
+	beforeEach(async() => {
 		browser = await puppeteer.launch();
 		page = await visualDiff.createPage(browser);
 		page
@@ -28,7 +28,7 @@ describe('engagement-dashboard-skeleton', () => {
 		await page.bringToFront();
 	});
 
-	after(() => browser.close());
+	afterEach(() => browser.close());
 
 	it('Desktop', async function() {
 		const rect = await visualDiff.getRect(page, 'd2l-insights-engagement-dashboard');

@@ -267,7 +267,7 @@ class CoursesLegend extends SkeletonMixin(Localizer(MobxLitElement)) {
 	render() {
 		return html`
 			<!-- Use Event Delegation for the click, and direct event handling for the keyboard -->
-			<div role="button" @click="${this._handleInteraction}" @keypress=${this._handleInteraction} class="d2l-insights-user-course-legend">
+			<div @click="${this._handleInteraction}" @keypress=${this._handleInteraction} class="d2l-insights-user-course-legend">
 				${this._renderCourses()}
 			</div>
 		`;
