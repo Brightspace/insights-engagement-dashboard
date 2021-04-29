@@ -231,11 +231,14 @@ export async function saveSettings(settings) {
 	}));
 }
 
-export async function getVisibleUsers(search) {
+export async function getVisibleUsers(searchOptions) {
 	const url = new URL(userListEndpoint, window.location.origin);
-	if (search) {
-		url.searchParams.set('search', search);
-	}
+
+	const allowedParams = ['search', 'sort', 'desc', 'bookmark'];
+	Object.keys(searchOptions)
+		.filter(param => allowedParams.includes(param))
+		.map(param => url.searchParams.set(param, searchOptions[param]));
+
 	const response = await fetch(url.toString());
 	return await response.json();
 }

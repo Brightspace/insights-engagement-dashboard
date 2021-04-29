@@ -76,7 +76,6 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 					border-radius: 8px;
 					border-top: 1px solid var(--d2l-color-mica);
 					color: var(--d2l-color-ferrite);
-					cursor: pointer;
 					height: 27px; /* min-height to be 48px including border */
 					line-height: 1.4rem;
 					padding: 10px 20px;
@@ -97,7 +96,17 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 				}
 
 				.d2l-insights-user-selector-header-sort-indicator {
+					cursor: default;
 					pointer-events: none;
+				}
+
+				span[role="button"] {
+					cursor: pointer;
+					user-select: none;
+				}
+
+				.d2l-insights-laod-more {
+					margin-top: 26px;
 				}
 			`
 		];
@@ -113,6 +122,8 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this._tokenPromise = this._tokenPromise.bind(this);
 		this._sortColumn = SORT_COLUMN.LAST_NAME;
 		this._sortedAscending = false;
+		this._bookmark = undefined;
+		this._lastSearch = undefined;
 
 		this.users = usersForSkeleton;
 	}
@@ -148,6 +159,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 					${this.users.map(u => this.userListItem(u))}
 				</d2l-list>
 			</div>
+			<d2l-button @click="${this._onLoadMore}" class="d2l-insights-laod-more">Load More</d2l-button>
 		`;
 	}
 
@@ -262,18 +274,32 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_onSearch(e) {
-		this._search(e.detail.value, this._sortColumn, this._sortedAscending);
+		this._search(e.detail.value);
+	}
+
+	_onLoadMore() {
+		const lastUser = this.users[this.users.length - 1];
+		this._bookmark = `${lastUser.FirstName},${lastUser.LastName},${lastUser.Id}`;
+		this._search(this._lastSearch);
 	}
 
 	_search(searchText) {
 		this.skeleton = true;
 		this.users = usersForSkeleton;
+		const searchOptions = {
+			search: searchText,
+			desc: !this._sortedAscending,
+			sort: this._sortColumn === SORT_COLUMN.FIRST_NAME ? 'first' : 'last',
+			bookmark: this._bookmark // "firstName,lastName,userId"
+		};
 
 		if (!this.isDemo) {
-			getVisibleUsers(searchText)
+			getVisibleUsers(searchOptions)
 				.then(users => {
 					this.users = users.Items;
 					this.skeleton = false;
+					this._bookmark = undefined;
+					this._lastSearch = searchText;
 				});
 		} else {
 			setTimeout(() => {
@@ -285,7 +311,6 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 				this.skeleton = false;
 			}, 10);
 		}
-
 	}
 }
 
