@@ -113,6 +113,7 @@ export default {
 	"courseLastAccessCard:textLabel": "このチャートには、コースごとに各ユーザーの現在の最終成績が表示されます",
 	"courseLastAccessCard:lastDateSinceAccess": "ユーザーが最後にコースにアクセスした時期",
 	"courseLastAccessCard:never": "なし",
+	"courseLastAccessCard:daysAgo": "days ago",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "14 日以上前",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7～14 日前",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5～7 日前",
@@ -146,6 +147,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 人のユーザーが 0 回そのコンテンツにアクセスしました",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} 人のユーザーが {start} 回以上そのコンテンツにアクセスしました",
 	"contentViewHistogram:userGreaterTimes": "1 人のユーザーが {start} 回以上そのコンテンツにアクセスしました",
+	"contentViewHistogram:views": "ビュー",
 
 	"discussionActivityCard:cardTitle": "ディスカッションアクティビティ",
 	"discussionActivityCard:threads": "スレッド",
@@ -159,7 +161,11 @@ export default {
 	"discussionActivityCard:legendLabel": "フィルタリングの切り替え",
 
 	"appliedFilters:clearAll": "すべてをクリア",
+	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:hideExtra": "折りたたむ",
 	"appliedFilters:labelText": "表示のみ:",
+	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
+	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "読み込み中",
 	"ariaLoadingProgress:loadingFinish": "読み込み完了",
@@ -187,7 +193,7 @@ export default {
 	"settings:overdueAssignmentsDesc": "［期限切れの課題］カードには、フィルタリングされたコースで 1 つ以上の期限切れの課題があるユーザーの数が表示されます。",
 	"settings:systemAccessDesc": "［システムアクセス］カードには、ユーザーの最終アクセスが表示されます。",
 	"settings:discActivityDesc": "［ディスカッションアクティビティ］カードには、フィルタリングされた各コースの受動的および能動的なソーシャルエンゲージメントが表示されます。このメトリックは、ユーザーがスレッドを作成したとき、既存の投稿に返信したとき、または投稿を読んだときをレポートします。",
-	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
+	"settings:contentViewDesc": "コンテンツビューカードには、各ユーザーの登録ごとに表示されたコンテンツトピックの数が表示されます。",
 
 	"settings:systemAccessEdit": "過去 {num} 日間にシステムにアクセスしていないユーザーを表示します。",
 	"settings:systemAccessEditLabel": "システムアクセスのしきい値の編集",
@@ -273,7 +279,7 @@ export default {
 	"alert:axeNotFiltering" : "{chartName} のフィルタリングを停止。",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "～",
-	"alert:greaterThanThis" : "greater than {num}",
+	"alert:greaterThanThis" : "{num} より大きい",
 	"alert:axeDescriptionCourses" : "これらのコースの受講者データを表示",
 	"alert:axeDescriptionCoursesOff" : "すべてのコースの受講者データを表示。"
 };

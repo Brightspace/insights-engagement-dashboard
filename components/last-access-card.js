@@ -30,6 +30,11 @@ export class LastAccessFilter {
 		return this.isWithoutRecentAccess(user);
 	}
 
+	axeDescription(localizer, term) {
+		const chartName = { chartName: localizer(this.title) };
+		return localizer(term, chartName);
+	}
+
 	// for UrlState
 	get persistenceKey() { return 'saf'; }
 

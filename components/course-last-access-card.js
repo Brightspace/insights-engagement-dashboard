@@ -61,6 +61,52 @@ export class CourseLastAccessFilter extends CategoryFilter {
 		this._urlState = new UrlState(this);
 	}
 
+	mergeCategories(localizer) {
+		const categories = [...this.selectedCategories];
+		return categories.sort().reverse().reduce((acc, cur) => {
+			// if we can find the cur in a pair then we have a chain
+			const desc = DATA_DESCRIPTIONS[cur];
+			if (typeof(desc) === 'string') {
+				acc.push([localizer(desc)]);
+				return acc;
+			}
+			if (acc[acc.length - 1] !== undefined &&
+				typeof(acc[acc.length - 1]) !== 'string' &&
+				acc[acc.length - 1][1] === desc[0])
+			{
+				acc[acc.length - 1][1] = desc[1];
+			} else {
+				acc.push([desc[0], desc[1]]);
+			}
+			return acc;
+		}, []);
+	}
+
+	descriptiveTitle(localizer) {
+		const pairs = this.mergeCategories(localizer);
+		if (pairs.length === 1) {
+			return `${localizer(this.title)}: ${pairs.map(pair => {
+				if (pair.length === 1) return pair;
+				return `${pair.join('-')} ${localizer('courseLastAccessCard:daysAgo')}`;
+			}).join(' ')}
+			`;
+		}
+		return `${localizer(this.title)}`;
+	}
+
+	axeDescription(localizer, categoryTerm) {
+		const chartName = { chartName : localizer('courseLastAccessCard:courseAccess') };
+
+		const categories = ([...this.selectedCategories]);
+		if (categories.length === 0) return localizer('alert:axeNotFiltering', chartName);
+
+		const pairs = this.mergeCategories(localizer);
+
+		const message = localizer(categoryTerm, chartName);
+		const descriptions = pairs.map(pair => pair.join(` ${localizer('alert:this-To-That')} `)).join(', ');
+		return `${message} ${descriptions}`;
+	}
+
 	//for Urlstate
 	get persistenceValue() {
 		if (this.selectedCategories.size === 0) return '';
@@ -228,40 +274,6 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		</div>`;
 	}
 
-	mergeCategories(categories) {
-		return categories.sort().reverse().reduce((acc, cur) => {
-			// if we can find the cur in a pair then we have a chain
-			const desc = DATA_DESCRIPTIONS[cur];
-			if (typeof(desc) === 'string') {
-				acc.push([this.localize(desc)]);
-				return acc;
-			}
-			if (acc[acc.length - 1] !== undefined &&
-				typeof(acc[acc.length - 1]) !== 'string' &&
-				acc[acc.length - 1][1] === desc[0])
-			{
-				acc[acc.length - 1][1] = desc[1];
-			} else {
-				acc.push([desc[0], desc[1]]);
-			}
-			return acc;
-		}, []);
-	}
-
-	getAxeDescription() {
-
-		const chartName = { chartName : this.localize('courseLastAccessCard:courseAccess') };
-
-		const categories = ([...this.filter.selectedCategories]);
-		if (categories.length === 0) return this.localize('alert:axeNotFiltering', chartName);
-
-		const pairs = this.mergeCategories(categories);
-
-		const message = this.localize('alert:axeDescriptionRange', chartName);
-		const descriptions = pairs.map(pair => pair.join(` ${this.localize('alert:this-To-That')} `)).join(', ');
-		return `${message} ${descriptions}`;
-	}
-
 	get chartOptions() {
 		const that = this;
 		return {
@@ -353,9 +365,10 @@ class CourseLastAccessCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 						events: {
 							click: function() {
 								that.filter.toggleCategory(this.index);
+								const localizer = (term, options) => that.localize(term, options);
 								filterEventQueue.add(
 									that.localize('alert:updatedFilter', { chartName: that.localize('courseLastAccessCard:courseAccess') }),
-									that.getAxeDescription()
+									that.filter.axeDescription(localizer, 'alert:axeDescriptionRange')
 								);
 							}
 						}

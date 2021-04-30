@@ -2,8 +2,32 @@ import '../../components/discussion-activity-card.js';
 import { disableUrlStateForTesting, enableUrlState, setStateForTesting } from '../../model/urlState';
 import { expect, fixture, html } from '@open-wc/testing';
 import { DiscussionActivityFilter } from '../../components/discussion-activity-card';
+import en from '../../locales/en';
 import { RECORD } from '../../consts.js';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
+
+const localizer = (term, options) => {
+	let result = en[term];
+	if (!result) return '';
+	if (options) {
+		let resultParts = result.split('{');
+		resultParts = resultParts.map(part => part.split('}'));
+		resultParts.forEach((part, i) => {
+			if (part.length === 1) {
+				resultParts[i] = part[0];
+				return;
+			} else {
+				const key = part[0];
+				term = options[key];
+				part[0] = term;
+				resultParts[i] = part.join('');
+			}
+		});
+		console.log('after', resultParts);
+		result = resultParts.join('');
+	}
+	return result;
+};
 
 describe('d2l-insights-discussion-activity-card', () => {
 	before(() => disableUrlStateForTesting());
@@ -104,14 +128,12 @@ describe('d2l-insights-discussion-activity-card', () => {
 		it('should create an axe description', async() => {
 			setStateForTesting('caf', '');
 
-			const discussionEl = await fixture(html`<d2l-insights-discussion-activity-card .data="${data}"></d2l-insights-discussion-activity-card>`);
-
 			filter.selectedCategories.clear();
 			filter.toggleCategory(7);
 
-			const description = discussionEl.getAxeDescription();
+			const description = filter.axeDescription(localizer, 'alert:axeDescriptionRange');
 
-			expect(description).to.equal('Viewing learners with Discussion Activity in these categories  Threads ');
+			expect(description).to.equal('Viewing learners with Discussion Activity in these categories  Threads');
 		});
 
 	});

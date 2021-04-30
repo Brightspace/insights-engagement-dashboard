@@ -113,6 +113,7 @@ export default {
 	"courseLastAccessCard:textLabel": "该表显示了每门课程每个用户的当前最终成绩",
 	"courseLastAccessCard:lastDateSinceAccess": "用户上次访问课程的时间",
 	"courseLastAccessCard:never": "从不",
+	"courseLastAccessCard:daysAgo": "days ago",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14 天前",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7-14 天前",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5-7 天前",
@@ -146,6 +147,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 个用户已访问内容 0 次",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} 个用户已访问内容超过 {start} 次",
 	"contentViewHistogram:userGreaterTimes": "1 个用户已访问内容超过 {start} 次",
+	"contentViewHistogram:views": "视图",
 
 	"discussionActivityCard:cardTitle": "讨论活动",
 	"discussionActivityCard:threads": "线索",
@@ -159,7 +161,11 @@ export default {
 	"discussionActivityCard:legendLabel": "切换筛选",
 
 	"appliedFilters:clearAll": "全部清除",
+	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:hideExtra": "折叠",
 	"appliedFilters:labelText": "仅显示：",
+	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
+	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "正在进行加载",
 	"ariaLoadingProgress:loadingFinish": "加载已完成",
@@ -187,7 +193,7 @@ export default {
 	"settings:overdueAssignmentsDesc": "“过期作业”卡片显示所筛选出的课程中有一项或多项过期作业的用户数目。",
 	"settings:systemAccessDesc": "“系统访问”卡片显示用户上次通过任何方式访问系统的时间。",
 	"settings:discActivityDesc": "“讨论活动”卡片显示在所筛选出的每门课程中的被动和主动社交参与活动。此指标报告用户创建讨论话题、回复现有帖子或阅读帖子的情况。",
-	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
+	"settings:contentViewDesc": "“内容查看”卡显示每位用户每个注册可查看的内容主题数量。",
 
 	"settings:systemAccessEdit": "显示在过去 {num} 天内未访问过系统的用户。",
 	"settings:systemAccessEditLabel": "编辑系统访问阈值",
@@ -273,7 +279,7 @@ export default {
 	"alert:axeNotFiltering" : "已停止按 {chartName} 筛选。",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "至",
-	"alert:greaterThanThis" : "greater than {num}",
+	"alert:greaterThanThis" : "大于 {num}",
 	"alert:axeDescriptionCourses" : "查看这些课程中的学员数据",
 	"alert:axeDescriptionCoursesOff" : "查看所有课程中的学员数据。"
 };

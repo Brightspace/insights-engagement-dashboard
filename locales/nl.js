@@ -113,6 +113,7 @@ export default {
 	"courseLastAccessCard:textLabel": "In dit diagram wordt de huidige eindscore voor elke gebruiker per cursus weergegeven",
 	"courseLastAccessCard:lastDateSinceAccess": "De laatste keer dat een gebruiker een cursus heeft geopend",
 	"courseLastAccessCard:never": "Nooit",
+	"courseLastAccessCard:daysAgo": "days ago",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14 dagen geleden",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7 tot 14 dagen geleden",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5 tot 7 dagen geleden",
@@ -146,6 +147,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 gebruiker heeft de inhoud 0 keer bekeken",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} gebruikers hebben de inhoud meer dan {start} keer bekeken",
 	"contentViewHistogram:userGreaterTimes": "1 gebruiker heeft de inhoud meer dan {start} keer bekeken",
+	"contentViewHistogram:views": "views",
 
 	"discussionActivityCard:cardTitle": "Discussieactiviteit",
 	"discussionActivityCard:threads": "Threads",
@@ -159,7 +161,11 @@ export default {
 	"discussionActivityCard:legendLabel": "Filteren in-/uitschakelen",
 
 	"appliedFilters:clearAll": "Alles wissen",
+	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:hideExtra": "Samenvouwen",
 	"appliedFilters:labelText": "Alleen het volgende weergeven:",
+	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
+	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "Bezig met laden",
 	"ariaLoadingProgress:loadingFinish": "Laden is voltooid",
@@ -187,7 +193,7 @@ export default {
 	"settings:overdueAssignmentsDesc": "Op de kaart Achterstallige opdrachten wordt het aantal gebruikers weergegeven dat een of meer achterstallige opdrachten heeft in de cursussen waarop wordt gefilterd.",
 	"settings:systemAccessDesc": "Op de kaart Systeemaanmelding wordt het laatste bezoek van de gebruiker weergegeven.",
 	"settings:discActivityDesc": "De kaart Discussieactiviteit toont passieve en actieve sociale betrokkenheid in elke cursus die is opgenomen in de toegepaste filters. Dit cijfer geeft aan wanneer een gebruiker een thread maakt, een bestaand bericht beantwoordt of een bericht leest.",
-	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
+	"settings:contentViewDesc": "Op de kaart voor inhoudsweergave wordt weergegeven hoeveel inhoudsonderwerpen er voor elke inschrijving per gebruiker zijn bekeken.",
 
 	"settings:systemAccessEdit": "Toont gebruikers die de afgelopen {num} dagen geen toegang tot het systeem hebben gehad.",
 	"settings:systemAccessEditLabel": "Bewerk de drempel van de Systeemaanmelding",
@@ -273,7 +279,7 @@ export default {
 	"alert:axeNotFiltering" : "Filteren op {chartName} gestopt.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "tot",
-	"alert:greaterThanThis" : "greater than {num}",
+	"alert:greaterThanThis" : "groter dan {num}",
 	"alert:axeDescriptionCourses" : "Gegevens van de cursist in deze cursussen weergeven",
 	"alert:axeDescriptionCoursesOff" : "De gegevens van de cursist in alle cursussen weergeven."
 };

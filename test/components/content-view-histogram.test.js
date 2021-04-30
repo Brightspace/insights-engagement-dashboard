@@ -1,13 +1,36 @@
 import { expect, fixture, html } from '@open-wc/testing';
 import { ContentViewHistogramFilter } from '../../components/content-view-histogram';
+import en from '../../locales/en.js';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
-
 const filter = new ContentViewHistogramFilter();
 
 const mapFromViews = (views) => {
 	const map = new Map();
 	views.forEach((v, i) => map.set(i, [i, 0, 0, 0, 0, v]));
 	return map;
+};
+
+const localizer = (term, options) => {
+	let result = en[term];
+	if (!result) return '';
+	if (options) {
+		let resultParts = result.split('{');
+		resultParts = resultParts.map(part => part.split('}'));
+		resultParts.forEach((part, i) => {
+			if (part.length === 1) {
+				resultParts[i] = part[0];
+				return;
+			} else {
+				const key = part[0];
+				term = options[key];
+				part[0] = term;
+				resultParts[i] = part.join('');
+			}
+		});
+		console.log('after', resultParts);
+		result = resultParts.join('');
+	}
+	return result;
 };
 
 const records = [
@@ -235,8 +258,7 @@ describe('content-view-histogram', () => {
 
 			filter.selectedCategories.clear();
 			filter.toggleCategory(0);
-
-			const description = el.getAxeDescription();
+			const description = filter.axeDescription(localizer, 'alert:axeDescriptionRange');
 
 			expect(description).to.equal('Viewing learners with Content View in these categories  41 to 50');
 		});
@@ -251,7 +273,7 @@ describe('content-view-histogram', () => {
 			filter.toggleCategory(0);
 			filter.toggleCategory(1);
 
-			const description = el.getAxeDescription();
+			const description = el.filter.axeDescription(localizer, 'alert:axeDescriptionRange');
 
 			expect(description).to.equal('Viewing learners with Content View in these categories  31 to 50');
 		});
@@ -266,7 +288,7 @@ describe('content-view-histogram', () => {
 			filter.toggleCategory(5);
 			filter.toggleCategory(3);
 
-			const description = el.getAxeDescription();
+			const description = el.filter.axeDescription(localizer, 'alert:axeDescriptionRange');
 
 			expect(description).to.equal('Viewing learners with Content View in these categories  0, 11 to 20');
 		});
@@ -280,7 +302,7 @@ describe('content-view-histogram', () => {
 			filter.selectedCategories.clear();
 			filter.toggleCategory(0);
 
-			const description = el.getAxeDescription();
+			const description = el.filter.axeDescription(localizer, 'alert:axeDescriptionRange');
 
 			expect(description).to.equal('Viewing learners with Content View in these categories  greater than 50');
 		});
@@ -295,7 +317,7 @@ describe('content-view-histogram', () => {
 			filter.toggleCategory(0);
 			filter.toggleCategory(1);
 
-			const description = el.getAxeDescription();
+			const description = el.filter.axeDescription(localizer, 'alert:axeDescriptionRange');
 
 			expect(description).to.equal('Viewing learners with Content View in these categories  greater than 40');
 		});

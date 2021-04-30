@@ -38,6 +38,39 @@ export class CurrentFinalGradesFilter extends CategoryFilter {
 		this._urlState = new UrlState(this);
 	}
 
+	descriptiveTitle(localizer) {
+		const pairs = this.mergeCategories();
+		if (pairs.length === 1)
+			return `${localizer(this.title)}: ${pairs.map(pair => pair.join('-')).join(' ')}`;
+
+		return `${localizer(this.title)}`;
+	}
+
+	mergeCategories() {
+		if (this.selectedCategories.length === 0) return [];
+		return [...this.selectedCategories].sort().reduce((acc, cur) => {
+			if (acc[acc.length - 1] !== undefined &&
+				acc[acc.length - 1][1] === cur)
+			{
+				acc[acc.length - 1][1] = cur + 10;
+			} else {
+				acc.push([cur, cur + 10]);
+			}
+			return acc;
+		}, []);
+	}
+
+	axeDescription(localizer, categoryTerm) {
+		// bin the ranges of numbers together
+		const chartName = { chartName: localizer('currentFinalGradeCard:currentGrade') };
+		const pairs = this.mergeCategories();
+
+		if (pairs.length === 0) return localizer('alert:axeNotFiltering', chartName);
+
+		const descriptions = pairs.map(pair => pair.join(` ${localizer('alert:this-To-That')} `)).join(', ');
+		return `${localizer(categoryTerm, chartName)} ${descriptions}`;
+	}
+
 	//for Urlstate
 	get persistenceValue() {
 		if (this.selectedCategories.size === 0) return '';
@@ -191,32 +224,6 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 		}
 	}
 
-	mergeCategories(categories) {
-		return categories.sort().reduce((acc, cur) => {
-			if (acc[acc.length - 1] !== undefined &&
-				acc[acc.length - 1][1] === cur)
-			{
-				acc[acc.length - 1][1] = cur + 10;
-			} else {
-				acc.push([cur, cur + 10]);
-			}
-			return acc;
-		}, []);
-	}
-
-	getAxeDescription() {
-		// bin the ranges of numbers together
-		const categories = ([...this.filter.selectedCategories]);
-
-		const chartName = { chartName: this.localize('currentFinalGradeCard:currentGrade') };
-		if (categories.length === 0) return this.localize('alert:axeNotFiltering', chartName);
-
-		const pairs = this.mergeCategories(categories);
-
-		const descriptions = pairs.map(pair => pair.join(` ${this.localize('alert:this-To-That')} `)).join(', ');
-		return `${this.localize('alert:axeDescriptionRange', chartName)} ${descriptions}`;
-	}
-
 	get chartOptions() {
 		const that = this;
 
@@ -312,10 +319,12 @@ class CurrentFinalGradeCard extends SkeletonMixin(Localizer(MobxLitElement)) {
 						events: {
 							click: function() {
 								// noinspection JSPotentiallyInvalidUsageOfClassThis
+								const localizer = (term, options) => that.localize(term, options);
+
 								that.filter.toggleCategory(Math.ceil(this.category));
 								filterEventQueue.add(
-									that.localize('alert:updatedFilter', { chartName: that.localize('discussionActivityCard:cardTitle') }),
-									that.getAxeDescription()
+									that.localize('alert:updatedFilter', { chartName: that.localize('currentFinalGradeCard:currentGrade') }),
+									that.filter.axeDescription(localizer, 'alert:axeDescriptionRange')
 								);
 							}
 						}

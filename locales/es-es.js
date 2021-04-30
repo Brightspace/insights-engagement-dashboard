@@ -113,6 +113,7 @@ export default {
 	"courseLastAccessCard:textLabel": "Este gráfico muestra la calificación final actual de cada usuario por curso.",
 	"courseLastAccessCard:lastDateSinceAccess": "Última vez que un usuario accedió a un curso",
 	"courseLastAccessCard:never": "Nunca",
+	"courseLastAccessCard:daysAgo": "days ago",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "Más de 14 días",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "Hace 7-14 días",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "Hace 5-7 días",
@@ -146,6 +147,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 usuario ha accedido al contenido 0 veces",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} usuarios han accedido al contenido más de {start} veces",
 	"contentViewHistogram:userGreaterTimes": "1 usuario ha accedido al contenido más de {start} veces",
+	"contentViewHistogram:views": "views",
 
 	"discussionActivityCard:cardTitle": "Actividad de debate",
 	"discussionActivityCard:threads": "Cadenas de mensajes",
@@ -159,7 +161,11 @@ export default {
 	"discussionActivityCard:legendLabel": "Alternar filtrado",
 
 	"appliedFilters:clearAll": "Borrar todo",
+	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:hideExtra": "Contraer",
 	"appliedFilters:labelText": "Mostrando solo:",
+	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
+	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "Carga en curso",
 	"ariaLoadingProgress:loadingFinish": "La carga ha finalizado",
@@ -187,7 +193,7 @@ export default {
 	"settings:overdueAssignmentsDesc": "La ficha Tareas atrasadas muestra el número de usuarios que tienen una o más tareas atrasadas según los cursos filtrados.",
 	"settings:systemAccessDesc": "La ficha Acceso al sistema muestra la última vez que el usuario accedió al sistema.",
 	"settings:discActivityDesc": "La ficha Actividad de debate muestra la participación activa y pasiva en cada curso filtrado. Esta métrica indica si un usuario crea una cadena, responde a una publicación existente o lee una publicación.",
-	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
+	"settings:contentViewDesc": "La pestaña Vista de contenido muestra cuántos temas de contenido se han visto por usuario para cada inscripción.",
 
 	"settings:systemAccessEdit": "Mostrar usuarios que no han accedido al sistema en los últimos {num} días.",
 	"settings:systemAccessEditLabel": "Editar el umbral de acceso al sistema",
@@ -273,7 +279,7 @@ export default {
 	"alert:axeNotFiltering" : "Se ha detenido el filtrado por {chartName}.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "a",
-	"alert:greaterThanThis" : "greater than {num}",
+	"alert:greaterThanThis" : "mayor que {num}",
 	"alert:axeDescriptionCourses" : "Visualización de datos de estudiantes en estos cursos",
 	"alert:axeDescriptionCoursesOff" : "Visualización de datos de estudiantes en todos los cursos."
 };
