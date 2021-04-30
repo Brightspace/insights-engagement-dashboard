@@ -113,6 +113,7 @@ export default {
 	"courseLastAccessCard:textLabel": "Este gráfico exibe a nota final atual de cada usuário por curso",
 	"courseLastAccessCard:lastDateSinceAccess": "Última vez que um usuário acessou um curso",
 	"courseLastAccessCard:never": "Nunca",
+	"courseLastAccessCard:daysAgo": "days ago",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14 dias atrás",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7 a 14 dias atrás",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5 a 7 dias atrás",
@@ -146,6 +147,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 usuário acessou o conteúdo 0 vezes",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} usuários acessaram o conteúdo mais de {start} vez(es)",
 	"contentViewHistogram:userGreaterTimes": "1 usuário acessou o conteúdo mais de {start} vez(es)",
+	"contentViewHistogram:views": "exibições",
 
 	"discussionActivityCard:cardTitle": "Atividade de discussão",
 	"discussionActivityCard:threads": "Tópicos",
@@ -159,7 +161,11 @@ export default {
 	"discussionActivityCard:legendLabel": "Alternar filtragem",
 
 	"appliedFilters:clearAll": "Limpar tudo",
+	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:hideExtra": "Minimizar",
 	"appliedFilters:labelText": "Mostrando apenas:",
+	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
+	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "Carregamento em andamento",
 	"ariaLoadingProgress:loadingFinish": "Carregamento concluído",
@@ -187,7 +193,7 @@ export default {
 	"settings:overdueAssignmentsDesc": "O cartão Atividades atrasadas mostra o número de usuários com uma ou mais atividades em atraso nos cursos filtrados.",
 	"settings:systemAccessDesc": "O cartão Acesso ao sistema mostra o último acesso que o usuário teve de qualquer forma.",
 	"settings:discActivityDesc": "O cartão Atividade de discussão mostra o envolvimento social passivo e ativo em cada curso filtrado. Essa métrica informa quando um usuário cria um encadeamento, responde ou lê uma postagem.",
-	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
+	"settings:contentViewDesc": "O cartão Exibição do conteúdo mostra quantos tópicos de conteúdo foram exibidos para cada inscrição por usuário.",
 
 	"settings:systemAccessEdit": "Mostrar usuários que não acessaram o sistema nos últimos {num} dias.",
 	"settings:systemAccessEditLabel": "Editar o limite de acesso ao sistema",
@@ -273,7 +279,7 @@ export default {
 	"alert:axeNotFiltering" : "Filtragem por {chartName} interrompida.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "a",
-	"alert:greaterThanThis" : "greater than {num}",
+	"alert:greaterThanThis" : "maior que {num}",
 	"alert:axeDescriptionCourses" : "Visualizando dados do aluno nesses cursos",
 	"alert:axeDescriptionCoursesOff" : "Visualizando dados do aluno em todos os cursos."
 };

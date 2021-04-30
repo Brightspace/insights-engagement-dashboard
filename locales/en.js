@@ -99,10 +99,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": " {numberOfUsers} user enrollments are getting an above average grade and spending above average time in content.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} user enrollments are getting a below average grade and spending below average time in content.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} user enrollments are getting a below average grade and spending above average time in content.",
-	"timeInContentVsGradeCard:highTimeHighGrade": "high time in content and high grade",
-	"timeInContentVsGradeCard:highTimeLowGrade": "high time in content and low grade",
-	"timeInContentVsGradeCard:lowTimeHighGrade": "low time in content and high grade",
-	"timeInContentVsGradeCard:lowTimeLowGrade": "low time in content and low grade",
+	"timeInContentVsGradeCard:highTimeHighGrade": "High time and high grade.",
+	"timeInContentVsGradeCard:highTimeLowGrade": "High time and low grade.",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "Low time and high grade.",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "Low time and low grade.",
 
 	"currentFinalGradeCard:currentGrade": "Current Grade",
 	"currentFinalGradeCard:numberOfStudents": "Number of Users",
@@ -117,6 +117,7 @@ export default {
 	"courseLastAccessCard:textLabel": "This chart displays the current final grade for each user per course",
 	"courseLastAccessCard:lastDateSinceAccess": "Last Time a User Accessed a Course",
 	"courseLastAccessCard:never": "Never",
+	"courseLastAccessCard:daysAgo": "days ago",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14 days ago",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7-14 days ago",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5-7 days ago",
@@ -150,6 +151,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 user has accessed the content 0 times",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} users have accessed the content greater than {start} times",
 	"contentViewHistogram:userGreaterTimes": "1 user has accessed the content greater than {start} times",
+	"contentViewHistogram:views": "views",
 
 	"discussionActivityCard:cardTitle": "Discussion Activity",
 	"discussionActivityCard:threads": "Threads",
@@ -163,7 +165,11 @@ export default {
 	"discussionActivityCard:legendLabel": "Toggle filtering",
 
 	"appliedFilters:clearAll": "Clear all",
+	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:hideExtra": "Collapse",
 	"appliedFilters:labelText": "Showing only:",
+	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
+	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "Loading is in progress",
 	"ariaLoadingProgress:loadingFinish": "Loading is finished",
@@ -273,7 +279,7 @@ export default {
 
 	"alert:updatedFilter" : "{chartName} filter updated.",
 	"alert:axeDescriptionRange" : "Viewing learners with {chartName} in these categories ",
-	"alert:axeDescription" : "Viewing learners with ",
+	"alert:axeDescription" : "Viewing learners with {category}",
 	"alert:axeNotFiltering" : "Stopped Filtering by {chartName}.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "to",

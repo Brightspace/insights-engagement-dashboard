@@ -113,6 +113,7 @@ export default {
 	"courseLastAccessCard:textLabel": "In diesem Diagramm wird die aktuelle Gesamtnote für jeden Benutzer pro Kurs angezeigt.",
 	"courseLastAccessCard:lastDateSinceAccess": "Letzter Kurszugriff durch einen Benutzer",
 	"courseLastAccessCard:never": "Nie",
+	"courseLastAccessCard:daysAgo": "days ago",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14  Tage",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "Vor 7–14 Tagen",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "Vor 5–7 Tagen",
@@ -146,6 +147,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 Benutzer hat nie auf den Inhalt zugegriffen",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} Benutzer haben mehr als {start}-mal auf den Inhalt zugegriffen",
 	"contentViewHistogram:userGreaterTimes": "1 Benutzer hat mehr als {start}-mal auf den Inhalt zugegriffen",
+	"contentViewHistogram:views": "Ansichten",
 
 	"discussionActivityCard:cardTitle": "Diskussionsaktivität",
 	"discussionActivityCard:threads": "Unterhaltungen",
@@ -159,7 +161,11 @@ export default {
 	"discussionActivityCard:legendLabel": "Filter ein-/ausschalten",
 
 	"appliedFilters:clearAll": "Alle löschen",
+	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:hideExtra": "Reduzieren",
 	"appliedFilters:labelText": "Nur anzeigen:",
+	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
+	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "Es wird geladen ...",
 	"ariaLoadingProgress:loadingFinish": "Der Ladevorgang ist abgeschlossen.",
@@ -187,7 +193,7 @@ export default {
 	"settings:overdueAssignmentsDesc": "Die Karte „Überfällige Übungen“ zeigt die Anzahl der Benutzer an, die in den gefilterten Kursen eine oder mehrere überfällige Übungen haben.",
 	"settings:systemAccessDesc": "Die Karte „Systemzugriff“ zeigt den letzten Zugriff an, den der Benutzer auf irgendeine Weise hatte.",
 	"settings:discActivityDesc": "Die Karte „Diskussionsaktivität“ zeigt passive und aktive soziale Interaktion in jedem Kurs an, nach dem gefiltert wird. Diese Kennzahl gibt an, wann ein Benutzer einen Thread erstellt, auf einen vorhandenen Beitrag antwortet oder einen Beitrag liest.",
-	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
+	"settings:contentViewDesc": "Die Karte „Inhaltsansicht“ zeigt an, wie viele Inhaltsthemen für jede Anmeldung pro Benutzer angezeigt wurden.",
 
 	"settings:systemAccessEdit": "Benutzer anzeigen, die in den letzten {num} Tagen nicht auf das System zugegriffen haben.",
 	"settings:systemAccessEditLabel": "Bearbeiten Sie den Grenzwert für den Systemzugriff",
@@ -273,7 +279,7 @@ export default {
 	"alert:axeNotFiltering" : "Die Filterung von {chartName} wurde gestoppt.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "bis",
-	"alert:greaterThanThis" : "greater than {num}",
+	"alert:greaterThanThis" : "Größer als {num}",
 	"alert:axeDescriptionCourses" : "Anzeigen von Teilnehmerdaten in diesen Kursen",
 	"alert:axeDescriptionCoursesOff" : "Anzeigen von Teilnehmerdaten in allen Kursen."
 };
