@@ -236,7 +236,7 @@ export async function getVisibleUsers(searchOptions) {
 
 	const allowedParams = ['search', 'sort', 'desc', 'bookmark'];
 	Object.keys(searchOptions)
-		.filter(param => allowedParams.includes(param))
+		.filter(param => allowedParams.includes(param) && searchOptions[param] !== undefined)
 		.map(param => url.searchParams.set(param, searchOptions[param]));
 
 	const response = await fetch(url.toString());

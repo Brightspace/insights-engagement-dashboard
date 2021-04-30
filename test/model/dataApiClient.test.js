@@ -392,12 +392,12 @@ describe('Lms', () => {
 
 		it('should run the provided search', async() => {
 			fetchMock.get(`${usersEndpoint}?search=search+string`, mockLmsUserResponseData);
-			expect(await getVisibleUsers('search string')).to.deep.equal(mockLmsUserResponseData);
+			expect(await getVisibleUsers({ search: 'search string' })).to.deep.equal(mockLmsUserResponseData);
 		});
 
 		it('should not include a search parameter if none is provided', async() => {
 			fetchMock.get(usersEndpoint, mockLmsUserResponseData);
-			expect(await getVisibleUsers()).to.deep.equal(mockLmsUserResponseData);
+			expect(await getVisibleUsers({})).to.deep.equal(mockLmsUserResponseData);
 		});
 
 		it('should throw on error', async() => {

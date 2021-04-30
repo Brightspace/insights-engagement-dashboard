@@ -105,7 +105,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 					user-select: none;
 				}
 
-				.d2l-insights-laod-more {
+				.d2l-insights-load-more {
 					margin-top: 26px;
 				}
 			`
@@ -159,7 +159,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 					${this.users.map(u => this.userListItem(u))}
 				</d2l-list>
 			</div>
-			<d2l-button @click="${this._onLoadMore}" class="d2l-insights-laod-more">Load More</d2l-button>
+			<d2l-button @click="${this._onLoadMore}" class="d2l-insights-load-more">${this.localize('treeSelector:loadMoreLabel')}</d2l-button>
 		`;
 	}
 
