@@ -3,7 +3,7 @@ import { expect, fixture, html, waitUntil } from '@open-wc/testing';
 import fetchMock from 'fetch-mock/esm/client';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
-describe('d2l-insights-user-selector', () => {
+describe.only('d2l-insights-user-selector', () => {
 
 	describe('constructor', () => {
 		it('should construct', () => {
