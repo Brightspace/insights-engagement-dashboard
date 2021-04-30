@@ -16,7 +16,7 @@ describe('d2l-insights-engagement-column-configuration', () => {
 			const el = await fixture(html`<d2l-insights-engagement-column-configuration></d2l-insights-engagement-column-configuration>`);
 			await expect(el).to.be.accessible({
 				ignoredRules: [
-					'aria-allowed-attr' // TODO Fix later
+					'aria-allowed-attr' // Requires d2l-list-item component fix
 				]
 			});
 		});

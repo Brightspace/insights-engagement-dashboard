@@ -113,6 +113,7 @@ export default {
 	"courseLastAccessCard:textLabel": "يعرض هذا المخطط العلامة النهائية الحالية لكل مستخدم في كل مقرر تعليمي",
 	"courseLastAccessCard:lastDateSinceAccess": "المرة الأخيرة التي وصل فيها أحد المستخدمين إلى مقرر تعليمي",
 	"courseLastAccessCard:never": "أبدًا",
+	"courseLastAccessCard:daysAgo": "days ago",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "منذ أكثر من 14 يومًا",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "منذ 7 أيام إلى 14 يومًا",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "منذ 5 أيام إلى 7 أيام",
@@ -146,6 +147,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "قام مستخدم واحد بالوصول إلى المحتوى 0 مرة",
 	"contentViewHistogram:usersGreaterTimes": "قام {numUsers} من المستخدمين بالوصول إلى المحتوى أكثر من {start} من المرات",
 	"contentViewHistogram:userGreaterTimes": "قام مستخدم واحد بالوصول إلى المحتوى أكثر من {start} من المرات",
+	"contentViewHistogram:views": "views",
 
 	"discussionActivityCard:cardTitle": "نشاط المناقشة",
 	"discussionActivityCard:threads": "سلاسل المحادثات",
@@ -159,7 +161,11 @@ export default {
 	"discussionActivityCard:legendLabel": "تبديل التصفية",
 
 	"appliedFilters:clearAll": "مسح الكل",
+	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:hideExtra": "طي",
 	"appliedFilters:labelText": "إظهار فقط:",
+	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
+	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "التحميل قيد التقدم",
 	"ariaLoadingProgress:loadingFinish": "انتهى التحميل",
@@ -187,7 +193,7 @@ export default {
 	"settings:overdueAssignmentsDesc": "تعرض بطاقة الفروض التي تم تجاوز تاريخ استحقاقها عدد المستخدمين الذين لديهم فرض واحد أو أكثر تم تجاوز تاريخ استحقاقها في المقررات التعليمية التي تتم تصفيتها.",
 	"settings:systemAccessDesc": "تعرض بطاقة الوصول إلى النظام آخر وصول قام به المستخدم بأي شكل من الأشكال.",
 	"settings:discActivityDesc": "تعرض بطاقة نشاط المناقشة المشاركة الاجتماعية النشطة وغير النشطة في كل مقرر تعليمي تتم تصفيته. يوفر هذا المقياس تقارير عندما يقوم المستخدم بإنشاء مؤشر الترابط أو الرد على منشور متوفر أو قراءة منشور.",
-	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
+	"settings:contentViewDesc": "تعرض بطاقة عرض المحتوى عدد مواضيع المحتوى التي تم عرضها لكل تسجيل لكل مستخدم.",
 
 	"settings:systemAccessEdit": "يمكن عرض المستخدمين الذين لم يقوموا بالوصول إلى النظام في آخر {num} من الأيام.",
 	"settings:systemAccessEditLabel": "تحرير حد الوصول إلى النظام",
@@ -273,7 +279,7 @@ export default {
 	"alert:axeNotFiltering" : "تم إيقاف التصفية حسب {chartName}.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "إلى",
-	"alert:greaterThanThis" : "greater than {num}",
+	"alert:greaterThanThis" : "أكبر من {num}",
 	"alert:axeDescriptionCourses" : "عرض بيانات المتعلّمين في هذه المقررات التعليمية",
 	"alert:axeDescriptionCoursesOff" : "يتم الآن عرض بيانات المتعلّمين في كل المقررات التعليمية."
 };

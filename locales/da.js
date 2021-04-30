@@ -113,6 +113,7 @@ export default {
 	"courseLastAccessCard:textLabel": "Dette diagram viser den aktuelle slutkarakter for hver bruger pr. kursus",
 	"courseLastAccessCard:lastDateSinceAccess": "Sidste gang en bruger åbnede et kursus",
 	"courseLastAccessCard:never": "Aldrig",
+	"courseLastAccessCard:daysAgo": "days ago",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14 dage siden",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7-14 dage siden",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5-7 dage siden",
@@ -146,6 +147,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 bruger har fået adgang til indholdet 0 gange",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} brugere har fået adgang til indholdet mere end {start} gange",
 	"contentViewHistogram:userGreaterTimes": "1 bruger har fået adgang til indholdet mere end {start} gange",
+	"contentViewHistogram:views": "views",
 
 	"discussionActivityCard:cardTitle": "Diskussionsaktivitet",
 	"discussionActivityCard:threads": "Tråde",
@@ -159,7 +161,11 @@ export default {
 	"discussionActivityCard:legendLabel": "Skift filtrering",
 
 	"appliedFilters:clearAll": "Ryd alle",
+	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:hideExtra": "Skjul",
 	"appliedFilters:labelText": "Viser kun:",
+	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
+	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "Indlæsning er i gang",
 	"ariaLoadingProgress:loadingFinish": "Indlæsning er afsluttet",
@@ -187,7 +193,7 @@ export default {
 	"settings:overdueAssignmentsDesc": "Forsinkede opgaver-kortet viser antallet af brugere, som har en eller flere opgaver, der er forsinkede på de kurser, der filtreres efter.",
 	"settings:systemAccessDesc": "Systemadgangskortet viser, sidste gang brugeren åbnede systemet overhovedet.",
 	"settings:discActivityDesc": "Diskussionsaktivitetskortet viser passiv og aktiv social interaktion på hvert kursus, der filtreres efter. Denne måling angiver, når en bruger opretter en tråd, svarer på et eksisterende indlæg eller læser et indlæg.",
-	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
+	"settings:contentViewDesc": "Kortet for indholdsvisning viser, hvor mange indholdsemner der er blevet vist for hver tilmelding pr. bruger.",
 
 	"settings:systemAccessEdit": "Vis de brugere, som ikke har åbnet systemet inden for de seneste {num} dage.",
 	"settings:systemAccessEditLabel": "Rediger tærsklen for systemadgang",
@@ -273,7 +279,7 @@ export default {
 	"alert:axeNotFiltering" : "Filtrerer ikke længere efter {chartName}.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "for",
-	"alert:greaterThanThis" : "greater than {num}",
+	"alert:greaterThanThis" : "større end {num}",
 	"alert:axeDescriptionCourses" : "Visning af elevdata i disse kurser",
 	"alert:axeDescriptionCoursesOff" : "Visning af elevdata i alle kurser."
 };

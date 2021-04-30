@@ -113,6 +113,7 @@ export default {
 	"courseLastAccessCard:textLabel": "Mae’r siart hon yn dangos y radd derfynol gyfredol ar gyfer pob defnyddiwr fesul cwrs",
 	"courseLastAccessCard:lastDateSinceAccess": "Y Tro Diwethaf Y Gwnaeth Ddefnyddiwr Gyrchu Cwrs",
 	"courseLastAccessCard:never": "Byth",
+	"courseLastAccessCard:daysAgo": "days ago",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14 diwrnod yn ôl",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7-14 diwrnod yn ôl",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5-7 diwrnod yn ôl",
@@ -146,6 +147,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "Mae 1 defnyddiwr wedi cyrchu'r cynnwys 0 gwaith",
 	"contentViewHistogram:usersGreaterTimes": "Mae {numUsers} o ddefnyddwyr wedi cyrchu'r cynnwys yn fwy na {start} o weithiau",
 	"contentViewHistogram:userGreaterTimes": "Mae 1 defnyddiwr wedi cyrchu'r cynnwys yn fwy na {start} o weithiau",
+	"contentViewHistogram:views": "views",
 
 	"discussionActivityCard:cardTitle": "Gweithgaredd Trafod",
 	"discussionActivityCard:threads": "Trywyddau",
@@ -159,7 +161,11 @@ export default {
 	"discussionActivityCard:legendLabel": "Toglo hidlo",
 
 	"appliedFilters:clearAll": "Clirio’r cyfan",
+	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:hideExtra": "Cwympo",
 	"appliedFilters:labelText": "Dim ond yn dangos:",
+	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
+	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "Wrthi’n llwytho",
 	"ariaLoadingProgress:loadingFinish": "Wedi gorffen llwytho",
@@ -187,7 +193,7 @@ export default {
 	"settings:overdueAssignmentsDesc": "Mae'r cerdyn Aseiniadau Hwyr yn dangos nifer y defnyddwyr sydd ag un neu fwy o aseiniadau yn hwyr yn y cyrsiau sydd wedi’u hidlo.",
 	"settings:systemAccessDesc": "Mae'r cerdyn Mynediad System yn dangos y mynediad diwethaf a gafodd y defnyddiwr mewn unrhyw ffordd.",
 	"settings:discActivityDesc": "Mae'r cerdyn Gweithgarwch Trafod yn dangos ymgysylltiad cymdeithasol goddefol a gweithredol ym mhob cwrs sydd wedi’i hidlo. Mae'r metrig hwn yn adrodd pan fydd defnyddiwr yn creu trywydd, yn ymateb i bostiad sy'n bodoli eisoes, neu'n darllen post.",
-	"settings:contentViewDesc": "The Content View card shows how many content topics have been viewed for each enrollment per user.",
+	"settings:contentViewDesc": "Mae'r cerdyn Gwedd Cynnwys yn dangos faint o bynciau cynnwys a welwyd ar gyfer pob cofrestriad fesul defnyddiwr.",
 
 	"settings:systemAccessEdit": "Dangoswch ddefnyddwyr nad ydynt wedi cyrchu'r system yn ystod y {num} o ddiwrnodau diwethaf.",
 	"settings:systemAccessEditLabel": "Golygu trothwy mynediad  y system",
@@ -273,7 +279,7 @@ export default {
 	"alert:axeNotFiltering" : "Wedi Stopio Hidlo yn ôl {chartName}.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "i",
-	"alert:greaterThanThis" : "greater than {num}",
+	"alert:greaterThanThis" : "Mwy na {num}",
 	"alert:axeDescriptionCourses" : "Wrthi’n gweld data dysgwyr yn y cyrsiau hyn",
 	"alert:axeDescriptionCoursesOff" : "Wrthi’n gweld data dysgwyr ym mhob cwrs."
 };
