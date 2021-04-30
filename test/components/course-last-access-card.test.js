@@ -1,8 +1,32 @@
 import { disableUrlStateForTesting, enableUrlState, setStateForTesting } from '../../model/urlState';
 import { expect, fixture, html } from '@open-wc/testing';
 import { CourseLastAccessFilter } from '../../components/course-last-access-card';
+import en from '../../locales/en';
 import { records } from '../model/mocks';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
+
+const localizer = (term, options) => {
+	let result = en[term];
+	if (!result) return '';
+	if (options) {
+		let resultParts = result.split('{');
+		resultParts = resultParts.map(part => part.split('}'));
+		resultParts.forEach((part, i) => {
+			if (part.length === 1) {
+				resultParts[i] = part[0];
+				return;
+			} else {
+				const key = part[0];
+				term = options[key];
+				part[0] = term;
+				resultParts[i] = part.join('');
+			}
+		});
+		console.log('after', resultParts);
+		result = resultParts.join('');
+	}
+	return result;
+};
 
 describe('d2l-insights-course-last-access-card', () => {
 	before(() => disableUrlStateForTesting());
@@ -99,12 +123,10 @@ describe('d2l-insights-course-last-access-card', () => {
 		it('should create an axe description', async() => {
 			setStateForTesting('caf', '');
 
-			const courseAccessEl = await fixture(html`<d2l-insights-course-last-access-card .data="${data}"></d2l-insights-course-last-access-card>`);
-
 			filter.selectedCategories.clear();
 			filter.toggleCategory(0);
 
-			const description = courseAccessEl.getAxeDescription();
+			const description = filter.axeDescription(localizer, 'alert:axeDescriptionRange');
 
 			expect(description).to.equal('Viewing learners with Course Access in these categories  Never');
 		});
@@ -112,13 +134,11 @@ describe('d2l-insights-course-last-access-card', () => {
 		it('should merge categories in axe description', async() => {
 			setStateForTesting('caf', '');
 
-			const courseAccessEl = await fixture(html`<d2l-insights-course-last-access-card .data="${data}"></d2l-insights-course-last-access-card>`);
-
 			filter.selectedCategories.clear();
 			filter.toggleCategory(5);
 			filter.toggleCategory(4);
 
-			const description = courseAccessEl.getAxeDescription();
+			const description = filter.axeDescription(localizer, 'alert:axeDescriptionRange');
 
 			expect(description).to.equal('Viewing learners with Course Access in these categories  1 to 5');
 		});
@@ -126,13 +146,11 @@ describe('d2l-insights-course-last-access-card', () => {
 		it('should seperate skipped categories in axe description', async() => {
 			setStateForTesting('caf', '');
 
-			const courseAccessEl = await fixture(html`<d2l-insights-course-last-access-card .data="${data}"></d2l-insights-course-last-access-card>`);
-
 			filter.selectedCategories.clear();
 			filter.toggleCategory(5);
 			filter.toggleCategory(3);
 
-			const description = courseAccessEl.getAxeDescription();
+			const description = filter.axeDescription(localizer, 'alert:axeDescriptionRange');
 
 			expect(description).to.equal('Viewing learners with Course Access in these categories  1 to 3, 5 to 7');
 		});
