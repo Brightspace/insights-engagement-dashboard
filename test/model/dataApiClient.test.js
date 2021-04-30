@@ -400,6 +400,18 @@ describe('Lms', () => {
 			expect(await getVisibleUsers({})).to.deep.equal(mockLmsUserResponseData);
 		});
 
+		it('should not include a params other than allowed', async() => {
+			fetchMock.get(`${usersEndpoint}?search=&desc=&bookmark=&sort=`, mockLmsUserResponseData);
+			const options = {
+				search: '',
+				desc: '',
+				bookmark: '',
+				sort: '',
+				foo: '' //is excluded
+			};
+			expect(await getVisibleUsers(options)).to.deep.equal(mockLmsUserResponseData);
+		});
+
 		it('should throw on error', async() => {
 			fetchMock.get(usersEndpoint, 500);
 			let error;
