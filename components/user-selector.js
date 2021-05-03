@@ -285,6 +285,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_search(searchText) {
 		this.skeleton = true;
+		const oldUsers = this.users;
 		this.users = usersForSkeleton;
 		const searchOptions = {
 			search: searchText,
@@ -296,19 +297,33 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 		if (!this.isDemo) {
 			getVisibleUsers(searchOptions)
 				.then(users => {
-					this.users = users.Items;
+					if (this._bookmark) {
+						this.users = oldUsers.concat(users.Items);
+					} else {
+						this.users = users.Items;
+					}
 					this.skeleton = false;
 					this._bookmark = undefined;
 					this._lastSearch = searchText;
 				});
 		} else {
 			setTimeout(() => {
-				this.users = [
-					{ Id: 11053, FirstName: 'Beverly', LastName: 'Aadland', Username: 'baadland' },
-					{ Id: 11054, FirstName: 'Maybe', LastName: 'Another', Username: 'manother' }
-				];
-
+				if (this._bookmark) {
+					this.users = oldUsers.concat(
+						[
+							{ Id: 11053, FirstName: 'Beverly', LastName: 'Aadland', Username: 'baadland' },
+							{ Id: 11054, FirstName: 'Maybe', LastName: 'Another', Username: 'manother' }
+						]
+					);
+				} else {
+					this.users = [
+						{ Id: 11053, FirstName: 'Beverly', LastName: 'Aadland', Username: 'baadland' },
+						{ Id: 11054, FirstName: 'Maybe', LastName: 'Another', Username: 'manother' }
+					];
+				}
 				this.skeleton = false;
+				this._bookmark = undefined;
+				this._lastSearch = searchText;
 			}, 10);
 		}
 	}
