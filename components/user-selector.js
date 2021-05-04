@@ -9,8 +9,8 @@ import { ifDefined } from 'lit-html/directives/if-defined';
 import { ListItemButtonMixin } from '@brightspace-ui/core/components/list/list-item-button-mixin';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
-import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 import { nothing } from 'lit-html';
+import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 
 const usersForSkeleton = Array.from(Array(10).keys())
 	.map(i => ({
