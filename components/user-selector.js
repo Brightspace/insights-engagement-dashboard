@@ -126,6 +126,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this._lastBookmark = undefined;
 		this._lastSearch = undefined;
 		this._fromLoadMore = false;
+		this._canLoadMore = false;
 
 		this.users = usersForSkeleton;
 	}
