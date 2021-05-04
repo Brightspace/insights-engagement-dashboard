@@ -10,6 +10,7 @@ import { ListItemButtonMixin } from '@brightspace-ui/core/components/list/list-i
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
+import { nothing } from 'lit-html';
 
 const usersForSkeleton = Array.from(Array(10).keys())
 	.map(i => ({
@@ -122,8 +123,9 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this._tokenPromise = this._tokenPromise.bind(this);
 		this._sortColumn = SORT_COLUMN.LAST_NAME;
 		this._sortedAscending = false;
-		this._bookmark = undefined;
+		this._lastBookmark = undefined;
 		this._lastSearch = undefined;
+		this._fromLoadMore = false;
 
 		this.users = usersForSkeleton;
 	}
@@ -159,7 +161,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 					${this.users.map(u => this.userListItem(u))}
 				</d2l-list>
 			</div>
-			<d2l-button @click="${this._onLoadMore}" class="d2l-insights-load-more">${this.localize('treeSelector:loadMoreLabel')}</d2l-button>
+			${this._renderLoadMore()}
 		`;
 	}
 
@@ -227,6 +229,12 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 		`;
 	}
 
+	_renderLoadMore() {
+		return this._canLoadMore ?
+			html`<d2l-button @click="${this._onLoadMore}" class="d2l-insights-load-more">${this.localize('treeSelector:loadMoreLabel')}</d2l-button>` :
+			nothing;
+	}
+
 	_sortedArrowIcon() {
 		const arrowDirection = this._sortedAscending ? 'arrow-toggle-up' : 'arrow-toggle-down';
 		const ariaLabelText = arrowDirection === 'arrow-toggle-up' ? this.localize('table:sortedAscending') : this.localize('table:sortedDescending');
@@ -278,37 +286,38 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_onLoadMore() {
-		const lastUser = this.users[this.users.length - 1];
-		this._bookmark = `${lastUser.FirstName},${lastUser.LastName},${lastUser.Id}`;
+		this._fromLoadMore = true;
 		this._search(this._lastSearch);
 	}
 
 	_search(searchText) {
-		this.skeleton = true;
 		const oldUsers = this.users;
+		this.skeleton = true;
 		this.users = usersForSkeleton;
 		const searchOptions = {
 			search: searchText,
 			desc: !this._sortedAscending,
 			sort: this._sortColumn === SORT_COLUMN.FIRST_NAME ? 'first' : 'last',
-			bookmark: this._bookmark // "firstName,lastName,userId"
+			bookmark: this._fromLoadMore ? this._lastBookmark : undefined
 		};
 
 		if (!this.isDemo) {
 			getVisibleUsers(searchOptions)
 				.then(users => {
-					if (this._bookmark) {
+					if (this._fromLoadMore) {
 						this.users = oldUsers.concat(users.Items);
 					} else {
 						this.users = users.Items;
 					}
 					this.skeleton = false;
-					this._bookmark = undefined;
+					this._fromLoadMore = false;
+					this._lastBookmark = users.PagingInfo.Bookmark;
 					this._lastSearch = searchText;
+					this._canLoadMore = users.PagingInfo.HasMoreItems;
 				});
 		} else {
 			setTimeout(() => {
-				if (this._bookmark) {
+				if (this._fromLoadMore) {
 					this.users = oldUsers.concat(
 						[
 							{ Id: 11053, FirstName: 'Beverly', LastName: 'Aadland', Username: 'baadland' },
