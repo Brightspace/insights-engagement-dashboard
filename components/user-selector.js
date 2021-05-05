@@ -125,14 +125,13 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this._sortedAscending = false;
 		this._lastBookmark = undefined;
 		this._lastSearch = undefined;
-		this._fromLoadMore = false;
 		this._canLoadMore = false;
 
 		this.users = usersForSkeleton;
 	}
 
 	firstUpdated() {
-		this._search(this._searchText, this._sortColumn, this._sortedAscending);
+		this._search(this._searchText);
 	}
 
 	render() {
@@ -288,10 +287,10 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_onLoadMore() {
 		this._fromLoadMore = true;
-		this._search(this._lastSearch);
+		this._search(this._lastSearch, this._lastBookmark);
 	}
 
-	_search(searchText) {
+	_search(searchText, bookmark) {
 		const oldUsers = this.users;
 		this.skeleton = true;
 		this.users = usersForSkeleton;
@@ -299,26 +298,25 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 			search: searchText,
 			desc: !this._sortedAscending,
 			sort: this._sortColumn === SORT_COLUMN.FIRST_NAME ? 'first' : 'last',
-			bookmark: this._fromLoadMore ? this._lastBookmark : undefined
+			bookmark,
 		};
 
 		if (!this.isDemo) {
 			getVisibleUsers(searchOptions)
 				.then(users => {
-					if (this._fromLoadMore) {
+					if (bookmark) {
 						this.users = oldUsers.concat(users.Items);
 					} else {
 						this.users = users.Items;
 					}
 					this.skeleton = false;
-					this._fromLoadMore = false;
 					this._lastBookmark = users.PagingInfo.Bookmark;
 					this._lastSearch = searchText;
 					this._canLoadMore = users.PagingInfo.HasMoreItems;
 				});
 		} else {
 			setTimeout(() => {
-				if (this._fromLoadMore) {
+				if (bookmark) {
 					this.users = oldUsers.concat(
 						[
 							{ Id: 11053, FirstName: 'Beverly', LastName: 'Aadland', Username: 'baadland' },
@@ -332,7 +330,6 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 					];
 				}
 				this.skeleton = false;
-				this._fromLoadMore = false;
 				this._lastBookmark = 'Maybe,Another,11054';
 				this._lastSearch = searchText;
 				this._canLoadMore = true;
