@@ -392,12 +392,35 @@ describe('Lms', () => {
 
 		it('should run the provided search', async() => {
 			fetchMock.get(`${usersEndpoint}?search=search+string`, mockLmsUserResponseData);
-			expect(await getVisibleUsers('search string')).to.deep.equal(mockLmsUserResponseData);
+			expect(await getVisibleUsers({ search: 'search string' })).to.deep.equal(mockLmsUserResponseData);
 		});
 
 		it('should not include a search parameter if none is provided', async() => {
 			fetchMock.get(usersEndpoint, mockLmsUserResponseData);
-			expect(await getVisibleUsers()).to.deep.equal(mockLmsUserResponseData);
+			expect(await getVisibleUsers({})).to.deep.equal(mockLmsUserResponseData);
+		});
+
+		it('should not include a params other than allowed', async() => {
+			fetchMock.get(`${usersEndpoint}?search=&desc=&bookmark=&sort=`, mockLmsUserResponseData);
+			const options = {
+				search: '',
+				desc: '',
+				bookmark: '',
+				sort: '',
+				foo: '' //is excluded?
+			};
+			expect(await getVisibleUsers(options)).to.deep.equal(mockLmsUserResponseData);
+		});
+
+		it('should place options in the correct param', async() => {
+			fetchMock.get(`${usersEndpoint}?search=search&desc=true&bookmark=bookmark&sort=first`, mockLmsUserResponseData);
+			const options = {
+				search: 'search',
+				desc: true,
+				bookmark: 'bookmark',
+				sort: 'first',
+			};
+			expect(await getVisibleUsers(options)).to.deep.equal(mockLmsUserResponseData);
 		});
 
 		it('should throw on error', async() => {

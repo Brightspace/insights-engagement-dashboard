@@ -9,6 +9,7 @@ import { ifDefined } from 'lit-html/directives/if-defined';
 import { ListItemButtonMixin } from '@brightspace-ui/core/components/list/list-item-button-mixin';
 import { Localizer } from '../locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
+import { nothing } from 'lit-html';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
 
 const usersForSkeleton = Array.from(Array(10).keys())
@@ -76,7 +77,6 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 					border-radius: 8px;
 					border-top: 1px solid var(--d2l-color-mica);
 					color: var(--d2l-color-ferrite);
-					cursor: pointer;
 					height: 27px; /* min-height to be 48px including border */
 					line-height: 1.4rem;
 					padding: 10px 20px;
@@ -97,7 +97,17 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 				}
 
 				.d2l-insights-user-selector-header-sort-indicator {
+					cursor: default;
 					pointer-events: none;
+				}
+
+				span[role="button"] {
+					cursor: pointer;
+					user-select: none;
+				}
+
+				.d2l-insights-load-more {
+					margin-top: 26px;
 				}
 			`
 		];
@@ -113,12 +123,15 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this._tokenPromise = this._tokenPromise.bind(this);
 		this._sortColumn = SORT_COLUMN.LAST_NAME;
 		this._sortedAscending = false;
+		this._lastBookmark = undefined;
+		this._lastSearch = undefined;
+		this._canLoadMore = false;
 
 		this.users = usersForSkeleton;
 	}
 
 	firstUpdated() {
-		this._search(this._searchText, this._sortColumn, this._sortedAscending);
+		this._search(this._searchText);
 	}
 
 	render() {
@@ -148,6 +161,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 					${this.users.map(u => this.userListItem(u))}
 				</d2l-list>
 			</div>
+			${this._renderLoadMore()}
 		`;
 	}
 
@@ -215,6 +229,12 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 		`;
 	}
 
+	_renderLoadMore() {
+		return this._canLoadMore ?
+			html`<d2l-button @click="${this._onLoadMore}" class="d2l-insights-load-more">${this.localize('treeSelector:loadMoreLabel')}</d2l-button>` :
+			nothing;
+	}
+
 	_sortedArrowIcon() {
 		const arrowDirection = this._sortedAscending ? 'arrow-toggle-up' : 'arrow-toggle-down';
 		const ariaLabelText = arrowDirection === 'arrow-toggle-up' ? this.localize('table:sortedAscending') : this.localize('table:sortedDescending');
@@ -262,30 +282,59 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_onSearch(e) {
-		this._search(e.detail.value, this._sortColumn, this._sortedAscending);
+		this._search(e.detail.value);
 	}
 
-	_search(searchText) {
+	_onLoadMore() {
+		this._fromLoadMore = true;
+		this._search(this._lastSearch, this._lastBookmark);
+	}
+
+	_search(searchText, bookmark) {
+		const oldUsers = this.users;
 		this.skeleton = true;
 		this.users = usersForSkeleton;
+		const searchOptions = {
+			search: searchText,
+			desc: !this._sortedAscending,
+			sort: this._sortColumn === SORT_COLUMN.FIRST_NAME ? 'first' : 'last',
+			bookmark,
+		};
 
 		if (!this.isDemo) {
-			getVisibleUsers(searchText)
+			getVisibleUsers(searchOptions)
 				.then(users => {
-					this.users = users.Items;
+					if (bookmark) {
+						this.users = oldUsers.concat(users.Items);
+					} else {
+						this.users = users.Items;
+					}
 					this.skeleton = false;
+					this._lastBookmark = users.PagingInfo.Bookmark;
+					this._lastSearch = searchText;
+					this._canLoadMore = users.PagingInfo.HasMoreItems;
 				});
 		} else {
 			setTimeout(() => {
-				this.users = [
-					{ Id: 11053, FirstName: 'Beverly', LastName: 'Aadland', Username: 'baadland' },
-					{ Id: 11054, FirstName: 'Maybe', LastName: 'Another', Username: 'manother' }
-				];
-
+				if (bookmark) {
+					this.users = oldUsers.concat(
+						[
+							{ Id: 11053, FirstName: 'Beverly', LastName: 'Aadland', Username: 'baadland' },
+							{ Id: 11054, FirstName: 'Maybe', LastName: 'Another', Username: 'manother' }
+						]
+					);
+				} else {
+					this.users = [
+						{ Id: 11053, FirstName: 'Beverly', LastName: 'Aadland', Username: 'baadland' },
+						{ Id: 11054, FirstName: 'Maybe', LastName: 'Another', Username: 'manother' }
+					];
+				}
 				this.skeleton = false;
+				this._lastBookmark = 'Maybe,Another,11054';
+				this._lastSearch = searchText;
+				this._canLoadMore = true;
 			}, 10);
 		}
-
 	}
 }
 
