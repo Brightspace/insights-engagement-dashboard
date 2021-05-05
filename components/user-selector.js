@@ -332,8 +332,10 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 					];
 				}
 				this.skeleton = false;
-				this._bookmark = undefined;
+				this._fromLoadMore = false;
+				this._lastBookmark = 'Maybe,Another,11054';
 				this._lastSearch = searchText;
+				this._canLoadMore = true;
 			}, 10);
 		}
 	}

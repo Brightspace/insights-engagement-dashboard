@@ -82,6 +82,31 @@ describe('d2l-insights-user-selector', () => {
 			expect(el._sortedAscending).to.be.true;
 			expect(sortedAscendingIcon).not.null;
 		});
+
+		it('Should add the Load More button if HasMoreItems from API is true', async() => {
+			const el = await fixture(html`
+				<d2l-insights-user-selector demo></d2l-insights-user-selector>`);
+			await waitUntil(
+				() => el.shadowRoot.querySelector('d2l-button'), "Couldn't find the button"
+			);
+			expect(el.shadowRoot.querySelector('d2l-button')).to.exist;
+		});
+
+		it('Should not add the Load More button if HasMoreItems from API is false', async() => {
+			const el = await fixture(html`
+				<d2l-insights-user-selector demo></d2l-insights-user-selector>`);
+			// wait for initial render
+			await waitUntil(
+				() => el.shadowRoot.querySelector('d2l-button'), "Couldn't find the button"
+			);
+			// change internal properties to prompt re-render
+			el._canLoadMore = false;
+			el._sortedAscending = true;
+			await waitUntil(
+				() => !el.shadowRoot.querySelector('d2l-button'), "Couldn't find the button"
+			);
+			expect(el.shadowRoot.querySelector('d2l-button')).to.not.exist;
+		});
 	});
 
 	describe('interactions/eventing', () => {
