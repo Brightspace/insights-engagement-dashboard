@@ -76,8 +76,7 @@ export async function fetchUserData(orgUnitIds = [], userId = 0, metronEndpoint)
 	const url = concatMetronUrl(metronEndpoint, userDrillDataEndpoint);
 	const userDrillBody = {
 		selectedUserId: userId,
-		selectedOrgUnitIds: orgUnitIds,
-		metrics: true
+		selectedOrgUnitIds: orgUnitIds
 	};
 	const response = await d2lfetch.fetch(new Request(url, {
 		method: 'POST',
