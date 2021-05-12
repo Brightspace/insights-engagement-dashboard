@@ -482,32 +482,5 @@ describe('selectorFilters', () => {
 				expect(sut.shouldReloadFromServer(123)).to.be.false;
 			});
 		});
-
-		describe('urlState', () => {
-
-			const key = new UserSelectorFilter({ serverData: {} }).persistenceKey;
-			before(() => {
-				enableUrlState();
-			});
-			after(() => disableUrlStateForTesting());
-
-			it('should load the filter from the url state then save to it', async() => {
-
-				setStateForTesting(key, '48');
-
-				const sut = new UserSelectorFilter({
-					serverData: {}
-				});
-
-				expect(sut.selected).eqls(48);
-
-				sut.selected = 321;
-
-				const params = new URLSearchParams(window.location.search);
-				const values = params.get(sut.persistenceKey);
-
-				expect(values).equals('321');
-			});
-		});
 	});
 });

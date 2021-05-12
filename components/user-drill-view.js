@@ -27,7 +27,6 @@ import { OVERDUE_ASSIGNMENTS_FILTER_ID } from './overdue-assignments-card';
 import { resetUrlState } from '../model/urlState';
 import { SelectedCourses } from './courses-legend';
 import { SkeletonMixin } from '@brightspace-ui/core/components/skeleton/skeleton-mixin';
-import { until } from 'lit-html/directives/until';
 import { UserData } from '../model/userData';
 
 export const numberFormatOptions = { maximumFractionDigits: 2 };
@@ -77,7 +76,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this.viewState = null;
 
 		this.selectedCourses = new SelectedCourses();
-		this.lastFilteredOrgUnitIds = [];
+		this._lastFilteredOrgUnitIds = [];
+		this._lastUserId = null;
 		this.metronEndpoint = '';
 		this.s3Enabled = false;
 
@@ -92,6 +92,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		this.showLastAccessCol = false;
 		this.showTicCol = false;
 		this.showPredictedGradeCol = false;
+
+		this._tokenPromise = this._tokenPromise.bind(this);
 	}
 
 	static get styles() {
@@ -212,15 +214,8 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 		return this.isLoading ? 'd2l-skeletize' : '';
 	}
 
-	get token() {
-		// set and return the fetch
-		// built in oauth isn't available outside the LMS
-		this.hasToken = false;
-		return this._token = !this.isDemo ? D2L.LP.Web.Authentication.OAuth2.GetToken('users:profile:read').then((token) => {
-			this.hasToken = true;
-			return token;
-		}) : Promise.resolve('token');
-
+	_tokenPromise() {
+		return this.isDemo ? Promise.resolve('token') : D2L.LP.Web.Authentication.OAuth2.GetToken('users:profile:read');
 	}
 
 	get userEntity() {
@@ -233,20 +228,12 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	get userProfile() {
 		if (this.isDemo) return this.loadingUserProfile;
-		return until(
-			this.token.then(
-				token => {
-					// token has resolved ?
-					return html`
-					<d2l-profile-image
-						class="d2l-insights-user-drill-view-profile-pic ${this.skeletonClass}"
-						href="${this.userEntity}"
-						token="${token}" x-large>
-					</d2l-profile-image>`;
-				}),
-			// token has not resolved
-			this.loadingUserProfile
-		);
+		return html`
+			<d2l-profile-image
+				class="d2l-insights-user-drill-view-profile-pic ${this.skeletonClass}"
+				href="${this.userEntity}"
+				.token="${this._tokenPromise}" x-large>
+			</d2l-profile-image>`;
 	}
 
 	_coursesInView({ wide, tall, skeleton }) {
@@ -391,9 +378,10 @@ class UserDrill extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	render() {
-		if (this.newFilteredOrgUnitIds.some(id => !this.lastFilteredOrgUnitIds.includes(id))) {
-			this.lastFilteredOrgUnitIds = this.newFilteredOrgUnitIds;
-			if (this.lastFilteredOrgUnitIds.length !== 0) {
+		if (this.user.userId !== this._lastUserId || this.newFilteredOrgUnitIds.some(id => !this._lastFilteredOrgUnitIds.includes(id))) {
+			this._lastFilteredOrgUnitIds = this.newFilteredOrgUnitIds;
+			this._lastUserId = this.user.userId;
+			if (this._lastFilteredOrgUnitIds.length !== 0) {
 				this._userData.loadData(this.newFilteredOrgUnitIds, this.user.userId);
 			}
 		}

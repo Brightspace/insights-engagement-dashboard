@@ -31,12 +31,12 @@ describe('d2l-insights-user-selector', () => {
 			const header = Array.from(el.shadowRoot.querySelectorAll('.d2l-insights-user-selector-header > span'))
 				.map(node => node.innerText)
 				.join('');
-			const sortedDescendingIcon = el.shadowRoot.querySelector('.d2l-insights-user-selector-header > d2l-icon[aria-label="Sorted Descending"]');
+			const sortedAscendingIcon = el.shadowRoot.querySelector('.d2l-insights-user-selector-header d2l-icon[aria-label="Sorted Ascending"]');
 
 			expect(header).to.equal('Last Name,First Name');
 			expect(el._sortColumn).to.equal('LAST NAME');
-			expect(el._sortedAscending).to.be.false;
-			expect(sortedDescendingIcon).not.null;
+			expect(el._sortedAscending).to.be.true;
+			expect(sortedAscendingIcon).not.null;
 		});
 
 		it('should change header text if sorting order is changed', async() => {
@@ -53,12 +53,12 @@ describe('d2l-insights-user-selector', () => {
 			const header = Array.from(el.shadowRoot.querySelectorAll('.d2l-insights-user-selector-header > span'))
 				.map(node => node.innerText)
 				.join('');
-			const sortedDescendingIcon = el.shadowRoot.querySelector('.d2l-insights-user-selector-header > d2l-icon[aria-label="Sorted Descending"]');
+			const sortedAscendingIcon = el.shadowRoot.querySelector('.d2l-insights-user-selector-header d2l-icon[aria-label="Sorted Ascending"]');
 
 			expect(header).to.equal('First Name,Last Name');
 			expect(el._sortColumn).to.equal('FIRST NAME');
-			expect(el._sortedAscending).to.be.false;
-			expect(sortedDescendingIcon).not.null;
+			expect(el._sortedAscending).to.be.true;
+			expect(sortedAscendingIcon).not.null;
 		});
 
 		it('should change header icon if sorting order is changed', async() => {
@@ -75,12 +75,12 @@ describe('d2l-insights-user-selector', () => {
 			const header = Array.from(el.shadowRoot.querySelectorAll('.d2l-insights-user-selector-header > span'))
 				.map(node => node.innerText)
 				.join('');
-			const sortedAscendingIcon = el.shadowRoot.querySelector('.d2l-insights-user-selector-header > d2l-icon[aria-label="Sorted Ascending"]');
+			const sortedDescendingIcon = el.shadowRoot.querySelector('.d2l-insights-user-selector-header d2l-icon[aria-label="Sorted Descending"]');
 
 			expect(header).to.equal('Last Name,First Name');
 			expect(el._sortColumn).to.equal('LAST NAME');
-			expect(el._sortedAscending).to.be.true;
-			expect(sortedAscendingIcon).not.null;
+			expect(el._sortedAscending).to.be.false;
+			expect(sortedDescendingIcon).not.null;
 		});
 
 		it('Should add the Load More button if HasMoreItems from API is true', async() => {
@@ -99,12 +99,9 @@ describe('d2l-insights-user-selector', () => {
 			await waitUntil(
 				() => el.shadowRoot.querySelector('d2l-button'), "Couldn't find the button"
 			);
-			// change internal properties to prompt re-render
+
 			el._canLoadMore = false;
-			el._sortedAscending = true;
-			await waitUntil(
-				() => !el.shadowRoot.querySelector('d2l-button'), "Couldn't find the button"
-			);
+			await el.updateComplete;
 			expect(el.shadowRoot.querySelector('d2l-button')).to.not.exist;
 		});
 	});
