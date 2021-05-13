@@ -25,7 +25,6 @@ import './components/content-view-histogram.js';
 import './components/user-selector.js';
 
 import { css, html } from 'lit-element/lit-element.js';
-import { DefaultViewState, ViewState } from './model/view-state';
 import { getPerformanceLoadPageMeasures, TelemetryHelper } from './model/telemetry-helper';
 import { isDefault, UrlState } from './model/urlState';
 import { LastAccessFilter, filterId as lastAccessFilterId } from './components/last-access-card';
@@ -46,6 +45,7 @@ import { MobxLitElement } from '@adobe/lit-mobx';
 import { OverdueAssignmentsFilter } from './components/overdue-assignments-card';
 import { TimeInContentVsGradeFilter } from './components/time-in-content-vs-grade-card';
 import { USER } from './consts.js';
+import { ViewState } from './model/view-state';
 
 /**
  * @property {Boolean} isDemo - if true, use canned data; otherwise call the LMS
@@ -91,7 +91,6 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		super();
 
 		this.__defaultViewPopupShown = false; // a test-and-set variable: will always be true after the first read
-		this._viewState = DefaultViewState;
 
 		this.orgUnitId = 0;
 		this.isDemo = false;
@@ -263,6 +262,11 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		let user = {
 			userId : this._viewState.userViewUserId
 		};
+
+		// unlike setting selectedUserId in the user-selector, this also works with the browser's back button
+		if (this._viewState.isSingleLearner) {
+			this._serverData.selectedUserId = this._viewState.userViewUserId;
+		}
 
 		if (!this._isLoading) {
 			const userData = this._serverData.userDictionary.get(Number(user.userId));

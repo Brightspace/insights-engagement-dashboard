@@ -23,6 +23,7 @@ export class ViewState {
 	setUserSelectionView() {
 		this.currentView = 'userSelection';
 		this.userViewUserId = 0;
+		this.isSingleLearner = false;
 		if (this._urlState) this._urlState.save();
 	}
 
@@ -62,7 +63,7 @@ export class ViewState {
 		switch (view) {
 			case 'home': this.setHomeView();
 				break;
-			case 'user': this.setUserView(Number(userId), isSingleLearner === 'true');
+			case 'user': this.setUserView(Number(userId), isSingleLearner);
 				break;
 			case 'userSelection': this.setUserSelectionView();
 				break;
@@ -78,7 +79,9 @@ export class ViewState {
 decorate(ViewState, {
 	userViewUserId: observable,
 	currentView: observable,
+	isSingleLearner: observable,
 	setUserView: action,
+	setUserSelectionView: action,
 	setHomeView: action,
 	setSettingsView: action
 });

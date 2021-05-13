@@ -1,5 +1,7 @@
+import '@brightspace-ui/core/components/button/button.js';
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/list/list.js';
+import '@brightspace-ui/core/components/loading-spinner/loading-spinner.js';
 import 'd2l-users/components/d2l-profile-image';
 
 import { bodySmallStyles, bodyStandardStyles, heading1Styles } from '@brightspace-ui/core/components/typography/styles.js';
@@ -31,7 +33,9 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 			isDemo: { type: Boolean, attribute: 'demo' },
 			data: { type: Object, attribute: false },
 			viewState: { type: Object, attribute: false },
-			_sortedAscending: { type: Boolean, attribute: false }
+			_sortedAscending: { type: Boolean, attribute: false },
+			_isLoadingMore: { type: Boolean, attribute: 'loading' },
+			_canLoadMore: { type: Boolean, attribute: false }
 		};
 	}
 
@@ -122,10 +126,11 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		this._tokenPromise = this._tokenPromise.bind(this);
 		this._sortColumn = SORT_COLUMN.LAST_NAME;
-		this._sortedAscending = false;
+		this._sortedAscending = true;
 		this._lastBookmark = undefined;
 		this._lastSearch = undefined;
 		this._canLoadMore = false;
+		this._isLoadingMore = false;
 
 		this.users = usersForSkeleton;
 	}
@@ -161,6 +166,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 					${this.users.map(u => this.userListItem(u))}
 				</d2l-list>
 			</div>
+			${this._isLoadingMore ? html`<d2l-loading-spinner></d2l-loading-spinner>` : nothing}
 			${this._renderLoadMore()}
 		`;
 	}
@@ -168,7 +174,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 	userListItem(u) {
 		return html`
 			<d2l-insights-list-item-button
-				key="${u.id}"
+				key="${u.Id}"
 				@d2l-list-item-button-click="${this._onUserSelection}"
 			>
 				<d2l-profile-image
@@ -179,7 +185,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 				></d2l-profile-image>
 				<div>
 					<div class="d2l-body-standard d2l-skeletize">
-						${u.LastName}, ${u.FirstName}
+						${this._sortColumn === SORT_COLUMN.LAST_NAME ? html`${u.LastName}, ${u.FirstName}` : html`${u.FirstName} ${u.LastName}`}
 					</div>
 					<div class="d2l-body-small d2l-skeletize">
 						${u.Username} - ${u.Id}
@@ -198,8 +204,8 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 					tabindex="${this.skeleton ? -1 : 0}"
 					@click="${this._handleHeaderClicked}"
 					@keydown="${this._handleHeaderKey}"
-				>${this.localize('usersTableExport:lastName')},</span>
-				${this._sortedArrowIcon()}
+				>${this.localize('usersTableExport:lastName')}${this._sortedArrowIcon()},</span>
+
 				<span
 					role="button"
 					data-sort-column="${SORT_COLUMN.FIRST_NAME}"
@@ -217,8 +223,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 				tabindex="${this.skeleton ? -1 : 0}"
 				@click="${this._handleHeaderClicked}"
 				@keydown="${this._handleHeaderKey}"
-			>${this.localize('usersTableExport:FirstName')},</span>
-			${this._sortedArrowIcon()}
+			>${this.localize('usersTableExport:FirstName')}${this._sortedArrowIcon()},</span>
 			<span
 				role="button"
 				data-sort-column="${SORT_COLUMN.LAST_NAME}"
@@ -230,7 +235,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_renderLoadMore() {
-		return this._canLoadMore ?
+		return this._canLoadMore && !this._isLoadingMore ?
 			html`<d2l-button @click="${this._onLoadMore}" class="d2l-insights-load-more">${this.localize('treeSelector:loadMoreLabel')}</d2l-button>` :
 			nothing;
 	}
@@ -244,7 +249,6 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 	_onUserSelection(e) {
 		const selectedUserId = Number(e.target.key);
-		this.data.selectedUserId = selectedUserId;
 		this.viewState.setUserView(selectedUserId, /*isSingleLearner*/ true);
 	}
 
@@ -262,12 +266,12 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 
 		this._sortColumn = e.target.getAttribute('data-sort-column') || SORT_COLUMN.FIRST_NAME;
 		if (sortColumn !== this._sortColumn) {
-			this._sortedAscending = false;
+			this._sortedAscending = true;
 		} else {
 			this._sortedAscending = !this._sortedAscending;
 		}
 
-		this._search(this._searchText, this._sortedAscending);
+		this._search(this._searchText);
 	}
 
 	_handleHeaderKey(e) {
@@ -286,14 +290,17 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 	}
 
 	_onLoadMore() {
-		this._fromLoadMore = true;
 		this._search(this._lastSearch, this._lastBookmark);
 	}
 
 	_search(searchText, bookmark) {
 		const oldUsers = this.users;
-		this.skeleton = true;
-		this.users = usersForSkeleton;
+		if (bookmark) {
+			this._isLoadingMore = true;
+		} else {
+			this.skeleton = true;
+		}
+		if (!this.users || this.users.length === 0) this.users = usersForSkeleton;
 		const searchOptions = {
 			search: searchText,
 			desc: !this._sortedAscending,
@@ -310,6 +317,7 @@ class UserSelector extends SkeletonMixin(Localizer(MobxLitElement)) {
 						this.users = users.Items;
 					}
 					this.skeleton = false;
+					this._isLoadingMore = false;
 					this._lastBookmark = users.PagingInfo.Bookmark;
 					this._lastSearch = searchText;
 					this._canLoadMore = users.PagingInfo.HasMoreItems;

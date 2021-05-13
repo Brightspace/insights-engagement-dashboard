@@ -131,19 +131,7 @@ export class OrgUnitSelectorFilter {
 export class UserSelectorFilter {
 	constructor(data) {
 		this.selected = data.serverData.selectedUserId;
-		// noinspection JSUnusedGlobalSymbols
-		this._urlState = new UrlState(this);
-	}
-
-	// persistence key and value for UrlState
-	get persistenceKey() { return 'lf'; }
-
-	get persistenceValue() {
-		return this.selected || '';
-	}
-
-	set persistenceValue(value) {
-		this.selected = Number(value) || null;
+		// learner selection doesn't require URL state: the selected user is in the view-state already
 	}
 
 	shouldInclude(record) {
