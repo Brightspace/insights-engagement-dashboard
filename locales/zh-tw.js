@@ -5,6 +5,7 @@ export default {
 	"dashboard:userView:title": "學習者參與情形儀表板",
 	"dashboard:backToInsightsPortal": "返回 Insights 入口網站",
 	"dashboard:backToEngagementDashboard": "返回「參與情形」儀表板",
+	"dashboard:backToUserSelector": "選取不同使用者",
 	"dashboard:backLinkTextShort": "返回",
 	"dashboard:summaryHeading": "摘要檢視",
 	"dashboard:resultsHeading": "結果",
@@ -78,11 +79,14 @@ export default {
 	"usersTable:noGrades": "無成績",
 
 	"table:selectAll": "全選",
+	"table:sortedAscending": "已遞增排序",
+	"table:sortedDescending": "已遞減排序",
 
 	"usersTableExport:lastName": "姓氏",
 	"usersTableExport:FirstName": "名字",
 	"usersTableExport:UserName": "使用者名稱",
 	"usersTableExport:UserID": "使用者 ID",
+	"usersTableExport:userListDescription": "此表格列出儀表板中有更多資訊的學習者。頂端列列出名字、姓氏。此列表的搜尋準則也可以包含使用者名稱和組織定義 ID。從列表中選取學習者，以查看特定學習者的資訊。",
 
 	"summaryCard:label": "{value} {message}",
 
@@ -95,10 +99,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "{numberOfUsers} 位使用者註冊獲得高於平均值的成績，且花費高於平均值的時間在內容上。",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} 位使用者註冊獲得低於平均值的成績，且花費低於平均值的時間在內容上。",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} 位使用者註冊獲得低於平均值的成績，但花費高於平均值的時間在內容上。",
-	"timeInContentVsGradeCard:highTimeHighGrade": "內容與高分的高時",
-	"timeInContentVsGradeCard:highTimeLowGrade": "內容與低分的高時",
-	"timeInContentVsGradeCard:lowTimeHighGrade": "內容與高分的低時",
-	"timeInContentVsGradeCard:lowTimeLowGrade": "內容與低分的低時",
+	"timeInContentVsGradeCard:highTimeHighGrade": "高時與高分。",
+	"timeInContentVsGradeCard:highTimeLowGrade": "高時與低分。",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "低時與高分。",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "低時與低分。",
 
 	"currentFinalGradeCard:currentGrade": "目前成績",
 	"currentFinalGradeCard:numberOfStudents": "使用者數目",
@@ -113,7 +117,7 @@ export default {
 	"courseLastAccessCard:textLabel": "此圖表顯示各個課程每位使用者目前的最終成績",
 	"courseLastAccessCard:lastDateSinceAccess": "使用者上次存取課程的時間",
 	"courseLastAccessCard:never": "從未",
-	"courseLastAccessCard:daysAgo": "days ago",
+	"courseLastAccessCard:daysAgo": "天前",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14 天前",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7-14 天前",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5-7 天前",
@@ -147,7 +151,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 位使用者已存取內容 0 次",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} 位使用者已存取內容超過 {start} 次",
 	"contentViewHistogram:userGreaterTimes": "1 位使用者已存取內容超過 {start} 次",
-	"contentViewHistogram:views": "檢視",
+	"contentViewHistogram:views": "次檢視",
 
 	"discussionActivityCard:cardTitle": "討論活動",
 	"discussionActivityCard:threads": "討論串",
@@ -161,11 +165,11 @@ export default {
 	"discussionActivityCard:legendLabel": "切換篩選",
 
 	"appliedFilters:clearAll": "全部清除",
-	"appliedFilters:showMore": "+{numHidden} more",
-	"appliedFilters:hideExtra": "收合",
+	"appliedFilters:showMore": "還有 +{numHidden} 個",
+	"appliedFilters:hideExtra": "摺疊",
 	"appliedFilters:labelText": "僅顯示：",
-	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
-	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
+	"appliedFilters:axeDescriptionCategories": "正在篩選 {chartName}，",
+	"appliedFilters:axeDescriptionApplied": "正在以 {chartName} 篩選使用者",
 
 	"ariaLoadingProgress:loadingStart": "載入正在進行中",
 	"ariaLoadingProgress:loadingFinish": "載入已完成",
@@ -275,7 +279,7 @@ export default {
 
 	"alert:updatedFilter" : "{chartName} 篩選已更新。",
 	"alert:axeDescriptionRange" : "在這些類別中以 {chartName} 檢視學習者",
-	"alert:axeDescription" : "以此項目檢視學習者：",
+	"alert:axeDescription" : "正在以 {category} 檢視學習者",
 	"alert:axeNotFiltering" : "已依 {chartName} 停止篩選。",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "至",

@@ -5,6 +5,7 @@ export default {
 	"dashboard:userView:title": "Kontrolpanelet Engagement for elever",
 	"dashboard:backToInsightsPortal": "Tilbage til Insights Portal",
 	"dashboard:backToEngagementDashboard": "Tilbage til kontrolpanelet Engagement",
+	"dashboard:backToUserSelector": "Vælg en anden bruger",
 	"dashboard:backLinkTextShort": "Tilbage",
 	"dashboard:summaryHeading": "Oversigtsvisning",
 	"dashboard:resultsHeading": "Resultater",
@@ -78,11 +79,14 @@ export default {
 	"usersTable:noGrades": "Ingen karakterer",
 
 	"table:selectAll": "Vælg alle",
+	"table:sortedAscending": "Sorteret i stigende rækkefølge",
+	"table:sortedDescending": "Sorteret i faldende rækkefølge",
 
 	"usersTableExport:lastName": "Efternavn",
 	"usersTableExport:FirstName": "Fornavn",
 	"usersTableExport:UserName": "Brugernavn",
 	"usersTableExport:UserID": "Bruger-id",
+	"usersTableExport:userListDescription": "Denne tabel er en liste over elever med flere oplysninger i dashboardet. Den øverste række viser efternavn og fornavn. Søgekriterier for denne liste kan også omfatte brugernavn og organisationsdefineret id. Vælg elev på listen for at se de oplysninger, der er specifikke for eleven.",
 
 	"summaryCard:label": "{value} {message}",
 
@@ -95,10 +99,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "{numberOfUsers} brugertilmeldinger får en højere karakter end gennemsnittet og bruger mere tid end gennemsnittet i indhold.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} brugertilmeldinger får en lavere karakter end gennemsnittet og bruger mindre tid end gennemsnittet i indhold.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} brugertilmeldinger får en lavere karakter end gennemsnittet og bruger mere tid end gennemsnittet i indhold.",
-	"timeInContentVsGradeCard:highTimeHighGrade": "lang tid i indhold og høj karakter",
-	"timeInContentVsGradeCard:highTimeLowGrade": "lang tid i indhold og lav karakter",
-	"timeInContentVsGradeCard:lowTimeHighGrade": "kort tid i indhold og høj karakter",
-	"timeInContentVsGradeCard:lowTimeLowGrade": "kort tid i indhold og lav karakter",
+	"timeInContentVsGradeCard:highTimeHighGrade": "Lang tid og høj karakter.",
+	"timeInContentVsGradeCard:highTimeLowGrade": "Lang tid og lav karakter.",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "Kort tid og høj karakter.",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "Kort tid og lav karakter.",
 
 	"currentFinalGradeCard:currentGrade": "Aktuel karakter",
 	"currentFinalGradeCard:numberOfStudents": "Antal brugere",
@@ -113,7 +117,7 @@ export default {
 	"courseLastAccessCard:textLabel": "Dette diagram viser den aktuelle slutkarakter for hver bruger pr. kursus",
 	"courseLastAccessCard:lastDateSinceAccess": "Sidste gang en bruger åbnede et kursus",
 	"courseLastAccessCard:never": "Aldrig",
-	"courseLastAccessCard:daysAgo": "days ago",
+	"courseLastAccessCard:daysAgo": "dage siden",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14 dage siden",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7-14 dage siden",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5-7 dage siden",
@@ -147,7 +151,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 bruger har fået adgang til indholdet 0 gange",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} brugere har fået adgang til indholdet mere end {start} gange",
 	"contentViewHistogram:userGreaterTimes": "1 bruger har fået adgang til indholdet mere end {start} gange",
-	"contentViewHistogram:views": "views",
+	"contentViewHistogram:views": "visninger",
 
 	"discussionActivityCard:cardTitle": "Diskussionsaktivitet",
 	"discussionActivityCard:threads": "Tråde",
@@ -161,11 +165,11 @@ export default {
 	"discussionActivityCard:legendLabel": "Skift filtrering",
 
 	"appliedFilters:clearAll": "Ryd alle",
-	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:showMore": "+ {numHidden} flere",
 	"appliedFilters:hideExtra": "Skjul",
 	"appliedFilters:labelText": "Viser kun:",
-	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
-	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
+	"appliedFilters:axeDescriptionCategories": "Filtrering af {chartName},",
+	"appliedFilters:axeDescriptionApplied": "Filtrering af brugere med {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "Indlæsning er i gang",
 	"ariaLoadingProgress:loadingFinish": "Indlæsning er afsluttet",
@@ -275,7 +279,7 @@ export default {
 
 	"alert:updatedFilter" : "{chartName}-filter opdateret.",
 	"alert:axeDescriptionRange" : "Visning af elever med {chartName} i disse kategorier",
-	"alert:axeDescription" : "Visning af elever med",
+	"alert:axeDescription" : "Visning af elever med {category}",
 	"alert:axeNotFiltering" : "Filtrerer ikke længere efter {chartName}.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "for",

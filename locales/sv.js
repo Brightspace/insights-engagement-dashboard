@@ -5,6 +5,7 @@ export default {
 	"dashboard:userView:title": "Kontrollpanel för elevregistrering",
 	"dashboard:backToInsightsPortal": "Tillbaka till Insiktsportalen",
 	"dashboard:backToEngagementDashboard": "Tillbaka till kontrollpanelen för registrering",
+	"dashboard:backToUserSelector": "Välj en annan användare",
 	"dashboard:backLinkTextShort": "Tillbaka",
 	"dashboard:summaryHeading": "Sammanfattningsvy",
 	"dashboard:resultsHeading": "Resultat",
@@ -78,11 +79,14 @@ export default {
 	"usersTable:noGrades": "Inga betyg",
 
 	"table:selectAll": "Markera alla",
+	"table:sortedAscending": "Sorterat i stigande ordning",
+	"table:sortedDescending": "Sorterat i fallande ordning",
 
 	"usersTableExport:lastName": "Efternamn",
 	"usersTableExport:FirstName": "Förnamn",
 	"usersTableExport:UserName": "Användarnamn",
 	"usersTableExport:UserID": "Användar-ID",
+	"usersTableExport:userListDescription": "Denna tabell är en lista över elever som har mer information på instrumentpanelen. På den översta raden visas efternamn, förnamn. Sökvillkor för den här listan kan också innehålla användarnamn och organisationsdefinierat ID. Välj elev från listan för att se utbildningsspecifik information.",
 
 	"summaryCard:label": "{value} {message}",
 
@@ -95,10 +99,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "{numberOfUsers} användarregistreringar har lägre betyg än genomsnittet och tillbringar mer tid än genomsnittet i innehåll.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} användarregistreringar har lägre betyg än genomsnittet och tillbringar kortare tid än genomsnittet i innehåll.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} användarregistreringar har lägre betyg än genomsnittet och tillbringar mer tid än genomsnittet i innehåll.",
-	"timeInContentVsGradeCard:highTimeHighGrade": "mycket tid med innehållet och högt betyg",
-	"timeInContentVsGradeCard:highTimeLowGrade": "mycket tid med innehållet och lågt betyg",
-	"timeInContentVsGradeCard:lowTimeHighGrade": "lite tid med innehållet och högt betyg",
-	"timeInContentVsGradeCard:lowTimeLowGrade": "lite tid med innehållet och lågt betyg",
+	"timeInContentVsGradeCard:highTimeHighGrade": "Mycket tid och högt betyg.",
+	"timeInContentVsGradeCard:highTimeLowGrade": "Mycket tid och lågt betyg.",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "Lite tid och högt betyg.",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "Lite tid och lågt betyg.",
 
 	"currentFinalGradeCard:currentGrade": "Aktuellt betyg",
 	"currentFinalGradeCard:numberOfStudents": "Antal användare",
@@ -113,7 +117,7 @@ export default {
 	"courseLastAccessCard:textLabel": "I det här diagrammet visas det aktuella slutbetyget för alla användare per kurs",
 	"courseLastAccessCard:lastDateSinceAccess": "Senaste gången användare fick åtkomst till kurser",
 	"courseLastAccessCard:never": "Aldrig",
-	"courseLastAccessCard:daysAgo": "days ago",
+	"courseLastAccessCard:daysAgo": "dagar sedan",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14 dagar sedan",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7–14 dagar sedan",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5–7 dagar sedan",
@@ -147,7 +151,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 användare har använt innehållet 0 gånger",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} användare har använt innehållet fler än {start} gånger",
 	"contentViewHistogram:userGreaterTimes": "1 användare har använt innehållet fler än {start} gånger",
-	"contentViewHistogram:views": "views",
+	"contentViewHistogram:views": "visningar",
 
 	"discussionActivityCard:cardTitle": "Diskussionsaktivitet",
 	"discussionActivityCard:threads": "Trådar",
@@ -161,11 +165,11 @@ export default {
 	"discussionActivityCard:legendLabel": "Aktivera/avaktivera filtrering",
 
 	"appliedFilters:clearAll": "Rensa alla",
-	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:showMore": "+{numHidden} mer",
 	"appliedFilters:hideExtra": "Komprimera",
 	"appliedFilters:labelText": "Visar endast:",
-	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
-	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
+	"appliedFilters:axeDescriptionCategories": "Filtrera {chartName},",
+	"appliedFilters:axeDescriptionApplied": "Filtrera användare med {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "Inläsning pågår",
 	"ariaLoadingProgress:loadingFinish": "Inläsningen har slutförts",
@@ -275,7 +279,7 @@ export default {
 
 	"alert:updatedFilter" : "Filtret {chartName} har uppdaterats.",
 	"alert:axeDescriptionRange" : "Visa elever med {chartName} i dessa kategorier",
-	"alert:axeDescription" : "Visa elever med",
+	"alert:axeDescription" : "Visa elever med {category}",
 	"alert:axeNotFiltering" : "Avbryt filtrering efter {chartName}.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "till",
