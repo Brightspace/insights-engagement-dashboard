@@ -5,6 +5,7 @@ export default {
 	"dashboard:userView:title": "Tableau de bord d’engagement de l’apprenant",
 	"dashboard:backToInsightsPortal": "Retour à Insights Portal",
 	"dashboard:backToEngagementDashboard": "Retour au tableau de bord d’engagement",
+	"dashboard:backToUserSelector": "Sélectionnez un utilisateur différent",
 	"dashboard:backLinkTextShort": "Retour",
 	"dashboard:summaryHeading": "Vue résumée",
 	"dashboard:resultsHeading": "Résultats",
@@ -78,11 +79,14 @@ export default {
 	"usersTable:noGrades": "Aucune note",
 
 	"table:selectAll": "Tout sélectionner",
+	"table:sortedAscending": "Tri croissant",
+	"table:sortedDescending": "Tri décroissant",
 
 	"usersTableExport:lastName": "Nom de famille",
 	"usersTableExport:FirstName": "Prénom",
 	"usersTableExport:UserName": "Nom d’utilisateur",
 	"usersTableExport:UserID": "ID d’utilisateur",
+	"usersTableExport:userListDescription": "Ce tableau est une liste d’apprenants ayant plus d’informations dans le tableau de bord. La ligne supérieure indique le nom de famille et le prénom. Les critères de recherche pour cette liste peuvent également inclure le nom d’utilisateur et l’ID défini par l’organisation. Sélectionnez l’apprenant dans la liste pour consulter les informations spécifiques à celui-ci.",
 
 	"summaryCard:label": "{value} {message}",
 
@@ -95,10 +99,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "{numberOfUsers} utilisateurs inscrits obtiennent une note supérieure à la moyenne et passent plus de temps que la moyenne sur le contenu.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} utilisateurs inscrits obtiennent une note inférieure à la moyenne et passent moins de temps que la moyenne sur le contenu.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} utilisateurs inscrits obtiennent une note inférieure à la moyenne et passent plus de temps que la moyenne sur le contenu.",
-	"timeInContentVsGradeCard:highTimeHighGrade": "temps élevé passé dans le contenu et note élevée",
-	"timeInContentVsGradeCard:highTimeLowGrade": "temps élevé passé dans le contenu et note basse",
-	"timeInContentVsGradeCard:lowTimeHighGrade": "peu de temps passé dans le contenu et note élevée",
-	"timeInContentVsGradeCard:lowTimeLowGrade": "peu de temps passé dans le contenu et note basse",
+	"timeInContentVsGradeCard:highTimeHighGrade": "Temps passé élevé et note élevée.",
+	"timeInContentVsGradeCard:highTimeLowGrade": "Temps passé élevé et note basse.",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "Peu de temps passé et note élevée.",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "Peu de temps passé et note basse.",
 
 	"currentFinalGradeCard:currentGrade": "Note actuelle",
 	"currentFinalGradeCard:numberOfStudents": "Nombre d’utilisateurs",
@@ -113,7 +117,7 @@ export default {
 	"courseLastAccessCard:textLabel": "Ce tableau affiche la note finale actuelle pour chaque utilisateur par cours",
 	"courseLastAccessCard:lastDateSinceAccess": "Dernière date à laquelle un utilisateur a accédé à un cours",
 	"courseLastAccessCard:never": "Jamais",
-	"courseLastAccessCard:daysAgo": "days ago",
+	"courseLastAccessCard:daysAgo": "jours auparavant",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "Il y a plus de 14 jours",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "Il y a 7 à 14 jours",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "Il y a 5 à 7 jours",
@@ -147,7 +151,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 utilisateur a accédé au contenu 0 fois",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} utilisateurs ont accédé au contenu plus de {start} fois",
 	"contentViewHistogram:userGreaterTimes": "1 utilisateur a accédé au contenu plus de {start} fois",
-	"contentViewHistogram:views": "views",
+	"contentViewHistogram:views": "vues",
 
 	"discussionActivityCard:cardTitle": "Activité de discussions",
 	"discussionActivityCard:threads": "Fils de discussion",
@@ -161,11 +165,11 @@ export default {
 	"discussionActivityCard:legendLabel": "Activer/désactiver le filtrage",
 
 	"appliedFilters:clearAll": "Tout effacer",
-	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:showMore": "+{numHidden} en plus",
 	"appliedFilters:hideExtra": "Réduire",
 	"appliedFilters:labelText": "Affiche uniquement :",
-	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
-	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
+	"appliedFilters:axeDescriptionCategories": "Filtrage de {chartName},",
+	"appliedFilters:axeDescriptionApplied": "Filtrage des utilisateurs avec {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "Chargement en cours.",
 	"ariaLoadingProgress:loadingFinish": "Chargement terminé.",
@@ -275,7 +279,7 @@ export default {
 
 	"alert:updatedFilter" : "Filtre {chartName} mis à jour.",
 	"alert:axeDescriptionRange" : "Affichage des apprenants avec {chartName} dans ces catégories",
-	"alert:axeDescription" : "Affichage des apprenants avec",
+	"alert:axeDescription" : "Affichage des apprenants avec {category}",
 	"alert:axeNotFiltering" : "Filtrage par {chartName} arrêté.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "à",
