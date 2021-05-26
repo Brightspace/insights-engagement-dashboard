@@ -5,6 +5,7 @@ export default {
 	"dashboard:userView:title": "受講者の受講ダッシュボード",
 	"dashboard:backToInsightsPortal": "Insights ポータルに戻る",
 	"dashboard:backToEngagementDashboard": "受講ダッシュボードに戻る",
+	"dashboard:backToUserSelector": "別のユーザーを選択",
 	"dashboard:backLinkTextShort": "戻る",
 	"dashboard:summaryHeading": "サマリー表示",
 	"dashboard:resultsHeading": "結果",
@@ -78,11 +79,14 @@ export default {
 	"usersTable:noGrades": "成績はありません",
 
 	"table:selectAll": "すべてを選択",
+	"table:sortedAscending": "昇順に並べ替え",
+	"table:sortedDescending": "降順に並べ替え",
 
 	"usersTableExport:lastName": "姓",
 	"usersTableExport:FirstName": "名",
 	"usersTableExport:UserName": "ユーザー名",
 	"usersTableExport:UserID": "ユーザー ID",
+	"usersTableExport:userListDescription": "この表は、ダッシュボードに詳細情報が記載されている受講者のリストです。最上行には、姓と名が一覧表示されます。このリストの検索条件には、ユーザー名と組織定義 ID も含めることができます。リストから受講者を選択して、受講者固有の情報を確認します。",
 
 	"summaryCard:label": "{value} {message}",
 
@@ -95,10 +99,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "成績が平均を上回っており、コンテンツの利用時間が平均以上のユーザー登録は {numberOfUsers} 人です。",
 	"timeInContentVsGradeCard:leftBottom": "成績が平均以下で、コンテンツの利用時間が平均以下のユーザー登録は {numberOfUsers} 人です。",
 	"timeInContentVsGradeCard:rightBottom": "成績が平均以下で、コンテンツの利用時間が平均以上のユーザー登録は {numberOfUsers} 人です。",
-	"timeInContentVsGradeCard:highTimeHighGrade": "コンテンツにおけるハイタイムと高い成績",
-	"timeInContentVsGradeCard:highTimeLowGrade": "コンテンツにおけるハイタイムと低い成績",
-	"timeInContentVsGradeCard:lowTimeHighGrade": "コンテンツにおけるロータイムと高い成績",
-	"timeInContentVsGradeCard:lowTimeLowGrade": "コンテンツにおけるロータイムと低い成績",
+	"timeInContentVsGradeCard:highTimeHighGrade": "ハイタイムと高い成績。",
+	"timeInContentVsGradeCard:highTimeLowGrade": "ハイタイムと低い成績。",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "ロータイムと高い成績。",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "ロータイムと低い成績。",
 
 	"currentFinalGradeCard:currentGrade": "現在の成績",
 	"currentFinalGradeCard:numberOfStudents": "ユーザー数",
@@ -113,7 +117,7 @@ export default {
 	"courseLastAccessCard:textLabel": "このチャートには、コースごとに各ユーザーの現在の最終成績が表示されます",
 	"courseLastAccessCard:lastDateSinceAccess": "ユーザーが最後にコースにアクセスした時期",
 	"courseLastAccessCard:never": "なし",
-	"courseLastAccessCard:daysAgo": "days ago",
+	"courseLastAccessCard:daysAgo": "日前",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "14 日以上前",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7～14 日前",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5～7 日前",
@@ -161,11 +165,11 @@ export default {
 	"discussionActivityCard:legendLabel": "フィルタリングの切り替え",
 
 	"appliedFilters:clearAll": "すべてをクリア",
-	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:showMore": "他 {numHidden} 件",
 	"appliedFilters:hideExtra": "折りたたむ",
 	"appliedFilters:labelText": "表示のみ:",
-	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
-	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
+	"appliedFilters:axeDescriptionCategories": "{chartName} のフィルタリング",
+	"appliedFilters:axeDescriptionApplied": "{chartName} でユーザーをフィルタリング",
 
 	"ariaLoadingProgress:loadingStart": "読み込み中",
 	"ariaLoadingProgress:loadingFinish": "読み込み完了",
@@ -275,7 +279,7 @@ export default {
 
 	"alert:updatedFilter" : "{chartName} フィルタを更新。",
 	"alert:axeDescriptionRange" : "これらのカテゴリで {chartName} の受講者を表示",
-	"alert:axeDescription" : "次の条件の受講者を表示",
+	"alert:axeDescription" : "{category} の受講者を表示",
 	"alert:axeNotFiltering" : "{chartName} のフィルタリングを停止。",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "～",

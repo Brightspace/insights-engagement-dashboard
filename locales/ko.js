@@ -5,6 +5,7 @@ export default {
 	"dashboard:userView:title": "학습자 참여 대시보드",
 	"dashboard:backToInsightsPortal": "Insights Portal로 돌아가기",
 	"dashboard:backToEngagementDashboard": "참여 대시보드로 돌아가기",
+	"dashboard:backToUserSelector": "다른 사용자 선택",
 	"dashboard:backLinkTextShort": "뒤로",
 	"dashboard:summaryHeading": "요약 보기",
 	"dashboard:resultsHeading": "결과",
@@ -78,11 +79,14 @@ export default {
 	"usersTable:noGrades": "평점 없음",
 
 	"table:selectAll": "모두 선택",
+	"table:sortedAscending": "오름차순 정렬됨",
+	"table:sortedDescending": "내림차순 정렬됨",
 
 	"usersTableExport:lastName": "성",
 	"usersTableExport:FirstName": "이름",
 	"usersTableExport:UserName": "사용자 이름",
 	"usersTableExport:UserID": "사용자 ID",
+	"usersTableExport:userListDescription": "이 표는 대시보드에 추가 정보가 있는 학습자의 목록입니다. 최상단 행에는 성 및 이름이 나열됩니다. 이 목록의 검색 기준에는 사용자 이름과 구성 지정 ID도 포함될 수 있습니다. 목록에서 학습자를 선택하여 학습자별 정보를 확인합니다.",
 
 	"summaryCard:label": "{value} {message}",
 
@@ -95,10 +99,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "{numberOfUsers}명의 사용자 등록 인원이 평균 이상이며 콘텐츠 참여 시간이 평균 이상입니다.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers}명의 사용자 등록 인원이 평균 이하이며 콘텐츠 참여 시간이 평균 이하입니다.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers}명의 사용자 등록 인원이 평균 이하이며 콘텐츠 참여 시간이 평균 이상입니다.",
-	"timeInContentVsGradeCard:highTimeHighGrade": "콘텐츠의 시간 높음 및 평점 높음",
-	"timeInContentVsGradeCard:highTimeLowGrade": "콘텐츠의 시간 높음 및 평점 낮음",
-	"timeInContentVsGradeCard:lowTimeHighGrade": "콘텐츠의 시간 낮음 및 평점 높음",
-	"timeInContentVsGradeCard:lowTimeLowGrade": "콘텐츠의 시간 낮음 및 평점 낮음",
+	"timeInContentVsGradeCard:highTimeHighGrade": "시간 높음 및 평점 높음.",
+	"timeInContentVsGradeCard:highTimeLowGrade": "시간 높음 및 평점 낮음.",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "시간 낮음 및 평점 높음.",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "시간 낮음 및 평점 낮음.",
 
 	"currentFinalGradeCard:currentGrade": "현재 평점",
 	"currentFinalGradeCard:numberOfStudents": "사용자 수",
@@ -113,7 +117,7 @@ export default {
 	"courseLastAccessCard:textLabel": "이 차트에는 강의당 각 사용자의 현재 최종 평점이 표시됩니다",
 	"courseLastAccessCard:lastDateSinceAccess": "사용자가 강의에 마지막으로 접근한 시간",
 	"courseLastAccessCard:never": "없음",
-	"courseLastAccessCard:daysAgo": "days ago",
+	"courseLastAccessCard:daysAgo": "일 전",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14일 전",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7~14일 전",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5~7일 전",
@@ -161,11 +165,11 @@ export default {
 	"discussionActivityCard:legendLabel": "필터링 설정/해제",
 
 	"appliedFilters:clearAll": "모두 지우기",
-	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:showMore": "{numHidden}개 이상",
 	"appliedFilters:hideExtra": "축소",
 	"appliedFilters:labelText": "다음만 표시:",
-	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
-	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
+	"appliedFilters:axeDescriptionCategories": "{chartName} 필터링,",
+	"appliedFilters:axeDescriptionApplied": "{chartName}을(를) 사용하여 사용자 필터링",
 
 	"ariaLoadingProgress:loadingStart": "로드 중입니다.",
 	"ariaLoadingProgress:loadingFinish": "로딩되었습니다.",
@@ -275,7 +279,7 @@ export default {
 
 	"alert:updatedFilter" : "{chartName} 필터가 업데이트되었습니다.",
 	"alert:axeDescriptionRange" : "이러한 범주에서 {chartName}이(가) 있는 학습자 보기",
-	"alert:axeDescription" : "학습자 보기",
+	"alert:axeDescription" : "{category}을(를) 사용하여 학습자 보기",
 	"alert:axeNotFiltering" : "{chartName}에 의한 필터링이 중지되었습니다.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "~",

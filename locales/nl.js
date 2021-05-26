@@ -5,6 +5,7 @@ export default {
 	"dashboard:userView:title": "Dashboard Betrokkenheid van cursist",
 	"dashboard:backToInsightsPortal": "Terug naar Insights-Portal",
 	"dashboard:backToEngagementDashboard": "Terug naar dashboard Betrokkenheid",
+	"dashboard:backToUserSelector": "Een andere gebruiker selecteren",
 	"dashboard:backLinkTextShort": "Terug",
 	"dashboard:summaryHeading": "Overzichtsweergave",
 	"dashboard:resultsHeading": "Resultaten",
@@ -78,11 +79,14 @@ export default {
 	"usersTable:noGrades": "Geen scores",
 
 	"table:selectAll": "Alles selecteren",
+	"table:sortedAscending": "Oplopend gesorteerd",
+	"table:sortedDescending": "Aflopend gesorteerd",
 
 	"usersTableExport:lastName": "Achternaam",
 	"usersTableExport:FirstName": "Voornaam",
 	"usersTableExport:UserName": "Gebruikersnaam",
 	"usersTableExport:UserID": "Gebruikers-id",
+	"usersTableExport:userListDescription": "Deze tabel bevat een lijst met cursisten die meer informatie in het dashboard hebben. De bovenste rij bevat de achternaam en de voornaam. Zoekcriteria voor deze lijst kunnen ook de gebruikersnaam en door de organisatie gedefinieerde id omvatten. Selecteer een cursist in de lijst om de specifieke informatie voor de cursist te bekijken.",
 
 	"summaryCard:label": "{value} {message}",
 
@@ -95,10 +99,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "{numberOfUsers} gebruikersinschrijvingen behalen een hogere score dan gemiddeld en besteden gemiddeld meer tijd aan de inhoud.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} gebruikersinschrijvingen behalen een lagere score dan gemiddeld en besteden gemiddeld minder tijd aan de inhoud.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} gebruikersinschrijvingen behalen een lagere score dan gemiddeld en besteden gemiddeld meer tijd aan de inhoud.",
-	"timeInContentVsGradeCard:highTimeHighGrade": "veel tijd in inhoud en hoge score",
-	"timeInContentVsGradeCard:highTimeLowGrade": "veel tijd in inhoud en een lage score",
-	"timeInContentVsGradeCard:lowTimeHighGrade": "weinig tijd in inhoud en hoge score",
-	"timeInContentVsGradeCard:lowTimeLowGrade": "weinig tijd in inhoud en lage score",
+	"timeInContentVsGradeCard:highTimeHighGrade": "Veel tijd en hoge score.",
+	"timeInContentVsGradeCard:highTimeLowGrade": "Veel tijd en lage score.",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "Weinig tijd en hoge score.",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "Weinig tijd en lage score.",
 
 	"currentFinalGradeCard:currentGrade": "Huidige score",
 	"currentFinalGradeCard:numberOfStudents": "Aantal gebruikers",
@@ -113,7 +117,7 @@ export default {
 	"courseLastAccessCard:textLabel": "In dit diagram wordt de huidige eindscore voor elke gebruiker per cursus weergegeven",
 	"courseLastAccessCard:lastDateSinceAccess": "De laatste keer dat een gebruiker een cursus heeft geopend",
 	"courseLastAccessCard:never": "Nooit",
-	"courseLastAccessCard:daysAgo": "days ago",
+	"courseLastAccessCard:daysAgo": "dagen geleden",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14 dagen geleden",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7 tot 14 dagen geleden",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5 tot 7 dagen geleden",
@@ -147,7 +151,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 gebruiker heeft de inhoud 0 keer bekeken",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} gebruikers hebben de inhoud meer dan {start} keer bekeken",
 	"contentViewHistogram:userGreaterTimes": "1 gebruiker heeft de inhoud meer dan {start} keer bekeken",
-	"contentViewHistogram:views": "views",
+	"contentViewHistogram:views": "weergaven",
 
 	"discussionActivityCard:cardTitle": "Discussieactiviteit",
 	"discussionActivityCard:threads": "Threads",
@@ -161,11 +165,11 @@ export default {
 	"discussionActivityCard:legendLabel": "Filteren in-/uitschakelen",
 
 	"appliedFilters:clearAll": "Alles wissen",
-	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:showMore": "+{numHidden} meer",
 	"appliedFilters:hideExtra": "Samenvouwen",
 	"appliedFilters:labelText": "Alleen het volgende weergeven:",
-	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
-	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
+	"appliedFilters:axeDescriptionCategories": "{chartName} filteren,",
+	"appliedFilters:axeDescriptionApplied": "Gebruikers filteren met {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "Bezig met laden",
 	"ariaLoadingProgress:loadingFinish": "Laden is voltooid",
@@ -275,7 +279,7 @@ export default {
 
 	"alert:updatedFilter" : "{chartName}-filter bijgewerkt.",
 	"alert:axeDescriptionRange" : "Cursisten met {chartName} in deze categorieën weergeven",
-	"alert:axeDescription" : "Cursisten weergeven met",
+	"alert:axeDescription" : "Cursisten weergeven met {category}",
 	"alert:axeNotFiltering" : "Filteren op {chartName} gestopt.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "tot",

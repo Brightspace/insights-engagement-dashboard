@@ -5,6 +5,7 @@ export default {
 	"dashboard:userView:title": "Panel Participación del estudiante",
 	"dashboard:backToInsightsPortal": "Volver al Portal de Insights",
 	"dashboard:backToEngagementDashboard": "Volver al panel Participación",
+	"dashboard:backToUserSelector": "Seleccione un usuario diferente",
 	"dashboard:backLinkTextShort": "Volver",
 	"dashboard:summaryHeading": "Vista de resumen",
 	"dashboard:resultsHeading": "Resultados",
@@ -78,11 +79,14 @@ export default {
 	"usersTable:noGrades": "No hay calificaciones",
 
 	"table:selectAll": "Seleccionar todo",
+	"table:sortedAscending": "Clasificado en orden ascendente",
+	"table:sortedDescending": "Clasificado en orden descendente",
 
 	"usersTableExport:lastName": "Apellido",
 	"usersTableExport:FirstName": "Nombre",
 	"usersTableExport:UserName": "Nombre de usuario",
 	"usersTableExport:UserID": "ID de usuario",
+	"usersTableExport:userListDescription": "Esta tabla es una lista de los estudiantes con más información en el panel. La fila superior muestra el apellido y el nombre. Los criterios de búsqueda de esta lista también pueden incluir el nombre de usuario y el ID de organización. Seleccione un estudiante de la lista para consultar su información específica.",
 
 	"summaryCard:label": "{value} {message}",
 
@@ -95,10 +99,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "{numberOfUsers} inscripciones de usuarios están obteniendo una calificación superior a la media y el tiempo empleado es superior a la media.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} inscripciones de usuarios están obteniendo una calificación inferior a la media y el tiempo empleado es inferior a la media.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} inscripciones de usuarios están obteniendo una calificación inferior a la media y el tiempo empleado es superior a la media.",
-	"timeInContentVsGradeCard:highTimeHighGrade": "mucho tiempo en contenido y calificación alta",
-	"timeInContentVsGradeCard:highTimeLowGrade": "mucho tiempo en contenido y calificación baja",
-	"timeInContentVsGradeCard:lowTimeHighGrade": "poco tiempo en contenido y calificación alta",
-	"timeInContentVsGradeCard:lowTimeLowGrade": "poco tiempo en contenido y calificación baja",
+	"timeInContentVsGradeCard:highTimeHighGrade": "Mucho tiempo y calificación alta.",
+	"timeInContentVsGradeCard:highTimeLowGrade": "Mucho tiempo y calificación baja.",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "Poco tiempo y calificación alta.",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "Poco tiempo y calificación baja.",
 
 	"currentFinalGradeCard:currentGrade": "Calificación actual",
 	"currentFinalGradeCard:numberOfStudents": "Número de usuarios",
@@ -113,7 +117,7 @@ export default {
 	"courseLastAccessCard:textLabel": "Este gráfico muestra la calificación final actual de cada usuario por curso.",
 	"courseLastAccessCard:lastDateSinceAccess": "Última vez que un usuario accedió a un curso",
 	"courseLastAccessCard:never": "Nunca",
-	"courseLastAccessCard:daysAgo": "days ago",
+	"courseLastAccessCard:daysAgo": "días atrás",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "Más de 14 días",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "Hace 7-14 días",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "Hace 5-7 días",
@@ -147,7 +151,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "1 usuario ha accedido al contenido 0 veces",
 	"contentViewHistogram:usersGreaterTimes": "{numUsers} usuarios han accedido al contenido más de {start} veces",
 	"contentViewHistogram:userGreaterTimes": "1 usuario ha accedido al contenido más de {start} veces",
-	"contentViewHistogram:views": "views",
+	"contentViewHistogram:views": "visualizaciones",
 
 	"discussionActivityCard:cardTitle": "Actividad de debate",
 	"discussionActivityCard:threads": "Cadenas de mensajes",
@@ -161,11 +165,11 @@ export default {
 	"discussionActivityCard:legendLabel": "Alternar filtrado",
 
 	"appliedFilters:clearAll": "Borrar todo",
-	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:showMore": "+{numHidden} más",
 	"appliedFilters:hideExtra": "Contraer",
 	"appliedFilters:labelText": "Mostrando solo:",
-	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
-	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
+	"appliedFilters:axeDescriptionCategories": "Filtrar {chartName},",
+	"appliedFilters:axeDescriptionApplied": "Filtrar usuarios con {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "Carga en curso",
 	"ariaLoadingProgress:loadingFinish": "La carga ha finalizado",
@@ -275,7 +279,7 @@ export default {
 
 	"alert:updatedFilter" : "Filtro {chartName} actualizado.",
 	"alert:axeDescriptionRange" : "Visualización de estudiantes con {chartName} en estas categorías",
-	"alert:axeDescription" : "Visualización de estudiantes con",
+	"alert:axeDescription" : "Visualizar estudiantes con {category}",
 	"alert:axeNotFiltering" : "Se ha detenido el filtrado por {chartName}.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "a",
