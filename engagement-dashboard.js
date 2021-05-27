@@ -23,6 +23,7 @@ import './components/results-card.js';
 import './components/overdue-assignments-card.js';
 import './components/content-view-histogram.js';
 import './components/user-selector.js';
+import './route-loader.js';
 
 import { css, html } from 'lit-element/lit-element.js';
 import { getPerformanceLoadPageMeasures, TelemetryHelper } from './model/telemetry-helper';
@@ -43,10 +44,10 @@ import { heading3Styles } from '@brightspace-ui/core/components/typography/style
 import { Localizer } from './locales/localizer';
 import { MobxLitElement } from '@adobe/lit-mobx';
 import { OverdueAssignmentsFilter } from './components/overdue-assignments-card';
+import { RouteReactor } from '@brightspace-ui-labs/lit-router/RouteReactor';
 import { TimeInContentVsGradeFilter } from './components/time-in-content-vs-grade-card';
 import { USER } from './consts.js';
 import { ViewState } from './model/view-state';
-
 /**
  * @property {Boolean} isDemo - if true, use canned data; otherwise call the LMS
  * @property {String} telemetryEndpoint - endpoint for gathering telemetry performance data
@@ -119,6 +120,8 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		this.showCourseAccessTrendCard = false;
 		this.showGradesTrendCard = false;
 		this.showPredictedGradeCol = false;
+
+		this.router = new RouteReactor(this);
 
 		this._viewState = new ViewState({});
 		// if current view is not provided in url
@@ -220,8 +223,8 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	}
 
 	firstUpdated() {
-		// moved loadData call here because its inderect call in render function via _data getter causes nested render call with exception
-		if (this.currentView !== 'userSelection') {
+		// moved loadData call here because its indirect call in render function via _data getter causes nested render call with exception
+		if (this.router.params[0] === 'learner-select') {
 			this._serverData.loadData({ defaultView: isDefault() });
 		}
 	}
@@ -231,29 +234,23 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	}
 
 	render() {
-		let innerView = html``;
-		switch (this.currentView) {
-			case 'home':
-				innerView = this._renderHomeView();
-				break;
-			case 'user':
-				innerView = this._renderUserDrillView();
-				break;
-			case 'userSelection':
-				innerView = this._renderUserSelectionView();
-				break;
-			case 'settings':
-				innerView = this._renderSettingsView();
-				break;
-		}
+
+		const options = {};
+		Object.keys(EngagementDashboard.properties).forEach(propKey => {
+			options[propKey] = this[propKey];
+		});
+
+		options.serverData = this._serverData;
+		options.data = this._data;
+		options.isLoading = this._isLoading;
 
 		return html`
 			<d2l-insights-immersive-nav
-				.viewState="${this._viewState}"
+				.location="${this.router.params[0]}"
 				org-unit-id="${this.orgUnitId}"
 			></d2l-insights-immersive-nav>
 
-			${ innerView }
+			${this.router.renderView(options)}
 		`;
 	}
 
@@ -330,34 +327,9 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		`;
 	}
 
-	_renderFilters() {
-		return html`
-		<d2l-insights-ou-filter
-			.data="${this._serverData}"
-			@d2l-insights-ou-filter-change="${this._orgUnitFilterChange}"
-		></d2l-insights-ou-filter>
-		<d2l-insights-semester-filter
-			page-size="10000"
-			?demo="${this.isDemo}"
-			.preSelected="${this._serverData.selectedSemesterIds}"
-			@d2l-insights-semester-filter-change="${this._semesterFilterChange}"
-		></d2l-insights-semester-filter>
-		`;
-	}
-
 	_renderAppliedFilters() {
 		return html `
 			<d2l-insights-applied-filters .data="${this._data}" ?skeleton="${this._isLoading}"></d2l-insights-applied-filters>
-		`;
-	}
-
-	_renderAlerts() {
-		return html`
-		<d2l-insights-alert-data-updated
-			.dataEvents="${filterEventQueue}"
-			?skeleton="${this._isLoading}"
-		>
-		</d2l-insights-alert-data-updated>
 		`;
 	}
 
@@ -389,104 +361,6 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 				?student-success-system-enabled="${this.s3Enabled}"
 			></d2l-insights-engagement-dashboard-settings>
 		`;
-	}
-
-	_renderHomeView() {
-
-		return html`
-
-			<d2l-insights-aria-loading-progress .data="${this._data}"></d2l-insights-aria-loading-progress>
-
-			<div class="d2l-heading-button-group">
-				<h1 class="d2l-heading-1">${this.localize('dashboard:title')}</h1>
-				<d2l-overflow-group
-					class="d2l-main-overflow-group"
-					min-to-show="0"
-					opener-type="icon"
-					opener-style="subtle"
-				>
-					<d2l-button-subtle
-						icon="d2l-tier1:export"
-						text=${this.localize('dashboard:exportToCsv')}
-						@click="${this._exportToCsv}">
-					</d2l-button-subtle>
-					<d2l-button-subtle
-						icon="d2l-tier1:help"
-						text=${this.localize('dashboard:learMore')}
-						@click="${this._openHelpLink}">
-					</d2l-button-subtle>
-					<d2l-button-subtle
-						icon="d2l-tier1:gear"
-						text=${this.localize('settings:title')}
-						@click="${this._openSettingsPage}">
-					</d2l-button-subtle>
-				</d2l-overflow-group>
-			</div>
-
-			<div class="view-filters-container">
-				${this._renderFilters()}
-			</div>
-			<d2l-insights-engagement-dashboard-errors
-				.data="${this._data}"
-				.isNoDataReturned="${this._isNoUserResults}"
-				@d2l-insights-undo-last-filter="${this._handleUndo}">
-			</d2l-insights-engagement-dashboard-errors>
-			${this._summaryViewHeader}
-			<div class="d2l-insights-summary-container-applied-filters">
-				${this._renderAppliedFilters()}
-			</div>
-			<div class="d2l-insights-summary-chart-layout">
-				<d2l-summary-cards-container
-
-					?hidden="${this._isNoUserResults}"
-					?skeleton="${this._isLoading}"
-
-					.cards="${this.summaryCards}"
-				></d2l-summary-cards-container>
-				${this._gradesCard}
-				${this._ticGradesCard}
-				${this._courseAccessCard}
-				${this._contentViewCard}
-			</div>
-			${this._userTable}
-			<d2l-insights-default-view-popup
-				?opened=${Boolean(this._serverData.isDefaultView && !this._defaultViewPopupShown)}
-				.data="${this._serverData}">
-			</d2l-insights-default-view-popup>
-
-			<d2l-dialog-confirm
-				id="no-users-selected-dialog"
-				text="${this.localize('dashboard:noUsersSelectedDialogText')}">
-				<d2l-button slot="footer" primary data-dialog-action>
-					${this.localize('defaultViewPopup:buttonOk')}
-				</d2l-button>
-			</d2l-dialog-confirm>
-			${this._renderAlerts()}
-		`;
-	}
-
-	_resultsCard({ wide, tall, skeleton }) {
-		return html`<d2l-insights-results-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${skeleton}"></d2l-insights-results-card>`;
-	}
-	_overdueAssignmentsCard({ wide, tall, skeleton }) {
-		return html`<d2l-insights-overdue-assignments-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${skeleton}"></d2l-insights-overdue-assignments-card>`;
-	}
-
-	_discussionsCard({ wide, tall, skeleton }) {
-		return html`<d2l-insights-discussion-activity-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${skeleton}"></d2l-insights-discussion-activity-card>`;
-	}
-
-	_lastAccessCard({ wide, tall, skeleton }) {
-		return html`<d2l-insights-last-access-card .data="${this._data}" ?wide="${wide}" ?tall="${tall}" ?skeleton="${skeleton}"></d2l-insights-last-access-card>`;
-	}
-
-	get summaryCards() {
-		return [
-			{ enabled: this.showResultsCard, htmlFn: (w) => this._resultsCard(w) },
-			{ enabled: this.showOverdueCard, htmlFn: (w) => this._overdueAssignmentsCard(w) },
-			{ enabled: this.showDiscussionsCard, htmlFn: (w) => this._discussionsCard(w) },
-			{ enabled: this.showSystemAccessCard, htmlFn: (w) => this._lastAccessCard(w) }
-		];
 	}
 
 	get _courseAccessCard() {
@@ -541,11 +415,6 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		`;
 	}
 
-	get _summaryViewHeader() {
-		if (this._isNoUserResults) return '';
-		return html`<h2 class="d2l-heading-3">${this.localize('dashboard:summaryHeading')}</h2>`;
-	}
-
 	_exportToCsv() {
 		const usersTable = this.shadowRoot.querySelector('d2l-insights-users-table');
 		ExportData.userDataToCsv(usersTable.dataForExport, usersTable.headersForExport);
@@ -584,13 +453,6 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 		}
 
 		return this.__data;
-	}
-
-	get _isNoUserResults() {
-		if (!this.isDemo) {
-			return this._data.records.length === 0 && !this._data.isLoading;
-		}
-		return false;
 	}
 
 	get _serverData() {

@@ -13,7 +13,7 @@ const insightsPortalEndpoint = '/d2l/ap/insightsPortal/main.d2l';
 class InsightsImmersiveNav extends Localizer(MobxLitElement) {
 	static get properties() {
 		return {
-			viewState: { type: Object, attribute: false },
+			location: { type: String, attribute: false },
 			orgUnitId: { type: Number, attribute: 'org-unit-id' },
 		};
 	}
@@ -52,7 +52,14 @@ class InsightsImmersiveNav extends Localizer(MobxLitElement) {
 	}
 
 	get view() {
-		return this.viewState.currentView;
+		switch (this.location) {
+			case '/': return 'home';
+			case '/learner': return 'user';
+			case '/learner-select': return 'userSelection';
+			case '/settings': return 'settings';
+			default:
+				throw new Error('Invalid View');
+		}
 	}
 
 	get mainText() {
@@ -61,8 +68,8 @@ class InsightsImmersiveNav extends Localizer(MobxLitElement) {
 			case 'user': return this.localize('dashboard:userView:title');
 			case 'userSelection': return this.localize('dashboard:userView:title');
 			case 'settings': return this.localize('settings:title');
+			default: return this.localize('dashboard:title');
 		}
-		return this.localize('dashboard:title');
 	}
 
 	get backText() {
