@@ -168,7 +168,7 @@ export default {
 	"appliedFilters:showMore": "+{numHidden} tane daha",
 	"appliedFilters:hideExtra": "Daralt",
 	"appliedFilters:labelText": "Yalnızca şunu göster:",
-	"appliedFilters:axeDescriptionCategories": "{cotName} filtreleme,",
+	"appliedFilters:axeDescriptionCategories": "{chartName} filtreleme,",
 	"appliedFilters:axeDescriptionApplied": "Kullanıcıları {chartName} ile filtreleme",
 
 	"ariaLoadingProgress:loadingStart": "Yükleme devam ediyor",

@@ -165,7 +165,7 @@ export default {
 	"discussionActivityCard:legendLabel": "Faire basculer le filtrage",
 
 	"appliedFilters:clearAll": "Effacer tout",
-	"appliedFilters:showMore": "+ de {chiffre masqué} de plus",
+	"appliedFilters:showMore": "+ de {numHidden} de plus",
 	"appliedFilters:hideExtra": "Réduire",
 	"appliedFilters:labelText": "Est affiché uniquement :",
 	"appliedFilters:axeDescriptionCategories": "Filtrage de {chartName},",
