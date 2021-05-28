@@ -5,6 +5,7 @@ export default {
 	"dashboard:userView:title": "Öğrenci Katılım Panosu",
 	"dashboard:backToInsightsPortal": "Vizyon Portalına geri dön",
 	"dashboard:backToEngagementDashboard": "Katılım Panosuna geri dön",
+	"dashboard:backToUserSelector": "Farklı Kullanıcı Seç",
 	"dashboard:backLinkTextShort": "Geri",
 	"dashboard:summaryHeading": "Özet Görünümü",
 	"dashboard:resultsHeading": "Sonuçlar",
@@ -78,11 +79,14 @@ export default {
 	"usersTable:noGrades": "Not yok",
 
 	"table:selectAll": "Tümünü seç",
+	"table:sortedAscending": "Artan Şekilde Sıralandı",
+	"table:sortedDescending": "Azalan Şekilde Sıralandı",
 
 	"usersTableExport:lastName": "Soyadı",
 	"usersTableExport:FirstName": "Adı",
 	"usersTableExport:UserName": "Kullanıcı Adı",
 	"usersTableExport:UserID": "Kullanıcı Kimliği",
+	"usersTableExport:userListDescription": "Bu tablo, kontrol panelinde daha fazla bilgi bulunan öğrencilerin listesidir. Üst sırada soyad ve ad listelenir. Bu liste için arama kriterleri ayrıca kullanıcı adı ve Org Tanımlı Kimlik içerebilir. Öğrenciye özel bilgilere bakmak için listeden öğrenci seçin.",
 
 	"summaryCard:label": "{value} {message}",
 
@@ -95,10 +99,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "{numberOfUsers} kullanıcı kaydı, ortalama not düzeyinden yüksek not alıyor ve içerikte ortalama sürenin üzerinde zaman geçiriyor.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} kullanıcı kaydı, ortalama not düzeyinden düşük not alıyor ve içerikte ortalama sürenin altında zaman geçiriyor.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} kullanıcı kaydı, ortalama not düzeyinden düşük not alıyor ve içerikte ortalama sürenin üzerinde zaman geçiriyor.",
-	"timeInContentVsGradeCard:highTimeHighGrade": "içerikte fazla zaman ve yüksek not",
-	"timeInContentVsGradeCard:highTimeLowGrade": "içerikte fazla zaman ve düşük not",
-	"timeInContentVsGradeCard:lowTimeHighGrade": "içerikte az zaman ve yüksek not",
-	"timeInContentVsGradeCard:lowTimeLowGrade": "içerikte az zaman ve düşük not",
+	"timeInContentVsGradeCard:highTimeHighGrade": "Fazla zaman ve yüksek not.",
+	"timeInContentVsGradeCard:highTimeLowGrade": "Fazla zaman ve düşük not.",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "Az zaman ve yüksek not.",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "Az zaman ve düşük not.",
 
 	"currentFinalGradeCard:currentGrade": "Mevcut Not",
 	"currentFinalGradeCard:numberOfStudents": "Kullanıcı Sayısı",
@@ -113,7 +117,7 @@ export default {
 	"courseLastAccessCard:textLabel": "Bu tablo, her kullanıcı için ders başına geçerli son notu gösterir",
 	"courseLastAccessCard:lastDateSinceAccess": "Bir Kullanıcının Bir Derse En Son Eriştiği Zaman",
 	"courseLastAccessCard:never": "Hiçbir zaman",
-	"courseLastAccessCard:daysAgo": "days ago",
+	"courseLastAccessCard:daysAgo": "gün önce",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14 gün önce",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7-14 gün önce",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5-7 gün önce",
@@ -161,11 +165,11 @@ export default {
 	"discussionActivityCard:legendLabel": "Filtrelemeyi değiştir",
 
 	"appliedFilters:clearAll": "Tümünü temizle",
-	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:showMore": "+{numHidden} tane daha",
 	"appliedFilters:hideExtra": "Daralt",
 	"appliedFilters:labelText": "Yalnızca şunu göster:",
-	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
-	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
+	"appliedFilters:axeDescriptionCategories": "{chartName} filtreleme,",
+	"appliedFilters:axeDescriptionApplied": "Kullanıcıları {chartName} ile filtreleme",
 
 	"ariaLoadingProgress:loadingStart": "Yükleme devam ediyor",
 	"ariaLoadingProgress:loadingFinish": "Yükleme tamamlandı",
@@ -275,7 +279,7 @@ export default {
 
 	"alert:updatedFilter" : "{chartName} filtresi güncellendi.",
 	"alert:axeDescriptionRange" : "Bu kategorilerdeki {chartName} öğesine sahip öğrenciler görüntüleniyor",
-	"alert:axeDescription" : "Şuna sahip öğrenciler görüntüleniyor:",
+	"alert:axeDescription" : "{category} ile öğrencileri görüntüleme",
 	"alert:axeNotFiltering" : "{chartName} Öğesine Göre Filtreleme Durduruldu",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "Kime",

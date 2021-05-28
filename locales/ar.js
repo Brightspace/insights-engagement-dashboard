@@ -5,6 +5,7 @@ export default {
 	"dashboard:userView:title": "لوحة معلومات تفاعل المتعلّم",
 	"dashboard:backToInsightsPortal": "العودة إلى مدخل Insights",
 	"dashboard:backToEngagementDashboard": "العودة إلى لوحة معلومات التفاعل",
+	"dashboard:backToUserSelector": "تحديد مستخدم مختلف",
 	"dashboard:backLinkTextShort": "الخلف",
 	"dashboard:summaryHeading": "عرض الملخص",
 	"dashboard:resultsHeading": "النتائج",
@@ -78,11 +79,14 @@ export default {
 	"usersTable:noGrades": "ما من علامات",
 
 	"table:selectAll": "تحديد الكل",
+	"table:sortedAscending": "تم الفرز تصاعديًا",
+	"table:sortedDescending": "تم الفرز تنازليًا",
 
 	"usersTableExport:lastName": "اسم العائلة",
 	"usersTableExport:FirstName": "الاسم الأول",
 	"usersTableExport:UserName": "اسم المستخدم",
 	"usersTableExport:UserID": "معرّف المستخدم",
+	"usersTableExport:userListDescription": "هذا الجدول عبارة عن قائمة بالمتعلّمين الذين يملكون المزيد من المعلومات في لوحة المعلومات. يسرد الصف الأعلى اسم العائلة والاسم الأول. يمكن أن تتضمن معايير البحث لهذه القائمة اسم المستخدم ومعرّف المؤسسة المحدد أيضًا. حدد المتعلّم من القائمة للاطّلاع على معلومات محددة خاصة بالمتعلّم.",
 
 	"summaryCard:label": "{value} {message}",
 
@@ -95,10 +99,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "يحصل {numberOfUsers} من المستخدمين الذين قاموا بالتسجيل على علامة أعلى من المتوسط ويمضون أكثر من متوسط الوقت المستغرق في عرض المحتوى.",
 	"timeInContentVsGradeCard:leftBottom": "يحصل {numberOfUsers} من المستخدمين الذين قاموا بالتسجيل على علامة أدنى من المتوسط ويمضون أقل من متوسط الوقت المستغرق في عرض المحتوى.",
 	"timeInContentVsGradeCard:rightBottom": "يحصل {numberOfUsers} من المستخدمين الذين قاموا بالتسجيل على علامة أدنى من المتوسط ويمضون أكثر من متوسط الوقت المستغرق في عرض المحتوى.",
-	"timeInContentVsGradeCard:highTimeHighGrade": "وقت طويل مستغرق في عرض المحتوى وعلامة عالية",
-	"timeInContentVsGradeCard:highTimeLowGrade": "وقت طويل مستغرق في عرض المحتوى وعلامة متدنية",
-	"timeInContentVsGradeCard:lowTimeHighGrade": "وقت قصير مستغرق في عرض المحتوى وعلامة عالية",
-	"timeInContentVsGradeCard:lowTimeLowGrade": "وقت قصير مستغرق في عرض المحتوى وعلامة متدنية",
+	"timeInContentVsGradeCard:highTimeHighGrade": "وقت طويل وعلامة مرتفعة.",
+	"timeInContentVsGradeCard:highTimeLowGrade": "وقت طويل وعلامة متدنية.",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "وقت قصير وعلامة مرتفعة.",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "وقت قصير وعلامة متدنية.",
 
 	"currentFinalGradeCard:currentGrade": "العلامة الحالية",
 	"currentFinalGradeCard:numberOfStudents": "عدد المستخدمين",
@@ -113,7 +117,7 @@ export default {
 	"courseLastAccessCard:textLabel": "يعرض هذا المخطط العلامة النهائية الحالية لكل مستخدم في كل مقرر تعليمي",
 	"courseLastAccessCard:lastDateSinceAccess": "المرة الأخيرة التي وصل فيها أحد المستخدمين إلى مقرر تعليمي",
 	"courseLastAccessCard:never": "أبدًا",
-	"courseLastAccessCard:daysAgo": "days ago",
+	"courseLastAccessCard:daysAgo": "منذ أيام",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "منذ أكثر من 14 يومًا",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "منذ 7 أيام إلى 14 يومًا",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "منذ 5 أيام إلى 7 أيام",
@@ -147,7 +151,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "قام مستخدم واحد بالوصول إلى المحتوى 0 مرة",
 	"contentViewHistogram:usersGreaterTimes": "قام {numUsers} من المستخدمين بالوصول إلى المحتوى أكثر من {start} من المرات",
 	"contentViewHistogram:userGreaterTimes": "قام مستخدم واحد بالوصول إلى المحتوى أكثر من {start} من المرات",
-	"contentViewHistogram:views": "views",
+	"contentViewHistogram:views": "العروض",
 
 	"discussionActivityCard:cardTitle": "نشاط المناقشة",
 	"discussionActivityCard:threads": "سلاسل المحادثات",
@@ -161,11 +165,11 @@ export default {
 	"discussionActivityCard:legendLabel": "تبديل التصفية",
 
 	"appliedFilters:clearAll": "مسح الكل",
-	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:showMore": "و{numHidden} أقسام إضافية",
 	"appliedFilters:hideExtra": "طي",
 	"appliedFilters:labelText": "إظهار فقط:",
-	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
-	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
+	"appliedFilters:axeDescriptionCategories": "تصفية {chartName}،",
+	"appliedFilters:axeDescriptionApplied": "تصفية المستخدمين باستخدام {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "التحميل قيد التقدم",
 	"ariaLoadingProgress:loadingFinish": "انتهى التحميل",
@@ -275,7 +279,7 @@ export default {
 
 	"alert:updatedFilter" : "تم تحديث عامل تصفية {chartName}.",
 	"alert:axeDescriptionRange" : "عرض المتعلّمين باستخدام {chartName} في هذه الفئات",
-	"alert:axeDescription" : "عرض المتعلّمين باستخدام",
+	"alert:axeDescription" : "عرض المتعلّمين باستخدام {category}",
 	"alert:axeNotFiltering" : "تم إيقاف التصفية حسب {chartName}.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "إلى",

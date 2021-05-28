@@ -5,6 +5,7 @@ export default {
 	"dashboard:userView:title": "Painel Envolvimento do aluno",
 	"dashboard:backToInsightsPortal": "Voltar ao Portal de insights",
 	"dashboard:backToEngagementDashboard": "Voltar ao painel Envolvimento",
+	"dashboard:backToUserSelector": "Selecione um usuário diferente",
 	"dashboard:backLinkTextShort": "Voltar",
 	"dashboard:summaryHeading": "Exibição resumida",
 	"dashboard:resultsHeading": "Resultados",
@@ -78,11 +79,14 @@ export default {
 	"usersTable:noGrades": "Não há notas",
 
 	"table:selectAll": "Selecionar tudo",
+	"table:sortedAscending": "Classificado em ordem crescente",
+	"table:sortedDescending": "Classificado em ordem decrescente",
 
 	"usersTableExport:lastName": "Sobrenome",
 	"usersTableExport:FirstName": "Nome",
 	"usersTableExport:UserName": "Nome do usuário",
 	"usersTableExport:UserID": "ID do Usuário",
+	"usersTableExport:userListDescription": "A tabela é uma lista de alunos que têm mais informações no painel. A linha superior lista sobrenome, nome. Os critérios de pesquisa dessa lista também podem incluir nome de usuário e ID definido da organização. Selecione o aluno na lista para ver suas informações específicas.",
 
 	"summaryCard:label": "{value} {message}",
 
@@ -95,10 +99,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "{numberOfUsers} inscrições de usuários estão obtendo uma nota acima da média e passando um tempo acima da média no conteúdo.",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} inscrições de usuários estão obtendo uma nota abaixo da média e passando um tempo abaixo da média no conteúdo.",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} inscrições de usuários estão obtendo uma nota abaixo da média e passando um tempo acima da média no conteúdo.",
-	"timeInContentVsGradeCard:highTimeHighGrade": "muito tempo no conteúdo e nota alta",
-	"timeInContentVsGradeCard:highTimeLowGrade": "muito tempo no conteúdo e nota baixa",
-	"timeInContentVsGradeCard:lowTimeHighGrade": "pouco tempo no conteúdo e nota alta",
-	"timeInContentVsGradeCard:lowTimeLowGrade": "pouco tempo no conteúdo e nota baixa",
+	"timeInContentVsGradeCard:highTimeHighGrade": "Muito tempo no conteúdo e nota alta.",
+	"timeInContentVsGradeCard:highTimeLowGrade": "Muito tempo no conteúdo e nota baixa.",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "Pouco tempo no conteúdo e nota alta.",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "Pouco tempo no conteúdo e nota baixa.",
 
 	"currentFinalGradeCard:currentGrade": "Nota atual",
 	"currentFinalGradeCard:numberOfStudents": "Número de usuários",
@@ -113,7 +117,7 @@ export default {
 	"courseLastAccessCard:textLabel": "Este gráfico exibe a nota final atual de cada usuário por curso",
 	"courseLastAccessCard:lastDateSinceAccess": "Última vez que um usuário acessou um curso",
 	"courseLastAccessCard:never": "Nunca",
-	"courseLastAccessCard:daysAgo": "days ago",
+	"courseLastAccessCard:daysAgo": "dias atrás",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14 dias atrás",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7 a 14 dias atrás",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5 a 7 dias atrás",
@@ -161,11 +165,11 @@ export default {
 	"discussionActivityCard:legendLabel": "Alternar filtragem",
 
 	"appliedFilters:clearAll": "Limpar tudo",
-	"appliedFilters:showMore": "+{numHidden} more",
-	"appliedFilters:hideExtra": "Minimizar",
+	"appliedFilters:showMore": "+{numHidden} mais",
+	"appliedFilters:hideExtra": "Recolher",
 	"appliedFilters:labelText": "Mostrando apenas:",
-	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
-	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
+	"appliedFilters:axeDescriptionCategories": "Filtrar {chartName},",
+	"appliedFilters:axeDescriptionApplied": "Filtrar usuários com {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "Carregamento em andamento",
 	"ariaLoadingProgress:loadingFinish": "Carregamento concluído",
@@ -275,7 +279,7 @@ export default {
 
 	"alert:updatedFilter" : "Filtro de {chartName} atualizado.",
 	"alert:axeDescriptionRange" : "Visualizando alunos com {chartName} nessas categorias",
-	"alert:axeDescription" : "Visualizando alunos com",
+	"alert:axeDescription" : "Visualizar alunos com {category}",
 	"alert:axeNotFiltering" : "Filtragem por {chartName} interrompida.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "a",
