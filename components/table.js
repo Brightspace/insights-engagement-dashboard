@@ -1,7 +1,7 @@
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/inputs/input-checkbox';
 import '@brightspace-ui/core/components/link/link.js';
-import 'd2l-table/d2l-scroll-wrapper.js';
+import '@brightspace-ui/core/components/scroll-wrapper/scroll-wrapper.js';
 
 import { bodySmallStyles, bodyStandardStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html, LitElement } from 'lit-element';
@@ -183,7 +183,7 @@ class Table extends SkeletonMixin(Localizer(RtlMixin(LitElement))) {
 
 	render() {
 		return html`
-			<d2l-scroll-wrapper show-actions>
+			<d2l-scroll-wrapper>
 				<table class="d2l-insights-table-table" aria-label="${this.title}">
 					${this._renderThead()}
 					${this._renderTbody()}
