@@ -1,6 +1,6 @@
 {
   "name": "d2l-engagement-dashboard",
-  "version": "1.2106.3",
+  "version": "1.2107.0",
   "description": "D2L Insights Engagement Dashboard",
   "repository": "https://github.com/Brightspace/insights-engagement-dashboard.git",
   "private": true,
@@ -34,7 +34,7 @@
     "eslint-config-brightspace": "^0.13.0",
     "eslint-plugin-html": "^6",
     "eslint-plugin-json": "^2.1.1",
-    "eslint-plugin-lit": "^1",
+    "eslint-plugin-lit": "1.4.1",
     "eslint-plugin-lit-a11y": "^1.0.1",
     "eslint-plugin-sort-class-members": "^1",
     "fetch-mock": "^9.10.5",

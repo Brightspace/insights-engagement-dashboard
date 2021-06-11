@@ -86,7 +86,7 @@ class ColumnConfiguration extends RtlMixin(Localizer(LitElement)) {
 
 		return html`
 			<d2l-list id="card-selection-list" @d2l-list-selection-change="${this._handleSelectionChange}">
-				<d2l-list-item key="showGradeCol" selectable ?selected="${this.showGradeCol}">
+				<d2l-list-item key="showGradeCol" label="${this.localize('settings:avgGrade')}" selectable ?selected="${this.showGradeCol}">
 					<div class="d2l-insights-config-list-item">
 						<div class="d2l-column-example">${formatPercent(0.8705, numberFormatOptions)}</div>
 						<div class="d2l-column-selection-text">
@@ -95,7 +95,7 @@ class ColumnConfiguration extends RtlMixin(Localizer(LitElement)) {
 						</div>
 					</div>
 				</d2l-list-item>
-				<d2l-list-item key="showTicCol" selectable ?selected="${this.showTicCol}">
+				<d2l-list-item key="showTicCol" label="${this.localize('settings:avgTimeInContent')}" selectable ?selected="${this.showTicCol}">
 					<div class="d2l-insights-config-list-item">
 						<div class="d2l-column-example">${formatNumber(92, numberFormatOptions)}</div>
 						<div class="d2l-column-selection-text">
@@ -104,7 +104,7 @@ class ColumnConfiguration extends RtlMixin(Localizer(LitElement)) {
 						</div>
 					</div>
 				</d2l-list-item>
-				<d2l-list-item key="showDiscussionsCol" selectable ?selected="${this.showDiscussionsCol}">
+				<d2l-list-item key="showDiscussionsCol" label="${this.localize('settings:avgDiscussionActivity')}" selectable ?selected="${this.showDiscussionsCol}">
 					<div class="d2l-insights-config-list-item">
 						<div class="d2l-column-example">${this._discussionsExample}</div>
 						<div class="d2l-column-selection-text">
@@ -113,7 +113,7 @@ class ColumnConfiguration extends RtlMixin(Localizer(LitElement)) {
 						</div>
 					</div>
 				</d2l-list-item>
-				<d2l-list-item key="showLastAccessCol" selectable ?selected="${this.showLastAccessCol}">
+				<d2l-list-item key="showLastAccessCol" label="${this.localize('settings:lastAccessedSystem')}" selectable ?selected="${this.showLastAccessCol}">
 					<div class="d2l-insights-config-list-item">
 						<div class="d2l-column-example">${formatDateTimeFromTimestamp(this.isDemo ? 1607546883964 : thirtyHoursAgo(), { format: 'medium' })}</div>
 						<div class="d2l-column-selection-text">
@@ -155,7 +155,7 @@ class ColumnConfiguration extends RtlMixin(Localizer(LitElement)) {
 	get _predictedGradeListItem() {
 		if (this.s3Enabled) {
 			return html`
-				<d2l-list-item key="showPredictedGradeCol" selectable ?selected="${this.showPredictedGradeCol}">
+				<d2l-list-item key="showPredictedGradeCol" label="${this.localize('settings:predictedGrade')}" selectable ?selected="${this.showPredictedGradeCol}">
 					<div class="d2l-insights-config-list-item">
 						<div class="d2l-column-example">${formatPercent(0.9175, numberFormatOptions)}</div>
 						<div class="d2l-column-selection-text">
