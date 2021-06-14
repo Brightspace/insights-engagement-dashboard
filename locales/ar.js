@@ -287,3 +287,4 @@ export default {
 	"alert:axeDescriptionCourses" : "عرض بيانات المتعلّمين في هذه المقررات التعليمية",
 	"alert:axeDescriptionCoursesOff" : "يتم الآن عرض بيانات المتعلّمين في كل المقررات التعليمية."
 };
+
