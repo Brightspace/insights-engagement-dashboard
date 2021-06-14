@@ -1,0 +1,10 @@
+name: Draco Insights Dashboard Notify
+on:
+  pull_request:
+  paths:
+    - 'locales/**/*'
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+    - run: .github/notify.sh
