@@ -5,6 +5,7 @@ export default {
 	"dashboard:userView:title": "学员参与仪表板",
 	"dashboard:backToInsightsPortal": "返回 Insights 门户",
 	"dashboard:backToEngagementDashboard": "返回参与仪表板",
+	"dashboard:backToUserSelector": "选择不同用户",
 	"dashboard:backLinkTextShort": "返回",
 	"dashboard:summaryHeading": "摘要视图",
 	"dashboard:resultsHeading": "结果",
@@ -78,11 +79,14 @@ export default {
 	"usersTable:noGrades": "无成绩",
 
 	"table:selectAll": "全选",
+	"table:sortedAscending": "升序排序",
+	"table:sortedDescending": "降序排序",
 
 	"usersTableExport:lastName": "姓氏",
 	"usersTableExport:FirstName": "名字",
 	"usersTableExport:UserName": "用户名",
 	"usersTableExport:UserID": "用户 ID",
+	"usersTableExport:userListDescription": "此表列是仪表板中包含更多信息的学员列表。首行列出姓氏、名字。此列表的搜索条件还可以包括用户名和组织定义的 ID。从列表中选择学员以查看学员的特定信息。",
 
 	"summaryCard:label": "{value} {message}",
 
@@ -95,10 +99,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "{numberOfUsers} 个用户注册成绩超过平均成绩，且在内容上花费的时间超过平均时间。",
 	"timeInContentVsGradeCard:leftBottom": "{numberOfUsers} 个用户注册成绩低于平均成绩，且在内容上花费的时间低于平均时间。",
 	"timeInContentVsGradeCard:rightBottom": "{numberOfUsers} 个用户注册成绩低于平均成绩，且在内容上花费的时间超过平均时间。",
-	"timeInContentVsGradeCard:highTimeHighGrade": "内容所用时间长，成绩高",
-	"timeInContentVsGradeCard:highTimeLowGrade": "内容所用时间长，成绩低",
-	"timeInContentVsGradeCard:lowTimeHighGrade": "内容所用时间短，成绩高",
-	"timeInContentVsGradeCard:lowTimeLowGrade": "内容所用时间短，成绩低",
+	"timeInContentVsGradeCard:highTimeHighGrade": "时间长，成绩高。",
+	"timeInContentVsGradeCard:highTimeLowGrade": "时间长，成绩低。",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "时间短，成绩高。",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "时间短，成绩低。",
 
 	"currentFinalGradeCard:currentGrade": "当前成绩",
 	"currentFinalGradeCard:numberOfStudents": "用户数目",
@@ -113,7 +117,7 @@ export default {
 	"courseLastAccessCard:textLabel": "该表显示了每门课程每个用户的当前最终成绩",
 	"courseLastAccessCard:lastDateSinceAccess": "用户上次访问课程的时间",
 	"courseLastAccessCard:never": "从不",
-	"courseLastAccessCard:daysAgo": "days ago",
+	"courseLastAccessCard:daysAgo": "天前",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14 天前",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7-14 天前",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5-7 天前",
@@ -161,11 +165,11 @@ export default {
 	"discussionActivityCard:legendLabel": "切换筛选",
 
 	"appliedFilters:clearAll": "全部清除",
-	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:showMore": "+{numHidden} 个以上",
 	"appliedFilters:hideExtra": "折叠",
 	"appliedFilters:labelText": "仅显示：",
-	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
-	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
+	"appliedFilters:axeDescriptionCategories": "筛选 {chartName}，",
+	"appliedFilters:axeDescriptionApplied": "筛选具有 {chartName} 的用户",
 
 	"ariaLoadingProgress:loadingStart": "正在进行加载",
 	"ariaLoadingProgress:loadingFinish": "加载已完成",
@@ -275,7 +279,7 @@ export default {
 
 	"alert:updatedFilter" : "{chartName} 筛选条件已更新。",
 	"alert:axeDescriptionRange" : "查看这些类别中具有 {chartName} 的学员",
-	"alert:axeDescription" : "查看具有  的学员",
+	"alert:axeDescription" : "查看具有 {category} 的学员",
 	"alert:axeNotFiltering" : "已停止按 {chartName} 筛选。",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "至",

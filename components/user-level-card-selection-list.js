@@ -91,7 +91,7 @@ class UserLevelCardSelectionList extends RtlMixin(Localizer(LitElement)) {
 		return html`
 			<d2l-list id="card-selection-list" @d2l-list-selection-change="${this._handleCardSelectionListChange}">
 
-				<d2l-list-item key="showAverageGradeSummaryCard" selectable ?selected="${this.showAverageGradeSummaryCard}">
+				<d2l-list-item key="showAverageGradeSummaryCard" label="${this.localize('settings:avgGradeSummary')}" selectable ?selected="${this.showAverageGradeSummaryCard}">
 					<div class="d2l-insights-list-flex-container">
 						<d2l-labs-summary-card
 							class="d2l-demo-card"
@@ -111,7 +111,7 @@ class UserLevelCardSelectionList extends RtlMixin(Localizer(LitElement)) {
 					</div>
 				</d2l-list-item>
 
-				<d2l-list-item key="showGradesTrendCard" selectable ?selected="${this.showGradesTrendCard}">
+				<d2l-list-item key="showGradesTrendCard" label="${this.localize('gradesTrendCard:gradesOverTime')}" selectable ?selected="${this.showGradesTrendCard}">
 					<div class="d2l-insights-list-flex-container">
 						<d2l-insights-grades-trend-thumbnail class="d2l-demo-card" aria-hidden="true"></d2l-insights-grades-trend-thumbnail>
 						<div class="d2l-card-selection-text">
@@ -124,7 +124,7 @@ class UserLevelCardSelectionList extends RtlMixin(Localizer(LitElement)) {
 					</div>
 				</d2l-list-item>
 
-				<d2l-list-item key="showCourseAccessTrendCard" selectable ?selected="${this.showCourseAccessTrendCard}">
+				<d2l-list-item key="showCourseAccessTrendCard" label="${this.localize('accessTrendCard:title')}" selectable ?selected="${this.showCourseAccessTrendCard}">
 					<div class="d2l-insights-list-flex-container">
 						<d2l-insights-course-access-trend-thumbnail class="d2l-demo-card" aria-hidden="true"></d2l-insights-course-access-trend-thumbnail>
 						<div class="d2l-card-selection-text">
@@ -137,7 +137,7 @@ class UserLevelCardSelectionList extends RtlMixin(Localizer(LitElement)) {
 					</div>
 				</d2l-list-item>
 
-				<d2l-list-item key="showContentViewsTrendCard" selectable ?selected="${this.showContentViewsTrendCard}">
+				<d2l-list-item key="showContentViewsTrendCard" label="${this.localize('contentViewsCard:contentViewOverTime')}" selectable ?selected="${this.showContentViewsTrendCard}">
 					<div class="d2l-insights-list-flex-container">
 						<d2l-insights-content-views-trend-thumbnail class="d2l-demo-card" aria-hidden="true"></d2l-insights-content-views-trend-thumbnail>
 						<div class="d2l-card-selection-text">

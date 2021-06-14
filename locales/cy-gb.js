@@ -5,6 +5,7 @@ export default {
 	"dashboard:userView:title": "Dangosfwrdd Ymgysylltu â Dysgwyr",
 	"dashboard:backToInsightsPortal": "Yn ôl i'r Porth Mewnwelediadau",
 	"dashboard:backToEngagementDashboard": "Yn ôl i'r Dangosfwrdd Ymgysylltu",
+	"dashboard:backToUserSelector": "Dewis Defnyddiwr Gwahanol",
 	"dashboard:backLinkTextShort": "Yn ôl",
 	"dashboard:summaryHeading": "Gwedd Crynodeb",
 	"dashboard:resultsHeading": "Canlyniadau",
@@ -78,11 +79,14 @@ export default {
 	"usersTable:noGrades": "Dim graddau",
 
 	"table:selectAll": "Dewis Popeth",
+	"table:sortedAscending": "Wedi'i Ddidoli'n Esgynnol",
+	"table:sortedDescending": "Wedi'i Ddidoli'n Ddisgynnol",
 
 	"usersTableExport:lastName": "Cyfenw",
 	"usersTableExport:FirstName": "Enw Cyntaf",
 	"usersTableExport:UserName": "Enw Defnyddiwr",
 	"usersTableExport:UserID": "ID Defnyddiwr",
+	"usersTableExport:userListDescription": "Mae'r tabl hwn yn rhestr o ddysgwyr sydd â rhagor o wybodaeth yn y dangosfwrdd. Mae’r rhes uchaf yn rhestru cyfenw ac enw cyntaf. Gall meini prawf chwilio ar gyfer y rhestr hon hefyd gynnwys enw defnyddiwr ac ID Sefydliad Diffiniedig. Dewiswch ddysgwr o'r rhestr i edrych ar wybodaeth benodol i'r dysgwr.",
 
 	"summaryCard:label": "{value} {message}",
 
@@ -95,10 +99,10 @@ export default {
 	"timeInContentVsGradeCard:rightTop": "Mae {numberOfUsers} o ddefnyddwyr a gofrestrwyd yn cael gradd uwch na'r cyfartaledd ac yn treulio mwy o amser na'r cyfartaledd mewn cynnwys.",
 	"timeInContentVsGradeCard:leftBottom": "Mae {numberOfUsers} o ddefnyddwyr a gofrestrwyd yn cael gradd is na'r cyfartaledd ac yn treulio llai o amser na'r cyfartaledd mewn cynnwys.",
 	"timeInContentVsGradeCard:rightBottom": "Mae {numberOfUsers} o ddefnyddwyr a gofrestrwyd yn cael gradd is na'r cyfartaledd ac yn treulio mwy o amser na'r cyfartaledd mewn cynnwys.",
-	"timeInContentVsGradeCard:highTimeHighGrade": "amser uchel mewn cynnwys a gradd uchel",
-	"timeInContentVsGradeCard:highTimeLowGrade": "amser uchel mewn cynnwys a gradd isel",
-	"timeInContentVsGradeCard:lowTimeHighGrade": "amser isel mewn cynnwys a gradd uchel",
-	"timeInContentVsGradeCard:lowTimeLowGrade": "amser isel mewn cynnwys a gradd isel",
+	"timeInContentVsGradeCard:highTimeHighGrade": "Amser uchel a gradd uchel.",
+	"timeInContentVsGradeCard:highTimeLowGrade": "Amser uchel a gradd isel.",
+	"timeInContentVsGradeCard:lowTimeHighGrade": "Amser isel a gradd uchel.",
+	"timeInContentVsGradeCard:lowTimeLowGrade": "Amser isel a gradd isel.",
 
 	"currentFinalGradeCard:currentGrade": "Gradd Bresennol",
 	"currentFinalGradeCard:numberOfStudents": "Nifer y Defnyddwyr",
@@ -113,7 +117,7 @@ export default {
 	"courseLastAccessCard:textLabel": "Mae’r siart hon yn dangos y radd derfynol gyfredol ar gyfer pob defnyddiwr fesul cwrs",
 	"courseLastAccessCard:lastDateSinceAccess": "Y Tro Diwethaf Y Gwnaeth Ddefnyddiwr Gyrchu Cwrs",
 	"courseLastAccessCard:never": "Byth",
-	"courseLastAccessCard:daysAgo": "days ago",
+	"courseLastAccessCard:daysAgo": "diwrnod yn ôl",
 	"courseLastAccessCard:moreThanFourteenDaysAgo": "> 14 diwrnod yn ôl",
 	"courseLastAccessCard:sevenToFourteenDaysAgo": "7-14 diwrnod yn ôl",
 	"courseLastAccessCard:fiveToSevenDaysAgo": "5-7 diwrnod yn ôl",
@@ -147,7 +151,7 @@ export default {
 	"contentViewHistogram:userZeroTimes": "Mae 1 defnyddiwr wedi cyrchu'r cynnwys 0 gwaith",
 	"contentViewHistogram:usersGreaterTimes": "Mae {numUsers} o ddefnyddwyr wedi cyrchu'r cynnwys yn fwy na {start} o weithiau",
 	"contentViewHistogram:userGreaterTimes": "Mae 1 defnyddiwr wedi cyrchu'r cynnwys yn fwy na {start} o weithiau",
-	"contentViewHistogram:views": "views",
+	"contentViewHistogram:views": "wedi gweld",
 
 	"discussionActivityCard:cardTitle": "Gweithgaredd Trafod",
 	"discussionActivityCard:threads": "Trywyddau",
@@ -161,11 +165,11 @@ export default {
 	"discussionActivityCard:legendLabel": "Toglo hidlo",
 
 	"appliedFilters:clearAll": "Clirio’r cyfan",
-	"appliedFilters:showMore": "+{numHidden} more",
+	"appliedFilters:showMore": "+{numHidden} arall",
 	"appliedFilters:hideExtra": "Cwympo",
 	"appliedFilters:labelText": "Dim ond yn dangos:",
-	"appliedFilters:axeDescriptionCategories": "Filtering {chartName}, ",
-	"appliedFilters:axeDescriptionApplied": "Filtering users with {chartName}",
+	"appliedFilters:axeDescriptionCategories": "Wrthi’n hidlo {chartName},",
+	"appliedFilters:axeDescriptionApplied": "Hidlo defnyddwyr gyda {chartName}",
 
 	"ariaLoadingProgress:loadingStart": "Wrthi’n llwytho",
 	"ariaLoadingProgress:loadingFinish": "Wedi gorffen llwytho",
@@ -275,7 +279,7 @@ export default {
 
 	"alert:updatedFilter" : "Mae’r hidlydd {chartName} wedi’i ddiweddaru.",
 	"alert:axeDescriptionRange" : "Wrthi’n gweld dysgwyr gyda {chartName} yn y categorïau hyn",
-	"alert:axeDescription" : "Wrthi’n gweld dysgwyr gyda",
+	"alert:axeDescription" : "Yn gweld dysgwyr gyda {category}",
 	"alert:axeNotFiltering" : "Wedi Stopio Hidlo yn ôl {chartName}.",
 	// this "to" that, and this "to" that <- translate the word "to" in this context
 	"alert:this-To-That" : "i",
