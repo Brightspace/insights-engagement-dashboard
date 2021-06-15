@@ -1,8 +1,8 @@
 name: Draco Insights Dashboard Notify
 on:
   pull_request: ["opened"]
-  paths:
-    - 'locales/**/*'
+  paths: ['locales/**/*']
+
 jobs:
   notify:
     runs-on: ubuntu-latest
