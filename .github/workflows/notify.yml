@@ -9,6 +9,6 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-    - run: .github/notify.sh
+    - run: bash .github/notify.sh
       env:
         WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
