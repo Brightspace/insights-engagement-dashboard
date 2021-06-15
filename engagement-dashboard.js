@@ -665,8 +665,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 	_orgUnitFilterChange(event) {
 		event.stopPropagation();
 		filterEventQueue.add(this.localize('alert:updatedFilter', { chartName: this.localize('orgUnitFilter:name') }));
-		const ids = event.target.selected.map(n => ([n.Id, n.Name, n.Type, n.Parents, n.IsActive]));
-		this._serverData.selectedOrgUnitIds = ids;
+		this._serverData.selectedOrgUnitIds = event.target.selected;
 	}
 
 	_semesterFilterChange(event) {
