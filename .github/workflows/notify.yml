@@ -9,6 +9,7 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
+    - uses: Brightspace/third-party-actions@actions/checkout
     - run: bash ./.github/notify.sh
       env:
         WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
