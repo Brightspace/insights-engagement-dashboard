@@ -33,8 +33,6 @@ export default {
 	"settings:roleListTitle": "角色篩選器",
 	"settings:roleListDescription": "設定要將哪些學習者角色包含進您的儀表板資料。所有其他角色都將篩除。",
 
-	"orgUnitFilter:nameAllSelected": "組織單位：全部",
-	"orgUnitFilter:nameSomeSelected": "組織單位：已套用選取項目",
 	"orgUnitFilter:name": "組織單位",
 
 	"semesterFilter:name": "學期",
@@ -45,18 +43,9 @@ export default {
 	"simpleFilter:dropdownAction": "開啟 {name} 篩選器",
 
 	"treeFilter:nodeName": "{orgUnitName} (Id: {id})",
-	"treeFilter:nodeName:root": "根目錄",
-	"treeSelector:filterBy": "篩選依據",
-	"treeSelector:clearLabel": "清除",
 	"treeSelector:searchLabel": "搜尋",
 	"treeSelector:loadMoreLabel": "載入更多",
-	"treeSelector:parentLoadMore:ariaLabel": "載入組織子單位",
-	"treeSelector:searchLoadMore:ariaLabel": "載入更多搜尋結果",
 	"treeSelector:searchPlaceholder": "搜尋...",
-	"treeSelector:dropdownAction": "開啟 {name} 篩選器",
-	"treeSelector:arrowLabel:closed": "展開位於層級 {level} 的 {name} ({parentName} 的子項目)",
-	"treeSelector:arrowLabel:open": "摺疊位於層級 {level} 的 {name} ({parentName} 的子項目)",
-	"treeSelector:node:ariaLabel": "{name}，{parentName} 的子項目，",
 
 	"dropdownFilter:loadMore": "載入更多",
 	"dropdownFilter:openerTextAll": "{filterName}：全部",
