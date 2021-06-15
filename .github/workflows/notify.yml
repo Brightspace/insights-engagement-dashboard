@@ -1,0 +1,14 @@
+name: Draco Insights Dashboard Notify
+on:
+  pull_request:
+    types: [ opened ]
+    paths:
+      - 'locales/**/*'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+    - run: .github/notify.sh
+      env:
+        WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

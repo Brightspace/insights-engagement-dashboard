@@ -109,7 +109,7 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 
 		return html`
 			<d2l-list id="card-selection-list" @d2l-list-selection-change="${this._handleCardSelectionListChange}">
-				<d2l-list-item key="showGradesCard" selectable ?selected="${this.showGradesCard}">
+				<d2l-list-item key="showGradesCard" label="${this.localize('currentFinalGradeCard:currentGrade')}" selectable ?selected="${this.showGradesCard}">
 					<div class="d2l-insights-list-flex-container">
 						<d2l-insights-current-grade-thumbnail class="d2l-demo-card" aria-hidden="true"></d2l-insights-current-grade-thumbnail>
 						<div class="d2l-card-selection-text">
@@ -122,7 +122,7 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 					</div>
 				</d2l-list-item>
 
-				<d2l-list-item key="showCourseAccessCard" selectable ?selected="${this.showCourseAccessCard}">
+				<d2l-list-item key="showCourseAccessCard" label="${this.localize('courseLastAccessCard:courseAccess')}" selectable ?selected="${this.showCourseAccessCard}">
 					<div class="d2l-insights-list-flex-container">
 						<d2l-insights-course-access-thumbnail class="d2l-demo-card" aria-hidden="true"></d2l-insights-course-access-thumbnail>
 						<div class="d2l-card-selection-text">
@@ -135,7 +135,7 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 					</div>
 				</d2l-list-item>
 
-				<d2l-list-item key="showTicGradesCard" selectable ?selected="${this.showTicGradesCard}">
+				<d2l-list-item key="showTicGradesCard" label="${this.localize('timeInContentVsGradeCard:timeInContentVsGrade')}" selectable ?selected="${this.showTicGradesCard}">
 					<div class="d2l-insights-list-flex-container">
 						<d2l-insights-tic-vs-grade-thumbnail class="d2l-demo-card" aria-hidden="true"></d2l-insights-tic-vs-grade-thumbnail>
 						<div class="d2l-card-selection-text">
@@ -148,7 +148,7 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 					</div>
 				</d2l-list-item>
 
-				<d2l-list-item key="showContentViewCard" selectable ?selected="${this.showContentViewCard}">
+				<d2l-list-item key="showContentViewCard" label="${this.localize('contentViewHistogram:title')}" selectable ?selected="${this.showContentViewCard}">
 					<div class="d2l-insights-list-flex-container">
 						<d2l-insights-content-view-card-thumbnail class="d2l-demo-card" aria-hidden="true"></d2l-insights-content-view-card-thumbnail>
 						<div class="d2l-card-selection-text">
@@ -161,7 +161,7 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 					</div>
 				</d2l-list-item>
 
-				<d2l-list-item key="showOverdueCard" selectable ?selected="${this.showOverdueCard}">
+				<d2l-list-item key="showOverdueCard" label="${this.localize('dashboard:overdueAssignmentsHeading')}" selectable ?selected="${this.showOverdueCard}">
 					<div class="d2l-insights-list-flex-container">
 						<d2l-labs-summary-card
 							class="d2l-demo-card"
@@ -181,13 +181,13 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 					</div>
 				</d2l-list-item>
 
-				<d2l-list-item key="showSystemAccessCard" selectable ?selected="${this.showSystemAccessCard}">
+				<d2l-list-item key="showSystemAccessCard" label="${this.localize('dashboard:lastSystemAccessHeading')}" selectable ?selected="${this.showSystemAccessCard}">
 					<div class="d2l-insights-list-flex-container">
 						${this._renderSystemAccessListContents()}
 					</div>
 				</d2l-list-item>
 
-				<d2l-list-item key="showDiscussionsCard" selectable ?selected="${this.showDiscussionsCard}">
+				<d2l-list-item key="showDiscussionsCard" label="${this.localize('discussionActivityCard:cardTitle')}" selectable ?selected="${this.showDiscussionsCard}">
 					<div class="d2l-insights-list-flex-container">
 						<d2l-insights-disc-activity-thumbnail class="d2l-demo-card" aria-hidden="true"></d2l-insights-disc-activity-thumbnail>
 						<div class="d2l-card-selection-text">
