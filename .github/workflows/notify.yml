@@ -7,6 +7,7 @@ on:
 
 jobs:
   notify:
+    if: ${{ github.actor == 'brightspace-bot' }}
     runs-on: ubuntu-latest
     steps:
     - uses: Brightspace/third-party-actions@actions/checkout
