@@ -286,4 +286,5 @@ export default {
 	"alert:greaterThanThis" : "større end {num}",
 	"alert:axeDescriptionCourses" : "Visning af elevdata i disse kurser",
 	"alert:axeDescriptionCoursesOff" : "Visning af elevdata i alle kurser."
+
 };
