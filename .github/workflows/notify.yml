@@ -1,7 +1,9 @@
 name: Draco Insights Dashboard Notify
 on:
-  pull_request: ["opened"]
-  paths: ['locales/**/*']
+  pull_request:
+    types: [ opened ]
+    paths:
+      - 'locales/**/*'
 
 jobs:
   notify:
