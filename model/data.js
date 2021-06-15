@@ -1,8 +1,35 @@
 import { action, computed, decorate, observable } from 'mobx';
 import { COURSE_OFFERING, RECORD, USER } from '../consts';
-import { fetchCachedChildren, fetchLastSearch } from './dataApiClient.js';
+import { fetchCachedChildren, fetchLastSearch, fetchRelevantChildren, orgUnitSearch } from './dataApiClient.js';
 import { OrgUnitSelectorFilter, RoleSelectorFilter, SemesterSelectorFilter, UserSelectorFilter } from './selectorFilters.js';
-import { Tree } from '../components/tree-filter';
+import { OuFilterDataManager } from '@brightspace-ui-labs/ou-filter/ou-filter';
+import { Tree } from '@brightspace-ui-labs/ou-filter/tree-filter';
+/**
+ * Adapter class that represents all necessary API for OuFilter
+ */
+class EngagementOuFilterDataManager extends OuFilterDataManager {
+
+	constructor(data) {
+		super();
+		this._data = data;
+	}
+
+	async fetchRelevantChildren(id, bookmark) {
+		return await fetchRelevantChildren(id, bookmark);
+	}
+
+	async orgUnitSearch(searchString, bookmark) {
+		return await orgUnitSearch(searchString, bookmark);
+	}
+
+	get orgUnitTree() {
+		return this._data.orgUnitTree;
+	}
+
+	get isLoading() {
+		return this._data.isLoading;
+	}
+}
 
 /**
  * Data from the server, along with filter settings that are passed in server calls.
@@ -48,6 +75,8 @@ export class Data {
 			orgUnit: new OrgUnitSelectorFilter(this),
 			user: new UserSelectorFilter(this)
 		};
+
+		this._ouFilterDataManager = new EngagementOuFilterDataManager(this);
 	}
 
 	get serverData() {
@@ -78,10 +107,13 @@ export class Data {
 	// @action
 	onServerDataReload(newServerData) {
 		const lastSearchResults = fetchLastSearch(newServerData.selectedSemestersIds);
+		const nodes = lastSearchResults ? [...newServerData.orgUnits, ...lastSearchResults] : newServerData.orgUnits;
+		const mappedNodes = nodes.map(n => ({ Id: n[0], Name: n[1], Type: n[2], Parents: n[3], IsActive: n[4] }));
+
 		this.orgUnitTree = new Tree({
 			// add in any nodes from the most recent search (if the semester filter didn't change); otherwise
 			// the search will blink out and come back, and also drop any "load more" results
-			nodes: lastSearchResults ? [...newServerData.orgUnits, ...lastSearchResults] : newServerData.orgUnits,
+			nodes: mappedNodes,
 			leafTypes: [COURSE_OFFERING],
 			invisibleTypes: [newServerData.semesterTypeId],
 			selectedIds: newServerData.defaultViewOrgUnitIds || newServerData.selectedOrgUnitIds || [],
@@ -203,6 +235,10 @@ export class Data {
 		return this.serverData.records.filter(record => {
 			return Object.values(this._selectorFilters).every(filter => filter.shouldInclude(record));
 		});
+	}
+
+	get ouFilterDataManager() {
+		return this._ouFilterDataManager;
 	}
 }
 
