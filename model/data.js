@@ -1,5 +1,5 @@
 import { action, computed, decorate, observable } from 'mobx';
-import { COURSE_OFFERING, RECORD, USER } from '../consts';
+import { COURSE_OFFERING, ORG_UNIT, RECORD, USER } from '../consts';
 import { fetchCachedChildren, fetchLastSearch, fetchRelevantChildren, orgUnitSearch } from './dataApiClient.js';
 import { OrgUnitSelectorFilter, RoleSelectorFilter, SemesterSelectorFilter, UserSelectorFilter } from './selectorFilters.js';
 import { OuFilterDataManager } from '@brightspace-ui-labs/ou-filter/ou-filter';
@@ -14,12 +14,12 @@ class EngagementOuFilterDataManager extends OuFilterDataManager {
 		this._data = data;
 	}
 
-	async fetchRelevantChildren(id, bookmark) {
-		return await fetchRelevantChildren(id, bookmark);
+	async fetchRelevantChildren(orgUnitId, bookmark) {
+		return await fetchRelevantChildren(orgUnitId, this._data.selectedSemesterIds, bookmark);
 	}
 
 	async orgUnitSearch(searchString, bookmark) {
-		return await orgUnitSearch(searchString, bookmark);
+		return await orgUnitSearch(searchString, this._data.selectedSemesterIds, bookmark);
 	}
 
 	get orgUnitTree() {
@@ -108,7 +108,13 @@ export class Data {
 	onServerDataReload(newServerData) {
 		const lastSearchResults = fetchLastSearch(newServerData.selectedSemestersIds);
 		const nodes = lastSearchResults ? [...newServerData.orgUnits, ...lastSearchResults] : newServerData.orgUnits;
-		const mappedNodes = nodes.map(n => ({ Id: n[0], Name: n[1], Type: n[2], Parents: n[3], IsActive: n[4] }));
+		const mappedNodes = nodes.map(n => ({
+			Id: n[ORG_UNIT.ID],
+			Name: n[ORG_UNIT.NAME],
+			Type: n[ORG_UNIT.TYPE],
+			Parents: n[ORG_UNIT.PARENTS],
+			IsActive: n[ORG_UNIT.IS_ACTIVE]
+		}));
 
 		this.orgUnitTree = new Tree({
 			// add in any nodes from the most recent search (if the semester filter didn't change); otherwise
