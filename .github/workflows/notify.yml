@@ -7,8 +7,10 @@ on:
 
 jobs:
   notify:
+    if: ${{ github.actor == 'brightspace-bot' }}
     runs-on: ubuntu-latest
     steps:
-    - run: .github/notify.sh
+    - uses: Brightspace/third-party-actions@actions/checkout
+    - run: bash ./.github/notify.sh
       env:
         WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

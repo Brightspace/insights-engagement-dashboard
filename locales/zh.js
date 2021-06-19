@@ -275,5 +275,4 @@ export default {
 	"alert:greaterThanThis" : "大于 {num}",
 	"alert:axeDescriptionCourses" : "查看这些课程中的学员数据",
 	"alert:axeDescriptionCoursesOff" : "查看所有课程中的学员数据。"
-
 };
