@@ -12,14 +12,13 @@ describe('engagement-dashboard', () => {
 		page = await visualDiff.createPage(browser);
 		await page.setViewport({
 			width: 1275,
-			height: 5000,
+			height: 2117,
 			deviceScaleFactor: 1
 		});
 		await page.goto(
 			`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-insights-engagement-dashboard.visual-diff.html?v=home%2C0&ouf=3`,
 			{ waitUntil: ['networkidle0', 'load'] }
 		);
-		await new Promise(res => setTimeout(res, 300));
 		await page.bringToFront();
 	});
 
@@ -33,7 +32,7 @@ describe('engagement-dashboard', () => {
 	it('Mobile', async function() {
 		await page.setViewport({
 			width: 682,
-			height: 5000,
+			height: 2977,
 			deviceScaleFactor: 1
 		});
 		const rect = await visualDiff.getRect(page, 'd2l-insights-engagement-dashboard');

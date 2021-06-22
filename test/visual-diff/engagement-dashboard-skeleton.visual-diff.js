@@ -18,14 +18,13 @@ describe('engagement-dashboard-skeleton', () => {
 
 		await page.setViewport({
 			width: 1275,
-			height: 5000,
+			height: 2872,
 			deviceScaleFactor: 1
 		});
 		await page.goto(
 			`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-insights-engagement-dashboard.visual-diff.html#delay=3000`,
 			{ waitUntil: ['networkidle0', 'load'] }
 		);
-		await new Promise(res => setTimeout(res, 300));
 		await page.bringToFront();
 	});
 
@@ -39,7 +38,7 @@ describe('engagement-dashboard-skeleton', () => {
 	it('Mobile', async function() {
 		await page.setViewport({
 			width: 682,
-			height: 5000,
+			height: 3616,
 			deviceScaleFactor: 1
 		});
 		const rect = await visualDiff.getRect(page, 'd2l-insights-engagement-dashboard');
