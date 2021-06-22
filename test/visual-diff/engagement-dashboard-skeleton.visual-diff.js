@@ -18,11 +18,11 @@ describe('engagement-dashboard-skeleton', () => {
 
 		await page.setViewport({
 			width: 1275,
-			height: 3500,
+			height: 2872,
 			deviceScaleFactor: 1
 		});
 		await page.goto(
-			`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-insights-engagement-dashboard.visual-diff.html#delay=100`,
+			`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-insights-engagement-dashboard.visual-diff.html#delay=3000`,
 			{ waitUntil: ['networkidle0', 'load'] }
 		);
 		await new Promise(res => setTimeout(res, 300));
