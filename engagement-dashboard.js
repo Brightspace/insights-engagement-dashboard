@@ -515,7 +515,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			<h2 class="d2l-heading-3">${this.localize('dashboard:resultsHeading')}</h2>
 			<d2l-overflow-group
 				class="d2l-table-overflow-group"
-				min-to-show="0"
+				min-to-show="1"
 				max-to-show="2"
 				opener-type="icon"
 				opener-style="subtle"
