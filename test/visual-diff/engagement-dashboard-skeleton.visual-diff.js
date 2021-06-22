@@ -18,7 +18,7 @@ describe('engagement-dashboard-skeleton', () => {
 
 		await page.setViewport({
 			width: 1275,
-			height: 4000,
+			height: 5000,
 			deviceScaleFactor: 1
 		});
 		await page.goto(
@@ -38,7 +38,7 @@ describe('engagement-dashboard-skeleton', () => {
 	it('Mobile', async function() {
 		await page.setViewport({
 			width: 682,
-			height: 4000,
+			height: 5000,
 			deviceScaleFactor: 1
 		});
 		const rect = await visualDiff.getRect(page, 'd2l-insights-engagement-dashboard');
