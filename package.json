@@ -24,7 +24,7 @@
     "@babel/eslint-parser": "^7",
     "@babel/plugin-proposal-class-properties": "^7.13.0",
     "@brightspace-ui/stylelint-config": "0.1.0",
-    "@brightspace-ui/visual-diff": "~5.0.0",
+    "@brightspace-ui/visual-diff": "~4.1.0",
     "@brightspace-ui-labs/ou-filter": "^1",
     "@open-wc/testing": "^2",
     "@open-wc/testing-karma": "^4.0.1",
