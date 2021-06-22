@@ -12,7 +12,7 @@ describe('engagement-dashboard', () => {
 		page = await visualDiff.createPage(browser);
 		await page.setViewport({
 			width: 1275,
-			height: 2117,
+			height: 2200,
 			deviceScaleFactor: 1
 		});
 		await page.goto(
@@ -32,7 +32,7 @@ describe('engagement-dashboard', () => {
 	it('Mobile', async function() {
 		await page.setViewport({
 			width: 682,
-			height: 2977,
+			height: 4000,
 			deviceScaleFactor: 1
 		});
 		const rect = await visualDiff.getRect(page, 'd2l-insights-engagement-dashboard');
