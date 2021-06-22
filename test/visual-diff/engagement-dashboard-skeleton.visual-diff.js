@@ -25,6 +25,7 @@ describe('engagement-dashboard-skeleton', () => {
 			`${visualDiff.getBaseUrl()}/test/visual-diff/d2l-insights-engagement-dashboard.visual-diff.html#delay=3000`,
 			{ waitUntil: ['networkidle0', 'load'] }
 		);
+		await new Promise(res => setTimeout(res, 500));
 		await page.bringToFront();
 	});
 
