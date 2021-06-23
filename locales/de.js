@@ -33,8 +33,6 @@ export default {
 	"settings:roleListTitle": "Rollenfilter",
 	"settings:roleListDescription": "Legen Sie fest, welche Rollen des Lernenden in Ihre Dashboard-Daten aufgenommen werden sollen. Alle anderen Rollen werden herausgefiltert.",
 
-	"orgUnitFilter:nameAllSelected": "Organisationseinheit: Alle",
-	"orgUnitFilter:nameSomeSelected": "Organisationseinheit: Auswahl",
 	"orgUnitFilter:name": "Organisationseinheit",
 
 	"semesterFilter:name": "Semester",
@@ -45,18 +43,9 @@ export default {
 	"simpleFilter:dropdownAction": "Filter {name} öffnen",
 
 	"treeFilter:nodeName": "{orgUnitName} (ID: {id})",
-	"treeFilter:nodeName:root": "Stamm",
-	"treeSelector:filterBy": "Filtern nach",
-	"treeSelector:clearLabel": "Löschen",
 	"treeSelector:searchLabel": "Suchen",
 	"treeSelector:loadMoreLabel": "Mehr laden",
-	"treeSelector:parentLoadMore:ariaLabel": "Weitere untergeordnete Organisationseinheiten werden geladen.",
-	"treeSelector:searchLoadMore:ariaLabel": "Weitere Suchergebnisse werden geladen.",
 	"treeSelector:searchPlaceholder": "Suchen...",
-	"treeSelector:dropdownAction": "Filter {name} öffnen",
-	"treeSelector:arrowLabel:closed": "{name} auf Ebene {level}, untergeordnetes Element von {parentName}, erweitern",
-	"treeSelector:arrowLabel:open": "{name} auf Ebene {level}, untergeordnetes Element von {parentName}, minimieren",
-	"treeSelector:node:ariaLabel": "{name}, untergeordnetes Element von {parentName},",
 
 	"dropdownFilter:loadMore": "Mehr laden",
 	"dropdownFilter:openerTextAll": "{filterName}: Alle",

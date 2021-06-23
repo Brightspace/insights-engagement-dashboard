@@ -33,8 +33,6 @@ export default {
 	"settings:roleListTitle": "角色筛选器",
 	"settings:roleListDescription": "设置要包含在仪表板数据中的学员角色。所有其他角色都将被筛选掉。",
 
-	"orgUnitFilter:nameAllSelected": "组织单位：全部",
-	"orgUnitFilter:nameSomeSelected": "组织单位：应用的选择",
 	"orgUnitFilter:name": "组织单位",
 
 	"semesterFilter:name": "学期",
@@ -45,18 +43,9 @@ export default {
 	"simpleFilter:dropdownAction": "打开 {name} 筛选器",
 
 	"treeFilter:nodeName": "{orgUnitName} (Id: {id})",
-	"treeFilter:nodeName:root": "根",
-	"treeSelector:filterBy": "筛选条件",
-	"treeSelector:clearLabel": "清除",
 	"treeSelector:searchLabel": "搜索",
 	"treeSelector:loadMoreLabel": "加载更多",
-	"treeSelector:parentLoadMore:ariaLabel": "加载更多子组织单位",
-	"treeSelector:searchLoadMore:ariaLabel": "加载更多搜索结果",
 	"treeSelector:searchPlaceholder": "搜索...",
-	"treeSelector:dropdownAction": "打开 {name} 筛选器",
-	"treeSelector:arrowLabel:closed": "在 {parentName} 的子项 {level} 级别展开 {name}",
-	"treeSelector:arrowLabel:open": "在 {parentName} 的子项 {level} 级别折叠 {name}",
-	"treeSelector:node:ariaLabel": "{name}，{parentName} 的子项，",
 
 	"dropdownFilter:loadMore": "加载更多",
 	"dropdownFilter:openerTextAll": "{filterName}：全部",

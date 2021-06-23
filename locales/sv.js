@@ -33,8 +33,6 @@ export default {
 	"settings:roleListTitle": "Rollfilter",
 	"settings:roleListDescription": "Ange vilka elevroller som ska ingå i dina kontrollpaneldata. Alla andra roller kommer att filtreras bort.",
 
-	"orgUnitFilter:nameAllSelected": "Organisationsenhet: alla",
-	"orgUnitFilter:nameSomeSelected": "Organisationsenhet: använt urval",
 	"orgUnitFilter:name": "Organisationsenhet",
 
 	"semesterFilter:name": "Termin",
@@ -45,18 +43,9 @@ export default {
 	"simpleFilter:dropdownAction": "Öppna filtret {name}",
 
 	"treeFilter:nodeName": "{orgUnitName} (Id: {id})",
-	"treeFilter:nodeName:root": "rot",
-	"treeSelector:filterBy": "Filtrera efter",
-	"treeSelector:clearLabel": "Rensa",
 	"treeSelector:searchLabel": "Sökning",
 	"treeSelector:loadMoreLabel": "Ladda mer",
-	"treeSelector:parentLoadMore:ariaLabel": "Läs in fler underordnade organisationsenheter",
-	"treeSelector:searchLoadMore:ariaLabel": "Läs in fler sökresultat",
 	"treeSelector:searchPlaceholder": "Sök ...",
-	"treeSelector:dropdownAction": "Öppna filtret {name}",
-	"treeSelector:arrowLabel:closed": "Expandera {name} på nivån {level}, underordnad till {parentName}",
-	"treeSelector:arrowLabel:open": "Komprimera {name} på nivån {level}, underordnad till {parentName}",
-	"treeSelector:node:ariaLabel": "{name}, underordnad till {parentName},",
 
 	"dropdownFilter:loadMore": "Ladda mer",
 	"dropdownFilter:openerTextAll": "{filterName}: alla",

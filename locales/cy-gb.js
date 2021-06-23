@@ -33,8 +33,6 @@ export default {
 	"settings:roleListTitle": "Hidlydd rolau",
 	"settings:roleListDescription": "Gosodwch rolau'r dysgwr i'w cynnwys yn eich data dangosfwrdd. Bydd yr holl rolau eraill yn cael eu hidlo allan.",
 
-	"orgUnitFilter:nameAllSelected": "Uned Sefydliad: Pob un",
-	"orgUnitFilter:nameSomeSelected": "Uned Sefydliad: Dewisiadau wedi’u Gweithredu",
 	"orgUnitFilter:name": "Uned Sefydliad",
 
 	"semesterFilter:name": "Semester",
@@ -45,18 +43,9 @@ export default {
 	"simpleFilter:dropdownAction": "Agor yr hidlydd {name}",
 
 	"treeFilter:nodeName": "{orgUnitName} (Id: {id})",
-	"treeFilter:nodeName:root": "gwraidd",
-	"treeSelector:filterBy": "Hidlo yn ôl",
-	"treeSelector:clearLabel": "Clirio",
 	"treeSelector:searchLabel": "Chwilio",
 	"treeSelector:loadMoreLabel": "Llwytho Mwy",
-	"treeSelector:parentLoadMore:ariaLabel": "Llwytho mwy o unedau sefydliad plant",
-	"treeSelector:searchLoadMore:ariaLabel": "Llwytho mwy o ganlyniadau chwilio",
 	"treeSelector:searchPlaceholder": "Chwilio...",
-	"treeSelector:dropdownAction": "Agor yr hidlydd {name}",
-	"treeSelector:arrowLabel:closed": "Ehangu {name} ar lefel {level}, plentyn {parentName}",
-	"treeSelector:arrowLabel:open": "Crebachu {name} ar lefel {level}, plentyn {parentName}",
-	"treeSelector:node:ariaLabel": "{name}, plentyn {parentName},",
 
 	"dropdownFilter:loadMore": "Llwytho Mwy",
 	"dropdownFilter:openerTextAll": "{filterName}: Pob un",

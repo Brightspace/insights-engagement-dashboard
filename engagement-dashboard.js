@@ -1,9 +1,9 @@
 import '@brightspace-ui/core/components/dialog/dialog-confirm';
 import '@brightspace-ui/core/components/overflow-group/overflow-group';
+import '@brightspace-ui-labs/ou-filter/ou-filter';
 
 import './components/alert-data-update.js';
 import './components/histogram-card.js';
-import './components/ou-filter.js';
 import './components/debug-card.js';
 import './components/semester-filter.js';
 import './components/users-table.js';
@@ -332,10 +332,10 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 	_renderFilters() {
 		return html`
-		<d2l-insights-ou-filter
-			.data="${this._serverData}"
-			@d2l-insights-ou-filter-change="${this._orgUnitFilterChange}"
-		></d2l-insights-ou-filter>
+		<d2l-labs-ou-filter
+			.dataManager="${this._serverData.ouFilterDataManager}"
+			@d2l-labs-ou-filter-change="${this._orgUnitFilterChange}"
+		></d2l-labs-ou-filter>
 		<d2l-insights-semester-filter
 			page-size="10000"
 			?demo="${this.isDemo}"
@@ -515,7 +515,7 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			<h2 class="d2l-heading-3">${this.localize('dashboard:resultsHeading')}</h2>
 			<d2l-overflow-group
 				class="d2l-table-overflow-group"
-				min-to-show="0"
+				min-to-show="1"
 				max-to-show="2"
 				opener-type="icon"
 				opener-style="subtle"
@@ -595,14 +595,12 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 
 	get _serverData() {
 		if (!this.__serverData) {
-
 			this.__serverData = new Data({
 				recordProvider: this.isDemo ? fetchDemoData : fetchData,
 				includeRoles: this._parsedIncludeRoles,
 				metronEndpoint: this.metronEndpoint
 			});
 		}
-
 		return this.__serverData;
 	}
 

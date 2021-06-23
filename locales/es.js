@@ -33,8 +33,6 @@ export default {
 	"settings:roleListTitle": "Filtro de roles",
 	"settings:roleListDescription": "Establezca qué roles de estudiante se incluirán en los datos de su panel. Todos los demás roles se descartarán.",
 
-	"orgUnitFilter:nameAllSelected": "Unidad de organización: Todos",
-	"orgUnitFilter:nameSomeSelected": "Unidad de organización: Selecciones aplicadas",
 	"orgUnitFilter:name": "Unidad de organización",
 
 	"semesterFilter:name": "Semestre",
@@ -45,18 +43,9 @@ export default {
 	"simpleFilter:dropdownAction": "Abrir filtro {name}",
 
 	"treeFilter:nodeName": "{orgUnitName} (Id: {id})",
-	"treeFilter:nodeName:root": "raíz",
-	"treeSelector:filterBy": "Filtrar por",
-	"treeSelector:clearLabel": "Borrar",
 	"treeSelector:searchLabel": "Buscar",
 	"treeSelector:loadMoreLabel": "Cargar más",
-	"treeSelector:parentLoadMore:ariaLabel": "Cargar más unidades de organización secundarias",
-	"treeSelector:searchLoadMore:ariaLabel": "Cargar más resultados de búsqueda",
 	"treeSelector:searchPlaceholder": "Buscar…",
-	"treeSelector:dropdownAction": "Abrir filtro {name}",
-	"treeSelector:arrowLabel:closed": "Expandir {name} en el nivel {level}, elemento secundario de {parentName}",
-	"treeSelector:arrowLabel:open": "Contraer {name} en el nivel {level}, elemento secundario de {parentName}",
-	"treeSelector:node:ariaLabel": "{name}, elemento secundario de {parentName},",
 
 	"dropdownFilter:loadMore": "Cargar más",
 	"dropdownFilter:openerTextAll": "{filterName}: Todos",
