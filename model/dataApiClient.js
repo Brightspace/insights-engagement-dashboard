@@ -71,10 +71,14 @@ export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [
 
 		response = await d2lfetch.fetch(uri, { headers: { 'cache-control': 'no-store' } });
 	}
-	const results = await response.json();
-	results.orgUnits = mapOrgUnits(results.orgUnits);
 
-	if (response.ok) return results;
+	if (response.ok) {
+		const results = await response.json();
+		if (results.orgUnits) {
+			results.orgUnits = mapOrgUnits(results.orgUnits);
+		}
+		return results;
+	}
 	else {
 		throw new Error('query-failure');
 	}

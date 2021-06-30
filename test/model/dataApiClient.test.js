@@ -1,9 +1,35 @@
-import { fetchCachedChildren, fetchData, fetchLastSearch, fetchRelevantChildren, fetchRoles, fetchUserData, getVisibleUsers, orgUnitSearch, saveSettings } from '../../model/dataApiClient';
+import {
+	fetchCachedChildren, fetchData, fetchLastSearch, fetchRelevantChildren, fetchRoles, fetchUserData, getVisibleUsers, orgUnitSearch, saveSettings
+} from '../../model/dataApiClient';
 import { expect } from '@open-wc/testing';
 import fetchMock from 'fetch-mock/esm/client';
 
 const rolesEndpoint = '/d2l/api/ap/unstable/insights/data/roles';
 const usersEndpoint = 'end:/d2l/api/ap/unstable/insights/data/engagement/users';
+const mockLmsResponseData = {
+	Items: [
+		[1, 'name-1', 2, [2], true],
+		[2, 'name-2', 4, [5, 6], false]
+	]
+};
+const mockLmsResponseData2 = {
+	Items: [
+		[3, 'name-3', 5, [5], true],
+		[4, 'name-4', 6, [6], false]
+	]
+};
+const mockLmsExpectedData = {
+	Items: [
+		{ Id:1, Name:'name-1', Type:2, Parents:[2], IsActive:true },
+		{ Id:2, Name:'name-2', Type:4, Parents:[5, 6], IsActive:false }
+	]
+};
+const mockLmsExpectedData2 = {
+	Items: [
+		{ Id:3, Name:'name-3', Type:5, Parents:[5], IsActive:true },
+		{ Id:4, Name:'name-4', Type:6, Parents:[6], IsActive:false }
+	]
+};
 
 describe('Lms', () => {
 	afterEach(() => {
@@ -39,57 +65,40 @@ describe('Lms', () => {
 
 	describe('fetchRelevantChildren', () => {
 		it('should fetch children from the LMS without a semester filter', async() => {
-			const mockLmsResponseData = {
-				Items: [[1, 'name', 7, [8], true], [2, 'name2', 4, [5, 6], false] ],
+			const responseData = { ...mockLmsResponseData,
 				PagingInfo: { HashMoreItems: false, Bookmark: '9' }
 			};
 
-			const expectedData = {
-				Items: [
-					{ Id:1, Name:'name', Type:7, Parents:[8], IsActive:true },
-					{ Id:2, Name:'name2', Type:4, Parents:[5, 6], IsActive:false }	
-				],
+			const expectedData = { ...mockLmsExpectedData,
 				PagingInfo: { HashMoreItems: false, Bookmark: '9' }
 			};
 
-			fetchMock.get('path:/d2l/api/ap/unstable/insights/data/orgunits/6612/children', mockLmsResponseData);
+			fetchMock.get('path:/d2l/api/ap/unstable/insights/data/orgunits/6612/children', responseData);
 
 			expect(await fetchRelevantChildren(6612)).to.deep.equal(expectedData);
 		});
 
 		it('should fetch children from the LMS with a semester filter', async() => {
-			const mockLmsResponseData = {
-				Items: [[1, 'name', 7, [8], true], [2, 'name2', 4, [5, 6], false] ],
+			const responseData = { ...mockLmsResponseData,
 				PagingInfo: { HashMoreItems: true, Bookmark: '9' }
 			};
 
-			const expectedData = {
-				Items: [
-					{ Id:1, Name:'name', Type:7, Parents:[8], IsActive:true },
-					{ Id:2, Name:'name2', Type:4, Parents:[5, 6], IsActive:false }	
-				],
+			const expectedData = { ...mockLmsExpectedData,
 				PagingInfo: { HashMoreItems: true, Bookmark: '9' }
 			};
 
 			fetchMock.get(
 				'end:/d2l/api/ap/unstable/insights/data/orgunits/6612/children?selectedSemestersCsv=4%2C500%2C8',
-				mockLmsResponseData
+				responseData
 			);
 
 			expect(await fetchRelevantChildren(6612, [4, 500, 8])).to.deep.equal(expectedData);
 		});
 
 		it('should cache by semester ids', async() => {
-			const mockLmsResponseData1 = {
-				Items: [2, 4, 7, 8, 9] // not representative; just for matching
-			};
-			const mockLmsResponseData2 = {
-				Items: [10, 11, 100] // not representative; just for matching
-			};
-
 			fetchMock.get(
 				'end:/d2l/api/ap/unstable/insights/data/orgunits/9619/children?selectedSemestersCsv=9%2C500%2C8',
-				mockLmsResponseData1
+				mockLmsResponseData
 			);
 			await fetchRelevantChildren(9619, [9, 500, 8]);
 
@@ -100,46 +109,40 @@ describe('Lms', () => {
 			await fetchRelevantChildren(6612, [9, 500, 8]);
 
 			expect([...fetchCachedChildren([9, 500, 8])].sort((x, y) => x[0] - y[0])).to.deep.equal([
-				[6612, mockLmsResponseData2],
-				[9619, mockLmsResponseData1]
+				[6612, mockLmsExpectedData2],
+				[9619, mockLmsExpectedData]
 			]);
 		});
 
 		it('should append to cache and update paging info', async() => {
-			const mockLmsResponseData1 = {
-				Items: [2, 4, 7, 8, 9], // not representative; just for matching
+			const responseData = { ...mockLmsResponseData,
 				PagingInfo: { HasMoreItems: true, Bookmark: '9' }
 			};
-			const mockLmsResponseData2 = {
-				Items: [10, 11, 100], // not representative; just for matching
+			const responseData2 = { ...mockLmsResponseData2,
 				PagingInfo: { HasMoreItems: false, Bookmark: '100' }
 			};
 
 			fetchMock.get(
 				'end:/d2l/api/ap/unstable/insights/data/orgunits/9619/children?selectedSemestersCsv=14%2C500%2C8',
-				mockLmsResponseData1
+				responseData
 			);
 			await fetchRelevantChildren(9619, [14, 500, 8]);
 
 			fetchMock.get(
 				'end:/d2l/api/ap/unstable/insights/data/orgunits/9619/children?selectedSemestersCsv=14%2C500%2C8&bookmark=9',
-				mockLmsResponseData2
+				responseData2
 			);
 			await fetchRelevantChildren(9619, [14, 500, 8], '9');
 
 			expect([...fetchCachedChildren([14, 500, 8])]).to.deep.equal([
 				[9619, {
-					Items: [...mockLmsResponseData1.Items, ...mockLmsResponseData2.Items],
-					PagingInfo: mockLmsResponseData2.PagingInfo
+					Items: [...mockLmsExpectedData.Items, ...mockLmsExpectedData2.Items],
+					PagingInfo: responseData2.PagingInfo
 				}]
 			]);
 		});
 
 		it('should treat null as empty array in cache key', async() => {
-			const mockLmsResponseData = {
-				Items: [2, 4, 7, 8, 9] // not representative; just for matching
-			};
-
 			fetchMock.get(
 				'end:/d2l/api/ap/unstable/insights/data/orgunits/6613/children?selectedSemestersCsv=',
 				mockLmsResponseData
@@ -147,66 +150,46 @@ describe('Lms', () => {
 
 			await fetchRelevantChildren(6613, []);
 
-			expect(fetchCachedChildren(null).get(6613)).to.deep.equal(mockLmsResponseData);
+			expect(fetchCachedChildren(null).get(6613)).to.deep.equal(mockLmsExpectedData);
 		});
 	});
 
 	describe('orgUnitSearch', () => {
 		it('should search without a semester filter', async() => {
-			const mockLmsResponseData = {
-				Items: [2, 4, 7, 8, 9] // not representative; just for matching
-			};
-
 			fetchMock.get('end:/d2l/api/ap/unstable/insights/data/orgunits?search=asdf', mockLmsResponseData);
 
-			expect(await orgUnitSearch('asdf')).to.deep.equal(mockLmsResponseData);
+			expect(await orgUnitSearch('asdf')).to.deep.equal(mockLmsExpectedData);
 		});
 
 		it('should search with a semester filter', async() => {
-			const mockLmsResponseData = {
-				Items: [2, 4, 7, 8, 9] // not representative; just for matching
-			};
-
 			fetchMock.get(
 				'end:/d2l/api/ap/unstable/insights/data/orgunits?search=c23&selectedSemestersCsv=4%2C500%2C8',
 				mockLmsResponseData
 			);
 
-			expect(await orgUnitSearch('c23', [4, 500, 8])).to.deep.equal(mockLmsResponseData);
+			expect(await orgUnitSearch('c23', [4, 500, 8])).to.deep.equal(mockLmsExpectedData);
 		});
 
 		it('should search with a semester filter and bookmark', async() => {
-			const mockLmsResponseData = {
-				Items: [2, 4, 7, 8, 9] // not representative; just for matching
-			};
-
 			fetchMock.get(
 				'end:/d2l/api/ap/unstable/insights/data/orgunits?search=c23&selectedSemestersCsv=4%2C500%2C8&bookmark=234',
 				mockLmsResponseData
 			);
 
-			expect(await orgUnitSearch('c23', [4, 500, 8], '234')).to.deep.equal(mockLmsResponseData);
+			expect(await orgUnitSearch('c23', [4, 500, 8], '234')).to.deep.equal(mockLmsExpectedData);
 		});
 
 		it('should cache result for matching semester filter', async() => {
-			const mockLmsResponseData = {
-				Items: [2, 4, 7, 8, 9] // not representative; just for matching
-			};
-
 			fetchMock.get(
 				'end:/d2l/api/ap/unstable/insights/data/orgunits?search=new+search&selectedSemestersCsv=4%2C500%2C8',
 				mockLmsResponseData
 			);
 			await orgUnitSearch('new search', [4, 500, 8]);
 
-			expect(fetchLastSearch([4, 500, 8])).to.deep.equal(mockLmsResponseData.Items);
+			expect(fetchLastSearch([4, 500, 8])).to.deep.equal(mockLmsExpectedData.Items);
 		});
 
 		it('should cache null for different semester filter', async() => {
-			const mockLmsResponseData = {
-				Items: [2, 4, 7, 8, 9] // not representative; just for matching
-			};
-
 			fetchMock.get(
 				'end:/d2l/api/ap/unstable/insights/data/orgunits?search=new+search&selectedSemestersCsv=4%2C500%2C8',
 				mockLmsResponseData
@@ -217,16 +200,9 @@ describe('Lms', () => {
 		});
 
 		it('should add pages from the same search to the cache', async() => {
-			const mockLmsResponseData1 = {
-				Items: [2, 4, 7, 8, 9] // not representative; just for matching
-			};
-			const mockLmsResponseData2 = {
-				Items: [12, 14, 17, 18, 19] // not representative; just for matching
-			};
-
 			fetchMock.get(
 				'end:/d2l/api/ap/unstable/insights/data/orgunits?search=paged+search&selectedSemestersCsv=4%2C500%2C8',
-				mockLmsResponseData1
+				mockLmsResponseData
 			);
 			await orgUnitSearch('paged search', [4, 500, 8]);
 
@@ -237,21 +213,14 @@ describe('Lms', () => {
 			await orgUnitSearch('paged search', [4, 500, 8], '9');
 
 			expect(fetchLastSearch([4, 500, 8])).to.deep.equal(
-				[...mockLmsResponseData1.Items, ...mockLmsResponseData2.Items]
+				[...mockLmsExpectedData.Items, ...mockLmsExpectedData2.Items]
 			);
 		});
 
 		it('should refresh the cache when a new search begins', async() => {
-			const mockLmsResponseData1 = {
-				Items: [2, 4, 7, 8, 9] // not representative; just for matching
-			};
-			const mockLmsResponseData2 = {
-				Items: [12, 14, 17, 18, 19] // not representative; just for matching
-			};
-
 			fetchMock.get(
 				'end:/d2l/api/ap/unstable/insights/data/orgunits?search=first+search&selectedSemestersCsv=4%2C500%2C8',
-				mockLmsResponseData1
+				mockLmsResponseData
 			);
 			await orgUnitSearch('first search', [4, 500, 8]);
 
@@ -261,20 +230,13 @@ describe('Lms', () => {
 			);
 			await orgUnitSearch('second search', [4, 500, 8]);
 
-			expect(fetchLastSearch([4, 500, 8])).to.deep.equal(mockLmsResponseData2.Items);
+			expect(fetchLastSearch([4, 500, 8])).to.deep.equal(mockLmsExpectedData2.Items);
 		});
 
 		it('should refresh the cache when the semester filter changes', async() => {
-			const mockLmsResponseData1 = {
-				Items: [2, 4, 7, 8, 9] // not representative; just for matching
-			};
-			const mockLmsResponseData2 = {
-				Items: [12, 14, 17, 18, 19] // not representative; just for matching
-			};
-
 			fetchMock.get(
 				'end:/d2l/api/ap/unstable/insights/data/orgunits?search=same+search&selectedSemestersCsv=4%2C500%2C8',
-				mockLmsResponseData1
+				mockLmsResponseData
 			);
 			await orgUnitSearch('same search', [4, 500, 8]);
 
@@ -285,7 +247,7 @@ describe('Lms', () => {
 			await orgUnitSearch('same search', [1, 2, 3]);
 
 			expect(fetchLastSearch([4, 500, 8])).to.deep.equal(null);
-			expect(fetchLastSearch([1, 2, 3])).to.deep.equal(mockLmsResponseData2.Items);
+			expect(fetchLastSearch([1, 2, 3])).to.deep.equal(mockLmsExpectedData2.Items);
 		});
 	});
 
