@@ -40,18 +40,34 @@ describe('Lms', () => {
 	describe('fetchRelevantChildren', () => {
 		it('should fetch children from the LMS without a semester filter', async() => {
 			const mockLmsResponseData = {
-				Items: [2, 4, 7, 8, 9], // not representative; just for matching
+				Items: [[1, 'name', 7, [8], true], [2, 'name2', 4, [5, 6], false] ],
+				PagingInfo: { HashMoreItems: false, Bookmark: '9' }
+			};
+
+			const expectedData = {
+				Items: [
+					{ Id:1, Name:'name', Type:7, Parents:[8], IsActive:true },
+					{ Id:2, Name:'name2', Type:4, Parents:[5, 6], IsActive:false }	
+				],
 				PagingInfo: { HashMoreItems: false, Bookmark: '9' }
 			};
 
 			fetchMock.get('path:/d2l/api/ap/unstable/insights/data/orgunits/6612/children', mockLmsResponseData);
 
-			expect(await fetchRelevantChildren(6612)).to.deep.equal(mockLmsResponseData);
+			expect(await fetchRelevantChildren(6612)).to.deep.equal(expectedData);
 		});
 
 		it('should fetch children from the LMS with a semester filter', async() => {
 			const mockLmsResponseData = {
-				Items: [2, 4, 7, 8, 9], // not representative; just for matching
+				Items: [[1, 'name', 7, [8], true], [2, 'name2', 4, [5, 6], false] ],
+				PagingInfo: { HashMoreItems: true, Bookmark: '9' }
+			};
+
+			const expectedData = {
+				Items: [
+					{ Id:1, Name:'name', Type:7, Parents:[8], IsActive:true },
+					{ Id:2, Name:'name2', Type:4, Parents:[5, 6], IsActive:false }	
+				],
 				PagingInfo: { HashMoreItems: true, Bookmark: '9' }
 			};
 
@@ -60,7 +76,7 @@ describe('Lms', () => {
 				mockLmsResponseData
 			);
 
-			expect(await fetchRelevantChildren(6612, [4, 500, 8])).to.deep.equal(mockLmsResponseData);
+			expect(await fetchRelevantChildren(6612, [4, 500, 8])).to.deep.equal(expectedData);
 		});
 
 		it('should cache by semester ids', async() => {

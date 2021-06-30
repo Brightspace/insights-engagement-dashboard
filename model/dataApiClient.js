@@ -1,5 +1,6 @@
 import { d2lfetch } from 'd2l-fetch/src';
 import { fetchAuth } from 'd2l-fetch-auth';
+import { ORG_UNIT } from '../consts';
 d2lfetch.use({ name: 'auth', fn: fetchAuth });
 
 let isMocked = false;
@@ -25,6 +26,16 @@ function concatMetronUrl(endpoint, apiPath) {
 	}
 
 	return endpoint + (endpoint.endsWith('/') ? '' : '/') + apiPath;
+}
+
+function mapOrgUnits(orgunits) {
+	return orgunits.map(orgunit => ({
+		Id: orgunit[ORG_UNIT.ID],
+		Name: orgunit[ORG_UNIT.NAME],
+		Type: orgunit[ORG_UNIT.TYPE],
+		Parents: orgunit[ORG_UNIT.PARENTS],
+		IsActive: orgunit[ORG_UNIT.IS_ACTIVE]
+	}));
 }
 
 /**
@@ -60,8 +71,10 @@ export async function fetchData({ roleIds = [], semesterIds = [], orgUnitIds = [
 
 		response = await d2lfetch.fetch(uri, { headers: { 'cache-control': 'no-store' } });
 	}
+	const results = await response.json();
+	results.orgUnits = mapOrgUnits(results.orgUnits);
 
-	if (response.ok) return await response.json();
+	if (response.ok) return results;
 	else {
 		throw new Error('query-failure');
 	}
@@ -136,6 +149,7 @@ export async function fetchRelevantChildren(orgUnitId, selectedSemesterIds, book
 	}
 	const response = await fetch(url.toString());
 	const results = await response.json();
+	results.Items = mapOrgUnits(results.Items);
 
 	const key = cacheKey(selectedSemesterIds);
 	if (!relevantChildrenCache.has(key)) relevantChildrenCache.set(key, new Map());
@@ -170,6 +184,7 @@ export async function orgUnitSearch(searchString, selectedSemesterIds, bookmark)
 	}
 	const response = await fetch(url.toString());
 	const results = await response.json();
+	results.Items = mapOrgUnits(results.Items);
 
 	const key = cacheKey(selectedSemesterIds);
 	if (orgUnitSearchCache.searchString === searchString && orgUnitSearchCache.selectedSemesterIds === key) {
