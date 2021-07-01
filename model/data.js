@@ -112,7 +112,7 @@ export class Data {
 		this.orgUnitTree = new Tree({
 			// add in any nodes from the most recent search (if the semester filter didn't change); otherwise
 			// the search will blink out and come back, and also drop any "load more" results
-			nodes: nodes,
+			nodes,
 			leafTypes: [COURSE_OFFERING],
 			invisibleTypes: [newServerData.semesterTypeId],
 			selectedIds: newServerData.defaultViewOrgUnitIds || newServerData.selectedOrgUnitIds || [],
