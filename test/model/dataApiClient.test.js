@@ -8,26 +8,26 @@ const rolesEndpoint = '/d2l/api/ap/unstable/insights/data/roles';
 const usersEndpoint = 'end:/d2l/api/ap/unstable/insights/data/engagement/users';
 const mockLmsResponseData = {
 	Items: [
-		[1, 'name-1', 2, [2], true],
-		[2, 'name-2', 4, [5, 6], false]
+		[101, 'name-1', 2, [102], true],
+		[102, 'name-2', 4, [105, 106], false]
 	]
 };
 const mockLmsResponseData2 = {
 	Items: [
-		[3, 'name-3', 5, [5], true],
-		[4, 'name-4', 6, [6], false]
+		[103, 'name-3', 5, [105], true],
+		[104, 'name-4', 6, [106], false]
 	]
 };
 const mockLmsExpectedData = {
 	Items: [
-		{ Id:1, Name:'name-1', Type:2, Parents:[2], IsActive:true },
-		{ Id:2, Name:'name-2', Type:4, Parents:[5, 6], IsActive:false }
+		{ Id:101, Name:'name-1', Type:2, Parents:[102], IsActive:true },
+		{ Id:102, Name:'name-2', Type:4, Parents:[105, 106], IsActive:false }
 	]
 };
 const mockLmsExpectedData2 = {
 	Items: [
-		{ Id:3, Name:'name-3', Type:5, Parents:[5], IsActive:true },
-		{ Id:4, Name:'name-4', Type:6, Parents:[6], IsActive:false }
+		{ Id:103, Name:'name-3', Type:5, Parents:[105], IsActive:true },
+		{ Id:104, Name:'name-4', Type:6, Parents:[106], IsActive:false }
 	]
 };
 
