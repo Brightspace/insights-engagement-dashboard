@@ -1,5 +1,5 @@
 import { action, computed, decorate, observable } from 'mobx';
-import { COURSE_OFFERING, ORG_UNIT, RECORD, USER } from '../consts';
+import { COURSE_OFFERING, RECORD, USER } from '../consts';
 import { fetchCachedChildren, fetchLastSearch, fetchRelevantChildren, orgUnitSearch } from './dataApiClient.js';
 import { OrgUnitSelectorFilter, RoleSelectorFilter, SemesterSelectorFilter, UserSelectorFilter } from './selectorFilters.js';
 import { OuFilterDataManager } from '@brightspace-ui-labs/ou-filter/ou-filter';
@@ -108,18 +108,11 @@ export class Data {
 	onServerDataReload(newServerData) {
 		const lastSearchResults = fetchLastSearch(newServerData.selectedSemestersIds);
 		const nodes = lastSearchResults ? [...newServerData.orgUnits, ...lastSearchResults] : newServerData.orgUnits;
-		const mappedNodes = nodes.map(n => ({
-			Id: n[ORG_UNIT.ID],
-			Name: n[ORG_UNIT.NAME],
-			Type: n[ORG_UNIT.TYPE],
-			Parents: n[ORG_UNIT.PARENTS],
-			IsActive: n[ORG_UNIT.IS_ACTIVE]
-		}));
 
 		this.orgUnitTree = new Tree({
 			// add in any nodes from the most recent search (if the semester filter didn't change); otherwise
 			// the search will blink out and come back, and also drop any "load more" results
-			nodes: mappedNodes,
+			nodes,
 			leafTypes: [COURSE_OFFERING],
 			invisibleTypes: [newServerData.semesterTypeId],
 			selectedIds: newServerData.defaultViewOrgUnitIds || newServerData.selectedOrgUnitIds || [],

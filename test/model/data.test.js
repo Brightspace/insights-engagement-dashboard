@@ -16,21 +16,21 @@ describe('Data', () => {
 
 	const serverData = {
 		orgUnits: [
-			[6606, 'root', mockOuTypes.organization, [0]],
-			[1001, 'Dept 1', mockOuTypes.department, [6606]],
-			[1002, 'Dept 2', mockOuTypes.department, [6606]],
-			[1, 'Course 1', mockOuTypes.course, [1001]],
-			[2, 'Course 2', mockOuTypes.course, [1001]],
-			[3, 'Course 3', mockOuTypes.course, [1002]],
-			[11, 'Semester 1', mockOuTypes.semester, [6606]],
-			[12, 'Semester 2', mockOuTypes.semester, [6606]],
-			[13, 'Semester 3', mockOuTypes.semester, [6606]],
-			[111, 'Course 1 / Semester 1', mockOuTypes.courseOffering, [1, 11]],
-			[112, 'Course 1 / Semester 2', mockOuTypes.courseOffering, [1, 12]],
-			[113, 'Course 1 / Semester 3', mockOuTypes.courseOffering, [1, 13]],
-			[212, 'Course 2 / Semester 2', mockOuTypes.courseOffering, [2, 12]],
-			[311, 'Course 3 / Semester 1', mockOuTypes.courseOffering, [3, 11]],
-			[313, 'Course 3 / Semester 3', mockOuTypes.courseOffering, [3, 13]]
+			{ Id: 6606, Name: 'root', Type: 0, Parents: [0] },
+			{ Id: 1001, Name: 'Dept 1', Type: 1, Parents: [6606] },
+			{ Id: 1002, Name: 'Dept 2', Type: 1, Parents: [6606] },
+			{ Id: 1, Name: 'Course 1', Type: 2, Parents: [1001] },
+			{ Id: 2, Name: 'Course 2', Type: 2, Parents: [1001] },
+			{ Id: 3, Name: 'Course 3', Type: 2, Parents: [1002] },
+			{ Id: 11, Name: 'Semester 1', Type: 5, Parents: [6606] },
+			{ Id: 12, Name: 'Semester 2', Type: 5, Parents: [6606] },
+			{ Id: 13, Name: 'Semester 3', Type: 5, Parents: [6606] },
+			{ Id: 111, Name: 'Course 1 / Semester 1', Type: 3, Parents: [1, 11] },
+			{ Id: 112, Name: 'Course 1 / Semester 2', Type: 3, Parents: [1, 12] },
+			{ Id: 113, Name: 'Course 1 / Semester 3', Type: 3, Parents: [1, 13] },
+			{ Id: 212, Name: 'Course 2 / Semester 2', Type: 3, Parents: [2, 12] },
+			{ Id: 311, Name: 'Course 3 / Semester 1', Type: 3, Parents: [3, 11] },
+			{ Id: 313, Name: 'Course 3 / Semester 3', Type: 3, Parents: [3, 13] }
 		],
 		records,
 		users: [
@@ -234,9 +234,9 @@ describe('Data', () => {
 		const getRecordProvider = ({ defaultViewOrgUnitIds = null, selectedOrgUnitIds = null, isDefaultView = false }) => {
 			return async() => ({
 				orgUnits: [
-					[1, 'Course 1', mockOuTypes.course, [0]],
-					[2, 'Course 2', mockOuTypes.course, [0]],
-					[3, 'Course 3', mockOuTypes.course, [0]]
+					{ Id:1, Name:'Course 1', Type:mockOuTypes.course, Parents:[0] },
+					{ Id:2, Name:'Course 2', Type:mockOuTypes.course, Parents:[0] },
+					{ Id:3, Name:'Course 3', Type:mockOuTypes.course, Parents:[0] }
 				],
 				users: [],
 				defaultViewOrgUnitIds,
