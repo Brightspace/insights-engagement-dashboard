@@ -3,6 +3,7 @@ import '@brightspace-ui/core/components/list/list-item';
 import '@brightspace-ui/core/components/tabs/tabs';
 import '@brightspace-ui/core/components/tabs/tab-panel';
 import '@brightspace-ui/core/components/inputs/input-number';
+import '@brightspace-ui/core/components/tooltip/tooltip.js';
 
 import './card-selection-list';
 import './role-list.js';
@@ -46,7 +47,9 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 			showCourseAccessTrendCard: { type: Boolean, attribute: 'course-access-trend-card', reflect: true },
 			showGradesTrendCard: { type: Boolean, attribute: 'grades-trend-card', reflect: true },
 			showPredictedGradeCol: { type: Boolean, attribute: 'predicted-grade-col', reflect: true },
-			_toastMessagetext: { type: String, attribute: false }
+			_toastMessagetext: { type: String, attribute: false },
+
+			allowSave: { type: Boolean, attribute: false }
 		};
 	}
 
@@ -177,7 +180,11 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 		this.showCourseAccessTrendCard = false;
 		this.showGradesTrendCard = false;
 		this.showPredictedGradeCol = false;
+
+		this.allowSave = true;
 	}
+
+	firstUpdated() {}
 
 	render() {
 		return html`
@@ -190,7 +197,8 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 
 							<d2l-insights-role-list
 								?demo="${this.isDemo}"
-								.includeRoles="${this.includeRoles}">
+								.includeRoles="${this.includeRoles}"
+								@d2l-insights-role-list-change="${this._handleRoleChange}">
 							</d2l-insights-role-list>
 
 							<d2l-insights-engagement-card-selection-list
@@ -240,11 +248,17 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 			<footer>
 				<div class="d2l-insights-settings-page-footer">
 					<d2l-button
+						id="save-close"
 						primary
 						class="d2l-insights-settings-footer-button-desktop"
+						?disabled="${!this.allowSave}"
 						@click="${this._handleSaveAndClose}">
 						${this.localize('settings:saveAndClose')}
 					</d2l-button>
+					${this.allowSave ? '' : html`
+					<d2l-tooltip for="save-close" state="error" align="start" offset="10">
+						Please select a role before saving.
+					</d2l-tooltip>`}
 					<d2l-button
 						primary
 						class="d2l-insights-settings-footer-button-responsive"
@@ -296,6 +310,10 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 
 	_handleCancel() {
 		this._returnToEngagementDashboard();
+	}
+
+	_handleRoleChange() {
+		this.allowSave = this._selectedRoleIds.length > 0;
 	}
 
 	_returnToEngagementDashboard(settings) {
