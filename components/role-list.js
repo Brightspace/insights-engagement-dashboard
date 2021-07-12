@@ -51,6 +51,10 @@ class RoleList extends Localizer(LitElement) {
 				min-height: 50px;
 			}
 
+			.d2l-insights-spacer {
+				margin-bottom: 10px;
+			}
+
 		`];
 	}
 
@@ -75,6 +79,15 @@ class RoleList extends Localizer(LitElement) {
 		const dataProvider = this.isDemo ? fetchDemoRoles : fetchRoles;
 		const data = await dataProvider();
 		this._setRoleData(data);
+	}
+
+	get includeRoles() {
+		return this._includeRoles;
+	}
+
+	set includeRoles(v) {
+		console.log(v);
+		this._includeRoles = v;
 	}
 
 	get _selected() {
@@ -102,6 +115,20 @@ class RoleList extends Localizer(LitElement) {
 		});
 	}
 
+	_handleCheckAll() {
+		this.shadowRoot.querySelectorAll('d2l-input-checkbox')
+			.forEach(checkbox => checkbox.checked = true);
+
+		this._handleSelectionChange();
+	}
+
+	_handleCheckNone() {
+		this.shadowRoot.querySelectorAll('d2l-input-checkbox')
+			.forEach(checkbox => checkbox.checked = false);
+
+		this._handleSelectionChange();
+	}
+
 	render() {
 		const filterData = this._filterData;
 		const styles = {
@@ -117,11 +144,17 @@ class RoleList extends Localizer(LitElement) {
 			<div class="${classMap(styles)}">
 				${filterData.map(item => html`<d2l-input-checkbox value="${item.id}" @change="${this._handleSelectionChange}" ?checked="${item.selected}" >${item.displayName}</d2l-input-checkbox>`)}
 			</div>
+			<div class="d2l-insights-spacer">
+				<d2l-button @click=${this._handleCheckAll}>${this.localize('settings:selectAll')}</d2l-button>
+				<d2l-button @click=${this._handleCheckNone}>${this.localize('settings:deselectAll')}</d2l-button>
+			</div>
 		`;
 	}
 
 	_handleSelectionChange() {
-		this.includeRoles = this._selected;
+		// prevent mobx-lit commit from over-writing the array by reusing the proxy
+		this.includeRoles.length = 0;
+		this._selected.forEach(selected => this.includeRoles.push(selected));
 		/**
 		 * @event d2l-insights-role-list-change
 		 */
