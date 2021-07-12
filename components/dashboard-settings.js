@@ -257,7 +257,7 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 					</d2l-button>
 					${this.allowSave ? '' : html`
 					<d2l-tooltip for="save-close" state="error" align="start" offset="10">
-						Please select a role before saving.
+						${this.localize('settings:saveNotEnoughRoles')}
 					</d2l-tooltip>`}
 					<d2l-button
 						primary

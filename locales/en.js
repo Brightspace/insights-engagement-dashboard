@@ -181,6 +181,7 @@ export default {
 	"settings:cancel": "Cancel",
 	"settings:selectAll": "Select All",
 	"settings:deselectAll": "Deselect All",
+	"settings:saveNotEnoughRoles": "Please select a role before saving.",
 
 	"settings:currentGradeDesc": "The Current Grade card shows the current grade for each enrollment per user for courses that are filtered on.",
 	"settings:courseAccessDesc": "The Course Access card shows the last access in a course for each enrollment per user for courses that are filtered on.",
