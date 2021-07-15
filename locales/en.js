@@ -182,7 +182,7 @@ export default {
 	"settings:cancel": "Cancel",
 	"settings:selectAll": "Select All",
 	"settings:deselectAll": "Deselect All",
-	"settings:errors": "There were errors found in the settings you submitted.",
+	"settings:errors": "The following errors were found in the submitted settings.",
 
 	"settings:currentGradeDesc": "The Current Grade card shows the current grade for each enrollment per user for courses that are filtered on.",
 	"settings:courseAccessDesc": "The Course Access card shows the last access in a course for each enrollment per user for courses that are filtered on.",

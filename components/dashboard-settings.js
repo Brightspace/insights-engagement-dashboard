@@ -348,6 +348,9 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 		}
 		if (this.errors.length > 0) {
 			window.scroll({ top: 0, behavior: 'smooth' });
+			this.shadowRoot.querySelector('d2l-tabs')
+				.shadowRoot.querySelector('d2l-tab-internal[title="Summary Metrics"]')
+				.click();
 			return;
 		}
 
