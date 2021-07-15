@@ -30,7 +30,7 @@ function concatMetronUrl(endpoint, apiPath) {
 
 function mapOrgUnits(orgunits) {
 	return orgunits.map(orgunit => {
-		if (orgunit.constructor.name !== 'Array') return orgunit; // only map if in the old format
+		if (!Array.isArray(orgunit)) return orgunit; // only map if in the old format
 		return {
 			Id: orgunit[ORG_UNIT.ID],
 			Name: orgunit[ORG_UNIT.NAME],
