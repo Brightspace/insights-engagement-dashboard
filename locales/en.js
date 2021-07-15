@@ -32,7 +32,8 @@ export default {
 
 	"settings:roleListTitle": "Roles filter",
 	"settings:roleListDescription": "Set which learner roles to include in your dashboard data. All other roles will be filtered out.",
-	"settings:roleListError": "At least one role must be selected.",
+	"settings:roleListError": "Role filter requires at least one selected role.",
+	"settings:systemAccessError": "System access must be greater than 0 and less than 31.",
 
 	"orgUnitFilter:name": "Org Unit",
 

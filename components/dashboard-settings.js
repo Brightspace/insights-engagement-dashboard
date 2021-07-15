@@ -26,8 +26,8 @@ const INVALID_SYSTEM_ACCESS = Symbol('invalid-system-access');
 const INVALID_ROLE_SELECTION = Symbol('invalid-role-selection');
 
 const ERROR_LINKS = {};
-ERROR_LINKS[INVALID_SYSTEM_ACCESS] = { term: 'dashboard:lastSystemAccessHeading', id: 'last-access-threshold-edit' };
-ERROR_LINKS[INVALID_ROLE_SELECTION] = { term: 'settings:roleListTitle', id: 'role-list-items' };
+ERROR_LINKS[INVALID_SYSTEM_ACCESS] = { term: 'settings:systemAccessError', id: 'last-access-threshold-edit' };
+ERROR_LINKS[INVALID_ROLE_SELECTION] = { term: 'settings:roleListError', id: 'role-list-items' };
 
 class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 
@@ -58,7 +58,8 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 			showPredictedGradeCol: { type: Boolean, attribute: 'predicted-grade-col', reflect: true },
 			_toastMessagetext: { type: String, attribute: false },
 
-			errors: { attribute: false }
+			errors: { attribute: false },
+			isAlertCollapsed: { attribute: false },
 		};
 	}
 
@@ -143,6 +144,16 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 			d2l-alert {
 				margin-bottom: 10px;
 			}
+			.d2l-insights-sbs {
+				cursor: pointer;
+				display: flex;
+				justify-content: space-between;
+				user-select: none;
+			}
+
+			.d2l-insights-alert-collapse {
+				margin-top: 5px;
+			}
 
 			@media screen and (max-width: 615px) {
 				h1.d2l-heading-1, h2.d2l-heading-2 {
@@ -203,6 +214,7 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 		this.showGradesTrendCard = false;
 		this.showPredictedGradeCol = false;
 		this.errors = undefined;
+		this.isAlertCollapsed = false;
 	}
 
 	_handleScroll(e) {
@@ -218,9 +230,17 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 
 	_renderErrorAlert() {
 		if (!this.errors) return html``;
+		const collapseIcon = this.isAlertCollapsed ? 'tier1:arrow-expand-small' : 'tier1:arrow-collapse-small';
+		const handleToggleCollapse = () => {
+			this.isAlertCollapsed = !this.isAlertCollapsed;
+		};
 		return html`
 			<d2l-alert type="critical">
-				${this.localize('settings:errors')}
+				<div class="d2l-insights-sbs" @click=${handleToggleCollapse} @keypress=${handleToggleCollapse}>
+					<span>${this.localize('settings:errors')}</span>
+					<d2l-icon icon="${collapseIcon}"></d2l-icon>
+				</div>
+				${ this.isAlertCollapsed ? '' : html`
 				<ul>
 					${this.errors.map(errorSymbol => html`
 						<li>
@@ -233,7 +253,7 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 							</span>
 						</li>
 					`)}
-				</ul>
+				</ul>`}
 			</d2l-alert>
 		`;
 	}
@@ -347,6 +367,7 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 			this.errors.push(INVALID_SYSTEM_ACCESS);
 		}
 		if (this.errors.length > 0) {
+			this.isAlertCollapsed = false;
 			window.scroll({ top: 0, behavior: 'smooth' });
 			this.shadowRoot.querySelector('d2l-tabs')
 				.shadowRoot.querySelector('d2l-tab-internal[title="Summary Metrics"]')
