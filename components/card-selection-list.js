@@ -11,6 +11,7 @@ import { bodySmallStyles, bodyStandardStyles, heading3Styles } from '@brightspac
 import { css, html, LitElement } from 'lit-element/lit-element';
 import { Localizer } from '../locales/localizer';
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin';
+import shadowHash from '../model/shadowHash';
 
 const lastSysAccessThresholdMinDays = 1;
 const lastSysAccessThresholdMaxDays = 30;
@@ -101,6 +102,11 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 		this.showSystemAccessCard = false;
 		this.showTicGradesCard = false;
 		this.lastAccessThresholdDays = 14;
+	}
+
+	firstUpdated() {
+		const input = this.shadowRoot.querySelector('#last-access-threshold-edit');
+		shadowHash.register(input);
 	}
 
 	render() {
@@ -227,7 +233,7 @@ class CardSelectionList extends RtlMixin(Localizer(LitElement)) {
 				<d2l-offscreen>${this.localize('settings:systemAccessDesc')}</d2l-offscreen>
 				<p class="d2l-body-standard">${this.localize('settings:systemAccessDesc')}</p>
 
-				<div>
+				<div id="system-access">
 					<span class="d2l-body-small">${editTextParts[0]}</span>
 					<d2l-input-number
 						id="last-access-threshold-edit"

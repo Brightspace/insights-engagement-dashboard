@@ -7,6 +7,9 @@ import { fetchRoles as fetchDemoRoles } from '../model/fake-dataApiClient';
 import { fetchRoles } from '../model/dataApiClient';
 import { heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { Localizer } from '../locales/localizer';
+import { nothing } from 'lit-html';
+import { renderWarning } from './svg/warning-icon';
+import shadowHash from '../model/shadowHash';
 
 /**
  * @property {Number[]} includeRoles - user selected roles from preferences
@@ -26,6 +29,7 @@ class RoleList extends Localizer(LitElement) {
 
 			h3.d2l-heading-3 {
 				margin: 0;
+				width: 130px;
 			}
 
 			span {
@@ -51,6 +55,33 @@ class RoleList extends Localizer(LitElement) {
 				min-height: 50px;
 			}
 
+			.d2l-insights-spacer {
+				margin-bottom: 10px;
+			}
+
+			.d2l-insights-invalid {
+				/* warning icon */
+				display: block;
+				float: right;
+				height: 23px;
+				margin-top: 3px;
+				width: 23px;
+			}
+
+			@media only screen and (max-width: 615px) {
+				h3.d2l-heading-3 {
+					width: 104px;
+				}
+
+				.d2l-insights-invalid {
+					background-size: contain;
+					float: right;
+					height: 20px;
+					margin-top: 0;
+					width: 20px;
+				}
+			}
+
 		`];
 	}
 
@@ -58,7 +89,8 @@ class RoleList extends Localizer(LitElement) {
 		return {
 			isDemo: { type: Boolean, attribute: 'demo' },
 			includeRoles: { type: Array, attribute: false },
-			_filterData: { type: Array, attribute: false }
+			_filterData: { type: Array, attribute: false },
+			isError: { type: Boolean, attribute: 'error' }
 		};
 	}
 
@@ -69,12 +101,29 @@ class RoleList extends Localizer(LitElement) {
 		this.includeRoles = [];
 		/** @type {{id: string, displayName: string}[]} */
 		this._filterData = [];
+		this.updates = 0;
 	}
 
 	async firstUpdated() {
 		const dataProvider = this.isDemo ? fetchDemoRoles : fetchRoles;
 		const data = await dataProvider();
 		this._setRoleData(data);
+		shadowHash.register(this.shadowRoot.querySelector('#role-list-items'));
+		if (this.includeRoles.length === 0) {
+			this.isError = true;
+		}
+	}
+
+	async updated() {
+		const checkboxes = Array.from(this.shadowRoot.querySelectorAll('d2l-input-checkbox'));
+		if (checkboxes.length === 0) return;
+		// checkbox components may not have rendered yet.
+		await Promise.all(checkboxes.map(check => check.updateComplete));
+		if (this.isError) {
+			checkboxes.forEach(check => check.shadowRoot.querySelector('input[type="checkbox"]').style = 'border-color: var(--d2l-color-cinnabar)');
+		} else {
+			checkboxes.forEach(check => check.shadowRoot.querySelector('input[type="checkbox"]').style = '');
+		}
 	}
 
 	get _selected() {
@@ -102,6 +151,39 @@ class RoleList extends Localizer(LitElement) {
 		});
 	}
 
+	_handleCheckAll() {
+		this.shadowRoot.querySelectorAll('d2l-input-checkbox')
+			.forEach(checkbox => checkbox.checked = true);
+
+		this._handleSelectionChange();
+	}
+
+	_handleCheckNone() {
+		this.shadowRoot.querySelectorAll('d2l-input-checkbox')
+			.forEach(checkbox => checkbox.checked = false);
+		this._handleSelectionChange();
+	}
+
+	get _errorIcon() {
+		return this.isError ? html`<div class="d2l-insights-invalid">${renderWarning()}</div>&nbsp;` : nothing;
+	}
+
+	_renderHeader() {
+		const tooltip = this.isError ?
+			html`<d2l-tooltip
+					state="error"
+					for="role-list-items"
+					align="start">
+					${this.localize('settings:roleListError')}
+				</d2l-tooltip>` :
+			nothing;
+
+		return html`
+			<h3 id="role-list-items" class="d2l-heading-3">${this.localize('settings:roleListTitle')}${this._errorIcon}</h3>
+			${ tooltip }
+		`;
+	}
+
 	render() {
 		const filterData = this._filterData;
 		const styles = {
@@ -111,17 +193,27 @@ class RoleList extends Localizer(LitElement) {
 		};
 
 		return html`
-			<h3 class="d2l-heading-3">${this.localize('settings:roleListTitle')}</h3>
+			${this._renderHeader()}
 			<span>${this.localize('settings:roleListDescription')}</span>
-
 			<div class="${classMap(styles)}">
 				${filterData.map(item => html`<d2l-input-checkbox value="${item.id}" @change="${this._handleSelectionChange}" ?checked="${item.selected}" >${item.displayName}</d2l-input-checkbox>`)}
+			</div>
+			<div class="d2l-insights-spacer">
+				<d2l-button @click=${this._handleCheckAll}>${this.localize('settings:selectAll')}</d2l-button>
+				<d2l-button @click=${this._handleCheckNone}>${this.localize('settings:deselectAll')}</d2l-button>
 			</div>
 		`;
 	}
 
 	_handleSelectionChange() {
-		this.includeRoles = this._selected;
+		// prevent mobx-lit commit from over-writing the array by reusing the proxy
+		this.includeRoles.length = 0;
+		this._selected.forEach(selected => this.includeRoles.push(selected));
+		if (this.includeRoles.length === 0) {
+			this.isError = true;
+		} else {
+			this.isError = false;
+		}
 		/**
 		 * @event d2l-insights-role-list-change
 		 */

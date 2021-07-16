@@ -3,6 +3,7 @@ import '@brightspace-ui/core/components/list/list-item';
 import '@brightspace-ui/core/components/tabs/tabs';
 import '@brightspace-ui/core/components/tabs/tab-panel';
 import '@brightspace-ui/core/components/inputs/input-number';
+import '@brightspace-ui/core/components/tooltip/tooltip.js';
 
 import './card-selection-list';
 import './role-list.js';
@@ -15,10 +16,21 @@ import { heading1Styles, heading2Styles } from '@brightspace-ui/core/components/
 import { Localizer } from '../locales/localizer';
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin';
 import { saveSettings } from '../model/dataApiClient';
+import shadowHash from '../model/shadowHash';
 
 /**
  * @fires d2l-insights-settings-view-back
  */
+
+const INVALID_SYSTEM_ACCESS = Symbol('invalid-system-access');
+const INVALID_ROLE_SELECTION = Symbol('invalid-role-selection');
+
+const ERROR_LINKS = {};
+ERROR_LINKS[INVALID_SYSTEM_ACCESS] = { term: 'settings:systemAccessError', id: 'last-access-threshold-edit' };
+ERROR_LINKS[INVALID_ROLE_SELECTION] = { term: 'settings:roleListError', id: 'role-list-items' };
+
+const IMMERSIVE_NAV_HEIGHT = 62;
+
 class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 
 	static get properties() {
@@ -46,7 +58,10 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 			showCourseAccessTrendCard: { type: Boolean, attribute: 'course-access-trend-card', reflect: true },
 			showGradesTrendCard: { type: Boolean, attribute: 'grades-trend-card', reflect: true },
 			showPredictedGradeCol: { type: Boolean, attribute: 'predicted-grade-col', reflect: true },
-			_toastMessagetext: { type: String, attribute: false }
+			_toastMessagetext: { type: String, attribute: false },
+
+			errors: { attribute: false },
+			isAlertCollapsed: { attribute: false },
 		};
 	}
 
@@ -119,6 +134,29 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 				display: none;
 			}
 
+			.d2l-insights-link {
+				color: var(--d2l-color-celestine);
+				cursor: pointer;
+				text-decoration: none;
+			}
+			.d2l-insights-link:hover {
+				color: var(--d2l-color-celestine);
+				text-decoration: underline;
+			}
+			d2l-alert {
+				margin-bottom: 10px;
+			}
+			.d2l-insights-sbs {
+				cursor: pointer;
+				display: flex;
+				justify-content: space-between;
+				user-select: none;
+			}
+
+			.d2l-insights-alert-collapse {
+				margin-top: 5px;
+			}
+
 			@media screen and (max-width: 615px) {
 				h1.d2l-heading-1, h2.d2l-heading-2 {
 					font-weight: normal;
@@ -177,6 +215,49 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 		this.showCourseAccessTrendCard = false;
 		this.showGradesTrendCard = false;
 		this.showPredictedGradeCol = false;
+		this.errors = undefined;
+		this.isAlertCollapsed = false;
+	}
+
+	_handleScroll(e) {
+		const id = e.target.getAttribute('data:id');
+		const elm = shadowHash.querySelector(`#${id}`);
+		const distance = (window.pageYOffset + elm.getBoundingClientRect().top - IMMERSIVE_NAV_HEIGHT);
+		window.scrollTo({ top: distance, behavior: 'smooth' });
+	}
+
+	get _hasRoleListError() {
+		return this.errors && !!this.errors.find(e => e === INVALID_ROLE_SELECTION);
+	}
+
+	_renderErrorAlert() {
+		if (!this.errors) return html``;
+		const collapseIcon = this.isAlertCollapsed ? 'tier1:arrow-expand-small' : 'tier1:arrow-collapse-small';
+		const handleToggleCollapse = () => {
+			this.isAlertCollapsed = !this.isAlertCollapsed;
+		};
+		return html`
+			<d2l-alert type="critical">
+				<div class="d2l-insights-sbs" @click=${handleToggleCollapse} @keypress=${handleToggleCollapse}>
+					<span>${this.localize('settings:errors')}</span>
+					<d2l-icon icon="${collapseIcon}"></d2l-icon>
+				</div>
+				${ this.isAlertCollapsed ? '' : html`
+				<ul>
+					${this.errors.map(errorSymbol => html`
+						<li>
+							<span
+								data:id=${ERROR_LINKS[errorSymbol].id}
+								class="d2l-insights-link"
+								@click=${this._handleScroll}
+								@keypress=${this._handleScroll}>
+								${this.localize(ERROR_LINKS[errorSymbol].term)}
+							</span>
+						</li>
+					`)}
+				</ul>`}
+			</d2l-alert>
+		`;
 	}
 
 	render() {
@@ -187,10 +268,13 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 						<h2 class="d2l-heading-2">${this.localize('settings:description')}</h2>
 					<d2l-tabs>
 						<d2l-tab-panel text="${this.localize('settings:tabTitleSummaryMetrics')}">
-
+							${ this._renderErrorAlert() }
 							<d2l-insights-role-list
 								?demo="${this.isDemo}"
-								.includeRoles="${this.includeRoles}">
+								?error=${this._hasRoleListError}
+								.includeRoles="${this.includeRoles}"
+								@d2l-insights-role-list-change="${this._handleRoleChange}"
+								?missing-role=${this.roleError}>
 							</d2l-insights-role-list>
 
 							<d2l-insights-engagement-card-selection-list
@@ -240,6 +324,7 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 			<footer>
 				<div class="d2l-insights-settings-page-footer">
 					<d2l-button
+						id="save-close"
 						primary
 						class="d2l-insights-settings-footer-button-desktop"
 						@click="${this._handleSaveAndClose}">
@@ -276,10 +361,19 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 			...columnConfig.settings,
 			includeRoles: this._selectedRoleIds
 		};
-
+		this.errors = [];
+		if (this._selectedRoleIds.length === 0) {
+			this.errors.push(INVALID_ROLE_SELECTION);
+		}
 		if (cardSelectionList.isInvalidSystemAccessValue()) {
-			this._toastMessagetext = this.localize('settings:invalidSystemAccessValueToast');
-			this._openToastMessage();
+			this.errors.push(INVALID_SYSTEM_ACCESS);
+		}
+		if (this.errors.length > 0) {
+			this.isAlertCollapsed = false;
+			window.scroll({ top: 0, behavior: 'smooth' });
+			this.shadowRoot.querySelector('d2l-tabs')
+				.shadowRoot.querySelector('d2l-tab-internal[title="Summary Metrics"]')
+				.click();
 			return;
 		}
 

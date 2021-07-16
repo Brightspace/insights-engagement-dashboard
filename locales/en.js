@@ -32,6 +32,8 @@ export default {
 
 	"settings:roleListTitle": "Roles filter",
 	"settings:roleListDescription": "Set which learner roles to include in your dashboard data. All other roles will be filtered out.",
+	"settings:roleListError": "Role filter requires at least one selected role.",
+	"settings:systemAccessError": "System access must be greater than 0 and less than 31.",
 
 	"orgUnitFilter:name": "Org Unit",
 
@@ -179,6 +181,9 @@ export default {
 	"settings:saveAndClose": "Save and Close",
 	"settings:save": "Save",
 	"settings:cancel": "Cancel",
+	"settings:selectAll": "Select All",
+	"settings:deselectAll": "Deselect All",
+	"settings:errors": "The following errors were found in the submitted settings.",
 
 	"settings:currentGradeDesc": "The Current Grade card shows the current grade for each enrollment per user for courses that are filtered on.",
 	"settings:courseAccessDesc": "The Course Access card shows the last access in a course for each enrollment per user for courses that are filtered on.",
