@@ -8,8 +8,8 @@ import { fetchRoles } from '../model/dataApiClient';
 import { heading3Styles } from '@brightspace-ui/core/components/typography/styles.js';
 import { Localizer } from '../locales/localizer';
 import { nothing } from 'lit-html';
+import { renderWarning } from './svg/warning-icon';
 import shadowHash from '../model/shadowHash';
-import { warningIconImage } from '../consts';
 
 /**
  * @property {Number[]} includeRoles - user selected roles from preferences
@@ -60,7 +60,7 @@ class RoleList extends Localizer(LitElement) {
 			}
 
 			.d2l-insights-invalid {
-				${warningIconImage}
+				/* warning icon */
 				display: block;
 				float: right;
 				height: 23px;
@@ -165,7 +165,7 @@ class RoleList extends Localizer(LitElement) {
 	}
 
 	get _errorIcon() {
-		return this.isError ? html`<div class="d2l-insights-invalid"></div>&nbsp;` : nothing;
+		return this.isError ? html`<div class="d2l-insights-invalid">${renderWarning()}</div>&nbsp;` : nothing;
 	}
 
 	_renderHeader() {
