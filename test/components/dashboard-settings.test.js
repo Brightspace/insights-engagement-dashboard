@@ -41,6 +41,9 @@ describe('d2l-insights-engagement-dashboard-settings', () => {
 			const el = await fixture(html`<d2l-insights-engagement-dashboard-settings></d2l-insights-engagement-dashboard-settings>`);
 			const listener = oneEvent(el, 'd2l-insights-settings-view-back');
 
+			const roleConfig = el.shadowRoot.querySelector('d2l-insights-role-list');
+			roleConfig.includeRoles = [17, 19, 23];
+
 			const button = el.shadowRoot.querySelector('.d2l-insights-settings-page-footer > d2l-button:first-child');
 			button.click();
 

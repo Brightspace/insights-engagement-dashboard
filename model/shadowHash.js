@@ -9,11 +9,14 @@ const ELEMENT = Symbol('element');
 
 class ShadowHash {
 	constructor() {
-		this.store = new Map();
+		this._store = new Map();
 	}
 
 	register(elm) {
-		this.store.set(elm.id, elm);
+		if (elm.id === '' || elm.id === undefined || elm.id === null) {
+			throw new Error('Elements registered to the shadow hash must have an id');
+		}
+		this._store.set(elm.id, elm);
 	}
 
 	queryType(query) {
@@ -28,11 +31,11 @@ class ShadowHash {
 	querySelector(query) {
 		const { type, query: parsedQuery } = this.queryType(query);
 		if (type === CLASS) {
-			return this.store.values().find(elm => elm.classList.contains(parsedQuery));
+			return Array.from(this._store.values()).find(elm => elm.classList.contains(parsedQuery));
 		} else if (type === ID) {
-			return this.store.get(parsedQuery);
+			return this._store.get(parsedQuery);
 		} else {
-			return this.store.values().find(elm => elm.nodeName.toLowerCase() === parsedQuery);
+			return Array.from(this._store.values()).find(elm => elm.nodeName.toLowerCase() === parsedQuery);
 		}
 	}
 }

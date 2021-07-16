@@ -29,6 +29,8 @@ const ERROR_LINKS = {};
 ERROR_LINKS[INVALID_SYSTEM_ACCESS] = { term: 'settings:systemAccessError', id: 'last-access-threshold-edit' };
 ERROR_LINKS[INVALID_ROLE_SELECTION] = { term: 'settings:roleListError', id: 'role-list-items' };
 
+const IMMERSIVE_NAV_HEIGHT = 62;
+
 class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 
 	static get properties() {
@@ -220,12 +222,12 @@ class DashboardSettings extends RtlMixin(Localizer(LitElement)) {
 	_handleScroll(e) {
 		const id = e.target.getAttribute('data:id');
 		const elm = shadowHash.querySelector(`#${id}`);
-		const distance = window.pageYOffset + elm.getBoundingClientRect().top;
+		const distance = (window.pageYOffset + elm.getBoundingClientRect().top - IMMERSIVE_NAV_HEIGHT);
 		window.scrollTo({ top: distance, behavior: 'smooth' });
 	}
 
 	get _hasRoleListError() {
-		return this.errors ? !!this.errors.find(e => e === INVALID_ROLE_SELECTION) : false;
+		return this.errors && !!this.errors.find(e => e === INVALID_ROLE_SELECTION);
 	}
 
 	_renderErrorAlert() {

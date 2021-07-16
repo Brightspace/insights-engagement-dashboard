@@ -100,6 +100,7 @@ class RoleList extends Localizer(LitElement) {
 		this.includeRoles = [];
 		/** @type {{id: string, displayName: string}[]} */
 		this._filterData = [];
+		this.updates = 0;
 	}
 
 	async firstUpdated() {
@@ -107,16 +108,20 @@ class RoleList extends Localizer(LitElement) {
 		const data = await dataProvider();
 		this._setRoleData(data);
 		shadowHash.register(this.shadowRoot.querySelector('#role-list-items'));
+		if (this.includeRoles.length === 0) {
+			this.isError = true;
+		}
 	}
 
-	updated(changed) {
-		if (changed.has('isError')) {
-			const checkboxes = this.shadowRoot.querySelectorAll('d2l-input-checkbox');
-			if (this.isError) {
-				checkboxes.forEach(check => check.shadowRoot.querySelector('input[type="checkbox"]').style = 'border-color: var(--d2l-color-cinnabar)');
-			} else {
-				checkboxes.forEach(check => check.shadowRoot.querySelector('input[type="checkbox"]').style = '');
-			}
+	async updated() {
+		const checkboxes = Array.from(this.shadowRoot.querySelectorAll('d2l-input-checkbox'));
+		if (checkboxes.length === 0) return;
+		// checkbox components may not have rendered yet.
+		await Promise.all(checkboxes.map(check => check.updateComplete));
+		if (this.isError) {
+			checkboxes.forEach(check => check.shadowRoot.querySelector('input[type="checkbox"]').style = 'border-color: var(--d2l-color-cinnabar)');
+		} else {
+			checkboxes.forEach(check => check.shadowRoot.querySelector('input[type="checkbox"]').style = '');
 		}
 	}
 
