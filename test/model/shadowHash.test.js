@@ -1,5 +1,4 @@
 import { expect, fixture, html } from '@open-wc/testing';
-import { assert } from 'sinon';
 import shadowHash from '../../model/shadowHash';
 
 describe('Shadow Hash', () => {
