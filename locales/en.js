@@ -26,9 +26,11 @@ export default {
 	"dashboard:print": "Print",
 	"dashboard:noUsersSelectedDialogText": "Please select one or more users to email.",
 	"dashboard:noResultsAvailable": "There are no results available that match your filters.",
+	"dashboard:noRolesSelected": "We couldn't find any data because there are no selected user roles.",
 	"dashboard:queryFailed": "Unable to load your results. If this problem persists, please ",
 	"dashboard:queryFailedLink": "contact D2L Support.",
 	"dashboard:undoLastAction": "Undo Last Action",
+	"dashboard:goToSettings": "Go To Settings",
 
 	"settings:roleListTitle": "Roles filter",
 	"settings:roleListDescription": "Set which learner roles to include in your dashboard data. All other roles will be filtered out.",
