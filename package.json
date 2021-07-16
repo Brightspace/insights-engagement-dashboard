@@ -30,7 +30,7 @@
     "@open-wc/testing-karma": "^4.0.1",
     "@polymer/polymer": "^3.4.1",
     "deepmerge": "^4",
-    "es-dev-server": "^1.55.1",
+    "es-dev-server": "^2.1.0",
     "eslint": "^7.15.0",
     "eslint-config-brightspace": "^0.13.0",
     "eslint-plugin-html": "^6",
