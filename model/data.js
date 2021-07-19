@@ -96,6 +96,11 @@ export class Data {
 		};
 		try {
 			const data = await this.recordProvider(filters, this._metronEndpoint);
+			if (data.selectedRolesIds === null) {
+				this.onServerDataReload(this.serverData);
+				this.isQueryError = false;
+				return;
+			}
 			this.onServerDataReload(data);
 			this.isQueryError = false;
 		} catch (ignored) {
