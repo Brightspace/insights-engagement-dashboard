@@ -428,8 +428,8 @@ class EngagementDashboard extends Localizer(MobxLitElement) {
 			</div>
 			<d2l-insights-engagement-dashboard-errors
 				.data="${this._data}"
-				.isNoDataReturned="${this._isNoUserResults}"
-				.isNoRoles="${this._parsedIncludeRoles.length === 0}"
+				?no-data="${this._isNoUserResults}"
+				?no-roles="${this._parsedIncludeRoles.length === 0}"
 				@d2l-insights-undo-last-filter="${this._handleUndo}"
 				@d2l-insights-go-to-settings="${this._openSettingsPage}">
 			</d2l-insights-engagement-dashboard-errors>
