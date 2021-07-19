@@ -11,7 +11,8 @@ class EngagementDashboardErrors extends Localizer(MobxLitElement) {
 	static get properties() {
 		return {
 			data: { type: Object, attribute: false },
-			isNoDataReturned: { type: Boolean, attribute: false }
+			isNoDataReturned: { type: Boolean, attribute: 'no-results' },
+			isNoRoles: { type: Boolean, attribute: 'no-roles' }
 		};
 	}
 
@@ -34,7 +35,12 @@ class EngagementDashboardErrors extends Localizer(MobxLitElement) {
 		let messageType, text, linkText, href, buttonText;
 
 		// conditionally render message text and body
-		if (this._isQueryFails) {
+		if (this.isNoRoles) {
+			messageType = 'button';
+			text = this.localize('dashboard:noRolesSelected');
+			buttonText = this.localize('dashboard:goToSettings');
+
+		} else if (this._isQueryFails) {
 			messageType = 'link';
 			text = this.localize('dashboard:queryFailed');
 			linkText = this.localize('dashboard:queryFailedLink');
@@ -66,7 +72,11 @@ class EngagementDashboardErrors extends Localizer(MobxLitElement) {
 	}
 
 	_handleClick() {
-		this.dispatchEvent(new Event('d2l-insights-undo-last-filter'));
+		if (this.isNoRoles) {
+			this.dispatchEvent(new Event('d2l-insights-go-to-settings'));
+		} else {
+			this.dispatchEvent(new Event('d2l-insights-undo-last-filter'));
+		}
 	}
 }
 

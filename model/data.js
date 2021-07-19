@@ -96,6 +96,14 @@ export class Data {
 		};
 		try {
 			const data = await this.recordProvider(filters, this._metronEndpoint);
+			// Fixes a case where an existing users role selections are excluded by the
+			// config variable. This scenario causes the selectedRolesIds to be null.
+			// This block does not affect first time users with no role selections.
+			if (data.selectedRolesIds === null) {
+				this.onServerDataReload(this.serverData);
+				this.isQueryError = false;
+				return;
+			}
 			this.onServerDataReload(data);
 			this.isQueryError = false;
 		} catch (ignored) {

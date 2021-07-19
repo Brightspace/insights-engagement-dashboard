@@ -175,4 +175,14 @@ describe('d2l-insights-engagement-dashboard', () => {
 			});
 		});
 	});
+
+	describe('events', () => {
+		it('Should open the settings page on an event', async() => {
+			const el = await fixture(html`<d2l-insights-engagement-dashboard></d2l-insights-engagement-dashboard>`);
+			const errorAlert = el.shadowRoot.querySelector('d2l-insights-engagement-dashboard-errors');
+			errorAlert.dispatchEvent(new Event('d2l-insights-go-to-settings'));
+			await el.updateComplete;
+			expect(window.location.search.includes('?v=settings')).to.be.true;
+		});
+	});
 });
