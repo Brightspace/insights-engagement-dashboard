@@ -1,6 +1,6 @@
 import '../../components/engagement-dashboard-errors';
 
-import { expect, fixture, html } from '@open-wc/testing';
+import { expect, fixture, html, oneEvent } from '@open-wc/testing';
 import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-helper.js';
 
 describe('d2l-insights-engagement-dashboard-errors', () => {
@@ -91,6 +91,18 @@ describe('d2l-insights-engagement-dashboard-errors', () => {
 			expect(innerMessageContainer.type).to.equal('button');
 			expect(innerMessageContainer.text).to.equal("We couldn't find any data because there are no selected user roles.");
 			expect(innerMessageContainer.buttonText).to.equal('Go To Settings');
+		});
+
+		it('should send the settings event when the button is pressed', async() => {
+			const el = await fixture(html`<d2l-insights-engagement-dashboard-errors .data="${dataWithRoleError}" ?no-roles="${Boolean(1)}"></d2l-insights-engagement-dashboard-errors>`);
+			const innerMessageContainer = el.shadowRoot.querySelector('d2l-insights-message-container');
+			expect(innerMessageContainer.type).to.equal('button');
+			expect(innerMessageContainer.text).to.equal("We couldn't find any data because there are no selected user roles.");
+			expect(innerMessageContainer.buttonText).to.equal('Go To Settings');
+
+			const listener = oneEvent(el, 'd2l-insights-go-to-settings');
+			el.shadowRoot.querySelector('d2l-insights-message-container').shadowRoot.querySelector('d2l-button').click();
+			await listener;
 		});
 	});
 });
