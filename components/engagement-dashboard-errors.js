@@ -11,7 +11,7 @@ class EngagementDashboardErrors extends Localizer(MobxLitElement) {
 	static get properties() {
 		return {
 			data: { type: Object, attribute: false },
-			isNoDataReturned: { type: Boolean, attribute: 'no-data' },
+			isNoDataReturned: { type: Boolean, attribute: 'no-results' },
 			isNoRoles: { type: Boolean, attribute: 'no-roles' }
 		};
 	}
