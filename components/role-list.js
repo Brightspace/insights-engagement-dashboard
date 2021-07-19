@@ -146,8 +146,10 @@ class RoleList extends Localizer(LitElement) {
 
 	_setFilterData(roleData) {
 		const selected = new Set(this.includeRoles.map(String));
+		const all_selected = this.includeRoles.length === roleData.length;
+
 		this._filterData = roleData.map(obj => {
-			return { id: obj.Identifier, displayName: obj.DisplayName, selected: selected.has(obj.Identifier) };
+			return { id: obj.Identifier, displayName: obj.DisplayName, selected: all_selected ? false : selected.has(obj.Identifier) };
 		});
 	}
 
